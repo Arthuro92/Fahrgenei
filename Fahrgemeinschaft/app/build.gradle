@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.example.lennart.fahrgemeinschaft"
+        applicationId "com.android.cows.fahrgemeinschaft"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

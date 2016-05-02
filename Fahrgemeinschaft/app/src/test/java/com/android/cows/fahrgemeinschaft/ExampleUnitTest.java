@@ -1,4 +1,4 @@
-package com.example.lennart.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft;
 
 import org.junit.Test;
 

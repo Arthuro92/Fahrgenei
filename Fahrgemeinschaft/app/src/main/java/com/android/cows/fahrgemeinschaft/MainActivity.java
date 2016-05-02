@@ -1,4 +1,4 @@
-package com.example.lennart.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
