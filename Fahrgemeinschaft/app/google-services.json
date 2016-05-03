@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "634948576599",
+    "project_id": "fahrgemeinschaft-1291"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634948576599:android:d5664ffd6a35067f",
+        "android_client_info": {
+          "package_name": "com.android.cows.fahrgemeinschaft"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwN1lLwMcXxYeVLLIqj6LgGnFSjGGceyM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

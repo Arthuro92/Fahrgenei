@@ -1,20 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.cows.fahrgemeinschaft">
+package="com.android.cows.fahrgemeinschaft">
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name="com.android.cows.fahrgemeinschaft.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
+<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+<permission android:name="com.android.cows.fahrgemeinschaft.permission.C2D_MESSAGE"
+    android:protectionLevel="signature" />
+<uses-permission android:name="com.android.cows.fahrgemeinschaft.permission.C2D_MESSAGE" />
+
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <application>
+    <receiver
+        android:name="com.google.android.gms.gcm.GcmReceiver"
+        android:exported="true"
+        android:permission="com.google.android.c2dm.permission.SEND" >
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <category android:name="com.example.gcm" />
+        </intent-filter>
+    </receiver>
+    <service
+        android:name="com.android.cows.fahrgemeinschaft.MyGcmListenerService"
+        android:exported="false" >
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        </intent-filter>
+    </service>
+    <service
+        android:name="com.android.cows.fahrgemeinschaft.MyInstanceIDListenerService"
+        android:exported="false">
+        <intent-filter>
+            <action android:name="com.google.android.gms.iid.InstanceID" />
+        </intent-filter>
+    </service>
+
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
+    <activity android:name="com.android.cows.fahrgemeinschaft.MainActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+</application>
 
 </manifest>
