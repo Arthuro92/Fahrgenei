@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Fahrgemeinschaft</string>
+    <string name="google_mail">google-mail</string>
+    <string name="passwort_vergessen">Passwort vergessen?</string>
 </resources>
