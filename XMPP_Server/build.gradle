@@ -11,11 +11,13 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compile "org.igniterealtime.smack:smack-java7:4.1.0"
+    compile "org.igniterealtime.smack:smack-java7:4.0.0"
     // Optional for XMPPTCPConnection
-    compile "org.igniterealtime.smack:smack-tcp:4.1.0"
+    compile "org.igniterealtime.smack:smack-tcp:4.0.0"
     // Optional for XMPP-IM (RFC 6121) support (Roster, Threaded Chats, …)
-    compile "org.igniterealtime.smack:smack-im:4.1.0"
+    compile "org.igniterealtime.smack:smack-im:4.0.0"
     // Optional for XMPP extensions support
-    compile "org.igniterealtime.smack:smack-extensions:4.1.0"
+    compile "org.igniterealtime.smack:smack-extensions:4.0.0"
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+
 }

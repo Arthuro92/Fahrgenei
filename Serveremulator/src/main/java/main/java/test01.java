@@ -16,6 +16,7 @@
 
 package main.java;
 
+import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -33,16 +34,17 @@ import java.net.URL;
 // implementation see: https://developers.google.com/cloud-messaging/server
 public class test01 {
 
-    public static final String API_KEY = "AIzaSyA2ZFpVhCeabNrUXst8uhMmNhb9yUdzCLs";
+    public static final String API_KEY = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s";
 
     public static void main(String[] args) {
 
         try {
-
+            Gson gson = new Gson();
+            Groups grp = new Groups("Uni");
             JSONObject jGcmData = new JSONObject();
             JSONObject jData = new JSONObject();
             jData.put("message", "test");
-
+            jData.put("dataload", gson.toJson(grp));
             jGcmData.put("to", "/topics/global");
 
             jGcmData.put("data", jData);
@@ -70,5 +72,4 @@ public class test01 {
             e.printStackTrace();
         }
     }
-
 }

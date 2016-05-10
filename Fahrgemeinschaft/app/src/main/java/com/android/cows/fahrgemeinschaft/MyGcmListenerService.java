@@ -27,10 +27,12 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.google.gson.Gson;
 
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
+
 
     /**
      * Called when message is received.
@@ -42,9 +44,15 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+
+        Gson gson = new Gson();
+        String jsonInString = data.getString("dataload");
+        Groups group = gson.fromJson(jsonInString, Groups.class);
+
         String message = data.getString("message");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
+        Log.d(TAG, "Groupname" + group.getName());
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
