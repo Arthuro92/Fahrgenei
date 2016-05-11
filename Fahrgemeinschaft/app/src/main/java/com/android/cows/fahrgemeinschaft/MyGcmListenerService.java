@@ -44,15 +44,15 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-
+        Log.d(TAG, "messagereceived");
         Gson gson = new Gson();
-        String jsonInString = data.getString("dataload");
-        Groups group = gson.fromJson(jsonInString, Groups.class);
+//        String jsonInString = data.getString("dataload");
+//        Groups group = gson.fromJson(jsonInString, Groups.class);
 
         String message = data.getString("message");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
-        Log.d(TAG, "Groupname" + group.getName());
+//        Log.d(TAG, "Groupname" + group.getName());
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
