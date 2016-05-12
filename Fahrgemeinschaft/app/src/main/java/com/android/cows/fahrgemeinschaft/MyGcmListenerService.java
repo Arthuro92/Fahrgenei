@@ -53,7 +53,6 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 //        Log.d(TAG, "Groupname" + group.getName());
-
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {
@@ -102,4 +101,5 @@ public class MyGcmListenerService extends GcmListenerService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+
 }
