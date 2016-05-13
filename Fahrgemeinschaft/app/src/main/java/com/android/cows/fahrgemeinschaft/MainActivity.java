@@ -1,4 +1,4 @@
-package com.example.lennart.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -8,8 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthUtil;

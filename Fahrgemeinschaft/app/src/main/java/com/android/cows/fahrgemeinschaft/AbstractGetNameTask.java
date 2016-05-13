@@ -1,4 +1,4 @@
-package com.example.lennart.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -8,7 +8,6 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 
 import org.json.JSONException;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
