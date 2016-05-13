@@ -28,6 +28,8 @@ public class MainActivity extends Activity {
         syncGoogleAccount();
     }
 
+
+
     private String[] getAccountNames() {
         mAccountManager = AccountManager.get(this);
         Account[] accounts = mAccountManager.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);

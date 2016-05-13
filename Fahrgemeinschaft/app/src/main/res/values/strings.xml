@@ -3,4 +3,7 @@
     <string name="google_mail">google-mail</string>
     <string name="passwort_vergessen">Passwort vergessen?</string>
     <string name="title_activity_home">HomeActivity</string>
+
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
 </resources>
