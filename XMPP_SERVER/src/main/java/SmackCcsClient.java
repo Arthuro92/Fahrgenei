@@ -279,9 +279,7 @@ public class SmackCcsClient {
         public void processPacket(Stanza packet) {
             logger.log(Level.INFO, "Received: " + packet.toXML());
             Message incomingMessage = (Message) packet;
-            GcmPacketExtension gcmPacket =
-                    (GcmPacketExtension) incomingMessage.
-                            getExtension(GCM_NAMESPACE);
+            GcmPacketExtension gcmPacket = (GcmPacketExtension) incomingMessage.getExtension(GCM_NAMESPACE);
             String json = gcmPacket.getJson();
             try {
                 @SuppressWarnings("unchecked")
@@ -300,6 +298,7 @@ public class SmackCcsClient {
                     String messageId = (String) jsonObject.get("message_id");
                     String from = (String) jsonObject.get("from");
                     String ack = createJsonAck(from, messageId);
+                  logger.log(Level.INFO,from);
                     send(ack);
                 } else if ("ack".equals(messageType.toString())) {
                     // Process Ack

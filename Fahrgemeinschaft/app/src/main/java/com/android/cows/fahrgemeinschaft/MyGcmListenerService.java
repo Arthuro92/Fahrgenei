@@ -49,7 +49,7 @@ public class MyGcmListenerService extends GcmListenerService {
 //        String jsonInString = data.getString("dataload");
 //        Groups group = gson.fromJson(jsonInString, Groups.class);
 
-        String message = data.getString("message");
+        String message = data.getString("Message");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 //        Log.d(TAG, "Groupname" + group.getName());
@@ -58,7 +58,6 @@ public class MyGcmListenerService extends GcmListenerService {
         } else {
             // normal downstream message.
         }
-
         // [START_EXCLUDE]
         /**
          * Production applications would usually process the message here.
