@@ -48,7 +48,8 @@ public class SmackCcsClient {
 
     private static final String YOUR_PROJECT_ID = "634948576599";
     private static final String YOUR_API_KEY = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s"; // your API Key
-    private static final String YOUR_PHONE_REG_ID = "c2SaOvAnEDk:APA91bF_wS1wqH2C17UyuczLbi4vg472aQY9qBzk6WXIE_KdvLNVvHgDE9HW9ZEdpk6abyH-btZZ92VOSmHWYX-NZaaKwU5dVP7ajPZJkW_7rs9wbQmgHv99UawwNLEWIvlzw2ZcrKnE";
+//    private static final String YOUR_PHONE_REG_ID = "c2SaOvAnEDk:APA91bF_wS1wqH2C17UyuczLbi4vg472aQY9qBzk6WXIE_KdvLNVvHgDE9HW9ZEdpk6abyH-btZZ92VOSmHWYX-NZaaKwU5dVP7ajPZJkW_7rs9wbQmgHv99UawwNLEWIvlzw2ZcrKnE";
+    private static final String YOUR_PHONE_REG_ID = "dz6_cNXPbvk:APA91bFMdkiRviyxt-kDTGU-fnlCJei3AyiK_SO_-pOJIMqKMQZ6BPfuT2SBKv3eQGu5-JFHm4WKeb5mpPLednp2pa1TGgs6Kw_5dLY9_QugPJnBtL4hJUtt8N6IETDvPfFv2WJcQcog";
 
 
     static {
