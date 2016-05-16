@@ -52,6 +52,7 @@ public class MyGcmSend {
      * illustration purpose, and is not guaranteed to be unique.
      */
     public String nextMessageId() {
+        //TODO make sure its unique!
         return "m-" + UUID.randomUUID().toString();
     }
 }
