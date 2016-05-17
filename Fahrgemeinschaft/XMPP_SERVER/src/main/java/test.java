@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 /**
  * Created by Lennart on 03.05.2016.
  */
-public class test {
+public class Test {
     public static void main(String[] args) throws Exception {
         final long senderId = 634948576599L; // your GCM sender id
         final String password = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s";
@@ -31,7 +31,7 @@ public class test {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
 }}
