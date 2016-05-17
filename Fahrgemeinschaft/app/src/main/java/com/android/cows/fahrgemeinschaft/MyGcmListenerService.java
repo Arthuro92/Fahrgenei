@@ -27,7 +27,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
-import com.google.gson.Gson;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -45,7 +44,7 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         Log.d(TAG, "messagereceived");
-        Gson gson = new Gson();
+//        Gson gson = new Gson();
 //        String jsonInString = data.getString("dataload");
 //        Groups group = gson.fromJson(jsonInString, Groups.class);
 

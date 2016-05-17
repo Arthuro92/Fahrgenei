@@ -13,5 +13,6 @@ dependencies {
     compile "org.igniterealtime.smack:smack-tcp:4.0.0"
     compile "org.igniterealtime.smack:smack-extensions:4.0.0"
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    compile 'com.google.code.gson:gson:2.6.2'
 
 }

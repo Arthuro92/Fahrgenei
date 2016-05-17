@@ -1,5 +1,3 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.util.Map;
 
 /**
@@ -12,7 +10,16 @@ public class CategoryObserverTest implements MessageObserver{
         Map<String, String> payload = (Map<String, String>) jsonObject.get("data");
         String myMessage = payload.get("task");
         if(myMessage.equals("create_group")) {
-            this.jsonObject = jsonObject;
+//            this.jsonObject = jsonObject;
+//            Gson gson = new Gson();
+//            Groups grp = new Groups("Uni");
+//            JSONObject jGcmData = new JSONObject();
+//            JSONObject jData = new JSONObject();
+//            jData.put("message", "test");
+//            jData.put("dataload", gson.toJson(grp));
+//            jGcmData.put("to", "/topics/global");
+//
+//            jGcmData.put("data", jData);
             System.out.println(myMessage);
         } else {
             System.out.println("Wrong task!");
