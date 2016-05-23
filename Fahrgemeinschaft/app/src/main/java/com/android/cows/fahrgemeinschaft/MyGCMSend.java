@@ -33,11 +33,12 @@ public class MyGcmSend {
 
         String msg = "";
         try {
-            Bundle data = new Bundle();
-            data.putString("my_message", "Hello World");
-            data.putString("my_action", "SAY_HELLO");
+            Bundle payload = new Bundle();
+            payload.putString("task_category", "chat");
+//            data.putString("task_category", "group");
+//            data.putString("task_category", "user");
             String id = msgId;
-            gcm.send(senderId + "@gcm.googleapis.com", id, data);
+            gcm.send(senderId + "@gcm.googleapis.com", id, payload);
             msg = "Sent message completed";
         } catch (IOException ex) {
             msg = "Error :" + ex.getMessage();

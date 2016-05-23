@@ -37,7 +37,10 @@ import javax.net.ssl.SSLSocketFactory;
  */
 public class SmackCcsClient {
     private MessageSubject ms = new MessageSubject();
-    private CategoryObserverTest cot = new CategoryObserverTest(ms);
+    private UserObserver uo = new UserObserver(ms);
+    private GroupObserver go = new GroupObserver(ms);
+    private ChatObserver co = new ChatObserver(ms);
+
 
     private static final Logger logger = Logger.getLogger("SmackCcsClient");
 
@@ -113,8 +116,8 @@ public class SmackCcsClient {
         // PackageName of the application that sent this message.
 //        String category = (String) jsonObject.get("category");
 //        String from = (String) jsonObject.get("from");
-        @SuppressWarnings("unchecked")
-        Map<String, String> payload = (Map<String, String>) jsonObject.get("data");
+//        @SuppressWarnings("unchecked")
+//        Map<String, String> payload = (Map<String, String>) jsonObject.get("data");
 //        payload.put("ECHO", "Application: " + category);
 //
 //        // Send an ECHO response back
