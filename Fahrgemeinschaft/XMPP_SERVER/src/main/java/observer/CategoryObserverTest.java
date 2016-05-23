@@ -1,3 +1,5 @@
+package observer;
+
 import java.util.Map;
 
 /**
@@ -18,7 +20,6 @@ public class CategoryObserverTest implements MessageObserver{
 //            jData.put("message", "test");
 //            jData.put("dataload", gson.toJson(grp));
 //            jGcmData.put("to", "/topics/global");
-//
 //            jGcmData.put("data", jData);
             System.out.println(myMessage);
         } else {

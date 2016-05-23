@@ -1,3 +1,5 @@
+package com.android.cows.fahrgemeinschaft.observer;
+
 import java.util.Map;
 
 /**

@@ -1,4 +1,4 @@
-package com.android.cows.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft.observer;
 
 import java.util.ListIterator;
 import java.util.Map;

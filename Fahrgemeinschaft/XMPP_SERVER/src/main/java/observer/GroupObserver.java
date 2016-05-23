@@ -1,4 +1,4 @@
-package com.android.cows.fahrgemeinschaft;
+package observer;
 
 import java.util.Map;
 
@@ -20,6 +20,6 @@ public class GroupObserver implements MessageObserver {
     }
     public GroupObserver(MessageSubject ms) {
         ms.registerMO(this);
-        System.out.println("GroupObserver registered!");
+        System.out.println("observer.GroupObserver registered!");
     }
 }

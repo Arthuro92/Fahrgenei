@@ -1,4 +1,4 @@
-package com.android.cows.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft.dataobjects;
 
 /**
  * Created by Lennart on 09.05.2016.

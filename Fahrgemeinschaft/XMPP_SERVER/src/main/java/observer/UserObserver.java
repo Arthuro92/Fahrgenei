@@ -1,4 +1,4 @@
-package com.android.cows.fahrgemeinschaft;
+package observer;
 
 import java.util.Map;
 
@@ -7,6 +7,9 @@ import java.util.Map;
  */
 public class UserObserver implements MessageObserver {
     private Map<String, String> payload;
+
+
+
     public void setUser() {
         System.out.println("User set to: ");
     }
@@ -20,6 +23,6 @@ public class UserObserver implements MessageObserver {
     }
     public UserObserver(MessageSubject ms) {
         ms.registerMO(this);
-        System.out.println("UserObserver registered!");
+        System.out.println("observer.UserObserver registered!");
     }
 }

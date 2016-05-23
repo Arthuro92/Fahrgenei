@@ -1,6 +1,10 @@
+package observer;
+
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Vector;
+
+import observer.MessageObserver;
 
 /**
  * Created by david on 17.05.2016.

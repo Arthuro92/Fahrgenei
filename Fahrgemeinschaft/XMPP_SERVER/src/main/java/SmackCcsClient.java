@@ -29,6 +29,11 @@ import java.util.logging.Logger;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import observer.ChatObserver;
+import observer.GroupObserver;
+import observer.MessageSubject;
+import observer.UserObserver;
+
 /**
  * Sample Smack implementation of a client for GCM Cloud Connection Server. This
  * code can be run as a standalone CCS client.
