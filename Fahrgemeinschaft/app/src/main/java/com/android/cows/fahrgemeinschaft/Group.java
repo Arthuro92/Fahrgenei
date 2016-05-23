@@ -3,11 +3,11 @@ package com.android.cows.fahrgemeinschaft;
 /**
  * Created by Lennart on 09.05.2016.
  */
-public class Groups {
+public class Group {
 
     private String name;
 
-    public Groups(String name) {
+    public Group(String name) {
         this.name = name;
     }
 
