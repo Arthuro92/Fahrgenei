@@ -26,9 +26,11 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.android.cows.fahrgemeinschaft.dataobjects.User;
 import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
 import com.android.cows.fahrgemeinschaft.observer.UserObserver;
 import com.google.android.gms.gcm.GcmListenerService;
+import com.google.gson.Gson;
 
 public class MyGcmListenerService extends GcmListenerService {
     private static final String TAG = "MyGcmListenerService";
@@ -45,16 +47,16 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        Log.d(TAG, "messagereceived");
-//        Gson gson = new Gson();
-//        String jsonInString = data.getString("dataload");
-//        Groups group = gson.fromJson(jsonInString, Groups.class);
+        String message = data.toString();
+        Log.d(TAG, "MESSAGE RECIEVED");
+        Log.d(TAG, "FROM: " + from);
+        Log.d(TAG, "MESSAGE: " + message);
+        ms.setJsonObject(data);
 
-        String message = data.getString("task_category");
-        System.out.println(message + "!!!!!!!!!!!!!!!!!!!!!!");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
-//        Log.d(TAG, "Groupname" + group.getName());
+//        Gson gson = new Gson();
+//        String jsonInString = data.getString("user");
+//        User user = gson.fromJson(jsonInString, User.class);
+        //todo non topic message handling
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {

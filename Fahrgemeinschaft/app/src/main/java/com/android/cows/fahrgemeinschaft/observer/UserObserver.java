@@ -1,15 +1,12 @@
 package com.android.cows.fahrgemeinschaft.observer;
 
-import com.android.cows.fahrgemeinschaft.observer.MessageObserver;
-import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
-
-import java.util.Map;
+import android.os.Bundle;
 
 /**
  * Created by david on 23.05.2016.
  */
 public class UserObserver implements MessageObserver {
-    private Map<String, String> payload;
+    private Bundle payload;
 
     /**
      *
@@ -19,16 +16,14 @@ public class UserObserver implements MessageObserver {
     }
 
     /**
-     * Updates the Map payload for this object to the jsonObject. Also calls the setUser method so long as the task_category key of payload equals user
-     * @param jsonObject a Map the payload for this object is updated to
+     * Updates the Bundle payload for this object to the jsonObject. Also calls the setUser method so long as the task_category key of payload equals user
+     * @param jsonObject a Bundle the payload for this object is updated to
      */
-    public void updateMO(Map<String, Object> jsonObject) {
-        if(jsonObject.containsKey("data")) {
-            this.payload = (Map<String, String>) jsonObject.get("data");
-            if(this.payload.get("task_category").equals("user")) {
+    public void updateMO(Bundle jsonObject) {
+        this.payload = jsonObject;
+            if(this.payload.getString("task_category").equals("user")) {
                 setUser();
             }
-        }
     }
 
     /**

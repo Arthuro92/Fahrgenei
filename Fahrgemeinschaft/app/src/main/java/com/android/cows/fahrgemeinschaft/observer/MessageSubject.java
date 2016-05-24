@@ -1,7 +1,7 @@
 package com.android.cows.fahrgemeinschaft.observer;
 
+import android.os.Bundle;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -9,7 +9,7 @@ import java.util.Vector;
  */
 public class MessageSubject {
     private Vector<MessageObserver> mos;
-    private Map<String, Object> jsonObject;
+    private Bundle jsonObject;
 
     /**
      * Registers or rather adds a MessageObserver to the set of MessageObservers for this object
@@ -50,7 +50,7 @@ public class MessageSubject {
      * Sets or rather changes the referenced jsonObject for this object to the jsonObject parameter as well as calls  the notifyMOs method afterwards
      * @param jsonObject a Map the jsonObject for this object is set to
      */
-    public synchronized void setJsonObject(Map<String, Object> jsonObject) {
+    public synchronized void setJsonObject(Bundle jsonObject) {
         this.jsonObject = jsonObject;
         notifyMOs();
     }

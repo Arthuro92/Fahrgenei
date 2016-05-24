@@ -1,6 +1,6 @@
 package com.android.cows.fahrgemeinschaft.observer;
 
-import java.util.Map;
+import android.os.Bundle;
 
 /**
  * Created by david on 17.05.2016.
@@ -8,7 +8,7 @@ import java.util.Map;
 public interface MessageObserver {
     /**
      * Updates the MessageObserver for this object on changes in the jsonObject
-     * @param jsonObject a Map the MessageObserver is updated on
+     * @param jsonObject a Bundle the MessageObserver is updated on
      */
-    public abstract void updateMO(Map<String, Object> jsonObject);
+    public abstract void updateMO(Bundle jsonObject);
 }
