@@ -7,9 +7,18 @@ import java.util.Map;
  */
 public class GroupObserver implements MessageObserver {
     private Map<String, String> payload;
+
+    /**
+     *
+     */
     public void setGroup() {
-        System.out.println("Group set to: ");
+        System.out.println("GROUP SET TO: ");
     }
+
+    /**
+     * Updates the Map payload for this object to the jsonObject. Also calls the setGroup method so long as the task_category key of payload equals group
+     * @param jsonObject a Map the payload for this object is updated to
+     */
     public void updateMO(Map<String, Object> jsonObject) {
         if(jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
@@ -18,8 +27,13 @@ public class GroupObserver implements MessageObserver {
             }
         }
     }
+
+    /**
+     * Constructs a new GroupObserver and registers it to a MessageSubject
+     * @param ms a MessageSubject to register to
+     */
     public GroupObserver(MessageSubject ms) {
         ms.registerMO(this);
-        System.out.println("observer.GroupObserver registered!");
+        System.out.println("GROUPOBSERVER REGISTERED");
     }
 }
