@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
@@ -40,7 +42,7 @@ import observer.UserObserver;
  * <p>
  * <p>For illustration purposes only.
  */
-public class SmackCcsClient {
+public class SmackCcsClient<T> {
     private MessageSubject ms = new MessageSubject();
     private UserObserver uo = new UserObserver(ms);
     private GroupObserver go = new GroupObserver(ms);
@@ -77,19 +79,36 @@ public class SmackCcsClient {
     protected volatile boolean connectionDraining = false;
 
     /**
-     * Sends a downstream message to GCM.
      *
-     * @return true if the message has been successfully sent.
+     * @param task_category valid categorys: chat, group, appointment, user
+     * @param task valid tasks //todo choose valid tasks
+     * @param to cam ne Topic (/topics/...) or a specific Token
+     * @param javaobject every valid javaobject
+     * @return true when send success, and false when send failed
+     * @throws NotConnectedException
      */
-    public boolean sendDownstreamMessage(String jsonRequest) throws
-            NotConnectedException {
+    public boolean sendDownstreamMessage(String task_category, String task,String to, T javaobject) throws NotConnectedException {
         if (!connectionDraining) {
-            send(jsonRequest);
+            String messageId = nextMessageId();
+            Map<String, String> payload = new HashMap<String, String>();
+            payload.put("task_category", task_category);
+            payload.put("task", task);
+
+            Gson gson = new Gson();
+            String javaobjectstring = gson.toJson(javaobject);
+            payload.put("content", javaobjectstring);
+
+            //TODO research what exactly collapseKey means and if we need it
+            String collapseKey = "sample";
+            Long timeToLive = 10000L;
+            String message = new JsonMessage(to, messageId, payload, collapseKey, timeToLive, true).getMessage();
+            send(message);
             return true;
         }
         logger.info("Dropping downstream message since the connection is draining");
         return false;
     }
+
 
     /**
      * Returns a random message id to uniquely identify a message.

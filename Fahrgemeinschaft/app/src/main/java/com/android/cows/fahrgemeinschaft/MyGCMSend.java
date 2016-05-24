@@ -5,22 +5,28 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.UUID;
 
 /**
  * Created by Lennart on 13.05.2016.
+ * A Generic Class for sending java Objects to GCM Server
  */
 
-public class MyGcmSend {
+public class MyGcmSend<T> {
 
     private static final String TAG = "MyGcmSend";
-    private String message;
 
-
-
-    protected void send(String message, Context con) {
+    /**
+     * Sending messages to GCM
+     * @param task_category valid categorys: chat, group, appointment, user
+     * @param task valid tasks //todo choose valid tasks
+     * @param javaobject every valid javaobject
+     * @param con the context try this, as context
+     */
+    protected void send(String task_category, String task, T javaobject, Context con) {
 
 
 
@@ -31,19 +37,22 @@ public class MyGcmSend {
 
         Log.i(TAG, "Try Sending Message");
 
-        String msg = "";
+        String logstring = "";
         try {
             Bundle payload = new Bundle();
-//            payload.putString("task_category", "chat");
-//            payload.putString("task_category", "group");
-            payload.putString("task_category", "user");
-            String id = msgId;
-            gcm.send(senderId + "@gcm.googleapis.com", id, payload);
-            msg = "Sent message completed";
+            payload.putString("task_category", task_category);
+            payload.putString("task", task);
+
+            Gson gson = new Gson();
+            String javaobjectstring = gson.toJson(javaobject);
+            payload.putString("content", javaobjectstring);
+
+            gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
+            logstring = "Sent message success";
         } catch (IOException ex) {
-            msg = "Error :" + ex.getMessage();
+            logstring = "Error :" + ex.getMessage();
         }
-        Log.i(TAG, msg);
+        Log.i(TAG, logstring);
     }
 
     /**

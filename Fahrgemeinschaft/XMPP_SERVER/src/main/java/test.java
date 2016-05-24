@@ -1,10 +1,11 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import dataobjects.Group;
+
 /**
  * Created by Lennart on 03.05.2016.
+ * This Class is currently for testingpurpose but later it will be the starter for the SmackCcsClient
  */
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -15,19 +16,12 @@ public class Test {
 
         ccsClient.connect(senderId, password);
 
-        // Send a sample hello downstream message to a device.
-        String toRegId = "dz6_cNXPbvk:APA91bFMdkiRviyxt-kDTGU-fnlCJei3AyiK_SO_-pOJIMqKMQZ6BPfuT2SBKv3eQGu5-JFHm4WKeb5mpPLednp2pa1TGgs6Kw_5dLY9_QugPJnBtL4hJUtt8N6IETDvPfFv2WJcQcog";
-        String messageId = ccsClient.nextMessageId();
-        Map<String, String> payload = new HashMap<String, String>();
-        payload.put("Hello", "World");
-        payload.put("CCS", "Dummy Message");
-        payload.put("task_category", "user");
-        payload.put("EmbeddedMessageId", messageId);
-        String collapseKey = "sample";
-        Long timeToLive = 10000L;
-        String message = new JsonMessage(toRegId, messageId, payload, collapseKey, timeToLive, true).getMessage();
+        String toRegId = "c2SaOvAnEDk:APA91bF_wS1wqH2C17UyuczLbi4vg472aQY9qBzk6WXIE_KdvLNVvHgDE9HW9ZEdpk6abyH-btZZ92VOSmHWYX-NZaaKwU5dVP7ajPZJkW_7rs9wbQmgHv99UawwNLEWIvlzw2ZcrKnE";
 
-        ccsClient.sendDownstreamMessage(message);
+        Group grp = new Group("test");
+//        ccsClient.sendDownstreamMessage("chat","test","/topics/global", grp );
+//        ccsClient.sendDownstreamMessage("chat","test",toRegId, grp );
+//        database.Testinsert insert = new database.Testinsert("10", "gruppe1");
         while(true) {
             try {
                 Thread.sleep(1000);
