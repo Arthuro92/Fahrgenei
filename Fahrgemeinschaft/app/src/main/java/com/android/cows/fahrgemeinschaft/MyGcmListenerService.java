@@ -32,8 +32,8 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
     private static final String TAG = "MyGcmListenerService";
-    private MessageSubject ms = new MessageSubject();
-    private UserObserver uo = new UserObserver(ms);
+    private static MessageSubject ms = new MessageSubject();
+    private static UserObserver uo = new UserObserver(ms);
 
     /**
      * Called when message is received.
@@ -50,7 +50,8 @@ public class MyGcmListenerService extends GcmListenerService {
 //        String jsonInString = data.getString("dataload");
 //        Groups group = gson.fromJson(jsonInString, Groups.class);
 
-        String message = data.getString("Message");
+        String message = data.getString("task_category");
+        System.out.println(message + "!!!!!!!!!!!!!!!!!!!!!!");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 //        Log.d(TAG, "Groupname" + group.getName());
