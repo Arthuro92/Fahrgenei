@@ -12,7 +12,7 @@ public class ChatObserver implements MessageObserver {
      *
      */
     public void setChat() {
-        System.out.println("CHAT MESSAGE SET TO: ");
+        System.out.println("CHAT MESSAGE SET TO: " + this.payload.toString());
     }
 
     /**
