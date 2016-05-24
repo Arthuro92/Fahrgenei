@@ -21,6 +21,7 @@ public class Test {
         Map<String, String> payload = new HashMap<String, String>();
         payload.put("Hello", "World");
         payload.put("CCS", "Dummy Message");
+        payload.put("task_category", "user");
         payload.put("EmbeddedMessageId", messageId);
         String collapseKey = "sample";
         Long timeToLive = 10000L;

@@ -26,11 +26,14 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
+import com.android.cows.fahrgemeinschaft.observer.UserObserver;
 import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
-
     private static final String TAG = "MyGcmListenerService";
+    private MessageSubject ms = new MessageSubject();
+    private UserObserver uo = new UserObserver(ms);
 
     /**
      * Called when message is received.
