@@ -60,6 +60,7 @@
 
         <activity android:name=".GroupOverview"></activity>
         <activity android:name=".AppointmentOverview"></activity>
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>
