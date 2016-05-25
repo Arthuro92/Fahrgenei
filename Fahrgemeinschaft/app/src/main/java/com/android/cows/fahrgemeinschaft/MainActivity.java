@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.gcm.QuickstartPreferences;
 import com.android.cows.fahrgemeinschaft.gcm.RegistrationIntentService;
+import com.android.cows.fahrgemeinschaft.observer.NotificationObserver;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        NotificationObserver.setContext(this);
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {

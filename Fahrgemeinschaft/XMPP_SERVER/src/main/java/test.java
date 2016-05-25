@@ -19,8 +19,8 @@ public class Test {
         String toRegId = "c2SaOvAnEDk:APA91bF_wS1wqH2C17UyuczLbi4vg472aQY9qBzk6WXIE_KdvLNVvHgDE9HW9ZEdpk6abyH-btZZ92VOSmHWYX-NZaaKwU5dVP7ajPZJkW_7rs9wbQmgHv99UawwNLEWIvlzw2ZcrKnE";
 
         Group grp = new Group("test");
-//        ccsClient.sendDownstreamMessage("chat","test","/topics/global", grp );
-//        ccsClient.sendDownstreamMessage("chat","test",toRegId, grp );
+        ccsClient.sendDownstreamMessage("chat","test","/topics/global", grp );
+        ccsClient.sendDownstreamMessage("chat","test",toRegId, grp );
 //        database.databaseoperator insert = new database.databaseoperator("10", "gruppe1");
         while(true) {
             try {

@@ -12,7 +12,7 @@ public class UserObserver implements MessageObserver {
      *
      */
     public void setUser() {
-        System.out.println("USER SET TO: ");
+        System.out.println("USER SET TO: " + this.payload.toString());
     }
 
     /**

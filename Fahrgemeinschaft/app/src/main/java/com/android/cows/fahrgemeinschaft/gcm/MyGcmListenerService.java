@@ -29,7 +29,10 @@ import android.util.Log;
 import com.android.cows.fahrgemeinschaft.MainActivity;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.dataobjects.User;
+import com.android.cows.fahrgemeinschaft.observer.ChatObserver;
+import com.android.cows.fahrgemeinschaft.observer.GroupObserver;
 import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
+import com.android.cows.fahrgemeinschaft.observer.NotificationObserver;
 import com.android.cows.fahrgemeinschaft.observer.UserObserver;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.google.gson.Gson;
@@ -38,6 +41,9 @@ public class MyGcmListenerService extends GcmListenerService {
     private static final String TAG = "MyGcmListenerService";
     private static MessageSubject ms = new MessageSubject();
     private static UserObserver uo = new UserObserver(ms);
+    private static ChatObserver co = new ChatObserver(ms);
+    private static GroupObserver go = new GroupObserver(ms);
+    private static NotificationObserver no = new NotificationObserver(ms);
 
     /**
      * Called when message is received.
