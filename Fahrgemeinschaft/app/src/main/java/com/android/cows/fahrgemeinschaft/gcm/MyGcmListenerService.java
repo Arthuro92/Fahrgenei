@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.cows.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft.gcm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.android.cows.fahrgemeinschaft.MainActivity;
+import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.dataobjects.User;
 import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
 import com.android.cows.fahrgemeinschaft.observer.UserObserver;

@@ -2,7 +2,7 @@ package observer;
 
 import java.util.Map;
 
-import database.Testinsert;
+import database.databaseoperator;
 
 /**
  * Created by david on 23.05.2016.
@@ -15,7 +15,7 @@ public class GroupObserver implements MessageObserver {
      */
     public void setGroup() {
         System.out.println("GROUP SET TO: " + this.payload.toString());
-        Testinsert insert = new Testinsert("10", this.payload.get("content"));
+        databaseoperator.insertnewgroup("10", this.payload.get("content"));
     }
 
     /**

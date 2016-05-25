@@ -21,7 +21,7 @@ public class Test {
         Group grp = new Group("test");
 //        ccsClient.sendDownstreamMessage("chat","test","/topics/global", grp );
 //        ccsClient.sendDownstreamMessage("chat","test",toRegId, grp );
-//        database.Testinsert insert = new database.Testinsert("10", "gruppe1");
+//        database.databaseoperator insert = new database.databaseoperator("10", "gruppe1");
         while(true) {
             try {
                 Thread.sleep(1000);

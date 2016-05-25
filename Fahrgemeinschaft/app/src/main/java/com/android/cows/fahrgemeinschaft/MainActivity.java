@@ -29,6 +29,8 @@ import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.gcm.QuickstartPreferences;
+import com.android.cows.fahrgemeinschaft.gcm.RegistrationIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 

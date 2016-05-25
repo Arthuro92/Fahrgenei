@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.cows.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft.gcm;
 
 import android.content.Intent;
 

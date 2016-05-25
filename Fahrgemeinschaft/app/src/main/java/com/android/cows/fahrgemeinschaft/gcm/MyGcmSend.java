@@ -1,9 +1,10 @@
-package com.android.cows.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft.gcm;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.cows.fahrgemeinschaft.R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 

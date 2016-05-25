@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.cows.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft.gcm;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -23,6 +23,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.dataobjects.Group;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
