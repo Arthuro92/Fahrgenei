@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -120,4 +121,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void nextactivity(View view) {
+        Log.i(TAG, "NEXTACTIVITY");
+//        Intent intent = new Intent(this, GroupOverview.class);
+        Intent intent = new Intent(this, AppointmentOverview.class);
+        startActivity(intent);
+    }
 }

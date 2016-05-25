@@ -91,7 +91,7 @@ public class RegistrationIntentService extends IntentService {
 //        MyGcmSend gcmsend    = new MyGcmSend();
 //        gcmsend.send(token, this);
         MyGcmSend gcmsender = new MyGcmSend();
-        Group grp = new Group("grp1");
+        Group grp = new Group("grp1",1,"lennart", "lennart");
         gcmsender.send("group", "task", grp, this);
     }
 

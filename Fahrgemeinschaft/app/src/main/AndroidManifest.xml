@@ -59,6 +59,7 @@
             android:exported="false"></service>
 
         <activity android:name=".GroupOverview"></activity>
+        <activity android:name=".AppointmentOverview"></activity>
     </application>
 
 </manifest>

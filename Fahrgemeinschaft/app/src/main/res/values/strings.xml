@@ -6,4 +6,10 @@
     <string name="token_error_message">An error occurred while either fetching the InstanceID token,
         sending the fetched token to the server or subscribing to the PubSub topic. Please try
         running the sample again.</string>
+    <string name="grpname">"Gruppenname: %1$s "</string>
+    <string name="membercount">"Mitgliederanzahl: %1$s "</string>
+    <string name="grpadmin">"Gruppenadmin: %1$s"</string>
+    <string name="apm_name">Apointment:%1$s</string>
+    <string name="treffpunkt_zeit">Treffen%1$s</string>
+    <string name="treffpunkt_ort">Treffen%1$s</string>
 </resources>
