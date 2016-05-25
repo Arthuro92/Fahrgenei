@@ -12,7 +12,8 @@ public class ChatObserver implements MessageObserver {
      *
      */
     public void setChat() {
-        System.out.println("CHAT MESSAGE SET TO: ");
+        System.out.println("CHAT SET TO: " + this.payload.toString());
+        System.out.println("MESSAGE SET TO: " + this.payload.getString("content"));
     }
 
     /**
@@ -21,7 +22,7 @@ public class ChatObserver implements MessageObserver {
      */
     public void updateMO(Bundle jsonObject) {
         this.payload = jsonObject;
-        if(this.payload.getString("task_category").equals("user")) {
+        if(this.payload.getString("task_category").equals("chat")) {
             setChat();
         }
     }

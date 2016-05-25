@@ -12,7 +12,7 @@ public class AppointmentObserver implements MessageObserver{
      *
      */
     public void setAppointment() {
-        System.out.println("APPOINTMENT SET TO: ");
+        System.out.println("APPOINTMENT SET TO: " + this.payload.toString());
     }
 
     /**

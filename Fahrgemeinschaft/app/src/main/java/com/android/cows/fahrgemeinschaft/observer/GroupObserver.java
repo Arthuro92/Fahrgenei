@@ -12,7 +12,7 @@ public class GroupObserver implements MessageObserver {
      *
      */
     public void setGroup() {
-        System.out.println("GROUP SET TO: ");
+        System.out.println("GROUP SET TO: " + this.payload.toString());
     }
 
     /**
