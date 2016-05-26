@@ -1,18 +1,26 @@
 package observer;
 
+import com.google.gson.Gson;
 import java.util.Map;
+import dataobjects.Chat;
 
 /**
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
     private Map<String, String> payload;
+    private Chat c;
 
     /**
-     *
+     * Parses certain parts of the jsonObject to a Chat object
      */
     public void setChat() {
-        System.out.println("CHAT MESSAGE SET TO: " + this.payload.toString());
+        System.out.println("CHAT SET TO: " + this.payload.toString());
+        System.out.println("MESSAGE SET TO: " + this.payload.get("content"));
+        Gson gson = new Gson();
+        String jsonInString = this.payload.get("content");
+        this.c = gson.fromJson(jsonInString, Chat.class);
+        //todo how to handle chat messages
     }
 
     /**

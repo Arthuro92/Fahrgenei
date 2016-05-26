@@ -14,17 +14,23 @@ import com.android.cows.fahrgemeinschaft.R;
  */
 public class NotificationObserver implements MessageObserver {
     private Bundle payload;
-    private static Context con;
+    private static Context con; //todo default context for android? similar to NOTIFICATIN_SERVICE
     public static final int NID = 987654321;
 
+    /**
+     * Sets the Context for the ChatObserver class(not instantiated) to the Context of the Activity this method is called from
+     * @param c a Context from the Activity this method is called from
+     */
     public static void setContext(Context c) {
         con = c;
     }
 
     /**
-     *
+     * Sets and issues a Notification concerning the contents of the jsonObject
      */
-    private void popUp() {
+    private void setNotification() {
+        System.out.println("NOTIFICATION SET TO: " + this.payload.toString());
+        System.out.println("MESSAGE SET TO: " + this.payload.getString("content"));
         Intent intent = new Intent(con, ChatActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(con, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager nm = (NotificationManager) con.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -35,18 +41,7 @@ public class NotificationObserver implements MessageObserver {
         ncb.setWhen(System.currentTimeMillis());
         ncb.setContentIntent(pIntent);
         nm.notify(NID, ncb.build());
-        System.out.println("POPUP ENDED");
-    }
-
-    /**
-     *
-     */
-    private void setNotification() {
-        System.out.println("NOTIFICATION SET TO: " + this.payload.toString());
-        System.out.println("MESSAGE SET TO: " + this.payload.getString("content"));
-        if(this.payload.getString("task_category").equals("chat")) {
-            popUp();
-        }
+        System.out.println("SETNOTIFICATION ENDED");
     }
 
     /**
