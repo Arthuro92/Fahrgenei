@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#cfcfcf"
+    android:nestedScrollingEnabled="false"
+    android:useDefaultMargins="false"
+    android:touchscreenBlocksFocus="false"
+    android:clickable="false"
+    android:padding="30dp">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/groupButton"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:src="@drawable/group"
+        android:layout_margin="1dp"
+        android:layout_gravity="left" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/calendarButton"
+        android:layout_row="1"
+        android:layout_column="2"
+        android:src="@drawable/calendar"
+        android:layout_margin="1dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/messageButton"
+        android:layout_row="2"
+        android:layout_column="1"
+        android:src="@drawable/message"
+        android:layout_gravity="center"
+        android:layout_margin="1dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notesButton"
+        android:layout_row="2"
+        android:layout_column="2"
+        android:src="@drawable/notes"
+        android:layout_margin="1dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mailButton"
+        android:layout_row="3"
+        android:layout_column="1"
+        android:src="@drawable/mail"
+        android:layout_margin="1dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingsButton"
+        android:layout_row="3"
+        android:layout_column="2"
+        android:src="@drawable/settings"
+        android:layout_margin="1dp" />
+
+</GridLayout>

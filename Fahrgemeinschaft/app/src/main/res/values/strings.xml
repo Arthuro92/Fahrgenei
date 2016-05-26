@@ -13,4 +13,11 @@
     <string name="treffpunkt_zeit">Treffen %1$s</string>
     <string name="treffpunkt_ort">Treffen %1$s</string>
     <string name="addgroup">Gruppe hinzufügen</string>
+    <string name="google_mail">google-mail</string>
+    <string name="passwort_vergessen">Passwort vergessen?</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_overview">OverviewActivity</string>
+    <string name="weiter">Weiter</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
 </resources>
