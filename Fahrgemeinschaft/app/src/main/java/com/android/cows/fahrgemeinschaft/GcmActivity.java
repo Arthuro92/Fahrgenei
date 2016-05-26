@@ -36,10 +36,10 @@ import com.android.cows.fahrgemeinschaft.observer.NotificationObserver;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-public class MainActivity extends AppCompatActivity {
+public class GcmActivity extends AppCompatActivity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "GcmActivity";
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ProgressBar mRegistrationProgressBar;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gcm);
 
         NotificationObserver.setContext(this);
 
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     public void nextactivity(View view) {
         Log.i(TAG, "NEXTACTIVITY");
 //        Intent intent = new Intent(this, GroupOverview.class);
-        Intent intent = new Intent(this, AppointmentOverview.class);
+        Intent intent = new Intent(this, GroupOverview.class);
         startActivity(intent);
     }
 }

@@ -8,7 +8,7 @@ import java.sql.Statement;
 /**
  * Created by Lennart on 24.05.2016.
  */
-public class databaseoperator {
+public class Databaseoperator {
 
     static public void  insertnewgroup(String id, String object) {
         Connection con = null;
