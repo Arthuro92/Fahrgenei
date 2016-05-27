@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.cows.fahrgemeinschaft.dataobjects.Appointment;
+import com.android.cows.fahrgemeinschaft.dataobjects.Appointment2;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,10 +29,10 @@ public class AppointmentOverview extends AppCompatActivity  {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_appointment_overview);
-            Appointment gapm1 = new Appointment("1", "Termin1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni");
-            Appointment gapm2 = new Appointment("2", "Termin2", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz");
-            Appointment gapm3 = new Appointment("3", "Termin3", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof");
-            List<Appointment> apmlist = new ArrayList<Appointment>();
+            Appointment2 gapm1 = new Appointment2("1", "Termin1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni");
+            Appointment2 gapm2 = new Appointment2("2", "Termin2", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz");
+            Appointment2 gapm3 = new Appointment2("3", "Termin3", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof");
+            List<Appointment2> apmlist = new ArrayList<Appointment2>();
             apmlist.add(gapm1);
             apmlist.add(gapm2);
             apmlist.add(gapm3);
@@ -43,10 +43,10 @@ public class AppointmentOverview extends AppCompatActivity  {
         }
 
         /**
-         * Creating for each Appointment a linearLayout
+         * Creating for each Appointment2 a linearLayout
          * @param apmlist list of Appointments which should be displayed
          */
-        public void createAppointmentOverview(final List<Appointment> apmlist) {
+        public void createAppointmentOverview(final List<Appointment2> apmlist) {
             Log.i(TAG, "createGroup");
 
             RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);

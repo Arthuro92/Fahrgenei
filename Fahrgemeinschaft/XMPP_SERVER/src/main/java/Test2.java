@@ -7,7 +7,7 @@ import dataobjects.Group;
  * Created by Lennart on 03.05.2016.
  * This Class is currently for testingpurpose but later it will be the starter for the SmackCcsClient
  */
-public class Test {
+public class Test2 {
     public static void main(String[] args) throws Exception {
         final long senderId = 634948576599L; // your GCM sender id
         final String password = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s";
@@ -26,7 +26,7 @@ public class Test {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Test2.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
 }}
