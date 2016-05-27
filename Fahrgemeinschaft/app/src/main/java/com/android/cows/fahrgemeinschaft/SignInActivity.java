@@ -135,8 +135,9 @@ public class SignInActivity extends AppCompatActivity implements
             prefs.edit().putString("username" ,acct.getDisplayName()).apply();
             prefs.edit().putString("useremail" ,acct.getEmail()).apply();
             prefs.edit().putString("userid" ,acct.getId()).apply();
+            //todo maybe getid is wrong here, maybe getidtoken
 
-            Intent intent = new Intent(this, OverviewActivity.class);
+            Intent intent = new Intent(this, GcmActivity.class);
             startActivity(intent);
 
 

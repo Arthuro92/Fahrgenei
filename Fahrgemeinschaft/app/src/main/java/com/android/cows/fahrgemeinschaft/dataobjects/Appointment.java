@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Arthur on 25.05.2016.
  */
-public class Appointment2 {
+public class Appointment {
 
     private String tid;
     private String name;
@@ -13,7 +13,7 @@ public class Appointment2 {
     private Date treffpunkt_zeit;
     private String treffpunkt;
 
-    public Appointment2(String tid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt) {
+    public Appointment(String tid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt) {
         this.tid = tid;
         this.name = name;
         this.abfahrzeit = abfahrzeit;

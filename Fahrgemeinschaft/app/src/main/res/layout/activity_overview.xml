@@ -7,7 +7,9 @@
     android:useDefaultMargins="false"
     android:touchscreenBlocksFocus="false"
     android:clickable="false"
-    android:padding="30dp">
+    android:paddingLeft="50dp"
+    android:paddingTop="100dp"
+    android:paddingRight="50dp">
 
     <ImageButton
         android:layout_width="wrap_content"

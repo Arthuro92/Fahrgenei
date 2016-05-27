@@ -27,6 +27,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,6 +52,9 @@ public class GcmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gcm);
 
+        Button nextbtn = (Button) findViewById(R.id.next1);
+        nextbtn.setVisibility(View.INVISIBLE);
+
         NotificationObserver.setContext(this);
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
@@ -66,7 +70,13 @@ public class GcmActivity extends AppCompatActivity {
 
                 if (sentToken) {
                     mInformationTextView.setText(getString(R.string.gcm_send_message));
+                    Intent intent2 = new Intent(GcmActivity.this, OverviewActivity.class);
+                    startActivity(intent2);
+
                 } else {
+
+                    Button nextbtn = (Button) findViewById(R.id.next1);
+                    nextbtn.setVisibility(View.VISIBLE);
                     mInformationTextView.setText(getString(R.string.token_error_message));
                 }
             }
@@ -127,7 +137,7 @@ public class GcmActivity extends AppCompatActivity {
     public void nextactivity(View view) {
         Log.i(TAG, "NEXTACTIVITY");
 //        Intent intent = new Intent(this, GroupOverview.class);
-        Intent intent = new Intent(this, GroupOverview.class);
+        Intent intent = new Intent(this, OverviewActivity.class);
         startActivity(intent);
     }
 }
