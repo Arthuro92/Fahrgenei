@@ -1,42 +1,34 @@
 package com.android.cows.fahrgemeinschaft;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-import android.view.View.OnClickListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
+import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+
 import java.io.InputStream;
-import com.google.android.gms.auth.GoogleAuthUtil;
 
 
 //todo profil auslagern
@@ -182,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
     protected void onActivityResult(int requestCode, int responseCode,
                                     Intent intent) {
         // Check which request we're responding to
-        if (requestCode == SIGN_IN_CODE) {
+        if (requestCode == SIGN_IN_CODE) {  
             request_code = requestCode;
             if (responseCode != RESULT_OK) {
                 is_signInBtn_clicked = false;
@@ -268,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
      */
 
     private void gPlusSignOut() {
+        //todo doenst work old methods
         if (google_api_client.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(google_api_client);
             google_api_client.disconnect();
@@ -281,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
      */
 
     private void gPlusRevokeAccess() {
+        //todo doenst work old methods
         if (google_api_client.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(google_api_client);
             Plus.AccountApi.revokeAccessAndDisconnect(google_api_client)
