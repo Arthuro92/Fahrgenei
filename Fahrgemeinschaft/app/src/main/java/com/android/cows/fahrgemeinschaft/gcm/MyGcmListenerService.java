@@ -26,16 +26,14 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.android.cows.fahrgemeinschaft.MainActivity;
+import com.android.cows.fahrgemeinschaft.GcmActivity;
 import com.android.cows.fahrgemeinschaft.R;
-import com.android.cows.fahrgemeinschaft.dataobjects.User;
 import com.android.cows.fahrgemeinschaft.observer.ChatObserver;
 import com.android.cows.fahrgemeinschaft.observer.GroupObserver;
 import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
 import com.android.cows.fahrgemeinschaft.observer.NotificationObserver;
 import com.android.cows.fahrgemeinschaft.observer.UserObserver;
 import com.google.android.gms.gcm.GcmListenerService;
-import com.google.gson.Gson;
 
 public class MyGcmListenerService extends GcmListenerService {
     private static final String TAG = "MyGcmListenerService";
@@ -93,7 +91,7 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param message GCM message received.
      */
     private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, GcmActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

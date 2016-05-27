@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class AppointmentOverview extends AppCompatActivity  {
 
-
-        private static final String TAG = "GroupOverview";
+        private int lastid;
+        private static final String TAG = "AppointmentOverview";
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +37,16 @@ public class AppointmentOverview extends AppCompatActivity  {
             apmlist.add(gapm2);
             apmlist.add(gapm3);
 
-            createApointmentOverview(apmlist);
+            createAppointmentOverview(apmlist);
 
 
         }
 
         /**
-         * Creating for each Group a linearLayout
-         * @param apmlist list of Groups which should be displayed
+         * Creating for each Appointment a linearLayout
+         * @param apmlist list of Appointments which should be displayed
          */
-        public void createApointmentOverview(final List<Appointment> apmlist) {
+        public void createAppointmentOverview(final List<Appointment> apmlist) {
             Log.i(TAG, "createGroup");
 
             RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
@@ -74,6 +74,7 @@ public class AppointmentOverview extends AppCompatActivity  {
                 relativeLayoutWrapper[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //TODO Onclick farbe ändern
                         Log.i(TAG, apmlist.get(v.getId()-apmlist.size()-1).getName());
                     }
                 });

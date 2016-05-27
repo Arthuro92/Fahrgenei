@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,6 +46,12 @@ public class GroupOverview extends AppCompatActivity {
 
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.group_menu, menu);
+        return true;
+    }
 
     /**
      * Creating for each Group a linearLayout
@@ -78,6 +87,7 @@ public class GroupOverview extends AppCompatActivity {
             relativeLayoutWrapper[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //TODO Onclick farbe ändern
                     Log.i(TAG, grplist.get(v.getId()-grplist.size()-1).getName());
                 }
             });
@@ -134,5 +144,12 @@ public class GroupOverview extends AppCompatActivity {
 
             i++;
         }
+    }
+
+    public void createGroupActivity(MenuItem item) {
+//        Intent intent = new Intent(this, AppointmentOverview.class);
+//        startActivity(intent);
+        //TODO implement switch to GroupActivity
+        Log.i(TAG, "switch to createGroupActivity");
     }
 }
