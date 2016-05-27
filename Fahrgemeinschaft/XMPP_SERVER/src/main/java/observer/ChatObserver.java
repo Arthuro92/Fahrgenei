@@ -20,6 +20,8 @@ public class ChatObserver implements MessageObserver {
         Gson gson = new Gson();
         String jsonInString = this.payload.get("content");
         this.c = gson.fromJson(jsonInString, Chat.class);
+        System.out.println("SERVER RECIEVED CHAT MESSAGE: " + this.c.getChatMessageText());
+
         //todo how to handle chat messages
     }
 
