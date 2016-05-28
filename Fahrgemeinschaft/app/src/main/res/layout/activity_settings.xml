@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -10,99 +10,98 @@
     tools:context="com.android.cows.fahrgemeinschaft.SettingsActivity">
 
     <LinearLayout
-        android:id="@+id/sign_out_and_disconnect"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
-        <RelativeLayout
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@android:drawable/sym_def_app_icon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="242dp"
+            android:layout_height="28dp"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/emailid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email:"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:layout_below="@+id/profile_pic"
+                android:layout_alignRight="@+id/userName"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/emailinhalt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:layout_below="@+id/profile_pic"
+                android:layout_alignRight="@+id/userName"
+                android:layout_weight="0.65" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_pic"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@android:drawable/sym_def_app_icon"
-                />
+            android:layout_height="wrap_content"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" user name:"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
+                android:text="Benutzer:"
                 android:textColor="@android:color/black"
-                android:layout_toRightOf="@+id/profile_pic"
                 android:textSize="14sp"
-                />
+                android:layout_below="@+id/emailid"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="39dp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/emailId"
+                android:id="@+id/userNameinhalt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="email id:"
+                android:text=""
                 android:textColor="@android:color/black"
-                android:layout_below="@+id/userName"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
                 android:textSize="14sp"
-                android:layout_toRightOf="@+id/profile_pic" />
-            <TextView
-                android:id="@+id/dob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DOB:"
-                android:textColor="@android:color/black"
-                android:layout_below="@+id/emailId"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:layout_toRightOf="@+id/profile_pic" />
-            <TextView
-                android:id="@+id/tag_line"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tag Line:"
-                android:textColor="@android:color/black"
-                android:layout_below="@+id/dob"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:layout_toRightOf="@+id/profile_pic" />
-            <TextView
-                android:id="@+id/about_me"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About Me::"
-                android:textColor="@android:color/black"
-                android:layout_below="@+id/tag_line"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:layout_toRightOf="@+id/profile_pic" />
-
-        </RelativeLayout>
+                android:layout_marginTop="39dp"
+                android:layout_weight="0.80" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/sign_out_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_out"
-
-            android:layout_gravity="center_vertical" />
+            android:text="SingOut"
+            android:id="@+id/signOutButtonSettings"
+            android:layout_centerVertical="true"
+            android:layout_alignStart="@+id/emailid"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false" />
 
         <Button
-            android:id="@+id/disconnect_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/disconnect"
-            android:layout_gravity="center_vertical" />
+            android:text="Disconnect"
+            android:id="@+id/disconnectButtonSettings"
+            android:layout_below="@+id/signOutButtonSettings"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </LinearLayout>
 
