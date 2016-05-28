@@ -1,9 +1,11 @@
 package dataobjects;
 
+import java.io.Serializable;
+
 /**
  * Created by david on 26.05.2016.
  */
-public class Chat {
+public class Chat implements Serializable {
     private String chatMessageFrom;
     private String chatMessageTime;
     private String chatMessageText;

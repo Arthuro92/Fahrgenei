@@ -52,14 +52,9 @@ public class GcmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gcm);
-
-        NotificationObserver.setContext(this); //todo später in andere main falls keine alternative lösung
-        ChatObserver.setContext(this);  //todo später in andere main falls keine alternative lösung
-
         Button nextbtn = (Button) findViewById(R.id.next1);
         nextbtn.setVisibility(View.INVISIBLE);
 
-        NotificationObserver.setContext(this);
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
