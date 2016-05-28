@@ -177,9 +177,9 @@ public class GroupOverview extends AppCompatActivity {
             membercounttxt.setText(getString(R.string.membercount, Integer.toString(grplist.get(i).getMembercount())));
             admintxt.setText(getString(R.string.grpadmin, grplist.get(i).getAdminname()));
 
-            nametxt.setTextSize(25);
-            membercounttxt.setTextSize(20);
-            admintxt.setTextSize(20);
+            nametxt.setTextSize(20);
+            membercounttxt.setTextSize(15);
+            admintxt.setTextSize(15);
 
             verticalHeadlineLayout[i].addView(nametxt);
             verticalContentLayout1[i].addView(membercounttxt);
@@ -197,9 +197,10 @@ public class GroupOverview extends AppCompatActivity {
 
     public void createGroupActivity(MenuItem item) {
 //        Intent intent = new Intent(this, AppointmentOverview.class);
-//        startActivity(intent);
-        //TODO implement switch to GroupActivity
+//        startActivity(intent);//
         Log.i(TAG, "switch to createGroupActivity");
+        Intent intent = new Intent(this, CreateGroupActivity.class);
+        startActivity(intent);
     }
 
     @Override

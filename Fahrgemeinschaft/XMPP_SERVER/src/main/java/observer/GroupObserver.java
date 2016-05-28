@@ -48,8 +48,9 @@ public class GroupObserver implements MessageObserver {
                             e.printStackTrace();
                         } //todo here might be a nullpointer exception when something in getgroupList goes wrong, solution for server AND client is here important
                         break;
-                    case "groupmemberjoined": //todo this might be not a valid task
-                        logger.log(Level.INFO, "second switch task = groupmemberjoined");
+                    case "insertgroup":
+                        logger.log(Level.INFO, "second switch task = insertgroup");
+                        Databaseoperator.insertnewgroup(this.payload.get("id"), this.payload.get("content"));
                         //                setGroup();
                         break;
                     default:

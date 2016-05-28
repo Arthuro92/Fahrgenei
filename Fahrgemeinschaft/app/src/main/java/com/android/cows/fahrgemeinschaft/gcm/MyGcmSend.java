@@ -27,7 +27,7 @@ public class MyGcmSend<T> {
      * @param javaobject every valid javaobject
      * @param con the context try this, as context
      */
-    public void send(String task_category, String task, T javaobject, Context con) {
+    public void send(String task_category, String task, T javaobject, Context con, String id) {
 
 
 
@@ -47,6 +47,7 @@ public class MyGcmSend<T> {
             Gson gson = new Gson();
             String javaobjectstring = gson.toJson(javaobject);
             payload.putString("content", javaobjectstring);
+            payload.putString("id", id);
 
             gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
             logstring = "Sent message success";
@@ -97,7 +98,8 @@ public class MyGcmSend<T> {
      * @param con the context try this, as context
      */
     public void sendP(String task_category, String task, T javaobject, Context con) {
-        send(task_category, task, javaobject, con);
+//        send(task_category, task, javaobject, con);
+        //todo use send instead
     }
 
     //todo change random id so it is actually unique
