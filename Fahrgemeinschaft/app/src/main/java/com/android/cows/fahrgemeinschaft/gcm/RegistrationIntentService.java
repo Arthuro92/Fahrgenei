@@ -24,7 +24,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
-import com.android.cows.fahrgemeinschaft.dataobjects.Group;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -91,8 +90,8 @@ public class RegistrationIntentService extends IntentService {
 //        MyGcmSend gcmsend    = new MyGcmSend();
 //        gcmsend.send(token, this);
         MyGcmSend gcmsender = new MyGcmSend();
-        Group grp = new Group("grp1",1,"lennart", "lennart");
-        gcmsender.send("group", "task", grp, this);
+//        Group grp = new Group("grp1",1,"lennart", "lennart");
+//        gcmsender.send("group", "task", grp, this);
     }
 
 

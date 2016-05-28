@@ -1,18 +1,33 @@
 package com.android.cows.fahrgemeinschaft.observer;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 /**
  * Created by david on 23.05.2016.
  */
 public class GroupObserver implements MessageObserver {
     private Bundle payload;
-
+    private static Context con; //todo default context for android? similar to NOTIFICATIN_SERVICE
+    private static final String TAG = "GroupOberserver";
     /**
      *
+     */    /**
+     * Sets the Context for the ChatObserver class(not instantiated) to the Context of the Activity this method is called from
+     * @param c a Context from the Activity this method is called from
      */
+    public static void setContext(Context c) {
+        con = c;
+    }
+
     public void setGroup() {
-        System.out.println("GROUP SET TO: " + this.payload.toString());
+        Log.i(TAG, "GROUP SET TO: " + this.payload.toString());
     }
 
     /**
@@ -20,9 +35,28 @@ public class GroupObserver implements MessageObserver {
      * @param jsonObject a Bundle the payload for this object is updated to
      */
     public void updateMO(Bundle jsonObject) {
-        this.payload = jsonObject;
-        if(this.payload.getString("task_category").equals("user")) {
+        this.payload = jsonObject;;
+        if(this.payload.getString("task_category").equals("group")) {
             setGroup();
+        switch (this.payload.getString("task")) {
+            case "grouparray":
+                Log.i(TAG, "first switch task = grouparray");
+
+
+                Gson gson = new Gson();
+                String content = this.payload.getString("content");
+                SharedPreferences prefs = con.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                prefs.edit().putString("grplist" ,content).apply();
+
+                Intent gotgrouparray = new Intent("grouparraycomein");
+                LocalBroadcastManager.getInstance(con).sendBroadcast(gotgrouparray);
+                break;
+            case "groupmemberjoined": //todo this might be not a valid task
+                Log.i(TAG, "second switch task = groupmemberjoined");
+                break;
+            default :
+                Log.i(TAG,"default case");
+        }
         }
     }
 

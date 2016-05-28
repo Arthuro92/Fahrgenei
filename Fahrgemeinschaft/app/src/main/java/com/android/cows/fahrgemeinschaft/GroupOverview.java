@@ -1,7 +1,13 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.dataobjects.Group;
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,32 +29,72 @@ import java.util.List;
 public class GroupOverview extends AppCompatActivity {
     private static final String TAG = "GroupOverview";
 
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private boolean isReceiverRegistered;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_overview);
-        Group grp1 = new Group("grp1", 1, "lennart", "lennart");
-        Group grp2 = new Group("grp2", 2, "david", "david");
-        Group grp3 = new Group("grp3", 3, "irina", "irina");
-        Group grp4 = new Group("grp4", 4, "irina", "irina");
-        Group grp5 = new Group("grp5", 5, "irina", "irina");
-        Group grp6 = new Group("grp6", 6, "irina", "irina");
-        Group grp7 = new Group("grp7", 7, "irina", "irina");
-        Group grp8 = new Group("grp8", 8, "irina", "irina");
-        List<Group> grplist = new ArrayList<>();
-        grplist.add(grp1);
-        grplist.add(grp2);
-        grplist.add(grp3);
-        grplist.add(grp4);
-        grplist.add(grp5);
-        grplist.add(grp6);
-        grplist.add(grp7);
-        grplist.add(grp8);
+//        Group grp1 = new Group("grp1", 1, "lennart", "lennart");
+//        Group grp2 = new Group("grp2", 2, "david", "david");
+//        Group grp3 = new Group("grp3", 3, "irina", "irina");
+//        Group grp4 = new Group("grp4", 4, "irina", "irina");
+//        Group grp5 = new Group("grp5", 5, "irina", "irina");
+//        Group grp6 = new Group("grp6", 6, "irina", "irina");
+//        Group grp7 = new Group("grp7", 7, "irina", "irina");
+//        Group grp8 = new Group("grp8", 8, "irina", "irina");
+//        List<Group> grplist = new ArrayList<>();
+//        grplist.add(grp1);
+//        grplist.add(grp2);
+//        grplist.add(grp3);
+//        grplist.add(grp4);
+//        grplist.add(grp5);
+//        grplist.add(grp6);
+//        grplist.add(grp7);
+//        grplist.add(grp8);
+        MyGcmSend gcmsend = new MyGcmSend();
+        gcmsend.send("group", "getgrouparray", this);
+//        createGroupOverview(grplist);
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                //todo maybe error when no string in sharedpref
+                String grpliststring = prefs.getString("grplist","");
+                        Gson gson = new Gson();
 
-        createGroupOverview(grplist);
-
+                ArrayList<Group> grplist = gson.fromJson(grpliststring, new TypeToken<List<Group>>(){}.getType());
+//                Log.i(TAG, "received grouparray from server");
+//                Log.i(TAG, "grp1 name" + grplist.get(0).getName());
+//                Log.i(TAG, "grp1 adminname" + grplist.get(0).getAdminname());
+//                Log.i(TAG, "grp1 memcount" + grplist.get(0).getMembercount());
+//
+//                Log.i(TAG, "received grouparray from server");
+//                Log.i(TAG, "grp2 name" + grplist.get(1).getName());
+//                Log.i(TAG, "grp2 adminname" + grplist.get(1).getAdminname());
+//                Log.i(TAG, "grp2 memcount" + grplist.get(1).getMembercount());
+//
+//                Log.i(TAG, "received grouparray from server");
+//                Log.i(TAG, "grp3 name" + grplist.get(2).getName());
+//                Log.i(TAG, "grp3 adminname" + grplist.get(2).getAdminname());
+//                Log.i(TAG, "grp3 memcount" + grplist.get(2).getMembercount());
+                createGroupOverview(grplist);
+            }
+        };
 
     }
+
+    private void registerReceiver(){
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter("grouparraycomein"));
+            isReceiverRegistered = true;
+        }
+    }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -151,5 +200,18 @@ public class GroupOverview extends AppCompatActivity {
 //        startActivity(intent);
         //TODO implement switch to GroupActivity
         Log.i(TAG, "switch to createGroupActivity");
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        isReceiverRegistered = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
     }
 }

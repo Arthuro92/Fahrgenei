@@ -1,3 +1,5 @@
+package SmackCcsClient;
+
 import org.json.simple.JSONValue;
 
 import java.util.HashMap;

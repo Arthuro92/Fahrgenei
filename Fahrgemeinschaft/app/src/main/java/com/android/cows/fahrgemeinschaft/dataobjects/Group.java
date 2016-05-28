@@ -12,12 +12,22 @@ public class Group {
     private String adminid;
     private String adminname;
     private List<User> userlist;
+    private String gid;
 
-    public Group(String name, int membercount, String adminid, String adminname) {
+    public Group(String name, int membercount, String adminid, String adminname, String gid) {
         this.name = name;
         this.membercount = membercount;
         this.adminid = adminid;
         this.adminname = adminname;
+        this.gid = gid;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
     public String getName() {

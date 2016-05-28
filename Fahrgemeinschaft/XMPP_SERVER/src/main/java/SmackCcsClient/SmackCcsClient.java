@@ -1,3 +1,5 @@
+package SmackCcsClient;
+
 import com.google.gson.Gson;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -48,7 +50,6 @@ public class SmackCcsClient<T> {
     private GroupObserver go = new GroupObserver(ms);
     private ChatObserver co = new ChatObserver(ms);
 
-
     private static final Logger logger = Logger.getLogger("SmackCcsClient");
 
     private static final String GCM_SERVER = "gcm.googleapis.com";
@@ -56,6 +57,7 @@ public class SmackCcsClient<T> {
 
     private static final String GCM_ELEMENT_NAME = "gcm";
     private static final String GCM_NAMESPACE = "google:mobile:data";
+    private static SmackCcsClient instance = null;
 
     static {
 
@@ -68,6 +70,21 @@ public class SmackCcsClient<T> {
                         return new GcmPacketExtension(json);
                     }
                 });
+    }
+
+    private SmackCcsClient() {
+//        Exists only to defeat instantiation
+    }
+
+    /**
+     * getinstance for Singleton
+     * @return instance of SmackCssClient
+     */
+    public static SmackCcsClient getInstance() {
+        if(instance == null) {
+            instance = new SmackCcsClient();
+        }
+        return instance;
     }
 
     private XMPPConnection connection;
@@ -145,7 +162,7 @@ public class SmackCcsClient<T> {
 //        payload.put("ECHO", "Application: " + category);
 //
 //        // Send an ECHO response back
-//        String echo = new JsonMessage(from, nextMessageId(), payload, "echo:CollapseKey", null, false).getMessage();
+//        String echo = new SmackCcsClient.JsonMessage(from, nextMessageId(), payload, "echo:CollapseKey", null, false).getMessage();
 //
 //        try {
 //            sendDownstreamMessage(echo);
