@@ -34,7 +34,6 @@ import android.widget.TextView;
 import com.android.cows.fahrgemeinschaft.gcm.QuickstartPreferences;
 import com.android.cows.fahrgemeinschaft.gcm.RegistrationIntentService;
 import com.android.cows.fahrgemeinschaft.observer.ChatObserver;
-import com.android.cows.fahrgemeinschaft.observer.GroupObserver;
 import com.android.cows.fahrgemeinschaft.observer.NotificationObserver;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -53,15 +52,9 @@ public class GcmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gcm);
-
-        NotificationObserver.setContext(this); //todo später in andere main falls keine alternative lösung
-        ChatObserver.setContext(this);  //todo später in andere main falls keine alternative lösung
-        GroupObserver.setContext(this);  //todo später in andere main falls keine alternative lösung
-
         Button nextbtn = (Button) findViewById(R.id.next1);
         nextbtn.setVisibility(View.INVISIBLE);
 
-        NotificationObserver.setContext(this);
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {

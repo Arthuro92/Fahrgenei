@@ -2,6 +2,8 @@ package com.android.cows.fahrgemeinschaft;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,66 +12,131 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
-import com.android.cows.fahrgemeinschaft.observer.NotificationObserver;
-
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 
 public class ChatActivity extends AppCompatActivity {
-    private static boolean activeActivity;
+    private static final int NID = 987654321;
+    public static boolean activeActivity = false;
+    private ArrayList<Chat> arrayListChat = new ArrayList<Chat>();
+    private ChatMessageAdapter chatMessageAdapter;
     private ListView lv;
-    private static ArrayList<Chat> alc = setCalFromDatabase();
-    private ChatMessageAdapter cma;
-    private MyGcmSend<Chat> mgsc = new MyGcmSend<Chat>();
+//    private SQLiteDBHandler dbh;
 
-    private static ArrayList<Chat> setCalFromDatabase() {
-        //todo remove adds and add db method
-        ArrayList<Chat> alcdb = new ArrayList<Chat>();
-        return alcdb;
-    }
-    //todo find way to notifydatasetchange
-    public static void setCalFromObserver(Chat c) {
-            alc.add(c);
+//    private ArrayList<Chat> setAlcFromDatabase() {
+//        return this.dbh.getChatMessages();
+//    }
+
+    /**
+     * Gets the User by accessing the shared preferences
+     * @return user String
+     */
+    private String getChatUser() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("username", "Blubb");
     }
 
-    private void sendChatMessage() {
-        EditText et = (EditText) findViewById(R.id.edit_text_message);
+    /**
+     * Sends a Chat object to the server
+     * @param chatMessage
+     */
+    private void sendChatMessage(Chat chatMessage) {
+        MyGcmSend<Chat> myGcmSend = new MyGcmSend<Chat>();
+        this.arrayListChat.add(chatMessage);
+        this.chatMessageAdapter.notifyDataSetChanged();
+        myGcmSend.sendP("chat", "chat", chatMessage, ChatActivity.this);
+    }
+
+    /**
+     * Generates chat message from input
+     */
+    private void getChatMessage() {
+        EditText editText = (EditText) findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
-        if(!et.getText().toString().equals("")) {
-            //todo unique username chat
-            Chat c = new Chat("User1", time, et.getText().toString());
-            alc.add(c);
-            cma.notifyDataSetChanged();
-            mgsc.sendP("chat", "chat", c, ChatActivity.this);
+        if(!editText.getText().toString().equals("")) {
+            sendChatMessage(new Chat(getChatUser(), time, editText.getText().toString()));
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(NotificationObserver.NID);
-        System.out.println("CHATACTIVITY STARTED");
-        this.setCalFromDatabase();
-        lv = (ListView) findViewById(R.id.chat_list_view);
-        cma = new ChatMessageAdapter(this, this.alc);
-        lv.setAdapter(cma);
+    /**
+     * Adds Chat object to ArrayList from Intent
+     * @param intent an Intent with an Extra to be added
+     */
+    private void setArrayListFromExtra(Intent intent) {
+        Chat chatMessage = (Chat) intent.getSerializableExtra("Chat");
+        this.arrayListChat.add(chatMessage);
+        this.chatMessageAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Sets gui objects and displays chat messages
+     */
+    private void setChatView() {
+        this.chatMessageAdapter = new ChatMessageAdapter(this, arrayListChat);
+        this.lv = (ListView) findViewById(R.id.chat_list_view);
+        this.lv.setAdapter(chatMessageAdapter);
         Button send = (Button) findViewById(R.id.send_message_button);
         send.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                sendChatMessage();
+                getChatMessage();
             }
         });
     }
 
+    /**
+     * Sets the ArrayList when app is created
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+        setChatView();
+//        dbh = new SQLiteDBHandler(this, null);
+//        alc = setAlcFromDatabase();
+//        this.cma.notifyDataSetChanged();
+        //todo check if intent has extra
+        setArrayListFromExtra(getIntent());
+        System.out.println("CHATACTIVITY CREATED");
+    }
+
+    /**
+     * Cancels first notification and sets activeActivity to true/active
+     */
     @Override
     protected void onStart() {
         super.onStart();
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(NID);
         activeActivity = true;
+        System.out.println("CHATACTIVITY STARTED");
+    }
+
+    /**
+     * Sets activeActivity to false/not active on app stop
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        activeActivity = false;
+        System.out.println("CHATACTIVITY STOPPED");
+    }
+
+    /**
+     * Handles new Intents while Activity is active
+     * @param intent an Intent triggered while Activity in foreground
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setArrayListFromExtra(intent);
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(NID);
+        System.out.println("NEWINTENT TRIGGERED");
     }
 }

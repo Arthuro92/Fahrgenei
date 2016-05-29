@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
 import com.android.cows.fahrgemeinschaft.GcmActivity;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.observer.ChatObserver;
@@ -41,7 +40,6 @@ public class MyGcmListenerService extends GcmListenerService {
     private static UserObserver uo = new UserObserver(ms);
     private static ChatObserver co = new ChatObserver(ms);
     private static GroupObserver go = new GroupObserver(ms);
-    private static NotificationObserver no = new NotificationObserver(ms);
 
     /**
      * Called when message is received.
@@ -80,7 +78,7 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+//        sendNotification(message);
         // [END_EXCLUDE]
     }
     // [END receive_message]

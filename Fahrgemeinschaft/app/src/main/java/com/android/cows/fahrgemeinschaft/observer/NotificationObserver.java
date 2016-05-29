@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import com.android.cows.fahrgemeinschaft.ChatActivity;
+import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 
 /**
@@ -14,25 +15,23 @@ import com.android.cows.fahrgemeinschaft.R;
  */
 public class NotificationObserver implements MessageObserver {
     private Bundle payload;
-    private static Context con; //todo default context for android? similar to NOTIFICATIN_SERVICE
+    private Context con = GlobalAppContext.getAppContext();
     public static final int NID = 987654321;
 
     /**
-     * Sets the Context for the ChatObserver class(not instantiated) to the Context of the Activity this method is called from
-     * @param c a Context from the Activity this method is called from
+     * Sets the intent to launch ChatActivity
+     * @return Intent that launches ChatActivity
      */
-    public static void setContext(Context c) {
-        con = c;
+    private Intent setChatIntent() {
+        return new Intent(con, ChatActivity.class);
     }
 
     /**
      * Sets and issues a Notification concerning the contents of the jsonObject
      */
-    private void setNotification() {
-        System.out.println("NOTIFICATION SET TO: " + this.payload.toString());
-        System.out.println("MESSAGE SET TO: " + this.payload.getString("content"));
-        Intent intent = new Intent(con, ChatActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(con, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private void setNotification(Intent i) {
+        System.out.println("NOTIFICATION SET TO: " + this.payload.toString() + " MESSAGE SET TO: " + this.payload.getString("content"));
+        PendingIntent pIntent = PendingIntent.getActivity(con, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager nm = (NotificationManager) con.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder ncb = new NotificationCompat.Builder(con);
         ncb.setSmallIcon(R.drawable.ic_stat_ic_notification);
@@ -41,7 +40,6 @@ public class NotificationObserver implements MessageObserver {
         ncb.setWhen(System.currentTimeMillis());
         ncb.setContentIntent(pIntent);
         nm.notify(NID, ncb.build());
-        System.out.println("SETNOTIFICATION ENDED");
     }
 
     /**
@@ -51,7 +49,7 @@ public class NotificationObserver implements MessageObserver {
     public void updateMO(Bundle jsonObject) {
         this.payload = jsonObject;
         if(this.payload.getString("task_category").equals("chat")) {
-            setNotification();
+            setNotification(setChatIntent());
         }
     }
 
