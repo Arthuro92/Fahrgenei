@@ -88,6 +88,10 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets the ArrayList when app is created
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +105,9 @@ public class ChatActivity extends AppCompatActivity {
         System.out.println("CHATACTIVITY CREATED");
     }
 
+    /**
+     * Cancels first notification and sets activeActivity to true/active
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -110,6 +117,9 @@ public class ChatActivity extends AppCompatActivity {
         System.out.println("CHATACTIVITY STARTED");
     }
 
+    /**
+     * Sets activeActivity to false/not active on app stop
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -117,6 +127,10 @@ public class ChatActivity extends AppCompatActivity {
         System.out.println("CHATACTIVITY STOPPED");
     }
 
+    /**
+     * Handles new Intents while Activity is active
+     * @param intent an Intent triggered while Activity in foreground
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
