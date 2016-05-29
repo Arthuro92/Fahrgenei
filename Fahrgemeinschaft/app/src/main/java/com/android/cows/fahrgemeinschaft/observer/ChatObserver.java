@@ -77,7 +77,6 @@ public class ChatObserver implements MessageObserver {
      */
     public void setInfoAndData(Chat chatMessage) {
         System.out.println("CHAT MESSAGE:" + chatMessage.getChatMessageText());
-
         if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
 //            this.dbh.addChatMessage(chatMessage);
             issueNotification(setChatIntent(chatMessage));

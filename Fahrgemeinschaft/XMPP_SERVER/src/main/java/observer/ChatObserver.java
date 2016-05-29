@@ -1,7 +1,12 @@
 package observer;
 
 import com.google.gson.Gson;
+
+import org.jivesoftware.smack.SmackException;
+
 import java.util.Map;
+
+import SmackCcsClient.SmackCcsClient;
 import dataobjects.Chat;
 
 /**
@@ -9,20 +14,29 @@ import dataobjects.Chat;
  */
 public class ChatObserver implements MessageObserver {
     private Map<String, String> payload;
-    private Chat c;
 
     /**
      * Parses certain parts of the jsonObject to a Chat object
+     * @param jsonInString a Json String to be parsed
+     * @return a resulting Chat object
      */
-    public void setChat() {
-        System.out.println("CHAT SET TO: " + this.payload.toString());
-        System.out.println("MESSAGE SET TO: " + this.payload.get("content"));
+    private Chat setChatMessage(String jsonInString){
         Gson gson = new Gson();
-        String jsonInString = this.payload.get("content");
-        this.c = gson.fromJson(jsonInString, Chat.class);
-        System.out.println("SERVER RECIEVED CHAT MESSAGE: " + this.c.getChatMessageText());
+        return gson.fromJson(jsonInString, Chat.class);
+    }
 
-        //todo how to handle chat messages
+    /**
+     * Broadcasts chatMessage to all subscribers of a topic
+     * @param chatMessage a Chat object to be broadcast
+     */
+    public void broadcastChatMessage(Chat chatMessage) {
+        System.out.println("SERVER RECIEVED CHAT MESSAGE: " + chatMessage.getChatMessageText());
+        SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+        try {
+            smackCcsClient.sendDownstreamMessage("chat","chat","/topics/global", chatMessage);
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -33,7 +47,7 @@ public class ChatObserver implements MessageObserver {
         if(jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
             if(this.payload.get("task_category").equals("chat")) {
-                setChat();
+                broadcastChatMessage(setChatMessage(this.payload.get("content")));
             }
         }
     }
