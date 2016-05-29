@@ -49,9 +49,15 @@ public class GroupObserver implements MessageObserver {
                         } //todo here might be a nullpointer exception when something in getgroupList goes wrong, solution for server AND client is here important
                         break;
                     case "insertgroup":
+//                        smackclient = SmackCcsClient.getInstance();
                         logger.log(Level.INFO, "second switch task = insertgroup");
                         Databaseoperator.insertnewgroup(this.payload.get("id"), this.payload.get("content"));
-                        //                setGroup();
+//                        try {
+//                                smackclient.sendDownstreamMessage("group","newgroup","/topics/global", this.payload.get("content") );
+//                        } catch (SmackException.NotConnectedException e) {
+//                            e.printStackTrace();
+//                        }
+                        //
                         break;
                     default:
                         logger.log(Level.INFO, "default case");

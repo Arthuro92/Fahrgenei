@@ -97,8 +97,31 @@ public class MyGcmSend<T> {
      * @param javaobject every valid javaobject
      * @param con the context try this, as context
      */
-    public void sendP(String task_category, String task, T javaobject, Context con) {
-//        send(task_category, task, javaobject, con);
+    public void send(String task_category, String task, T javaobject, Context con) {
+
+        // Add custom implementation, as needed.
+        final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(con);
+        final String senderId = con.getString(R.string.gcm_defaultSenderId);
+        final String msgId = nextMessageId();
+
+        Log.i(TAG, "Try Sending Message");
+
+        String logstring = "";
+        try {
+            Bundle payload = new Bundle();
+            payload.putString("task_category", task_category);
+            payload.putString("task", task);
+
+            Gson gson = new Gson();
+            String javaobjectstring = gson.toJson(javaobject);
+            payload.putString("content", javaobjectstring);
+
+            gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
+            logstring = "Sent message success";
+        } catch (IOException ex) {
+            logstring = "Error :" + ex.getMessage();
+        }
+        Log.i(TAG, logstring);
         //todo use send instead
     }
 

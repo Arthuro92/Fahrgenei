@@ -116,9 +116,11 @@ public class SmackCcsClient<T> {
             payload.put("content", javaobjectstring);
 
             //TODO research what exactly collapseKey means and if we need it
-            String collapseKey = "sample";
+            String collapseKey = null;
+//            String collapseKey = "sample";
+            String priority = "high";
             Long timeToLive = 10000L;
-            String message = new JsonMessage(to, messageId, payload, collapseKey, timeToLive, true).getMessage();
+            String message = new JsonMessage(to, messageId, payload, collapseKey, priority, timeToLive, true).getMessage();
             send(message);
             return true;
         }

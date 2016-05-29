@@ -4,15 +4,16 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
-import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
         MyGcmSend<Chat> myGcmSend = new MyGcmSend<Chat>();
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
-        myGcmSend.sendP("chat", "chat", chatMessage, ChatActivity.this);
+        myGcmSend.send("chat", "chat", chatMessage, ChatActivity.this);
     }
 
     /**

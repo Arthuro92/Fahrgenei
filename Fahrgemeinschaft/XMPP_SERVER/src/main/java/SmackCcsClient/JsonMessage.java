@@ -22,7 +22,7 @@ public class JsonMessage {
      * @param delayWhileIdle GCM delay_while_idle parameter (Optional).
      * @return JSON encoded GCM message.
      */
-    public JsonMessage(String to, String messageId, Map<String, String> payload, String collapseKey, Long timeToLive, Boolean delayWhileIdle) {
+    public JsonMessage(String to, String messageId, Map<String, String> payload, String collapseKey,String priority, Long timeToLive, Boolean delayWhileIdle) {
 
         message.put("to", to);
         if (collapseKey != null) {
@@ -33,6 +33,9 @@ public class JsonMessage {
         }
         if (delayWhileIdle != null && delayWhileIdle) {
             message.put("delay_while_idle", true);
+        }
+        if(priority != null) {
+            message.put("priority", priority);
         }
         message.put("message_id", messageId);
         message.put("data", payload);

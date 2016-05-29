@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.google.gson.Gson;
 
 /**
@@ -14,17 +15,9 @@ import com.google.gson.Gson;
  */
 public class GroupObserver implements MessageObserver {
     private Bundle payload;
-    private static Context con; //todo default context for android? similar to NOTIFICATIN_SERVICE
+    private Context con = GlobalAppContext.getAppContext();
     private static final String TAG = "GroupOberserver";
-    /**
-     *
-     */    /**
-     * Sets the Context for the ChatObserver class(not instantiated) to the Context of the Activity this method is called from
-     * @param c a Context from the Activity this method is called from
-     */
-    public static void setContext(Context c) {
-        con = c;
-    }
+
 
     public void setGroup() {
         Log.i(TAG, "GROUP SET TO: " + this.payload.toString());
