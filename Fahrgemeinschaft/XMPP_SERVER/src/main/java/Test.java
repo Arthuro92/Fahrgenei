@@ -35,12 +35,6 @@ public class Test {
         ccsClient.sendDownstreamMessage("chat","chat","/topics/global", pa );
         ccsClient.sendDownstreamMessage("chat","chat","/topics/global", me );
         ccsClient.sendDownstreamMessage("chat","chat","/topics/global", cu );
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", co );
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", po );
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", no );
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", pa );
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", me );
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", cu );
 //        ccsClient.sendDownstreamMessage("chat","test",toRegId, grp );
 //        database.Databaseoperator insert = new database.Databaseoperator("10", "gruppe1");
         while(true) {

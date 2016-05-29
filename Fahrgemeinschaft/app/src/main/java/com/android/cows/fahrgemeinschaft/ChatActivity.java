@@ -3,6 +3,7 @@ package com.android.cows.fahrgemeinschaft;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -44,12 +45,20 @@ public class ChatActivity extends AppCompatActivity {
         this.mgsc.sendP("chat", "chat", c, ChatActivity.this);
     }
 
+    /**
+     * Gets the User by accessing the shared preferences
+     * @return user String
+     */
+    private String getChatUser() {
+        SharedPreferences sp = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        return sp.getString("username", "Blubb");
+    }
+
     private void getChatMessage() {
         EditText et = (EditText) findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
-        //todo unique username chat
         if(!et.getText().toString().equals("")) {
-            sendChatMessage(new Chat("User1", time, et.getText().toString()));
+            sendChatMessage(new Chat(getChatUser(), time, et.getText().toString()));
         }
     }
 
@@ -59,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         this.cma = new ChatMessageAdapter(this, alc);
         setAlcFromDatabase();
-        //todo check if intent has extra 
+        //todo check if intent has extra
         setAlcFromExtra(getIntent());
         this.lv = (ListView) findViewById(R.id.chat_list_view);
         this.lv.setAdapter(cma);

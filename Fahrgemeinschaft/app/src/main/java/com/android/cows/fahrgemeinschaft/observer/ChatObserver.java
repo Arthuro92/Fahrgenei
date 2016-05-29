@@ -4,7 +4,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import com.android.cows.fahrgemeinschaft.ChatActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
@@ -28,7 +30,7 @@ public class ChatObserver implements MessageObserver {
      * @return Intent that launches ChatActivity
      */
     private Intent setChatIntent() {
-        Intent i = new Intent(con, ChatActivity.class);
+        Intent i = new Intent(this.con, ChatActivity.class);
         i.putExtra("Chat", this.c);
         return i;
     }
@@ -39,7 +41,7 @@ public class ChatObserver implements MessageObserver {
      */
     private void issueNotification(Intent i) {
         System.out.println("NOTIFICATION: " + this.payload.toString() + " CONTENT: " + this.payload.getString("content"));
-        PendingIntent pIntent = PendingIntent.getActivity(con, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pIntent = PendingIntent.getActivity(this.con, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager nm = (NotificationManager) con.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder ncb = new NotificationCompat.Builder(con);
         ncb.setSmallIcon(R.drawable.ic_stat_ic_notification);
@@ -51,15 +53,31 @@ public class ChatObserver implements MessageObserver {
     }
 
     /**
-     * Parses certain parts of the jsonObject to a Chat object and issues a Notification
+     * Parses certain parts of the jsonObject to a Chat object
      */
-    public void setChat() {
-        System.out.println("CHAT: " + this.payload.toString() + " MESSAGE: " + this.payload.getString("content"));
+    private void setChatMessage(){
         Gson gson = new Gson();
         String jsonInString = this.payload.getString("content");
         this.c = gson.fromJson(jsonInString, Chat.class);
-        //todo variable with user id email name
-        if(!this.c.getChatMessageFrom().equals("Zon")) {
+    }
+
+    /**
+     * Gets the User by accessing the shared preferences
+     * @return user String
+     */
+    private String getChatUser() {
+        SharedPreferences sp = con.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        return sp.getString("username", "Blubb");
+    }
+
+    /**
+     * Issues a Notification
+     */
+    public void setChat() {
+        System.out.println("CHAT: " + this.payload.toString() + " MESSAGE: " + this.payload.getString("content"));
+        setChatMessage();
+        if(!this.c.getChatMessageFrom().equals(getChatUser())) {
+            System.out.println("GETCHATUSER: " + getChatUser());
             issueNotification(setChatIntent());
         }
     }
