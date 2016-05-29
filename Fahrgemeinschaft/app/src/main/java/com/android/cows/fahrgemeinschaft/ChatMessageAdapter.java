@@ -1,6 +1,7 @@
 package com.android.cows.fahrgemeinschaft;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,20 @@ import java.util.ArrayList;
  * Created by david on 26.05.2016.
  */
 public class ChatMessageAdapter extends ArrayAdapter{
-    private Chat chat;
+    private Context con = GlobalAppContext.getAppContext();
     private LayoutInflater lain = LayoutInflater.from(getContext());
+    private Chat chat;
     private View cmv;
+
+    /**
+     * Gets the User by accessing the shared preferences
+     * @return user String
+     */
+    private String getChatUser() {
+        SharedPreferences sp = this.con.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        return sp.getString("username", "Blubb");
+    }
+
 
     private View setChatMessageView(View cmv) {
         TextView cmf = (TextView) cmv.findViewById(R.id.chat_message_from);
@@ -31,12 +43,12 @@ public class ChatMessageAdapter extends ArrayAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         this.chat = (Chat) getItem(position);
         //todo user email or
-        if(this.chat.getChatMessageFrom().equals("Don")) {
-            cmv= lain.inflate(R.layout.chat_message_layout_out, parent, false);
+        if(this.chat.getChatMessageFrom().equals(getChatUser())) {
+            this.cmv= lain.inflate(R.layout.chat_message_layout_out, parent, false);
         } else {
-            cmv= lain.inflate(R.layout.chat_message_layout, parent, false);
+            this.cmv= lain.inflate(R.layout.chat_message_layout, parent, false);
         }
-        return setChatMessageView(cmv);
+        return setChatMessageView(this.cmv);
     }
 
     public ChatMessageAdapter(Context context, ArrayList<Chat> resource) {

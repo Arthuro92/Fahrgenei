@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,59 +20,64 @@ import java.util.Date;
 
 public class ChatActivity extends AppCompatActivity {
     private static final int NID = 987654321;
-    private MyGcmSend<Chat> mgsc = new MyGcmSend<Chat>();
-    private ArrayList<Chat> alc = setAlcFromDatabase();
-    private Chat c;
-    private ChatMessageAdapter cma;
+    public static boolean activeActivity = false;
+    private ArrayList<Chat> arrayListChat = new ArrayList<Chat>();
+    private ChatMessageAdapter chatMessageAdapter;
     private ListView lv;
-    private boolean activeActivity;
+//    private SQLiteDBHandler dbh;
 
-
-    private ArrayList<Chat> setAlcFromDatabase() {
-        //todo remove adds and add db method
-        ArrayList<Chat> alcdb = new ArrayList<Chat>();
-        return alcdb;
-    }
-
-    private void setAlcFromExtra(Intent i) {
-        this.c = (Chat) i.getSerializableExtra("Chat");
-        this.alc.add(this.c);
-        this.cma.notifyDataSetChanged();
-    }
-
-    private void sendChatMessage(Chat c) {
-        this.alc.add(c);
-        this.cma.notifyDataSetChanged();
-        this.mgsc.sendP("chat", "chat", c, ChatActivity.this);
-    }
+//    private ArrayList<Chat> setAlcFromDatabase() {
+//        return this.dbh.getChatMessages();
+//    }
 
     /**
      * Gets the User by accessing the shared preferences
      * @return user String
      */
     private String getChatUser() {
-        SharedPreferences sp = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        return sp.getString("username", "Blubb");
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("username", "Blubb");
     }
 
+    /**
+     * Sends a Chat object to the server
+     * @param chatMessage
+     */
+    private void sendChatMessage(Chat chatMessage) {
+        MyGcmSend<Chat> myGcmSend = new MyGcmSend<Chat>();
+        this.arrayListChat.add(chatMessage);
+        this.chatMessageAdapter.notifyDataSetChanged();
+        myGcmSend.sendP("chat", "chat", chatMessage, ChatActivity.this);
+    }
+
+    /**
+     * Generates chat message from input
+     */
     private void getChatMessage() {
-        EditText et = (EditText) findViewById(R.id.edit_text_message);
+        EditText editText = (EditText) findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
-        if(!et.getText().toString().equals("")) {
-            sendChatMessage(new Chat(getChatUser(), time, et.getText().toString()));
+        if(!editText.getText().toString().equals("")) {
+            sendChatMessage(new Chat(getChatUser(), time, editText.getText().toString()));
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-        this.cma = new ChatMessageAdapter(this, alc);
-        setAlcFromDatabase();
-        //todo check if intent has extra
-        setAlcFromExtra(getIntent());
+    /**
+     * Adds Chat object to ArrayList from Intent
+     * @param intent an Intent with an Extra to be added
+     */
+    private void setArrayListFromExtra(Intent intent) {
+        Chat chatMessage = (Chat) intent.getSerializableExtra("Chat");
+        this.arrayListChat.add(chatMessage);
+        this.chatMessageAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Sets gui objects and displays chat messages
+     */
+    private void setChatView() {
+        this.chatMessageAdapter = new ChatMessageAdapter(this, arrayListChat);
         this.lv = (ListView) findViewById(R.id.chat_list_view);
-        this.lv.setAdapter(cma);
+        this.lv.setAdapter(chatMessageAdapter);
         Button send = (Button) findViewById(R.id.send_message_button);
         send.setOnClickListener(new View.OnClickListener() {
 
@@ -80,6 +86,18 @@ public class ChatActivity extends AppCompatActivity {
                 getChatMessage();
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+        setChatView();
+//        dbh = new SQLiteDBHandler(this, null);
+//        alc = setAlcFromDatabase();
+//        this.cma.notifyDataSetChanged();
+        //todo check if intent has extra
+        setArrayListFromExtra(getIntent());
         System.out.println("CHATACTIVITY CREATED");
     }
 
@@ -88,14 +106,21 @@ public class ChatActivity extends AppCompatActivity {
         super.onStart();
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NID);
-        this.activeActivity = true;
+        activeActivity = true;
         System.out.println("CHATACTIVITY STARTED");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        activeActivity = false;
+        System.out.println("CHATACTIVITY STOPPED");
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        setAlcFromExtra(intent);
+        setArrayListFromExtra(intent);
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NID);
         System.out.println("NEWINTENT TRIGGERED");

@@ -6,32 +6,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import com.android.cows.fahrgemeinschaft.ChatActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 
 /**
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
     private static final int NID = 987654321;
-    private Context con = GlobalAppContext.getAppContext();
+    private Context context = GlobalAppContext.getAppContext();
     private Bundle payload;
-    private Chat c;
+//    private SQLiteDBHandler dbh = new SQLiteDBHandler(context, null);
 
     /**
      * Sets the intent to launch ChatActivity
+     * @param chatMessage a Chat object to be added as Extra
      * @return Intent that launches ChatActivity
      */
-    private Intent setChatIntent() {
-        Intent i = new Intent(this.con, ChatActivity.class);
-        i.putExtra("Chat", this.c);
+    private Intent setChatIntent(Chat chatMessage) {
+        Intent i = new Intent(this.context, ChatActivity.class);
+        i.putExtra("Chat", chatMessage);
         return i;
     }
 
@@ -40,25 +40,16 @@ public class ChatObserver implements MessageObserver {
      * @param i an Intent that is triggered on Notification click
      */
     private void issueNotification(Intent i) {
-        System.out.println("NOTIFICATION: " + this.payload.toString() + " CONTENT: " + this.payload.getString("content"));
-        PendingIntent pIntent = PendingIntent.getActivity(this.con, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager nm = (NotificationManager) con.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder ncb = new NotificationCompat.Builder(con);
+        PendingIntent pIntent = PendingIntent.getActivity(this.context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager nm = (NotificationManager) this.context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder ncb = new NotificationCompat.Builder(context);
         ncb.setSmallIcon(R.drawable.ic_stat_ic_notification);
         ncb.setContentTitle(this.payload.getString("task_category"));
         ncb.setContentText(this.payload.getString("content"));
         ncb.setWhen(System.currentTimeMillis());
         ncb.setContentIntent(pIntent);
         nm.notify(NID, ncb.build());
-    }
-
-    /**
-     * Parses certain parts of the jsonObject to a Chat object
-     */
-    private void setChatMessage(){
-        Gson gson = new Gson();
-        String jsonInString = this.payload.getString("content");
-        this.c = gson.fromJson(jsonInString, Chat.class);
+        System.out.println("NOTIFICATION SET");
     }
 
     /**
@@ -66,19 +57,35 @@ public class ChatObserver implements MessageObserver {
      * @return user String
      */
     private String getChatUser() {
-        SharedPreferences sp = con.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        return sp.getString("username", "Blubb");
+        SharedPreferences sharedPreferences = this.context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("username", "Blubb");
     }
 
     /**
-     * Issues a Notification
+     * Parses certain parts of the jsonObject to a Chat object
+     * @param jsonInString a Json String to be parsed
+     * @return a resulting Chat object
      */
-    public void setChat() {
-        System.out.println("CHAT: " + this.payload.toString() + " MESSAGE: " + this.payload.getString("content"));
-        setChatMessage();
-        if(!this.c.getChatMessageFrom().equals(getChatUser())) {
-            System.out.println("GETCHATUSER: " + getChatUser());
-            issueNotification(setChatIntent());
+    private Chat setChatMessage(String jsonInString){
+        Gson gson = new Gson();
+        return gson.fromJson(jsonInString, Chat.class);
+    }
+
+    /**
+     * Handles chat relevant data and notifies
+     * @param chatMessage a Chat object to be handled
+     */
+    public void setInfoAndData(Chat chatMessage) {
+        System.out.println("CHAT MESSAGE:" + chatMessage.getChatMessageText());
+
+        if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
+//            this.dbh.addChatMessage(chatMessage);
+            issueNotification(setChatIntent(chatMessage));
+            System.out.println("ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
+        } else if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
+//            this.dbh.addChatMessage(chatMessage);
+            this.context.startActivity(setChatIntent(chatMessage).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            System.out.println("ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         }
     }
 
@@ -89,8 +96,9 @@ public class ChatObserver implements MessageObserver {
     public void updateMO(Bundle jsonObject) {
         this.payload = jsonObject;
         if(this.payload.getString("task_category").equals("chat")) {
-            setChat();
+            setInfoAndData(setChatMessage(this.payload.getString("content")));
         }
+        System.out.println("CHATOBSERVER ONUPDATE");
     }
 
     /**
