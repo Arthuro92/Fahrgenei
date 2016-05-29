@@ -69,7 +69,6 @@
             android:name=".gcm.RegistrationIntentService"
             android:exported="false" />
 
-        <activity android:name=".GroupOverview" />
         <activity android:name=".AppointmentOverview" />
         <activity android:name=".SignInActivity">
             <intent-filter>
@@ -79,6 +78,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateGroupActivity"></activity>
+
+        <activity android:name=".TaskOverview" />
+        <activity android:name=".TaskDetailActivity" />
+        <activity android:name=".GroupDetailOverview" />
+        <activity android:name=".GroupOverview" />
+        <activity android:name=".AppointmentDetailActivity"></activity>
+
     </application>
 
 </manifest>

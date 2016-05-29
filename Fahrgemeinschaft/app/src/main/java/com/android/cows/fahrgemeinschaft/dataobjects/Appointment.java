@@ -12,13 +12,23 @@ public class Appointment {
     private Date abfahrzeit;
     private Date treffpunkt_zeit;
     private String treffpunkt;
+    private String zielort;
 
-    public Appointment(String tid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt) {
+    public String getZielort() {
+        return zielort;
+    }
+
+    public void setZielort(String zielort) {
+        this.zielort = zielort;
+    }
+
+    public Appointment(String tid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort) {
         this.tid = tid;
         this.name = name;
         this.abfahrzeit = abfahrzeit;
         this.treffpunkt_zeit = treffpunkt_zeit;
         this.treffpunkt = treffpunkt;
+        this. zielort = zielort;
     }
 
     public Date getAbfahrzeit() {

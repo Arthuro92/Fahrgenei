@@ -56,8 +56,8 @@ public class OverviewActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
-//                    Intent nextToMessage = new Intent(OverviewActivity.this, AppointmentOverview.class);
-//                    startActivity(nextToMessage);
+//                    Intent tochat = new Intent(OverviewActivity.this, ChatActivity.class);
+//                    startActivity(tochat);
 
                 }
             });

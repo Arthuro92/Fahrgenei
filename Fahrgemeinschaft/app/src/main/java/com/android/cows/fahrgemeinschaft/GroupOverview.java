@@ -1,5 +1,6 @@
 package com.android.cows.fahrgemeinschaft;
 
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,7 @@ public class GroupOverview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_overview);
+
 //        Group grp1 = new Group("grp1", 1, "lennart", "lennart");
 //        Group grp2 = new Group("grp2", 2, "david", "david");
 //        Group grp3 = new Group("grp3", 3, "irina", "irina");
@@ -65,24 +67,9 @@ public class GroupOverview extends AppCompatActivity {
                         Gson gson = new Gson();
 
                 ArrayList<Group> grplist = gson.fromJson(grpliststring, new TypeToken<List<Group>>(){}.getType());
-//                Log.i(TAG, "received grouparray from server");
-//                Log.i(TAG, "grp1 name" + grplist.get(0).getName());
-//                Log.i(TAG, "grp1 adminname" + grplist.get(0).getAdminname());
-//                Log.i(TAG, "grp1 memcount" + grplist.get(0).getMembercount());
-//
-//                Log.i(TAG, "received grouparray from server");
-//                Log.i(TAG, "grp2 name" + grplist.get(1).getName());
-//                Log.i(TAG, "grp2 adminname" + grplist.get(1).getAdminname());
-//                Log.i(TAG, "grp2 memcount" + grplist.get(1).getMembercount());
-//
-//                Log.i(TAG, "received grouparray from server");
-//                Log.i(TAG, "grp3 name" + grplist.get(2).getName());
-//                Log.i(TAG, "grp3 adminname" + grplist.get(2).getAdminname());
-//                Log.i(TAG, "grp3 memcount" + grplist.get(2).getMembercount());
                 createGroupOverview(grplist);
             }
         };
-
     }
 
     private void registerReceiver(){
@@ -138,6 +125,11 @@ public class GroupOverview extends AppCompatActivity {
                 public void onClick(View v) {
                     //TODO Onclick farbe ändern
                     Log.i(TAG, grplist.get(v.getId()-grplist.size()-1).getName());
+                    Intent intent = new Intent(GroupOverview.this, GroupDetailOverview.class);
+                    intent.putExtra("test4", grplist.get(v.getId()-grplist.size()-1).getName());
+                    intent.putExtra("test5", grplist.get(v.getId()-grplist.size()-1).getAdminname());
+                    startActivity(intent);
+
                 }
             });
 

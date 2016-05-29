@@ -11,6 +11,7 @@ import SmackCcsClient.SmackCcsClient;
 import database.Databaseoperator;
 import dataobjects.Group;
 
+
 /**
  * Created by david on 23.05.2016.
  */
