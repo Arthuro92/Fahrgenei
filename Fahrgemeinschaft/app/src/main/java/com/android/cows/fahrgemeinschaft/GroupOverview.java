@@ -119,7 +119,6 @@ public class GroupOverview extends AppCompatActivity {
             } else {
                 relativeLayoutWrapper[i].setLayoutParams(params2);
             }
-
             relativeLayoutWrapper[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -141,7 +140,8 @@ public class GroupOverview extends AppCompatActivity {
             verticalLayoutMain[i].setLayoutParams(params);
 
             verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
-            verticalLayoutMain[i].setBackgroundColor(ContextCompat.getColor(this, R.color.blue_grey_500));
+            verticalLayoutMain[i].setBackgroundColor(ContextCompat.getColor(this, R.color.darkblueGrey));
+            verticalLayoutMain[i].setBackgroundResource(R.drawable.boxes_background);
 
             verticalHeadlineLayout[i] = new LinearLayout(this);
             verticalHeadlineLayout[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
@@ -176,6 +176,10 @@ public class GroupOverview extends AppCompatActivity {
             verticalHeadlineLayout[i].addView(nametxt);
             verticalContentLayout1[i].addView(membercounttxt);
             verticalContentLayout2[i].addView(admintxt);
+
+            verticalHeadlineLayout[i].setPadding(50,10,0,0);
+            verticalContentLayout1[i].setPadding(50,0,0,0);
+            verticalContentLayout2[i].setPadding(50,0,0,25);
 
             verticalLayoutMain[i].addView(verticalHeadlineLayout[i]);
             verticalLayoutMain[i].addView(verticalContentLayout1[i]);

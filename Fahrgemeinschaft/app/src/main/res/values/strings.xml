@@ -56,7 +56,7 @@
     <string name="desc_auth_code_activity">Demonstrate retrieving an auth code for authorizing your server.</string>
     <string name="name_auth_code_activity">ServerAuthCodeActivity</string>
 
-    <string name="taskName">Aufgabenbezeichnung:%1$s</string>
-    <string name="taskDescr">Aufgabenbeschreibung:%1$s</string>
-    <string name="taskBearbeiter">Bearbeiter:%1$s</string>
+    <string name="taskName">To Do: %1$s</string>
+    <string name="taskDescr">Aufgabenbeschreibung: %1$s</string>
+    <string name="taskBearbeiter">Bearbeiter: %1$s</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -8,16 +9,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.content.Intent;
-import android.content.IntentFilter;
 
-import com.android.cows.fahrgemeinschaft.dataobjects.Appointment;
 import com.android.cows.fahrgemeinschaft.dataobjects.Task;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,7 +27,7 @@ public class TaskOverview extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_task_overview);
-            Task tsk1 = new Task("1","Trikots waschen", "Trikots müsen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
+            Task tsk1 = new Task("1","Trikots waschen", "Trikots müssen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
             Task tsk2 = new Task("2","Brötchen mitbringen", "Beim nächsten Hallenturnier bieten wir belegte Brötchen an ", "Lenni");
             Task tsk3 = new Task("3","Leibchen waschen", "Die Leibchen müssen auch gewaschen werden.", "Arthur");
             List<Task> tsklist = new ArrayList<Task>();
@@ -96,6 +91,7 @@ public class TaskOverview extends AppCompatActivity {
 
                 verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
                 verticalLayoutMain[i].setBackgroundColor(ContextCompat.getColor(this, R.color.darkblueGrey));
+                verticalLayoutMain[i].setBackgroundResource(R.drawable.boxes_background);
 
                 verticalHeadlineLayout[i] = new LinearLayout(this);
                 verticalHeadlineLayout[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
@@ -114,6 +110,10 @@ public class TaskOverview extends AppCompatActivity {
                 TextView nametxt = new TextView(this);
                 TextView membercounttxt = new TextView(this);
                 TextView admintxt = new TextView(this);
+
+                verticalHeadlineLayout[i].setPadding(50,10,0,0);
+                verticalContentLayout1[i].setPadding(50,0,0,0);
+                verticalContentLayout2[i].setPadding(50,0,0,25);
 
                 nametxt.setTextColor(ContextCompat.getColor(this, R.color.black));
                 membercounttxt.setTextColor(ContextCompat.getColor(this, R.color.black));

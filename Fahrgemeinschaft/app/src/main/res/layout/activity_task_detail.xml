@@ -15,11 +15,17 @@
         <TableRow>
             <TextView
                 android:id="@+id/textView1"
-                android:text="Aufgabenbezichnung: "
+                android:text="Aufgabenbezichnung "
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,10 +45,16 @@
         <TableRow>
             <TextView
                 android:id="@+id/textView2"
-                android:text="Beschreibung: "
+                android:text="Beschreibung "
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
               android:layout_width="wrap_content"
@@ -61,23 +73,30 @@
         <TableRow>
             <TextView
                 android:id="@+id/textView3"
-                android:text="Bearbeiter: "
+                android:text="Bearbeiter "
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-              <TextView
-               android:layout_width="181dp"
-               android:layout_height="wrap_content"
-               android:text="New Text"
-               android:id="@+id/taskAssignee"
-               android:layout_alignParentLeft="true"
-               android:layout_alignParentStart="true"
-               android:layout_below="@+id/taskDescr"
-               android:layout_alignParentRight="true"
-               android:layout_alignParentEnd="true"
-               android:height="100px"
-               android:textColor="@color/black" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+             android:layout_width="181dp"
+             android:layout_height="wrap_content"
+             android:text="New Text"
+             android:id="@+id/taskAssignee"
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentStart="true"
+             android:layout_below="@+id/taskDescr"
+             android:layout_alignParentRight="true"
+             android:layout_alignParentEnd="true"
+             android:height="100px"
+             android:textColor="@color/black" />
+        </TableRow>
+
     </TableLayout>
 </RelativeLayout>

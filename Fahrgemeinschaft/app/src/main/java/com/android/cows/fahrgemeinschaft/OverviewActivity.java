@@ -70,8 +70,8 @@ public class OverviewActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
-//                    Intent nextToNotes = new Intent(OverviewActivity.this, NotesActivity.class);
-//                    startActivity(nextToNotes);
+                    Intent nextToNotes = new Intent(OverviewActivity.this, TaskOverview.class);
+                    startActivity(nextToNotes);
 
                 }
             });

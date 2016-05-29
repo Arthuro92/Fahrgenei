@@ -97,6 +97,7 @@ public class AppointmentOverview extends AppCompatActivity  {
 
                 verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
                 verticalLayoutMain[i].setBackgroundColor(ContextCompat.getColor(this, R.color.darkblueGrey));
+                verticalLayoutMain[i].setBackgroundResource(R.drawable.boxes_background);
 
                 verticalHeadlineLayout[i] = new LinearLayout(this);
                 verticalHeadlineLayout[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
@@ -115,6 +116,10 @@ public class AppointmentOverview extends AppCompatActivity  {
                 TextView nametxt = new TextView(this);
                 TextView membercounttxt = new TextView(this);
                 TextView admintxt = new TextView(this);
+
+                verticalHeadlineLayout[i].setPadding(50,10,0,0);
+                verticalContentLayout1[i].setPadding(50,0,0,0);
+                verticalContentLayout2[i].setPadding(50,0,0,25);
 
                 nametxt.setTextColor(ContextCompat.getColor(this, R.color.black));
                 membercounttxt.setTextColor(ContextCompat.getColor(this, R.color.black));
