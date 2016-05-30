@@ -46,6 +46,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         while(!cur.isAfterLast()) {
             if(cur.getString(cur.getColumnIndex("message")) != null) {
                 alc.add(getChatMessage(cur.getString(cur.getColumnIndex("message"))));
+                System.out.println("DATABASE GET: " + cur.getString(cur.getColumnIndex("message")));
+                cur.moveToNext();
             }
         }
         db.close();

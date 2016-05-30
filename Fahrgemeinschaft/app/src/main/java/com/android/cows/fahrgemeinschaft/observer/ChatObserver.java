@@ -14,6 +14,8 @@ import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by david on 23.05.2016.
@@ -22,7 +24,6 @@ public class ChatObserver implements MessageObserver {
     private static final int NID = 987654321;
     private Context context = GlobalAppContext.getAppContext();
     private Bundle payload;
-//    private SQLiteDBHandler dbh = new SQLiteDBHandler(context, null);
 
     /**
      * Sets the intent to launch ChatActivity
@@ -71,19 +72,23 @@ public class ChatObserver implements MessageObserver {
         return gson.fromJson(jsonInString, Chat.class);
     }
 
+    private void updateLocalDatabase(Chat chatMessage) {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        sqLiteDBHandler.addChatMessage(chatMessage);
+    }
+
     /**
      * Handles chat relevant data and notifies
      * @param chatMessage a Chat object to be handled
      */
     public void setInfoAndData(Chat chatMessage) {
         System.out.println("CHAT MESSAGE:" + chatMessage.getChatMessageText());
-
         if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
-//            this.dbh.addChatMessage(chatMessage);
+            updateLocalDatabase(chatMessage);
             issueNotification(setChatIntent(chatMessage));
             System.out.println("ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         } else if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
-//            this.dbh.addChatMessage(chatMessage);
+//            updateLocalDatabase(chatMessage);
             this.context.startActivity(setChatIntent(chatMessage).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             System.out.println("ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         }

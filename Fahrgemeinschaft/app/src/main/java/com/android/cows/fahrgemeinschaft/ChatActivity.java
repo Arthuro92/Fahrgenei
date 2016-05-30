@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -22,14 +23,9 @@ import java.util.Date;
 public class ChatActivity extends AppCompatActivity {
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
-    private ArrayList<Chat> arrayListChat = new ArrayList<Chat>();
+    private ArrayList<Chat> arrayListChat;
     private ChatMessageAdapter chatMessageAdapter;
     private ListView lv;
-//    private SQLiteDBHandler dbh;
-
-//    private ArrayList<Chat> setAlcFromDatabase() {
-//        return this.dbh.getChatMessages();
-//    }
 
     /**
      * Gets the User by accessing the shared preferences
@@ -41,11 +37,21 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
+     * Adds chatMessage to local database
+     * @param chatMessage a Chat object to be added
+     */
+    private void addChatMessageDB(Chat chatMessage) {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+        sqLiteDBHandler.addChatMessage(chatMessage);
+    }
+
+    /**
      * Sends a Chat object to the server
      * @param chatMessage
      */
     private void sendChatMessage(Chat chatMessage) {
         MyGcmSend<Chat> myGcmSend = new MyGcmSend<Chat>();
+        addChatMessageDB(chatMessage);
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
         myGcmSend.send("chat", "chat", chatMessage, ChatActivity.this);
@@ -90,6 +96,15 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
+     * Gets chat history from local database
+     * @return an ArrayList containing the history
+     */
+    private ArrayList<Chat> getArrayListFromDB() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+        return sqLiteDBHandler.getChatMessages();
+    }
+
+    /**
      * Sets the ArrayList when app is created
      * @param savedInstanceState
      */
@@ -97,12 +112,11 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        arrayListChat = getArrayListFromDB();
         setChatView();
-//        dbh = new SQLiteDBHandler(this, null);
-//        alc = setAlcFromDatabase();
-//        this.cma.notifyDataSetChanged();
-        //todo check if intent has extra
-        setArrayListFromExtra(getIntent());
+        if(getIntent().hasExtra("Chat")) {
+            setArrayListFromExtra(getIntent());
+        }
         System.out.println("CHATACTIVITY CREATED");
     }
 
@@ -135,7 +149,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        setArrayListFromExtra(intent);
+        if(intent.hasExtra("Chat")) {
+            setArrayListFromExtra(intent);
+        }
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NID);
         System.out.println("NEWINTENT TRIGGERED");
