@@ -108,10 +108,10 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Constructs a new ChatObserver and registers it to a MessageSubject
-     * @param ms a MessageSubject to register to
+     * @param messageSubject a MessageSubject to register to
      */
-    public ChatObserver(MessageSubject ms) {
-        ms.registerMO(this);
+    public ChatObserver(MessageSubject messageSubject) {
+        messageSubject.registerMO(this);
         System.out.println("CHATOBSERVER REGISTERED");
     }
 }

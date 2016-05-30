@@ -114,9 +114,6 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         arrayListChat = getArrayListFromDB();
         setChatView();
-        if(getIntent().hasExtra("Chat")) {
-            setArrayListFromExtra(getIntent());
-        }
         System.out.println("CHATACTIVITY CREATED");
     }
 
