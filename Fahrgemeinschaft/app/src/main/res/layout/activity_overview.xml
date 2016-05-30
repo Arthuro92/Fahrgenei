@@ -7,7 +7,7 @@
     android:useDefaultMargins="false"
     android:touchscreenBlocksFocus="false"
     android:clickable="false"
-    android:paddingLeft="50dp"
+    android:paddingLeft="40dp"
     android:paddingRight="50dp"
     android:paddingTop="70dp">
 
@@ -35,7 +35,7 @@
             android:text="Gruppen"
             android:textColor="@color/black"
             android:id="@+id/textView6"
-            android:textAlignment="center" />
+            android:gravity="center" />
     </LinearLayout>
 
     <LinearLayout
@@ -56,11 +56,12 @@
             android:layout_marginBottom="20dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Termine"
             android:textColor="@color/black"
-            android:id="@+id/textView8" />
+            android:id="@+id/textView8"
+            android:gravity="center" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,7 +69,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_row="1"
-        android:layout_column="0">
+        android:layout_column="0"
+        android:layout_marginBottom="20dp">
 
         <ImageButton
             android:layout_width="@dimen/iconsize"
@@ -76,16 +78,17 @@
             android:scaleType="fitXY"
             android:id="@+id/messageButton"
             android:src="@drawable/message"
-            android:layout_gravity="center"
+            android:layout_gravity="left"
             android:layout_margin="1dp"
             android:background="@drawable/overview_background"
             android:layout_marginBottom="20dp" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="159dp"
             android:layout_height="wrap_content"
-            android:text="Termine"
+            android:text="Benachrichtigung"
             android:textColor="@color/black"
-            android:id="@+id/textView9" />
+            android:id="@+id/textView9"
+            android:gravity="left|center" />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -102,11 +105,12 @@
         android:layout_margin="1dp"
         android:background="@drawable/overview_background"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Termine"
+            android:text="Aufgabenliste"
             android:textColor="@color/black"
-            android:id="@+id/textView10" />
+            android:id="@+id/textView10"
+            android:gravity="center" />
 </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -123,11 +127,12 @@
         android:layout_margin="1dp"
         android:background="@drawable/overview_background"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Termine"
+            android:text="Chat"
             android:textColor="@color/black"
-            android:id="@+id/textView11" />
+            android:id="@+id/textView11"
+            android:gravity="center" />
 </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -144,10 +149,11 @@
         android:layout_margin="1dp"
         android:background="@drawable/overview_background"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Termine"
+            android:text="Einstellungen"
             android:textColor="@color/black"
-            android:id="@+id/textView12" />
+            android:id="@+id/textView12"
+            android:gravity="center" />
 </LinearLayout>
 </GridLayout>

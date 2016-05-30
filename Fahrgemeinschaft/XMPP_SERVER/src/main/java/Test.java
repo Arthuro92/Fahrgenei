@@ -27,8 +27,8 @@ public class Test {
         Chat pa = new Chat("Bon", myTime, "Pasta");
         Chat me = new Chat("Zon", myTime, "Meat");
         Chat cu = new Chat("Hon", myTime, "Cucumber");
-
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", co );
+        ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", co);
+//        ccsClient.sendDownstreamMessage("chat","chat","dGYXwNq6pDY:APA91bEkcA2oE6cRt5RgT8ZbyCjhqWExrc9NrN_unfBck-rlXEYl7OsKKsTCswq5EKzCB0PLy6ltZlCKIomgwCMHdS8rotMBoUv-cdl3dgWNK4sT3LcJn12VOVcQFtKLfGGXIpED-oNt", co );
 
                 try {
                     Thread.sleep(1000);
@@ -63,7 +63,7 @@ public class Test {
                                 } catch (InterruptedException ex) {
                                     Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", cu );
+//        ccsClient.sendDownstreamMessage("chat","chat","/topics/global", cu );
 //        ccsClient.sendDownstreamMessage("chat","test",toRegId, grp );
 //        database.Databaseoperator insert = new database.Databaseoperator("10", "gruppe1");
         while(true) {
