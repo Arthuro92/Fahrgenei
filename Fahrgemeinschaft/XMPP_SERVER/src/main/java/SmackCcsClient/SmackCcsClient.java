@@ -154,7 +154,7 @@ public class SmackCcsClient<T> {
      * Subclasses should override this method to properly process upstream messages.
      */
     protected void handleUpstreamMessage(Map<String, Object> jsonObject) {
-        logger.log(Level.INFO, "HANDLEUPSTREAM");
+        logger.log(Level.INFO, "Handle incoming Message " + (String) jsonObject.get("from"));
         ms.setJsonObject(jsonObject);
         // PackageName of the application that sent this message.
 //        String category = (String) jsonObject.get("category");

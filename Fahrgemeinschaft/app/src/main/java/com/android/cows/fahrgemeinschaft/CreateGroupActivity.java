@@ -38,8 +38,13 @@ public class CreateGroupActivity extends AppCompatActivity {
                     prefs.getString("userid","")
                     , prefs.getString("username","")
                     , groupname.getText().toString()+prefs.getString("userid",""));
+
             MyGcmSend gcmsend = new MyGcmSend();
-            gcmsend.send("group", "insertgroup", newgroup,this, newgroup.getGid());
+
+            String[] array = new String[1];
+            array[0] = newgroup.getGid();
+
+            gcmsend.send("group", "insertgroup", newgroup,this, array);
 
             Intent intent = new Intent(this, GroupOverview.class);
             startActivity(intent);

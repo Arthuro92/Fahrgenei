@@ -3,8 +3,8 @@ package observer;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Vector;
-
-import observer.MessageObserver;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by david on 17.05.2016.
@@ -12,6 +12,7 @@ import observer.MessageObserver;
 public class MessageSubject {
     private Vector<MessageObserver> mos;
     private Map<String, Object> jsonObject;
+    private static final Logger logger = Logger.getLogger("MessageSubject");
 
     /**
      * Registers or rather adds a MessageObserver to the set of MessageObservers for this object
@@ -62,6 +63,6 @@ public class MessageSubject {
      */
     public MessageSubject() {
         this.mos = new Vector<MessageObserver>();
-        System.out.println("SUBJECTCREATED");
+        logger.log(Level.INFO, "Subject created");
     }
 }

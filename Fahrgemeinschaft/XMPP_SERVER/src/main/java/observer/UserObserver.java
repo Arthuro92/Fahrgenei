@@ -1,30 +1,52 @@
 package observer;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import database.Databaseoperator;
 
 /**
  * Created by david on 23.05.2016.
  */
 public class UserObserver implements MessageObserver {
     private Map<String, String> payload;
+    private static final Logger logger = Logger.getLogger("UserObserver ");
 
-    /**
-     *
-     */
-    public void setUser() {
-        System.out.println("USER SET TO: " + this.payload.toString());
-    }
 
     /**
      * Updates the Map payload for this object to the jsonObject. Also calls the setUser method so long as the task_category key of payload equals user
      * @param jsonObject a Map the payload for this object is updated to
      */
     public void updateMO(Map<String, Object> jsonObject) {
-        if(jsonObject.containsKey("data")) {
+        if (jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
-            if(this.payload.get("task_category").equals("user")) {
-                setUser();
+            if (this.payload.get("task_category").equals("user")) {
+                switch (this.payload.get("task")) {
+                    case "registration":
+                        logger.log(Level.INFO, "first switch task = registration");
+                        logger.log(Level.INFO, "register new user: " + registration());
+                        break;
+                    default:
+                        logger.log(Level.INFO, "default case");
+                }
             }
+        }
+    }
+
+    private boolean registration() {
+        logger.log(Level.INFO, "first switch task = registration");
+
+        if(this.payload.containsKey("extra0") && this.payload.containsKey("extra1")) {
+
+            if(Databaseoperator.insertnewuser(this.payload.get("extra0"), this.payload.get("extra1"), this.payload.get("content"))) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            logger.log(Level.INFO, "ERROR: No Extra  found!");
+            return false;
         }
     }
 
@@ -34,6 +56,6 @@ public class UserObserver implements MessageObserver {
      */
     public UserObserver(MessageSubject ms) {
         ms.registerMO(this);
-        System.out.println("USEROBSERVER REGISTERED");
+        logger.log(Level.INFO, "Userobserver registered");
     }
 }

@@ -17,6 +17,7 @@
 package com.android.cows.fahrgemeinschaft.gcm;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -24,9 +25,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
-import com.google.android.gms.gcm.GcmPubSub;
+import com.android.cows.fahrgemeinschaft.dataobjects.User;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 
@@ -87,11 +89,20 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(final String token) {
-//        MyGcmSend gcmsend    = new MyGcmSend();
-//        gcmsend.send(token, this);
+
         MyGcmSend gcmsender = new MyGcmSend();
-//        Group grp = new Group("grp1",1,"lennart", "lennart");
-//        gcmsender.send("group", "task", grp, this);
+
+        SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String id = prefs.getString("userid" , "");
+        String name = prefs.getString("username" , "");
+        String email = prefs.getString("useremail" , "");
+
+        User user = new User(id, token, name, email);
+        String[] extrastring = new String[2];
+        extrastring[0] = id;
+        extrastring[1] = token;
+
+        gcmsender.send("user", "registration", user, this, extrastring);
     }
 
 
@@ -105,9 +116,10 @@ public class RegistrationIntentService extends IntentService {
      */
     // [START subscribe_topics]
     private void subscribeTopics(String token) throws IOException {
-        GcmPubSub pubSub = GcmPubSub.getInstance(this);
+//        GcmPubSub pubSub = GcmPubSub.getInstance(this);
+        FirebaseMessaging pubSub =   FirebaseMessaging.getInstance();
         for (String topic : TOPICS) {
-            pubSub.subscribe(token, "/topics/" + topic, null);
+            pubSub.subscribeToTopic(topic);
         }
     }
     // [END subscribe_topics]

@@ -7,13 +7,8 @@ import android.os.Bundle;
  */
 public class UserObserver implements MessageObserver {
     private Bundle payload;
+    private static final String TAG = "UserObserver";
 
-    /**
-     *
-     */
-    public void setUser() {
-        System.out.println("USER SET TO: " + this.payload.toString());
-    }
 
     /**
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setUser method so long as the task_category key of payload equals user
@@ -22,9 +17,9 @@ public class UserObserver implements MessageObserver {
     public void updateMO(Bundle jsonObject) {
         this.payload = jsonObject;
             if(this.payload.getString("task_category").equals("user")) {
-                setUser();
+                }
             }
-    }
+
 
     /**
      * Constructs a new UserObserver and registers it to a MessageSubject

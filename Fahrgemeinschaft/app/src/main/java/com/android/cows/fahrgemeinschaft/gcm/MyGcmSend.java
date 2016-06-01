@@ -21,13 +21,15 @@ public class MyGcmSend<T> {
     private static final String TAG = "MyGcmSend";
 
     /**
+     *
      * Sending messages to GCM
      * @param task_category valid categorys: chat, group, appointment, user
      * @param task valid tasks //todo choose valid tasks
      * @param javaobject every valid javaobject
+     * @param extras use this field for ids, or something which you want to write in database, Can be NULL!
      * @param con the context try this, as context
      */
-    public void send(String task_category, String task, T javaobject, Context con, String id) {
+    public void send(String task_category, String task, T javaobject, Context con, String[] extras) {
 
 
 
@@ -47,10 +49,17 @@ public class MyGcmSend<T> {
             Gson gson = new Gson();
             String javaobjectstring = gson.toJson(javaobject);
             payload.putString("content", javaobjectstring);
-            payload.putString("id", id);
+
+            if(extras != null) {
+                int i = 0;
+                while(i < extras.length) {
+                    payload.putString("extra"+i, extras[i]);
+                    i++;
+                }
+            }
 
             gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
-            logstring = "Sent message success";
+            logstring = "Sent message success with " + extras.length + " Extras" ;
         } catch (IOException ex) {
             logstring = "Error :" + ex.getMessage();
         }
@@ -58,6 +67,7 @@ public class MyGcmSend<T> {
     }
 
     /**
+     * Use this for Requests
      * Sending messages to GCM
      * @param task_category valid categorys: chat, group, appointment, user
      * @param task valid tasks //todo choose valid tasks
@@ -90,40 +100,6 @@ public class MyGcmSend<T> {
 
 
 
-    /**
-     * Sending messages to GCM
-     * @param task_category valid categorys: chat, group, appointment, user
-     * @param task valid tasks //todo choose valid tasks
-     * @param javaobject every valid javaobject
-     * @param con the context try this, as context
-     */
-    public void send(String task_category, String task, T javaobject, Context con) {
-
-        // Add custom implementation, as needed.
-        final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(con);
-        final String senderId = con.getString(R.string.gcm_defaultSenderId);
-        final String msgId = nextMessageId();
-
-        Log.i(TAG, "Try Sending Message");
-
-        String logstring = "";
-        try {
-            Bundle payload = new Bundle();
-            payload.putString("task_category", task_category);
-            payload.putString("task", task);
-
-            Gson gson = new Gson();
-            String javaobjectstring = gson.toJson(javaobject);
-            payload.putString("content", javaobjectstring);
-
-            gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
-            logstring = "Sent message success";
-        } catch (IOException ex) {
-            logstring = "Error :" + ex.getMessage();
-        }
-        Log.i(TAG, logstring);
-        //todo use send instead
-    }
 
     //todo change random id so it is actually unique
     /**

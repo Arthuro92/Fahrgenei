@@ -1,13 +1,15 @@
 package observer;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by david on 24.05.2016.
  */
 public class AppointmentObserver implements MessageObserver {
     private Map<String, String> payload;
-
+    private static final Logger logger = Logger.getLogger("AppointmentObserver");
     /**
      *
      */
@@ -34,6 +36,6 @@ public class AppointmentObserver implements MessageObserver {
      */
     public AppointmentObserver(MessageSubject ms) {
         ms.registerMO(this);
-        System.out.println("APPOINTMENTOBSERVER REGISTERED");
+        logger.log(Level.INFO, "Appointmentobserver registered");
     }
 }

@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import org.jivesoftware.smack.SmackException;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import SmackCcsClient.SmackCcsClient;
 import dataobjects.Chat;
@@ -14,6 +16,7 @@ import dataobjects.Chat;
  */
 public class ChatObserver implements MessageObserver {
     private Map<String, String> payload;
+    private static final Logger logger = Logger.getLogger("ChatObserver");
 
     /**
      * Parses certain parts of the jsonObject to a Chat object
@@ -30,7 +33,7 @@ public class ChatObserver implements MessageObserver {
      * @param chatMessage a Chat object to be broadcast
      */
     public void broadcastChatMessage(Chat chatMessage) {
-        System.out.println("SERVER RECIEVED CHAT MESSAGE: " + chatMessage.getChatMessageText());
+        logger.log(Level.INFO, "Server recieved Chat Message:" + chatMessage.getChatMessageText());
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
             smackCcsClient.sendDownstreamMessage("chat","chat","/topics/global", chatMessage);
@@ -58,6 +61,6 @@ public class ChatObserver implements MessageObserver {
      */
     public ChatObserver(MessageSubject ms) {
         ms.registerMO(this);
-        System.out.println("CHATOBSERVER REGISTERED");
+        logger.log(Level.INFO, "Chatobserver registered");
     }
 }

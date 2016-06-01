@@ -54,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
         addChatMessageDB(chatMessage);
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
-        myGcmSend.send("chat", "chat", chatMessage, ChatActivity.this);
+        myGcmSend.send("chat", "chat", chatMessage, ChatActivity.this, null);
     }
 
     /**
