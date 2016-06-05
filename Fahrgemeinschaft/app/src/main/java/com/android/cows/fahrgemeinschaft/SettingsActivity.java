@@ -2,16 +2,14 @@ package com.android.cows.fahrgemeinschaft;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -59,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
                         // [START_EXCLUDE]
                         updateUI(false);
                         // [END_EXCLUDE]
+                        //todo abmelden von GCM
                     }
                 });
     }

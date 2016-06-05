@@ -39,7 +39,7 @@ public class UserObserver implements MessageObserver {
 
         if(this.payload.containsKey("extra0") && this.payload.containsKey("extra1")) {
 
-            if(Databaseoperator.insertnewuser(this.payload.get("extra0"), this.payload.get("extra1"), this.payload.get("content"))) {
+            if(Databaseoperator.insertNewUser(this.payload.get("extra0"), this.payload.get("extra1"), this.payload.get("content"))) {
                 return true;
             } else {
                 return false;

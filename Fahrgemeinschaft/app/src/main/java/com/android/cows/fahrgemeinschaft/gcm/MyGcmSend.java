@@ -72,8 +72,9 @@ public class MyGcmSend<T> {
      * @param task_category valid categorys: chat, group, appointment, user
      * @param task valid tasks //todo choose valid tasks
      * @param con the context try this, as context
+     * @param extras use this field for ids, or something which you want to write in database, Can be NULL!
      */
-    public void send(String task_category, String task, Context con) {
+    public void send(String task_category, String task, Context con, String[] extras) {
 
 
 
@@ -89,6 +90,14 @@ public class MyGcmSend<T> {
             Bundle payload = new Bundle();
             payload.putString("task_category", task_category);
             payload.putString("task", task);
+
+            if(extras != null) {
+                int i = 0;
+                while(i < extras.length) {
+                    payload.putString("extra"+i, extras[i]);
+                    i++;
+                }
+            }
 
             gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
             logstring = "Sent message success";

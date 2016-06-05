@@ -7,14 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+
 import com.android.cows.fahrgemeinschaft.ChatActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
 
 
 /**
@@ -24,6 +24,7 @@ public class ChatObserver implements MessageObserver {
     private static final int NID = 987654321;
     private Context context = GlobalAppContext.getAppContext();
     private Bundle payload;
+    private static final String TAG = "ChatObserver";
 
     /**
      * Sets the intent to launch ChatActivity
@@ -82,15 +83,18 @@ public class ChatObserver implements MessageObserver {
      * @param chatMessage a Chat object to be handled
      */
     public void setInfoAndData(Chat chatMessage) {
-        System.out.println("CHAT MESSAGE:" + chatMessage.getChatMessageText());
+
+        Log.i(TAG, "Chat Message: " + chatMessage.getChatMessageText());
         if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
             updateLocalDatabase(chatMessage);
             issueNotification(setChatIntent(chatMessage));
-            System.out.println("ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
+
+            Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         } else if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
 //            updateLocalDatabase(chatMessage);
             this.context.startActivity(setChatIntent(chatMessage).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            System.out.println("ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
+
+            Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         }
     }
 
@@ -103,7 +107,6 @@ public class ChatObserver implements MessageObserver {
         if(this.payload.getString("task_category").equals("chat")) {
             setInfoAndData(setChatMessage(this.payload.getString("content")));
         }
-        System.out.println("CHATOBSERVER ONUPDATE");
     }
 
     /**
@@ -112,6 +115,6 @@ public class ChatObserver implements MessageObserver {
      */
     public ChatObserver(MessageSubject ms) {
         ms.registerMO(this);
-        System.out.println("CHATOBSERVER REGISTERED");
+        Log.i(TAG,"ChatObserver registered" + ChatActivity.activeActivity);
     }
 }

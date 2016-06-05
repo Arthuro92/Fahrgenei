@@ -1,3 +1,4 @@
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 
 import java.text.DateFormat;
@@ -17,9 +18,15 @@ public class Test {
         final long senderId = 634948576599L; // your GCM sender id
         final String password = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s";
 
+        SmackConfiguration.DEBUG_ENABLED = false;
         SmackCcsClient ccsClient = SmackCcsClient.getInstance();
         ccsClient.connect(senderId, password);
 
+//        ArrayList<String> result = Databaseoperator.getAppointment("lennart1234", "100732276496073160540");
+
+//       System.out.println(result.get(0));
+
+//        Databaseoperator.insertNewAppointment();
         while(true) {
             try {
                 Thread.sleep(1000);

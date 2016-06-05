@@ -60,5 +60,32 @@
                 android:id="@+id/adminName"
                 android:textColor="@color/black" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:text="appointments"
+                android:id="@+id/button2"
+                android:layout_column="1"
+                android:onClick="appointments" />
+        </TableRow>
     </TableLayout>
 </RelativeLayout>

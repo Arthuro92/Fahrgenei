@@ -30,9 +30,9 @@ public class AppointmentOverview extends AppCompatActivity  {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_appointment_overview);
-            Appointment gapm1 = new Appointment("1", "Termin1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg");
-            Appointment gapm2 = new Appointment("2", "Termin2", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz");
-            Appointment gapm3 = new Appointment("3", "Termin3", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover");
+            Appointment gapm1 = new Appointment("1", "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg");
+            Appointment gapm2 = new Appointment("2", "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz");
+            Appointment gapm3 = new Appointment("3", "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover");
             List<Appointment> apmlist = new ArrayList<Appointment>();
             apmlist.add(gapm1);
             apmlist.add(gapm2);

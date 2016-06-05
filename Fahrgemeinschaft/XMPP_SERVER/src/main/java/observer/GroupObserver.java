@@ -18,6 +18,7 @@ import dataobjects.Group;
 public class GroupObserver implements MessageObserver {
     private Map<String, String> payload;
     private static final Logger logger = Logger.getLogger("GroupObserver ");
+    private Map<String, Object> jsonObject;
 
     /**
      * Updates the Map payload for this object to the jsonObject. Also calls the setGroup method so long as the task_category key of payload equals group
@@ -26,6 +27,7 @@ public class GroupObserver implements MessageObserver {
     public void updateMO(Map<String, Object> jsonObject) {
         if(jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
+            this.jsonObject =  jsonObject;
             if(this.payload.get("task_category").equals("group")) {
 
                 switch (this.payload.get("task")) {
@@ -34,14 +36,15 @@ public class GroupObserver implements MessageObserver {
 
                         SmackCcsClient smackclient = SmackCcsClient.getInstance();
                         try {
-                            ArrayList<Group> grplist = Databaseoperator.getgrouplist();
-                            smackclient.sendDownstreamMessage("group","grouparray","/topics/global", grplist );
+                            ArrayList<Group> grplist = Databaseoperator.getGroupList();
+                            smackclient.sendDownstreamMessage("group","grouparray", (String) jsonObject.get("from"), grplist );
                         } catch (SmackException.NotConnectedException e) {
                             e.printStackTrace();
-                        } //todo here might be a nullpointer exception when something in getgroupList goes wrong, solution for server AND client is here important
+                        }
                         break;
 
                     case "insertgroup":
+                        //todo boolean does not get printed
                         System.out.println("InsertUser: " + insertgroup());
                         break;
 
@@ -57,12 +60,14 @@ public class GroupObserver implements MessageObserver {
 
         if(this.payload.containsKey("extra0")) {
 
-            if(Databaseoperator.insertnewgroup(this.payload.get("extra0"), this.payload.get("content"))) {
+            if(Databaseoperator.insertNewGroup(this.payload.get("extra0"), this.payload.get("content"))) {
                 return true;
             } else {
+                //todo send to client that groupinsert failed
                 return false;
             }
         } else {
+            //todo send to client that groupinsert failed
             logger.log(Level.INFO, "ERROR: No Extra  found!");
             return false;
         }

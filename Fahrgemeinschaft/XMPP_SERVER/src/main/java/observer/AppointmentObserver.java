@@ -1,21 +1,26 @@
 package observer;
 
+import com.google.gson.Gson;
+
+import org.jivesoftware.smack.SmackException;
+
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import SmackCcsClient.SmackCcsClient;
+import database.Databaseoperator;
+import dataobjects.Appointment;
 
 /**
  * Created by david on 24.05.2016.
  */
 public class AppointmentObserver implements MessageObserver {
     private Map<String, String> payload;
+    private Map<String, Object> jsonObject;
     private static final Logger logger = Logger.getLogger("AppointmentObserver");
-    /**
-     *
-     */
-    public void setAppointment() {
-        System.out.println("APPOINTMENT SET TO: " + this.payload.toString());
-    }
+
 
     /**
      * Updates the Map payload for this object to the jsonObject. Also calls the setAppointment method so long as the task_category key of payload equals appointment
@@ -24,12 +29,88 @@ public class AppointmentObserver implements MessageObserver {
     public void updateMO(Map<String, Object> jsonObject) {
         if(jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
+            this.jsonObject = jsonObject;
+
             if(this.payload.get("task_category").equals("appointment")) {
-                setAppointment();
+                switch (this.payload.get("task")) {
+
+                    case "getSingleAppointment":
+                        logger.log(Level.INFO, "In getSingleAppointment");
+                        singleAppointmentHandle();
+                        break;
+
+                    case "getAllAppointments":
+                        logger.log(Level.INFO, "In getAllAppointments");
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
 
+    private boolean singleAppointmentHandle() {
+
+        //Fehler falls Informationen fehlen
+        if(!payload.containsKey("extra0") || !payload.containsKey("extra1")) {
+            logger.log(Level.INFO, "Information invalid!");
+            System.out.println(payload.containsKey("extra0"));
+            System.out.println(payload.containsKey("extra1"));
+            sendSingleAppointmentError("error:information_invalid");
+            return false;
+        }
+
+        ArrayList<String> result = Databaseoperator.getAppointment(payload.get("extra0") , payload.get("extra1"));
+
+        if(result.get(0).equals("error:noAccess")) {
+            logger.log(Level.INFO, "Access for getting Appointment denied!");
+            sendSingleAppointmentError("error:noAccess");
+            return false;
+        }
+
+        if(result.get(0).equals("error:sqlexception")) {
+            logger.log(Level.INFO, "SQL Exception!");
+            sendSingleAppointmentError("error:sqlexception");
+            return false;
+        }
+
+        ArrayList<Appointment> appointmentlist = new ArrayList<>();
+        Gson gson = new Gson();
+
+        int i = 0;
+        while(i < result.size()) {
+            Appointment app = gson.fromJson(result.get(i), Appointment.class);
+            appointmentlist.add(app);
+            i++;
+        }
+
+        SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+        try {
+            smackCcsClient.sendDownstreamMessage("appointment", "singleAppointment", (String) jsonObject.get("from"), appointmentlist );
+            return true;
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Sending Error back to Client, because an Error occured
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public boolean sendSingleAppointmentError(String errortype) {
+        SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+        try {
+            smackCcsClient.sendDownstreamMessage("appointment" , errortype, (String) jsonObject.get("from"),null);
+            return true;
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     /**
      * Constructs a new AppointmentObserver and registers it to a MessageSubject
      * @param ms a MessageSubject to register to

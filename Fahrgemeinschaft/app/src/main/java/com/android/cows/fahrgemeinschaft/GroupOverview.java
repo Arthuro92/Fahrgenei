@@ -56,7 +56,7 @@ public class GroupOverview extends AppCompatActivity {
 //        grplist.add(grp7);
 //        grplist.add(grp8);
         MyGcmSend gcmsend = new MyGcmSend();
-        gcmsend.send("group", "getgrouparray", this);
+        gcmsend.send("group", "getgrouparray", this, null);
 //        createGroupOverview(grplist);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -70,6 +70,7 @@ public class GroupOverview extends AppCompatActivity {
                 createGroupOverview(grplist);
             }
         };
+        registerReceiver();
     }
 
     private void registerReceiver(){
@@ -125,8 +126,9 @@ public class GroupOverview extends AppCompatActivity {
                     //TODO Onclick farbe ändern
                     Log.i(TAG, grplist.get(v.getId()-grplist.size()-1).getName());
                     Intent intent = new Intent(GroupOverview.this, GroupDetailOverview.class);
-                    intent.putExtra("test4", grplist.get(v.getId()-grplist.size()-1).getName());
-                    intent.putExtra("test5", grplist.get(v.getId()-grplist.size()-1).getAdminname());
+                    intent.putExtra("name", grplist.get(v.getId()-grplist.size()-1).getName());
+                    intent.putExtra("adminname", grplist.get(v.getId()-grplist.size()-1).getAdminname());
+                    intent.putExtra("gid", grplist.get(v.getId()-grplist.size()-1).getGid());
                     startActivity(intent);
 
                 }

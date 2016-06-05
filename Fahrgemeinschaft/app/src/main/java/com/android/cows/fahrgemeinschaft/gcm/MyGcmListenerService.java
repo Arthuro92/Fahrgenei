@@ -25,12 +25,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import com.android.cows.fahrgemeinschaft.GcmActivity;
 import com.android.cows.fahrgemeinschaft.R;
+import com.android.cows.fahrgemeinschaft.observer.AppointmentObserver;
 import com.android.cows.fahrgemeinschaft.observer.ChatObserver;
 import com.android.cows.fahrgemeinschaft.observer.GroupObserver;
 import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
-import com.android.cows.fahrgemeinschaft.observer.NotificationObserver;
 import com.android.cows.fahrgemeinschaft.observer.UserObserver;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -39,6 +40,7 @@ public class MyGcmListenerService extends GcmListenerService {
     private static MessageSubject ms = new MessageSubject();
     private static UserObserver uo = new UserObserver(ms);
     private static ChatObserver co = new ChatObserver(ms);
+    private static AppointmentObserver ao = new AppointmentObserver(ms);
     private static GroupObserver go = new GroupObserver(ms);
 
     /**

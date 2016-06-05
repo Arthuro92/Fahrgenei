@@ -19,9 +19,6 @@ public class GroupObserver implements MessageObserver {
     private static final String TAG = "GroupOberserver";
 
 
-    public void setGroup() {
-        Log.i(TAG, "GROUP SET TO: " + this.payload.toString());
-    }
 
     /**
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setGroup method so long as the task_category key of payload equals group
@@ -30,7 +27,6 @@ public class GroupObserver implements MessageObserver {
     public void updateMO(Bundle jsonObject) {
         this.payload = jsonObject;;
         if(this.payload.getString("task_category").equals("group")) {
-            setGroup();
         switch (this.payload.getString("task")) {
             case "grouparray":
                 Log.i(TAG, "first switch task = grouparray");

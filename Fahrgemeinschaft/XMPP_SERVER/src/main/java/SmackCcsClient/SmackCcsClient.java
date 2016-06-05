@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import observer.AppointmentObserver;
 import observer.ChatObserver;
 import observer.GroupObserver;
 import observer.MessageSubject;
@@ -49,6 +50,8 @@ public class SmackCcsClient<T> {
     private UserObserver uo = new UserObserver(ms);
     private GroupObserver go = new GroupObserver(ms);
     private ChatObserver co = new ChatObserver(ms);
+    private AppointmentObserver ao = new AppointmentObserver(ms);
+
 
     private static final Logger logger = Logger.getLogger("SmackCcsClient");
 
@@ -100,7 +103,7 @@ public class SmackCcsClient<T> {
      * @param task_category valid categorys: chat, group, appointment, user
      * @param task valid tasks //todo choose valid tasks
      * @param to cam ne Topic (/topics/...) or a specific Token
-     * @param javaobject every valid javaobject
+     * @param javaobject every valid javaobject / can be null
      * @return true when send success, and false when send failed
      * @throws NotConnectedException
      */
@@ -111,9 +114,12 @@ public class SmackCcsClient<T> {
             payload.put("task_category", task_category);
             payload.put("task", task);
 
-            Gson gson = new Gson();
-            String javaobjectstring = gson.toJson(javaobject);
-            payload.put("content", javaobjectstring);
+            if(javaobject != null) {
+                Gson gson = new Gson();
+                String javaobjectstring = gson.toJson(javaobject);
+                payload.put("content", javaobjectstring);
+            }
+
 
             //TODO research what exactly collapseKey means and if we need it
             String collapseKey = null;
@@ -194,7 +200,8 @@ public class SmackCcsClient<T> {
     protected void handleNackReceipt(Map<String, Object> jsonObject) {
         String messageId = (String) jsonObject.get("message_id");
         String from = (String) jsonObject.get("from");
-        logger.log(Level.INFO, "handleNackReceipt() from: " + from + ", messageId: " + messageId);
+        logger.log(Level.INFO, "handleNackReceipt() from: " + from + ", messageId: " + messageId + " Error: "
+                + jsonObject.get("error") + " Error Description: " + jsonObject.get("error_description"));
     }
 
     protected void handleControlMessage(Map<String, Object> jsonObject) {
