@@ -15,6 +15,7 @@ import com.google.gson.Gson;
  */
 @SuppressWarnings("ALL") //todo maybe fix it? or handle it?
 public class AppointmentObserver implements MessageObserver {
+    //new new
     private Bundle payload;
     private Context con = GlobalAppContext.getAppContext();
     private static final String TAG = "AppointmentObserver";
@@ -24,7 +25,7 @@ public class AppointmentObserver implements MessageObserver {
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setAppointment method so long as the task_category key of payload equals appointment
      * @param jsonObject a Bundle the payload for this object is updated to
      */
-    public void updateMO(Bundle jsonObject) {
+    public void updateMessageObserver(Bundle jsonObject) {
         this.payload = jsonObject;
         if (this.payload.getString("task_category").equals("appointment")) {
             switch (this.payload.getString("task")) {
@@ -64,7 +65,7 @@ public class AppointmentObserver implements MessageObserver {
      * @param ms a MessageSubject to register to
      */
     public AppointmentObserver(MessageSubject ms) {
-        ms.registerMO(this);
+        ms.registerMessageObserver(this);
         System.out.println("APPOINTMENTOBSERVER REGISTERED");
     }
 }

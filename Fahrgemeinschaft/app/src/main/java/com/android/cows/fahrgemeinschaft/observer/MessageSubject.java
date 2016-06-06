@@ -1,6 +1,8 @@
 package com.android.cows.fahrgemeinschaft.observer;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import java.util.ListIterator;
 import java.util.Vector;
 
@@ -8,42 +10,43 @@ import java.util.Vector;
  * Created by david on 17.05.2016.
  */
 public class MessageSubject {
-    //new
-    private Vector<MessageObserver> mos;
+    //new new
+    private static final String TAG = "MessageSubject";
+    private Vector<MessageObserver> messageObservers;
     private Bundle jsonObject;
 
     /**
      * Registers or rather adds a MessageObserver to the set of MessageObservers for this object
-     * @param mo a MessageObserver to be registered
+     * @param messageObserver a MessageObserver to be registered
      * @return true if MessageObserver was registered successfully, false else
      * @throws NullPointerException if mo equals null
      */
-    public synchronized boolean registerMO(MessageObserver mo) {
-        if(mo == null) {
+    public synchronized boolean registerMessageObserver(MessageObserver messageObserver) {
+        if(messageObserver == null) {
             throw new NullPointerException();
         }
-        if(!mos.contains(mo)) {
-            return this.mos.add(mo);
+        if(!this.messageObservers.contains(messageObserver)) {
+            return this.messageObservers.add(messageObserver);
         }
         return false;
     }
 
     /**
      * Unregisters or rather removes a MessageObserver from the set of MessageObservers for this object
-     * @param mo a MessageObserver to be unregistered
+     * @param messageObserver a MessageObserver to be unregistered
      * @return true if MessageObserver was unregistered successfully, false else
      */
-    public synchronized boolean unregisterMO(MessageObserver mo) {
-        return this.mos.remove(mo);
+    public synchronized boolean unregisterMessageObserver(MessageObserver messageObserver) {
+        return this.messageObservers.remove(messageObserver);
     }
 
     /**
      * Notifies all MessageObservers in the set of MessageObservers for this object about a change in the jsonObject
      */
-    public synchronized void notifyMOs() {
-        ListIterator<MessageObserver> moli = mos.listIterator();
-        while(moli.hasNext()) {
-            moli.next().updateMO(this.jsonObject);
+    public synchronized void notifyMessageObservers() {
+        ListIterator<MessageObserver> listIterator = this.messageObservers.listIterator();
+        while(listIterator.hasNext()) {
+            listIterator.next().updateMessageObserver(this.jsonObject);
         }
     }
 
@@ -53,14 +56,14 @@ public class MessageSubject {
      */
     public synchronized void setJsonObject(Bundle jsonObject) {
         this.jsonObject = jsonObject;
-        notifyMOs();
+        notifyMessageObservers();
     }
 
     /**
      * Constructs a new MessageSubject with a Vector of MessageObservers for this object
      */
     public MessageSubject() {
-        this.mos = new Vector<MessageObserver>();
-        System.out.println("SUBJECTCREATED");
+        this.messageObservers = new Vector<MessageObserver>();
+        Log.i(TAG, "SUBJECTCREATED");
     }
 }

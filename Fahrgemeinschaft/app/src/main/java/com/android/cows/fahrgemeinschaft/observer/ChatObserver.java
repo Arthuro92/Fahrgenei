@@ -21,11 +21,11 @@ import com.google.gson.Gson;
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
-    //new
+    //new new
+    private static final String TAG = "ChatObserver";
     private static final int NID = 987654321;
     private Context context = GlobalAppContext.getAppContext();
     private Bundle payload;
-    private static final String TAG = "ChatObserver";
 
     /**
      * Sets the intent to launch ChatActivity
@@ -52,7 +52,7 @@ public class ChatObserver implements MessageObserver {
         ncb.setWhen(System.currentTimeMillis());
         ncb.setContentIntent(pIntent);
         nm.notify(NID, ncb.build());
-        System.out.println("NOTIFICATION SET");
+        Log.i(TAG, "NOTIFICATION SET");
     }
 
     /**
@@ -84,17 +84,14 @@ public class ChatObserver implements MessageObserver {
      * @param chatMessage a Chat object to be handled
      */
     public void setInfoAndData(Chat chatMessage) {
-
-        Log.i(TAG, "Chat Message: " + chatMessage.getChatMessageText());
+        Log.i(TAG, "CHAT MESSAGE: " + chatMessage.getChatMessageText());
         if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
             updateLocalDatabase(chatMessage);
             issueNotification(setChatIntent(chatMessage));
-
             Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         } else if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
 //            updateLocalDatabase(chatMessage);
             this.context.startActivity(setChatIntent(chatMessage).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-
             Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         }
     }
@@ -103,7 +100,7 @@ public class ChatObserver implements MessageObserver {
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setChat method so long as the task_category key of payload equals chat
      * @param jsonObject a Bundle the payload for this object is updated to
      */
-    public void updateMO(Bundle jsonObject) {
+    public void updateMessageObserver(Bundle jsonObject) {
         this.payload = jsonObject;
         if(this.payload.getString("task_category").equals("chat")) {
             setInfoAndData(setChatMessage(this.payload.getString("content")));
@@ -115,7 +112,7 @@ public class ChatObserver implements MessageObserver {
      * @param messageSubject a MessageSubject to register to
      */
     public ChatObserver(MessageSubject messageSubject) {
-        messageSubject.registerMO(this);
+        messageSubject.registerMessageObserver(this);
         Log.i(TAG, "Chatobserver registered");
     }
 }

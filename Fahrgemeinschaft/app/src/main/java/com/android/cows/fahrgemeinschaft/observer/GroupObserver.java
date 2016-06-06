@@ -14,6 +14,7 @@ import com.google.gson.Gson;
  * Created by david on 23.05.2016.
  */
 public class GroupObserver implements MessageObserver {
+    //new new
     private Bundle payload;
     private Context con = GlobalAppContext.getAppContext();
     private static final String TAG = "GroupOberserver";
@@ -24,7 +25,7 @@ public class GroupObserver implements MessageObserver {
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setGroup method so long as the task_category key of payload equals group
      * @param jsonObject a Bundle the payload for this object is updated to
      */
-    public void updateMO(Bundle jsonObject) {
+    public void updateMessageObserver(Bundle jsonObject) {
         this.payload = jsonObject;;
         if(this.payload.getString("task_category").equals("group")) {
         switch (this.payload.getString("task")) {
@@ -54,7 +55,7 @@ public class GroupObserver implements MessageObserver {
      * @param ms a MessageSubject to register to
      */
     public GroupObserver(MessageSubject ms) {
-        ms.registerMO(this);
+        ms.registerMessageObserver(this);
         System.out.println("GROUPOBSERVER REGISTERED");
     }
 }
