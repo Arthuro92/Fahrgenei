@@ -21,6 +21,7 @@ import java.util.Date;
 
 
 public class ChatActivity extends AppCompatActivity {
+    //new
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
     private ArrayList<Chat> arrayListChat;
@@ -114,9 +115,6 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         arrayListChat = getArrayListFromDB();
         setChatView();
-        if(getIntent().hasExtra("Chat")) {
-            setArrayListFromExtra(getIntent());
-        }
         System.out.println("CHATACTIVITY CREATED");
     }
 

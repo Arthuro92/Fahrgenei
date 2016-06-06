@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * Created by david on 26.05.2016.
  */
 public class ChatMessageAdapter extends ArrayAdapter{
+    //new
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 

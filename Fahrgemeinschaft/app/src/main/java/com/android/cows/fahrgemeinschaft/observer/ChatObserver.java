@@ -16,11 +16,14 @@ import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
+    //new
     private static final int NID = 987654321;
     private Context context = GlobalAppContext.getAppContext();
     private Bundle payload;
@@ -107,14 +110,15 @@ public class ChatObserver implements MessageObserver {
         if(this.payload.getString("task_category").equals("chat")) {
             setInfoAndData(setChatMessage(this.payload.getString("content")));
         }
+        System.out.println("CHATOBSERVER ONUPDATE");
     }
 
     /**
      * Constructs a new ChatObserver and registers it to a MessageSubject
-     * @param ms a MessageSubject to register to
+     * @param messageSubject a MessageSubject to register to
      */
-    public ChatObserver(MessageSubject ms) {
-        ms.registerMO(this);
-        Log.i(TAG,"ChatObserver registered" + ChatActivity.activeActivity);
+    public ChatObserver(MessageSubject messageSubject) {
+        messageSubject.registerMO(this);
+        System.out.println("CHATOBSERVER REGISTERED");
     }
 }

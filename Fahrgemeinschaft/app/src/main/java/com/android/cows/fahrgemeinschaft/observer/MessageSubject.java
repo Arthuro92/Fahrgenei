@@ -8,6 +8,7 @@ import java.util.Vector;
  * Created by david on 17.05.2016.
  */
 public class MessageSubject {
+    //new
     private Vector<MessageObserver> mos;
     private Bundle jsonObject;
 
