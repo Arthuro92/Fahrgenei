@@ -59,7 +59,7 @@ public class MyGcmSend<T> {
             }
 
             gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
-            logstring = "Sent message success with " + extras.length + " Extras" ;
+            logstring = "Sent message success";
         } catch (IOException ex) {
             logstring = "Error :" + ex.getMessage();
         }

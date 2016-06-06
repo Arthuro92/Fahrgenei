@@ -16,8 +16,6 @@ import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-
 
 /**
  * Created by david on 23.05.2016.
@@ -110,7 +108,6 @@ public class ChatObserver implements MessageObserver {
         if(this.payload.getString("task_category").equals("chat")) {
             setInfoAndData(setChatMessage(this.payload.getString("content")));
         }
-        System.out.println("CHATOBSERVER ONUPDATE");
     }
 
     /**
@@ -119,6 +116,6 @@ public class ChatObserver implements MessageObserver {
      */
     public ChatObserver(MessageSubject messageSubject) {
         messageSubject.registerMO(this);
-        System.out.println("CHATOBSERVER REGISTERED");
+        Log.i(TAG, "Chatobserver registered");
     }
 }

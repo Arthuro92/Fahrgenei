@@ -18,7 +18,7 @@ public class Test {
         final long senderId = 634948576599L; // your GCM sender id
         final String password = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s";
 
-        SmackConfiguration.DEBUG_ENABLED = false;
+        SmackConfiguration.DEBUG_ENABLED = true;
         SmackCcsClient ccsClient = SmackCcsClient.getInstance();
         ccsClient.connect(senderId, password);
 
@@ -27,6 +27,9 @@ public class Test {
 //       System.out.println(result.get(0));
 
 //        Databaseoperator.insertNewAppointment();
+
+//        testchat(ccsClient);
+
         while(true) {
             try {
                 Thread.sleep(1000);
@@ -37,7 +40,7 @@ public class Test {
 }
 
  @SuppressWarnings("unchecked")
- public void testchat(SmackCcsClient ccsClient) throws SmackException.NotConnectedException {
+ public static void testchat(SmackCcsClient ccsClient) throws SmackException.NotConnectedException {
      String myTime = DateFormat.getDateTimeInstance().format(new Date());
      Chat co = new Chat("Don", myTime, "Cookies");
      Chat po = new Chat("Jon", myTime, "Potatoes");
