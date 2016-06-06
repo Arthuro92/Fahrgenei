@@ -21,7 +21,7 @@ import com.google.gson.Gson;
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
-    //new new
+    //new new new
     private static final String TAG = "ChatObserver";
     private static final int NID = 987654321;
     private Context context = GlobalAppContext.getAppContext();
@@ -90,7 +90,7 @@ public class ChatObserver implements MessageObserver {
             issueNotification(setChatIntent(chatMessage));
             Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         } else if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
-//            updateLocalDatabase(chatMessage);
+            updateLocalDatabase(chatMessage);
             this.context.startActivity(setChatIntent(chatMessage).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         }
