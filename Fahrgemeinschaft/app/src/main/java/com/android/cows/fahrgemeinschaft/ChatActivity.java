@@ -21,6 +21,7 @@ import java.util.Date;
 
 
 public class ChatActivity extends AppCompatActivity {
+    //new
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
     private ArrayList<Chat> arrayListChat;

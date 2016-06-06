@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
+    //new
     private static final int NID = 987654321;
     private Context context = GlobalAppContext.getAppContext();
     private Bundle payload;

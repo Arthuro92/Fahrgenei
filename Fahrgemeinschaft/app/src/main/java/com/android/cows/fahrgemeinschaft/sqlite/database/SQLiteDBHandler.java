@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * Created by david on 29.05.2016.
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper{
+    //new
     private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(255));";
