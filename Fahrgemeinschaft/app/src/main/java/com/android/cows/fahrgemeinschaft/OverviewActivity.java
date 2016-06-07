@@ -50,14 +50,14 @@ public class OverviewActivity extends AppCompatActivity {
             });
         }
 
-        ImageButton messageButton = (ImageButton) findViewById(R.id.messageButton);
+        ImageButton messageButton = (ImageButton) findViewById(R.id.mailButton);
         if (messageButton != null) {
             messageButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-//                    Intent tochat = new Intent(OverviewActivity.this, ChatActivity.class);
-//                    startActivity(tochat);
+                    Intent tochat = new Intent(OverviewActivity.this, ChatActivity.class);
+                    startActivity(tochat);
 
                 }
             });
@@ -91,7 +91,7 @@ public class OverviewActivity extends AppCompatActivity {
         }
 
 
-        ImageButton mailButton = (ImageButton) findViewById(R.id.mailButton);
+        ImageButton mailButton = (ImageButton) findViewById(R.id.messageButton);
         if (mailButton != null) {
             mailButton.setOnClickListener(new View.OnClickListener() {
 

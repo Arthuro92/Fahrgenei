@@ -44,19 +44,19 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean insertNewUser(String id, String token, String object) {
+    static public boolean insertNewUser(String id, String token, String objectstring) {
         String userindatabase = getUser(id);
-        if(userindatabase == null || !userindatabase.equals(object)) {
+        if(userindatabase == null || !userindatabase.equals(objectstring)) {
 
             String query;
 
-            if(!userindatabase.equals(object)) {
+            if(!userindatabase.equals(objectstring)) {
                 System.out.println(userindatabase);
-                System.out.println(object);
-                query = "UPDATE user SET token = " + "'" + token + "'" + ", objectstring = '"+ object + "' WHERE userid = '" + id + "'";
+                System.out.println(objectstring);
+                query = "UPDATE user SET token = " + "'" + token + "'" + ", objectstring = '"+ objectstring + "' WHERE userid = '" + id + "'";
                 System.out.println("update");
             } else {
-                query = "INSERT INTO user (userid, token, objectstring) VALUES ('" + id + "','" + token + "','" + object + "');";
+                query = "INSERT INTO user (userid, token, objectstring) VALUES ('" + id + "','" + token + "','" + objectstring + "');";
                 System.out.println("insert");
             }
 
