@@ -18,7 +18,7 @@ public class Test {
         final long senderId = 634948576599L; // your GCM sender id
         final String password = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s";
 
-        SmackConfiguration.DEBUG_ENABLED = true;
+        SmackConfiguration.DEBUG_ENABLED = false;
         SmackCcsClient ccsClient = SmackCcsClient.getInstance();
         ccsClient.connect(senderId, password);
 
