@@ -10,7 +10,7 @@ import java.util.Vector;
  * Created by david on 17.05.2016.
  */
 public class MessageSubject {
-    //new new
+    //new new new
     private static final String TAG = "MessageSubject";
     private Vector<MessageObserver> messageObservers;
     private Bundle jsonObject;

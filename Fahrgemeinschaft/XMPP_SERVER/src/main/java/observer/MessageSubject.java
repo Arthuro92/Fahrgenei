@@ -10,42 +10,43 @@ import java.util.logging.Logger;
  * Created by david on 17.05.2016.
  */
 public class MessageSubject {
-    private Vector<MessageObserver> mos;
-    private Map<String, Object> jsonObject;
+    //new
     private static final Logger logger = Logger.getLogger("MessageSubject");
+    private Vector<MessageObserver> messageObservers;
+    private Map<String, Object> jsonObject;
 
     /**
      * Registers or rather adds a MessageObserver to the set of MessageObservers for this object
-     * @param mo a MessageObserver to be registered
+     * @param messageObserver a MessageObserver to be registered
      * @return true if MessageObserver was registered successfully, false else
      * @throws NullPointerException if mo equals null
      */
-    public synchronized boolean registerMO(MessageObserver mo) {
-        if(mo == null) {
+    public synchronized boolean registerMessageObserver(MessageObserver messageObserver) {
+        if(messageObserver == null) {
             throw new NullPointerException();
         }
-        if(!mos.contains(mo)) {
-            return this.mos.add(mo);
+        if(!messageObservers.contains(messageObserver)) {
+            return this.messageObservers.add(messageObserver);
         }
         return false;
     }
 
     /**
      * Unregisters or rather removes a MessageObserver from the set of MessageObservers for this object
-     * @param mo a MessageObserver to be unregistered
+     * @param messageObserver a MessageObserver to be unregistered
      * @return true if MessageObserver was unregistered successfully, false else
      */
-    public synchronized boolean unregisterMO(MessageObserver mo) {
-        return this.mos.remove(mo);
+    public synchronized boolean unregisterMessageObserver(MessageObserver messageObserver) {
+        return this.messageObservers.remove(messageObserver);
     }
 
     /**
      * Notifies all MessageObservers in the set of MessageObservers for this object about a change in the jsonObject
      */
-    public synchronized void notifyMOs() {
-        ListIterator<MessageObserver> moli = mos.listIterator();
-        while(moli.hasNext()) {
-            moli.next().updateMO(this.jsonObject);
+    public synchronized void notifyMessageObservers() {
+        ListIterator<MessageObserver> listIterator = this.messageObservers.listIterator();
+        while(listIterator.hasNext()) {
+            listIterator.next().updateMessageObserver(this.jsonObject);
         }
     }
 
@@ -55,14 +56,14 @@ public class MessageSubject {
      */
     public synchronized void setJsonObject(Map<String, Object> jsonObject) {
         this.jsonObject = jsonObject;
-        notifyMOs();
+        notifyMessageObservers();
     }
 
     /**
      * Constructs a new MessageSubject with a Vector of MessageObservers for this object
      */
     public MessageSubject() {
-        this.mos = new Vector<MessageObserver>();
-        logger.log(Level.INFO, "Subject created");
+        this.messageObservers = new Vector<MessageObserver>();
+        logger.log(Level.INFO, "SUBJECT CREATED");
     }
 }

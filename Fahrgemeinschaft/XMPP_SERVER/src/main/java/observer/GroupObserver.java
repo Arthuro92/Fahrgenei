@@ -16,6 +16,7 @@ import dataobjects.Group;
  * Created by david on 23.05.2016.
  */
 public class GroupObserver implements MessageObserver {
+    //new
     private Map<String, String> payload;
     private static final Logger logger = Logger.getLogger("GroupObserver ");
     private Map<String, Object> jsonObject;
@@ -24,7 +25,7 @@ public class GroupObserver implements MessageObserver {
      * Updates the Map payload for this object to the jsonObject. Also calls the setGroup method so long as the task_category key of payload equals group
      * @param jsonObject a Map the payload for this object is updated to
      */
-    public void updateMO(Map<String, Object> jsonObject) {
+    public void updateMessageObserver(Map<String, Object> jsonObject) {
         if(jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
             this.jsonObject =  jsonObject;
@@ -74,10 +75,10 @@ public class GroupObserver implements MessageObserver {
     }
     /**
      * Constructs a new GroupObserver and registers it to a MessageSubject
-     * @param ms a MessageSubject to register to
+     * @param messageSubject a MessageSubject to register to
      */
-    public GroupObserver(MessageSubject ms) {
-        ms.registerMO(this);
+    public GroupObserver(MessageSubject messageSubject) {
+        messageSubject.registerMessageObserver(this);
         logger.log(Level.INFO, "Groupobserver Registered");
     }
 }

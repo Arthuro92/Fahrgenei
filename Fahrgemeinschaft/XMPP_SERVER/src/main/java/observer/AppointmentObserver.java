@@ -17,6 +17,7 @@ import dataobjects.Appointment;
  * Created by david on 24.05.2016.
  */
 public class AppointmentObserver implements MessageObserver {
+    //new
     private Map<String, String> payload;
     private Map<String, Object> jsonObject;
     private static final Logger logger = Logger.getLogger("AppointmentObserver");
@@ -26,7 +27,7 @@ public class AppointmentObserver implements MessageObserver {
      * Updates the Map payload for this object to the jsonObject. Also calls the setAppointment method so long as the task_category key of payload equals appointment
      * @param jsonObject a Map the payload for this object is updated to
      */
-    public void updateMO(Map<String, Object> jsonObject) {
+    public void updateMessageObserver(Map<String, Object> jsonObject) {
         if(jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
             this.jsonObject = jsonObject;
@@ -113,10 +114,10 @@ public class AppointmentObserver implements MessageObserver {
     }
     /**
      * Constructs a new AppointmentObserver and registers it to a MessageSubject
-     * @param ms a MessageSubject to register to
+     * @param messageSubject a MessageSubject to register to
      */
-    public AppointmentObserver(MessageSubject ms) {
-        ms.registerMO(this);
+    public AppointmentObserver(MessageSubject messageSubject) {
+        messageSubject.registerMessageObserver(this);
         logger.log(Level.INFO, "Appointmentobserver registered");
     }
 }
