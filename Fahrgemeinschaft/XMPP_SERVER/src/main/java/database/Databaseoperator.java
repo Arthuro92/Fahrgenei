@@ -46,7 +46,7 @@ public class Databaseoperator {
 
     static public boolean insertNewUser(String id, String token, String object) {
         String userindatabase = getUser(id);
-        if(userindatabase == null | !userindatabase.equals(object)) {
+        if(userindatabase == null || !userindatabase.equals(object)) {
 
             String query;
 
