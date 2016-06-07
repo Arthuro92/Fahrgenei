@@ -57,6 +57,7 @@ public class OverviewActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent tochat = new Intent(OverviewActivity.this, ChatActivity.class);
+                    tochat.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(tochat);
 
                 }
