@@ -46,7 +46,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
             gcmsend.send("group", "insertgroup", newgroup,this, array);
 
-            Intent intent = new Intent(this, GroupOverview.class);
+            Intent intent = new Intent(this, GeneralTabsActivity.class);
             startActivity(intent);
         }
     }
