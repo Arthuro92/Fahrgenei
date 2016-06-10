@@ -67,7 +67,7 @@ public class GcmActivity extends AppCompatActivity {
 
                 if (sentToken) {
                     mInformationTextView.setText(getString(R.string.gcm_send_message));
-                    Intent intent2 = new Intent(GcmActivity.this, OverviewActivity.class);
+                    Intent intent2 = new Intent(GcmActivity.this, GeneralTabsActivity.class);
                     startActivity(intent2);
 
                 } else {
@@ -134,7 +134,7 @@ public class GcmActivity extends AppCompatActivity {
     public void nextactivity(View view) {
         Log.i(TAG, "NEXTACTIVITY");
 //        Intent intent = new Intent(this, GroupOverview.class);
-        Intent intent = new Intent(this, OverviewActivity.class);
+        Intent intent = new Intent(this, GeneralTabsActivity.class);
         startActivity(intent);
     }
 }

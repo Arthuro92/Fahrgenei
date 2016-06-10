@@ -74,7 +74,11 @@
 
 
         <activity android:name=".SignInActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".CreateGroupActivity" />
         <activity android:name=".TaskOverview" />
@@ -84,17 +88,12 @@
         <activity android:name=".AppointmentDetailActivity" />
         <activity android:name=".GeneralTabsActivity"/>
         <activity android:name=".GroupTabsActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
         <!-- evtl raus  <activity android:name=".FragmentGruppeActivity"/>
         <activity android:name=".FragmentTermineActivity"/>-->
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AppointmentOverview" />
-        <activity android:name=".AppointmentDetailActivity" />
         <activity android:name=".SingleAppointmentOverviewActivity"></activity>
     </application>
 
