@@ -124,7 +124,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
                 public void onClick(View v) {
                     //TODO Onclick farbe ändern
                     Log.i(TAG, grplist.get(v.getId()-grplist.size()-1).getName());
-                    Intent intent = new Intent(getActivity(), GroupDetailOverview.class);
+                    Intent intent = new Intent(getActivity(), GroupTabsActivity.class);
                     intent.putExtra("name", grplist.get(v.getId()-grplist.size()-1).getName());
                     intent.putExtra("adminname", grplist.get(v.getId()-grplist.size()-1).getAdminname());
                     intent.putExtra("gid", grplist.get(v.getId()-grplist.size()-1).getGid());

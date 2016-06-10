@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
             public void onClick(View view) {
                 //Neues Intent anlegen
-                Intent nextScreen = new Intent(MainActivity.this, OverviewActivity.class);
+                Intent nextScreen = new Intent(MainActivity.this, GeneralTabsActivity.class);
                 startActivity(nextScreen);
             }
         });

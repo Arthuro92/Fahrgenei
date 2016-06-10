@@ -9,6 +9,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.android.cows.fahrgemeinschaft.FragmentGeneralTermineActivity">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/relativelayoutGeneralTermine">
+        </RelativeLayout>
+    </ScrollView>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
