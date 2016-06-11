@@ -1,15 +1,10 @@
 package com.android.cows.fahrgemeinschaft;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +13,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.dataobjects.Group;
-import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentGeneralGruppeActivity extends Fragment {
-    private static final String TAG = "GroupOverview";
+    private static final String TAG = "FGenGroupActivity";
 
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private boolean isReceiverRegistered;
     View contentViewGeneralGruppen;
 
     @Nullable
@@ -62,35 +54,21 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         });
 
 
-        MyGcmSend gcmsend = new MyGcmSend();
-        gcmsend.send("group", "getgrouparray", getActivity(), null);
-//        createGroupOverview(grplist);
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-                //todo maybe error when no string in sharedpref
-                String grpliststring = prefs.getString("grplist","");
-                Gson gson = new Gson();
-
-                ArrayList<Group> grplist = gson.fromJson(grpliststring, new TypeToken<List<Group>>(){}.getType());
-                createGroupOverview(grplist);
-            }
-        };
-        registerReceiver();
-    }
-
-    private void registerReceiver(){
-        if(!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter("grouparraycomein"));
-            isReceiverRegistered = true;
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
+        ArrayList<Group> grplist = sqLiteDBHandler.getGroups();
+        if (grplist.size() > 0) {
+            createGroupOverview(grplist);
+        } else {
+            CharSequence text = "Du bist in noch keinen Gruppen!";
+            Toast toast = Toast.makeText(FragmentGeneralGruppeActivity.this.getActivity(), text, Toast.LENGTH_LONG);
+            toast.show();
         }
     }
-    
+
 
     /**
      * Creating for each Group a linearLayout
+     *
      * @param grplist list of Groups which should be displayed
      */
     public void createGroupOverview(final List<Group> grplist) {
@@ -107,14 +85,14 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         RelativeLayout[] relativeLayoutWrapper = new RelativeLayout[grplist.size()];
 
         int i = 0;
-        while(i < grplist.size()) {
+        while (i < grplist.size()) {
 
             relativeLayoutWrapper[i] = new RelativeLayout(getActivity());
-            relativeLayoutWrapper[i].setId(grplist.size()+1+i);
+            relativeLayoutWrapper[i].setId(grplist.size() + 1 + i);
             RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params2.setMargins(0,0,0,30);
-            if(i > 0) {
-                params2.addRule(RelativeLayout.BELOW, grplist.size()+i);
+            params2.setMargins(0, 0, 0, 30);
+            if (i > 0) {
+                params2.addRule(RelativeLayout.BELOW, grplist.size() + i);
                 relativeLayoutWrapper[i].setLayoutParams(params2);
             } else {
                 relativeLayoutWrapper[i].setLayoutParams(params2);
@@ -123,11 +101,11 @@ public class FragmentGeneralGruppeActivity extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //TODO Onclick farbe ändern
-                    Log.i(TAG, grplist.get(v.getId()-grplist.size()-1).getName());
+                    Log.i(TAG, grplist.get(v.getId() - grplist.size() - 1).getName());
                     Intent intent = new Intent(getActivity(), GroupTabsActivity.class);
-                    intent.putExtra("name", grplist.get(v.getId()-grplist.size()-1).getName());
-                    intent.putExtra("adminname", grplist.get(v.getId()-grplist.size()-1).getAdminname());
-                    intent.putExtra("gid", grplist.get(v.getId()-grplist.size()-1).getGid());
+                    intent.putExtra("name", grplist.get(v.getId() - grplist.size() - 1).getName());
+                    intent.putExtra("adminname", grplist.get(v.getId() - grplist.size() - 1).getAdminname());
+                    intent.putExtra("gid", grplist.get(v.getId() - grplist.size() - 1).getGid());
                     startActivity(intent);
 
                 }
@@ -137,7 +115,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
             verticalLayoutMain[i] = new LinearLayout(getActivity());
             verticalLayoutMain[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0,0,0,2200);
+            params.setMargins(0, 0, 0, 2200);
             verticalLayoutMain[i].setLayoutParams(params);
 
             verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
@@ -178,9 +156,9 @@ public class FragmentGeneralGruppeActivity extends Fragment {
             verticalContentLayout1[i].addView(membercounttxt);
             verticalContentLayout2[i].addView(admintxt);
 
-            verticalHeadlineLayout[i].setPadding(50,10,0,0);
-            verticalContentLayout1[i].setPadding(50,0,0,0);
-            verticalContentLayout2[i].setPadding(50,0,0,25);
+            verticalHeadlineLayout[i].setPadding(50, 10, 0, 0);
+            verticalContentLayout1[i].setPadding(50, 0, 0, 0);
+            verticalContentLayout2[i].setPadding(50, 0, 0, 25);
 
             verticalLayoutMain[i].addView(verticalHeadlineLayout[i]);
             verticalLayoutMain[i].addView(verticalContentLayout1[i]);
@@ -192,17 +170,32 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         }
     }
 
-
+//todo maybe unregister receiver onDestroy
 //    @Override
 //    protected void onPause() {
 //        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRegistrationBroadcastReceiver);
 //        isReceiverRegistered = false;
 //        super.onPause();
-    }
+}
 
 //    @Override
 //    protected void onResume() {
 //        super.onResume();
 //        registerReceiver();
 //    }
-//}
+////}
+//
+//    private void registerReceiver(){
+//        if(!isReceiverRegistered) {
+//            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mRegistrationBroadcastReceiver,
+//                    new IntentFilter("grouparraycomein"));
+//            isReceiverRegistered = true;
+//        }
+//    }
+//
+//    private void unregisterReceiver() {
+//        if(isReceiverRegistered) {
+//            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRegistrationBroadcastReceiver);
+//            isReceiverRegistered = false;
+//        }
+//    }

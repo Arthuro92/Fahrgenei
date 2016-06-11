@@ -1,9 +1,11 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 public class GeneralTabsActivity extends AppCompatActivity {
 
@@ -48,4 +50,9 @@ public class GeneralTabsActivity extends AppCompatActivity {
 
             }});
         }
+
+    public void createGroup(View view) {
+        Intent intent = new Intent(this, CreateGroupActivity.class);
+        startActivity(intent);
+    }
 }

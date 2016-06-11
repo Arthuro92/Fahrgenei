@@ -2,7 +2,6 @@ package com.android.cows.fahrgemeinschaft.observer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -52,8 +51,12 @@ public class AppointmentObserver implements MessageObserver {
     public void singleAppointment() {
         Gson gson = new Gson();
         String content = this.payload.getString("content");
-        SharedPreferences prefs = con.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        prefs.edit().putString("applist", content).apply();
+
+
+//        SharedPreferences prefs = con.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+//        prefs.edit().putString("applist", content).apply();
+
+
 
         Intent singleappointment = new Intent("singleAppointment");
         LocalBroadcastManager.getInstance(con).sendBroadcast(singleappointment);

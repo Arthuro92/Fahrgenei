@@ -50,14 +50,14 @@ public class Databaseoperator {
 
             String query;
 
-            if(!userindatabase.equals(objectstring)) {
+            if(userindatabase == null) {
+                query = "INSERT INTO user (userid, token, objectstring) VALUES ('" + id + "','" + token + "','" + objectstring + "');";
+                System.out.println("insert");
+            } else {
                 System.out.println(userindatabase);
                 System.out.println(objectstring);
                 query = "UPDATE user SET token = " + "'" + token + "'" + ", objectstring = '"+ objectstring + "' WHERE userid = '" + id + "'";
                 System.out.println("update");
-            } else {
-                query = "INSERT INTO user (userid, token, objectstring) VALUES ('" + id + "','" + token + "','" + objectstring + "');";
-                System.out.println("insert");
             }
 
             Connection con = null;

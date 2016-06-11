@@ -26,4 +26,14 @@
         android:onClick="creategroup"
         android:layout_below="@+id/groupname"
         android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/createGroupProgressBar"
+        android:visibility="invisible"/>
+
 </RelativeLayout>

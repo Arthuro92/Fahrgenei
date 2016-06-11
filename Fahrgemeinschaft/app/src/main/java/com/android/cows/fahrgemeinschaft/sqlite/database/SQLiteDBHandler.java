@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
+import com.android.cows.fahrgemeinschaft.dataobjects.Group;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -15,11 +17,13 @@ import java.util.ArrayList;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper{
     //new new new
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 24;
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(255));";
-    private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(255));";
+    private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER PRIMARY KEY, gid VARCHAR(255), jsonInString VARCHAR(255));";
+    private static final String TABLE_GROUPS = "CREATE TABLE groups(gid VARCHAR(255) PRIMARY KEY, jsonInString VARCHAR(255));";
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
+    private static final String GET_GROUPS = "SELECT * FROM groups";
 
     private String setChatMessage(Chat c) {
         Gson gson = new Gson();
@@ -30,6 +34,17 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
     private Chat getChatMessage(String jsonInString) {
         Gson gson = new Gson();
         return gson.fromJson(jsonInString, Chat.class);
+    }
+
+
+    private Group jsonToGroup(String jsonInString) {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonInString, Group.class);
+    }
+
+    private String groupToJson(Group group) {
+        Gson gson = new Gson();
+        return gson.toJson(group);
     }
 
     public void addChatMessage(Chat c) {
@@ -56,14 +71,44 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         return alc;
     }
 
+
+
+    public void addGroup(Group group) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("gid", group.getGid());
+        cv.put("jsonInString", groupToJson(group));
+        db.insert("groups", null, cv);
+    }
+
+    public ArrayList<Group> getGroups() {
+        ArrayList<Group> groupArrayList = new ArrayList<Group>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_GROUPS, null);
+        cur.moveToFirst();
+        while(!cur.isAfterLast()) {
+            if(cur.getString(cur.getColumnIndex("jsonInString")) != null) {
+                groupArrayList.add(jsonToGroup(cur.getString(cur.getColumnIndex("jsonInString"))));
+                System.out.println("DATABASE GET: " + cur.getString(cur.getColumnIndex("jsonInString")));
+                cur.moveToNext();
+            }
+        }
+        db.close();
+        return groupArrayList;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_CHAT_MESSAGE);
+        db.execSQL(TABLE_APPOINTMENTS);
+        db.execSQL(TABLE_GROUPS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS chat_message;");
+        db.execSQL("DROP TABLE IF EXISTS appointments;");
+        db.execSQL("DROP TABLE IF EXISTS groups;");
         onCreate(db);
     }
 
@@ -71,3 +116,26 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 }
+
+
+//private ArrayList<Appointment> jsonToAppointmentArray(String jsonInString) {
+//        Gson gson = new Gson();
+//        return gson.fromJson(jsonInString, new TypeToken<List<Appointment>>(){}.getType());
+//        }
+//
+//private String appointmentToJson(Appointment appointment) {
+//        Gson gson = new Gson();
+//        return gson.toJson(appointment);
+//        }
+//public void addAppointments(String jsonInString) {
+//        ArrayList<Appointment> applist = jsonToAppointmentArray(jsonInString);
+//
+//        SQLiteDatabase db = getWritableDatabase();
+//        for(Appointment appointment : applist) {
+//        ContentValues cv = new ContentValues();
+//        cv.put("message", appointmentToJson(appointment));
+//        cv.put("gid", appointment.getGid());
+//        cv.put("aid", appointment.getAid());
+//        db.insert("appointments", null, cv);
+//        }
+//        }

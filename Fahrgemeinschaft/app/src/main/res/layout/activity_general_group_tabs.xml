@@ -48,7 +48,8 @@
             android:layout_height="@dimen/toolbaricons"
             android:scaleType="fitXY"
             android:id="@+id/btnToolbar1"
-            android:src="@drawable/glyphicons4user"/>
+            android:src="@drawable/glyphicons4user"
+            android:onClick="createGroup" />
 
         <ImageButton
             android:layout_width="@dimen/toolbaricons"

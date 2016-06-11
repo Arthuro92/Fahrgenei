@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import SmackCcsClient.SmackCcsClient;
 import database.Databaseoperator;
 import dataobjects.Appointment;
+import errors.ErrorMessages;
 
 /**
  * Created by david on 24.05.2016.
@@ -57,7 +58,7 @@ public class AppointmentObserver implements MessageObserver {
             logger.log(Level.INFO, "Information invalid!");
             System.out.println(payload.containsKey("extra0"));
             System.out.println(payload.containsKey("extra1"));
-            sendSingleAppointmentError("error:information_invalid");
+            sendSingleAppointmentError(ErrorMessages.invalidInformtion);
             return false;
         }
 
@@ -65,13 +66,13 @@ public class AppointmentObserver implements MessageObserver {
 
         if(result.get(0).equals("error:noAccess")) {
             logger.log(Level.INFO, "Access for getting Appointment denied!");
-            sendSingleAppointmentError("error:noAccess");
+            sendSingleAppointmentError(ErrorMessages.noAccess);
             return false;
         }
 
         if(result.get(0).equals("error:sqlexception")) {
             logger.log(Level.INFO, "SQL Exception!");
-            sendSingleAppointmentError("error:sqlexception");
+            sendSingleAppointmentError(ErrorMessages.mysqlError);
             return false;
         }
 
@@ -109,6 +110,7 @@ public class AppointmentObserver implements MessageObserver {
             return true;
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
+            // todo maybe retry?
             return false;
         }
     }

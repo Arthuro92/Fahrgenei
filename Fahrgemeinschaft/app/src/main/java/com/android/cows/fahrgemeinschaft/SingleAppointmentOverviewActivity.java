@@ -53,6 +53,9 @@ public class SingleAppointmentOverviewActivity extends AppCompatActivity {
 
                 ArrayList<Appointment> applist = gson.fromJson(grpliststring, new TypeToken<List<Appointment>>(){}.getType());
                 createAppointmentOverview(applist);
+                LocalBroadcastManager.getInstance(SingleAppointmentOverviewActivity.this).registerReceiver(receiveappointment, new IntentFilter("ERRORAppointment"));
+                unregisterReceiver();
+
             }
         };
 
@@ -63,6 +66,7 @@ public class SingleAppointmentOverviewActivity extends AppCompatActivity {
                 CharSequence text = "" + bundle.get("error");
                 Toast toast = Toast.makeText(SingleAppointmentOverviewActivity.this, text , Toast.LENGTH_LONG);
                 toast.show();
+                unregisterReceiver();
             }
         };
 
@@ -87,7 +91,15 @@ public class SingleAppointmentOverviewActivity extends AppCompatActivity {
         }
     }
 
+    private void unregisterReceiver() {
+        if(isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(receiveappointment);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(errorreceivingappointment);
+            isReceiverRegistered = false;
+        }
+    }
 
+//todo we really want this? research what happends when receiver does not get unregistered
     @Override
     protected void onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiveappointment);
