@@ -38,7 +38,6 @@ public class AppointmentObserver implements MessageObserver {
 
                     case "getSingleAppointment":
                         logger.log(Level.INFO, "In getSingleAppointment");
-                        singleAppointmentHandle();
                         break;
 
                     case "getAllAppointments":
@@ -51,7 +50,13 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
-    private boolean singleAppointmentHandle() {
+
+
+
+
+
+//todo use this method and update datebaseperator for syncing all Appointments
+    private boolean syncAppointments() {
 
         //Fehler falls Informationen fehlen
         if(!payload.containsKey("extra0") || !payload.containsKey("extra1")) {
@@ -62,7 +67,7 @@ public class AppointmentObserver implements MessageObserver {
             return false;
         }
 
-        ArrayList<String> result = Databaseoperator.getAppointment(payload.get("extra0") , payload.get("extra1"));
+        ArrayList<String> result = Databaseoperator.Appointments(payload.get("extra0") , payload.get("extra1"));
 
         if(result.get(0).equals("error:noAccess")) {
             logger.log(Level.INFO, "Access for getting Appointment denied!");

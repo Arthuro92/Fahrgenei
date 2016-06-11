@@ -44,6 +44,25 @@ public class Databaseoperator {
         }
     }
 
+    static public boolean deleteGroup(String gid) {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection( CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "DELETE FROM groups WHERE gid = '" + gid + "'";
+            stmt.executeUpdate( query );
+            stmt.close();
+            con.close();
+            return true;
+        }
+
+        catch ( SQLException e )
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     static public boolean insertNewUser(String id, String token, String objectstring) {
         String userindatabase = getUser(id);
         if(userindatabase == null || !userindatabase.equals(objectstring)) {
@@ -51,13 +70,9 @@ public class Databaseoperator {
             String query;
 
             if(userindatabase == null) {
-                query = "INSERT INTO user (userid, token, objectstring) VALUES ('" + id + "','" + token + "','" + objectstring + "');";
-                System.out.println("insert");
+                query = "INSERT INTO users (userid, token, objectstring) VALUES ('" + id + "','" + token + "','" + objectstring + "');";
             } else {
-                System.out.println(userindatabase);
-                System.out.println(objectstring);
                 query = "UPDATE user SET token = " + "'" + token + "'" + ", objectstring = '"+ objectstring + "' WHERE userid = '" + id + "'";
-                System.out.println("update");
             }
 
             Connection con = null;
@@ -83,7 +98,7 @@ public class Databaseoperator {
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
             Statement stmt = con.createStatement();
-            String query = "SELECT objectstring FROM user WHERE userid =" +"'" + id + "'";
+            String query = "SELECT objectstring FROM users WHERE userid =" +"'" + id + "'";
             ResultSet rs = stmt.executeQuery( query );
 
 
@@ -130,7 +145,7 @@ public class Databaseoperator {
         }
     }
     
-    static public ArrayList<String> getAppointment(String gid, String uid) {
+    static public ArrayList<String> Appointments(String gid, String uid) {
         ArrayList<String> appointmentlist = new ArrayList();
 
         if(!checkUserInGroup(gid, uid)) {
@@ -159,6 +174,24 @@ public class Databaseoperator {
         }
     }
 
+    static public boolean userIsInGroup(String gid, String uid) {
+        Connection con = null;
+
+        try {
+            con = DriverManager.getConnection( CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "INSERT INTO is_in_group (gid, uid) VALUES ('" + gid + "','" + uid  + "');";
+            stmt.executeUpdate(query);
+            stmt.close();
+            con.close();
+            return true;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     static public boolean checkUserInGroup(String gid, String uid) {
         Connection con = null;

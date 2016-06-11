@@ -63,21 +63,25 @@ public class GroupObserver implements MessageObserver {
     public boolean insertGroup() {
         logger.log(Level.INFO, "second switch task = insertGroup");
 
-        if(this.payload.containsKey("extra0")) {
 
-            if(Databaseoperator.insertNewGroup(this.payload.get("extra0"), this.payload.get("content") )) {
-                sendInsertGroupSuccess();
-                return true;
+            Gson gson = new Gson();
+            Group grp = gson.fromJson(this.payload.get("content"), Group.class);
+
+            if(Databaseoperator.insertNewGroup(grp.getGid(), this.payload.get("content") )) {
+                if(Databaseoperator.userIsInGroup(grp.getGid(), grp.getAdminid())) {
+                    sendInsertGroupSuccess();
+                    return true;
+                } else {
+                    Databaseoperator.deleteGroup(grp.getGid());
+                    sendInsertGroupError(ErrorMessages.mysqlError);
+                    return false;
+                }
             } else {
                 sendInsertGroupError(ErrorMessages.mysqlError);
                 return false;
             }
-        } else {
-            logger.log(Level.INFO, "ERROR: No Extra  found!");
-            sendInsertGroupError(ErrorMessages.invalidInformtion);
-            return false;
         }
-    }
+
 
     @SuppressWarnings("unchecked")
     private boolean sendInsertGroupSuccess() {

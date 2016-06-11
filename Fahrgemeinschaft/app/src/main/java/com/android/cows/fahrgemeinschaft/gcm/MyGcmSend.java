@@ -26,10 +26,9 @@ public class MyGcmSend<T> {
      * @param task_category valid categorys: chat, group, appointment, user
      * @param task valid tasks //todo choose valid tasks
      * @param javaobject every valid javaobject
-     * @param extras use this field for ids, or something which you want to write in database, Can be NULL!
      * @param con the context try this, as context
      */
-    public void send(String task_category, String task, T javaobject, Context con, String[] extras) {
+    public void send(String task_category, String task, T javaobject, Context con) {
 
 
 
@@ -49,14 +48,6 @@ public class MyGcmSend<T> {
             Gson gson = new Gson();
             String javaobjectstring = gson.toJson(javaobject);
             payload.putString("content", javaobjectstring);
-
-            if(extras != null) {
-                int i = 0;
-                while(i < extras.length) {
-                    payload.putString("extra"+i, extras[i]);
-                    i++;
-                }
-            }
 
             gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);
             logstring = "Sent message success";

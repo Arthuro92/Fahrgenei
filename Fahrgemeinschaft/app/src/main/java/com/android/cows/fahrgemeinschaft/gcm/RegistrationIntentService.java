@@ -98,11 +98,8 @@ public class RegistrationIntentService extends IntentService {
         String email = prefs.getString("useremail" , "");
 
         User user = new User(id, token, name, email);
-        String[] extrastring = new String[2];
-        extrastring[0] = id;
-        extrastring[1] = token;
 
-        gcmsender.send("user", "registration", user, this, extrastring);
+        gcmsender.send("user", "registration", user, this);
     }
 
 

@@ -1,10 +1,13 @@
 package observer;
 
+import com.google.gson.Gson;
+
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import database.Databaseoperator;
+import dataobjects.User;
 
 /**
  * Created by david on 23.05.2016.
@@ -17,6 +20,7 @@ public class UserObserver implements MessageObserver {
 
     /**
      * Updates the Map payload for this object to the jsonObject. Also calls the setUser method so long as the task_category key of payload equals user
+     *
      * @param jsonObject a Map the payload for this object is updated to
      */
     public void updateMessageObserver(Map<String, Object> jsonObject) {
@@ -38,21 +42,20 @@ public class UserObserver implements MessageObserver {
     private boolean registration() {
         logger.log(Level.INFO, "first switch task = registration");
 
-        if(this.payload.containsKey("extra0") && this.payload.containsKey("extra1")) {
+        Gson gson = new Gson();
+        User user = gson.fromJson(this.payload.get("content"), User.class);
 
-            if(Databaseoperator.insertNewUser(this.payload.get("extra0"), this.payload.get("extra1"), this.payload.get("content"))) {
-                return true;
-            } else {
-                return false;
-            }
+        if (Databaseoperator.insertNewUser(user.getId(), user.getToken(), this.payload.get("content"))) {
+            return true;
         } else {
-            logger.log(Level.INFO, "ERROR: No Extra  found!");
             return false;
         }
     }
 
+
     /**
      * Constructs a new UserObserver and registers it to a MessageSubject
+     *
      * @param messageSubject a MessageSubject to register to
      */
     public UserObserver(MessageSubject messageSubject) {

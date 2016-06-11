@@ -56,10 +56,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
             MyGcmSend gcmsend = new MyGcmSend();
 
-            String[] array = new String[1];
-            array[0] = newgroup.getGid();
-
-            gcmsend.send("group", "insertgroup", newgroup, this, array);
+            gcmsend.send("group", "insertgroup", newgroup, this);
 
             createReceiver();
 

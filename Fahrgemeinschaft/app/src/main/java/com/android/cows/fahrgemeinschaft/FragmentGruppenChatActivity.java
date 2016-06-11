@@ -59,7 +59,7 @@ public class FragmentGruppenChatActivity extends Fragment {
         addChatMessageDB(chatMessage);
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
-        myGcmSend.send("chat", "chat", chatMessage, getActivity(), null);
+        myGcmSend.send("chat", "chat", chatMessage, getActivity());
     }
 
     /**
