@@ -2,7 +2,6 @@ package com.android.cows.fahrgemeinschaft.observer;
 
 import android.os.Bundle;
 import android.util.Log;
-
 import java.util.ListIterator;
 import java.util.Vector;
 
@@ -10,7 +9,7 @@ import java.util.Vector;
  * Created by david on 17.05.2016.
  */
 public class MessageSubject {
-    //new new new
+    //new new new new
     private static final String TAG = "MessageSubject";
     private Vector<MessageObserver> messageObservers;
     private Bundle jsonObject;

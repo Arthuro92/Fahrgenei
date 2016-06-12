@@ -1,4 +1,4 @@
-package com.android.cows.fahrgemeinschaft;
+package com.android.cows.fahrgemeinschaft.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,14 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.android.cows.fahrgemeinschaft.GlobalAppContext;
+import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import java.util.ArrayList;
 
 /**
  * Created by david on 26.05.2016.
  */
-public class ChatMessageAdapter extends ArrayAdapter{
-    //new new new
+public class ChatMessageAdapter extends ArrayAdapter {
+    //new new new new
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
@@ -62,6 +65,11 @@ public class ChatMessageAdapter extends ArrayAdapter{
         return setChatMessageView(chatMessageView, chatMessage);
     }
 
+    /**
+     * Constructs a ChatMessageAdapter
+     * @param context a Context the Adapter is constructed from
+     * @param resource an ArrayList to be handled and displayed by the Adapter
+     */
     public ChatMessageAdapter(Context context, ArrayList<Chat> resource) {
         super(context, R.layout.chat_message_layout, resource);
     }

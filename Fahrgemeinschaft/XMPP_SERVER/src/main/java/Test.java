@@ -28,7 +28,7 @@ public class Test {
 
 //        Databaseoperator.insertNewAppointment();
 
-//        testchat(ccsClient);
+        testchat(ccsClient);
 
 
         while(true) {
