@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Fahrgemeinschaft.iml" filepath="$PROJECT_DIR$/Fahrgemeinschaft.iml" />
       <module fileurl="file://$PROJECT_DIR$/XMPP_SERVER/XMPP_SERVER.iml" filepath="$PROJECT_DIR$/XMPP_SERVER/XMPP_SERVER.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dataobjects/dataobjects.iml" filepath="$PROJECT_DIR$/dataobjects/dataobjects.iml" />
     </modules>
   </component>
 </project>

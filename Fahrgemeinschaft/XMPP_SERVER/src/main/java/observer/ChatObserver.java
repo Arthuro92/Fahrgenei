@@ -1,5 +1,6 @@
 package observer;
 
+import com.dataobjects.Chat;
 import com.google.gson.Gson;
 
 import org.jivesoftware.smack.SmackException;
@@ -9,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import SmackCcsClient.SmackCcsClient;
-import dataobjects.Chat;
 
 /**
  * Created by david on 23.05.2016.

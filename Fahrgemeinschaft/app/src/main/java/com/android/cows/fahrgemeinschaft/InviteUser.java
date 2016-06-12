@@ -14,13 +14,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.cows.fahrgemeinschaft.dataobjects.Group;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+import com.dataobjects.Group;
 import com.google.gson.Gson;
 
-public class AddUserActivity extends AppCompatActivity {
-    private static final String TAG = "AddUserActivity";
+public class InviteUser extends AppCompatActivity {
+    private static final String TAG = "InviteUser";
     private BroadcastReceiver inviteSuccess;
     private BroadcastReceiver errorInviting;
     private ProgressBar mRegistrationProgressBar;
@@ -49,14 +49,14 @@ public class AddUserActivity extends AppCompatActivity {
 
             Group group = sqLiteDBHandler.getGroup(string[1]);
             if(group != null) {
-                //todo no perfectly solved
+                //todo handle invites with own email or email already invited
                 Gson gson = new Gson();
                 string[2] = gson.toJson(group);
                 gcmSend.send("group", "inviteuser",this, string);
                 createReceiver();
             } else {
                 CharSequence text = "Fehler Gruppe in die Eingeladen werden soll nicht gefunden in SQLLight Db";
-                Toast toast = Toast.makeText(AddUserActivity.this, text, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(InviteUser.this, text, Toast.LENGTH_LONG);
                 toast.show();
 
             }
@@ -84,7 +84,7 @@ public class AddUserActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
-                Intent intent2 = new Intent(AddUserActivity.this, GroupTabsActivity.class);
+                Intent intent2 = new Intent(InviteUser.this, GroupTabsActivity.class);
                 startActivity(intent2);
             }
         };
@@ -94,7 +94,7 @@ public class AddUserActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 Bundle bundle = intent.getExtras();
                 CharSequence text = "" + bundle.get("error");
-                Toast toast = Toast.makeText(AddUserActivity.this, text, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(InviteUser.this, text, Toast.LENGTH_LONG);
                 toast.show();
                 setLayoutVisible();
                 unregisterReceiver();

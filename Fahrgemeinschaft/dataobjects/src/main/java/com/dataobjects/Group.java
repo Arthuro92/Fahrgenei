@@ -1,4 +1,4 @@
-package dataobjects;
+package com.dataobjects;
 
 import java.util.List;
 

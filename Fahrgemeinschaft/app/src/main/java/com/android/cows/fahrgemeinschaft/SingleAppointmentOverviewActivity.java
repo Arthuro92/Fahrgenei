@@ -16,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.cows.fahrgemeinschaft.dataobjects.Appointment;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.dataobjects.Appointment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

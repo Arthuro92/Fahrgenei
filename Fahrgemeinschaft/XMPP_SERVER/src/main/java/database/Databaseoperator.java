@@ -1,5 +1,7 @@
 package database;
 
+import com.dataobjects.Appointment;
+import com.dataobjects.Group;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
@@ -11,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import dataobjects.Appointment;
-import dataobjects.Group;
 
 /**
  * Created by Lennart on 24.05.2016.

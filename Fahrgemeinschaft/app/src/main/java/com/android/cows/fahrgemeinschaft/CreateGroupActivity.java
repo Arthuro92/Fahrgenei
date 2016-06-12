@@ -16,8 +16,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.cows.fahrgemeinschaft.dataobjects.Group;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.dataobjects.Group;
 
 public class CreateGroupActivity extends AppCompatActivity {
 

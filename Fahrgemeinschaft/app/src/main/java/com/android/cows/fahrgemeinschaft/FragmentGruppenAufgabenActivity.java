@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.cows.fahrgemeinschaft.dataobjects.Task;
+import com.dataobjects.Task;
 
 import java.util.ArrayList;
 import java.util.List;

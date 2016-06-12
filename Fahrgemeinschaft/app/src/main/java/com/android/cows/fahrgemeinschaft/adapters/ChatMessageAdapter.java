@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
-import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
+import com.dataobjects.Chat;
+
 import java.util.ArrayList;
 
 /**

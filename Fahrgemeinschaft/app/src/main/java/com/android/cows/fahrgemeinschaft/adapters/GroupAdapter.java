@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.GroupTabsActivity;
 import com.android.cows.fahrgemeinschaft.R;
-import com.android.cows.fahrgemeinschaft.dataobjects.Group;
+import com.dataobjects.Group;
 
 import java.util.ArrayList;
 

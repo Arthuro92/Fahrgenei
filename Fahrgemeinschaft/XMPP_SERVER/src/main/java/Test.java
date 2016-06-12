@@ -1,3 +1,5 @@
+import com.dataobjects.Chat;
+
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 
@@ -7,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import SmackCcsClient.SmackCcsClient;
-import dataobjects.Chat;
 
 /**
  * Created by Lennart on 03.05.2016.
@@ -28,7 +29,7 @@ public class Test {
 
 //        Databaseoperator.insertNewAppointment();
 
-        testchat(ccsClient);
+//        testchat(ccsClient);
 
 
         while(true) {

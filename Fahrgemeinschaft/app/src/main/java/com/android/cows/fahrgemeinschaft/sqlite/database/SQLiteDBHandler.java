@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
-import com.android.cows.fahrgemeinschaft.dataobjects.Group;
+import com.dataobjects.Chat;
+import com.dataobjects.Group;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

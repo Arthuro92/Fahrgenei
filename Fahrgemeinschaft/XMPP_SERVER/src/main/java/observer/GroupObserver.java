@@ -1,5 +1,6 @@
 package observer;
 
+import com.dataobjects.Group;
 import com.google.gson.Gson;
 
 import org.jivesoftware.smack.SmackException;
@@ -11,7 +12,6 @@ import java.util.logging.Logger;
 
 import SmackCcsClient.SmackCcsClient;
 import database.Databaseoperator;
-import dataobjects.Group;
 import errors.ErrorMessages;
 
 

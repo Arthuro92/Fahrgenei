@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
+
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
-import com.android.cows.fahrgemeinschaft.dataobjects.User;
+import com.dataobjects.User;
+
 import java.util.ArrayList;
 
 /**

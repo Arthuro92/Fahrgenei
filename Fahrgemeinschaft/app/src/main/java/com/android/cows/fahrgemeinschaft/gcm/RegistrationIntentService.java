@@ -25,7 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
-import com.android.cows.fahrgemeinschaft.dataobjects.User;
+import com.dataobjects.User;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.google.firebase.messaging.FirebaseMessaging;

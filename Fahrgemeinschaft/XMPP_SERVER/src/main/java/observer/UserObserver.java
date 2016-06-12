@@ -1,5 +1,6 @@
 package observer;
 
+import com.dataobjects.User;
 import com.google.gson.Gson;
 
 import java.util.Map;
@@ -7,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import database.Databaseoperator;
-import dataobjects.User;
 
 /**
  * Created by david on 23.05.2016.

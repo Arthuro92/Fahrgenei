@@ -32,7 +32,7 @@ public class FragmentGruppenNutzerActivity extends Fragment {
             public void onClick(View v) {
                 //todo this in popup please not as activity
 
-                Intent intent = new Intent(getActivity(), AddUserActivity.class);
+                Intent intent = new Intent(getActivity(), InviteUser.class);
                 Bundle bundle = getActivity().getIntent().getExtras();
                 intent.putExtra("gid", bundle.getString("gid"));
 

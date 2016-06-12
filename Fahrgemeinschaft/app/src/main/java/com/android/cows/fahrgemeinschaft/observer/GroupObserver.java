@@ -8,9 +8,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
-import com.android.cows.fahrgemeinschaft.dataobjects.Group;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+import com.dataobjects.Group;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -117,6 +117,8 @@ public class GroupObserver implements MessageObserver {
     private void errorGroup(String error) {
         Intent errorGroup = new Intent("ERRORGroup");
         errorGroup.putExtra("error", error );
+//        CharSequence text = "" + error;
+//        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
         LocalBroadcastManager.getInstance(context).sendBroadcast(errorGroup);
     }
 

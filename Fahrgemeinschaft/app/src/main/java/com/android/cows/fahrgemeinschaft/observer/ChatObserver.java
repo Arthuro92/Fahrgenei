@@ -8,11 +8,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import com.android.cows.fahrgemeinschaft.ChatActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
-import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+import com.dataobjects.Chat;
 import com.google.gson.Gson;
 
 
