@@ -50,9 +50,10 @@ public class CreateGroupActivity extends AppCompatActivity {
 
             Group newgroup = new Group(groupname.getText().toString(),
                     1,
-                    prefs.getString("userid", "")
-                    , prefs.getString("username", "")
-                    , groupname.getText().toString() + prefs.getString("userid", ""));
+                    prefs.getString("userid", ""),
+                    prefs.getString("username", ""),
+                    groupname.getText().toString() + prefs.getString("userid", ""),
+                    1);
 
             MyGcmSend gcmsend = new MyGcmSend();
 
@@ -81,7 +82,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         insertGroupSuccess = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LocalBroadcastManager.getInstance(CreateGroupActivity.this).registerReceiver(errorReceivingAppointment, new IntentFilter("ERRORGroup"));
+                unregisterReceiver();
                 Intent intent2 = new Intent(CreateGroupActivity.this, GeneralTabsActivity.class);
                 startActivity(intent2);
             }
@@ -92,24 +93,30 @@ public class CreateGroupActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 Bundle bundle = intent.getExtras();
                 CharSequence text = "" + bundle.get("error");
-                Toast toast = Toast.makeText(CreateGroupActivity.this, text , Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(CreateGroupActivity.this, text, Toast.LENGTH_LONG);
                 toast.show();
-                LocalBroadcastManager.getInstance(CreateGroupActivity.this).registerReceiver(insertGroupSuccess, new IntentFilter("createdgroup"));
                 setLayoutVisible();
+                unregisterReceiver();
             }
         };
         registerReceiver();
     }
 
 
-
-
-    private void registerReceiver(){
+    private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(insertGroupSuccess, new IntentFilter("createdgroup"));
             LocalBroadcastManager.getInstance(this).registerReceiver(errorReceivingAppointment, new IntentFilter("ERRORGroup"));
             isReceiverRegistered = true;
         }
     }
-    //todo do we need unregistering for receiver?
+
+    private void unregisterReceiver() {
+        if (isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(insertGroupSuccess);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(errorReceivingAppointment);
+            isReceiverRegistered = false;
+        }
+        //todo do we need unregistering for receiver?
+    }
 }

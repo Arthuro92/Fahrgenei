@@ -22,13 +22,14 @@ public class Test {
         SmackCcsClient ccsClient = SmackCcsClient.getInstance();
         ccsClient.connect(senderId, password);
 
-//        ArrayList<String> result = Databaseoperator.Appointments("lennart1234", "100732276496073160540");
+//        ArrayList<String> result = Databaseoperator.getAppointments("lennart1234", "100732276496073160540");
 
 //       System.out.println(result.get(0));
 
 //        Databaseoperator.insertNewAppointment();
 
 //        testchat(ccsClient);
+
 
         while(true) {
             try {

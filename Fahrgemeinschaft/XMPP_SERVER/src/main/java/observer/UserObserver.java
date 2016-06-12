@@ -45,7 +45,7 @@ public class UserObserver implements MessageObserver {
         Gson gson = new Gson();
         User user = gson.fromJson(this.payload.get("content"), User.class);
 
-        if (Databaseoperator.insertNewUser(user.getId(), user.getToken(), this.payload.get("content"))) {
+        if (Databaseoperator.insertNewUser(user.getId(), user.getToken(), this.payload.get("content"), user.getEmail())) {
             return true;
         } else {
             return false;

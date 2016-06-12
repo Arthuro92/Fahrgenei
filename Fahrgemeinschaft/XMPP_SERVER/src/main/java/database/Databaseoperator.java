@@ -63,14 +63,33 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean insertNewUser(String id, String token, String objectstring) {
-        String userindatabase = getUser(id);
+    static public boolean deleteUserIsInGroup(String gid, String userid) {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection( CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "DELETE FROM users WHERE gid = '" + gid + "' AND uid = '" + userid + "'";
+            stmt.executeUpdate( query );
+            stmt.close();
+            con.close();
+            return true;
+        }
+
+        catch ( SQLException e )
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    static public boolean insertNewUser(String id, String token, String objectstring, String email) {
+        String userindatabase = getUserById(id);
         if(userindatabase == null || !userindatabase.equals(objectstring)) {
 
             String query;
 
             if(userindatabase == null) {
-                query = "INSERT INTO users (userid, token, objectstring) VALUES ('" + id + "','" + token + "','" + objectstring + "');";
+                query = "INSERT INTO users (userid, token, objectstring, email) VALUES ('" + id + "','" + token + "','" + objectstring + "','" + email + "');";
             } else {
                 query = "UPDATE user SET token = " + "'" + token + "'" + ", objectstring = '"+ objectstring + "' WHERE userid = '" + id + "'";
             }
@@ -93,7 +112,7 @@ public class Databaseoperator {
         }
     }
 
-    static public String getUser(String id) {
+    static public String getUserById(String id) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -105,6 +124,54 @@ public class Databaseoperator {
             if(rs.next()) {
                 String objectstring = rs.getString("objectstring");
                 return objectstring;
+            }
+
+            stmt.close();
+            con.close();
+            return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static public String getUserTokenByEmail(String email) {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "SELECT * FROM users WHERE email =" +"'" + email + "'";
+            ResultSet rs = stmt.executeQuery( query );
+
+
+            if(rs.next()) {
+                String token = rs.getString("token");
+                return token;
+            }
+
+            stmt.close();
+            con.close();
+            return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static public String getUserIdByEmail(String email) {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "SELECT userid FROM users WHERE email =" +"'" + email + "'";
+            ResultSet rs = stmt.executeQuery( query );
+
+
+            if(rs.next()) {
+                String token = rs.getString("userid");
+                return token;
             }
 
             stmt.close();
@@ -145,7 +212,7 @@ public class Databaseoperator {
         }
     }
     
-    static public ArrayList<String> Appointments(String gid, String uid) {
+    static public ArrayList<String> getAppointments(String gid, String uid) {
         ArrayList<String> appointmentlist = new ArrayList();
 
         if(!checkUserInGroup(gid, uid)) {
@@ -174,13 +241,13 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean userIsInGroup(String gid, String uid) {
+    static public boolean userIsInGroup(String gid, String uid, int isJoined) {
         Connection con = null;
 
         try {
             con = DriverManager.getConnection( CON_URL, USERNAME, PASSWORD);
             Statement stmt = con.createStatement();
-            String query = "INSERT INTO is_in_group (gid, uid) VALUES ('" + gid + "','" + uid  + "');";
+            String query = "INSERT INTO is_in_group (gid, uid, isJoined) VALUES ('" + gid + "','" + uid  + "'," + isJoined + ");";
             stmt.executeUpdate(query);
             stmt.close();
             con.close();
@@ -215,6 +282,24 @@ public class Databaseoperator {
         }
     }
 
+    public static boolean updateUserIsInGroup(String extra0, String extra1) {
+        Connection con = null;
+        logger.log(Level.INFO, "updateUserIsInGroup");
+        try {
+            con = DriverManager.getConnection( CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "UPDATE is_in_group SET isJoined = " + 1 + " WHERE gid = '" + extra0 + "'" + "AND uid = '" + extra1 + "'";
+            stmt.executeUpdate(query);
+            return true;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     static public void insertNewAppointment() {
         Appointment gapm1 = new Appointment("1", "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg");
         Appointment gapm2 = new Appointment("2", "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz");
@@ -237,4 +322,5 @@ public class Databaseoperator {
             e.printStackTrace();
         }
     }
+
 }

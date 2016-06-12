@@ -55,7 +55,7 @@ public class AppointmentObserver implements MessageObserver {
 
 
 
-//todo use this method and update datebaseperator for syncing all Appointments
+//todo use this method and update datebaseperator for syncing all getAppointments
     private boolean syncAppointments() {
 
         //Fehler falls Informationen fehlen
@@ -63,21 +63,21 @@ public class AppointmentObserver implements MessageObserver {
             logger.log(Level.INFO, "Information invalid!");
             System.out.println(payload.containsKey("extra0"));
             System.out.println(payload.containsKey("extra1"));
-            sendSingleAppointmentError(ErrorMessages.invalidInformtion);
+            sendSingleAppointmentError(ErrorMessages.INVALID_INFORMTION);
             return false;
         }
 
-        ArrayList<String> result = Databaseoperator.Appointments(payload.get("extra0") , payload.get("extra1"));
+        ArrayList<String> result = Databaseoperator.getAppointments(payload.get("extra0") , payload.get("extra1"));
 
-        if(result.get(0).equals("error:noAccess")) {
+        if(result.get(0).equals("error:NO_ACCESS")) {
             logger.log(Level.INFO, "Access for getting Appointment denied!");
-            sendSingleAppointmentError(ErrorMessages.noAccess);
+            sendSingleAppointmentError(ErrorMessages.NO_ACCESS);
             return false;
         }
 
         if(result.get(0).equals("error:sqlexception")) {
             logger.log(Level.INFO, "SQL Exception!");
-            sendSingleAppointmentError(ErrorMessages.mysqlError);
+            sendSingleAppointmentError(ErrorMessages.MYSQL_ERROR);
             return false;
         }
 

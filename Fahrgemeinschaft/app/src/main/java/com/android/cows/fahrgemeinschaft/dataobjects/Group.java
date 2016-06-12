@@ -13,13 +13,23 @@ public class Group {
     private String adminname;
     private List<User> userlist;
     private String gid;
+    private int isJoined;
 
-    public Group(String name, int membercount, String adminid, String adminname, String gid) {
+    public Group(String name, int membercount, String adminid, String adminname, String gid, int isJoined) {
         this.name = name;
         this.membercount = membercount;
         this.adminid = adminid;
         this.adminname = adminname;
         this.gid = gid;
+        this.isJoined = isJoined;
+    }
+
+    public int getisJoined() {
+        return isJoined;
+    }
+
+    public void setJoined(int joined) {
+        isJoined = joined;
     }
 
     public String getGid() {

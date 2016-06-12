@@ -26,12 +26,9 @@
         <activity
             android:name=".GcmActivity"
             android:label="@string/app_name" />
-
         <activity
-            android:name=".OverviewActivity"
             android:label="@string/title_activity_overview"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ChatActivity"
             android:launchMode="singleTop" />
@@ -72,7 +69,6 @@
             android:name=".gcm.RegistrationIntentService"
             android:exported="false" />
 
-
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,20 +77,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateGroupActivity" />
-        <activity android:name=".TaskOverview" />
         <activity android:name=".TaskDetailActivity" />
         <activity android:name=".GroupDetailOverview" />
-        <activity android:name=".GroupOverview" />
         <activity android:name=".AppointmentDetailActivity" />
-        <activity android:name=".GeneralTabsActivity"/>
-        <activity android:name=".GroupTabsActivity">
-
-        </activity>
-        <!-- evtl raus  <activity android:name=".FragmentGruppeActivity"/>
-        <activity android:name=".FragmentTermineActivity"/>-->
+        <activity android:name=".GeneralTabsActivity" />
+        <activity android:name=".GroupTabsActivity"></activity>
+        <!--
+        evtl raus  <activity android:name=".FragmentGruppeActivity"/>
+        <activity android:name=".FragmentTermineActivity"/>
+        -->
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".AppointmentOverview" />
-        <activity android:name=".SingleAppointmentOverviewActivity"></activity>
+        <activity android:name=".SingleAppointmentOverviewActivity" />
+        <activity android:name=".AddUserActivity"></activity>
     </application>
 
 </manifest>

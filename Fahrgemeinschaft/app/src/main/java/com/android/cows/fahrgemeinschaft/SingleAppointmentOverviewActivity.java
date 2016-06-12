@@ -42,7 +42,11 @@ public class SingleAppointmentOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_appointment_overview);
         requestAppointment();
 
+        createReceiver();
 
+    }
+
+    public void createReceiver() {
         receiveappointment = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -53,7 +57,6 @@ public class SingleAppointmentOverviewActivity extends AppCompatActivity {
 
                 ArrayList<Appointment> applist = gson.fromJson(grpliststring, new TypeToken<List<Appointment>>(){}.getType());
                 createAppointmentOverview(applist);
-                LocalBroadcastManager.getInstance(SingleAppointmentOverviewActivity.this).registerReceiver(receiveappointment, new IntentFilter("ERRORAppointment"));
                 unregisterReceiver();
 
             }
@@ -69,7 +72,7 @@ public class SingleAppointmentOverviewActivity extends AppCompatActivity {
                 unregisterReceiver();
             }
         };
-
+        registerReceiver();
     }
 
     public void requestAppointment() {

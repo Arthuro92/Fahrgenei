@@ -1,10 +1,14 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +27,8 @@ import java.util.List;
 
 public class FragmentGeneralGruppeActivity extends Fragment {
     private static final String TAG = "FGenGroupActivity";
+    private BroadcastReceiver updategrplist;
+    private boolean isReceiverRegistered;
 
     View contentViewGeneralGruppen;
 
@@ -53,7 +59,43 @@ public class FragmentGeneralGruppeActivity extends Fragment {
             }
         });
 
+        loadgrplist();
+        createReceiver();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver();
+    }
+
+    public void createReceiver() {
+        updategrplist = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadgrplist();
+            }
+        };
+        registerReceiver();
+    }
+
+    private void registerReceiver() {
+        if (!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("update"));
+            isReceiverRegistered = true;
+        }
+    }
+
+    private void unregisterReceiver() {
+        if (isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updategrplist);
+            isReceiverRegistered = false;
+        }
+    }
+
+
+    public void loadgrplist() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         ArrayList<Group> grplist = sqLiteDBHandler.getGroups();
         if (grplist.size() > 0) {
@@ -64,7 +106,6 @@ public class FragmentGeneralGruppeActivity extends Fragment {
             toast.show();
         }
     }
-
 
     /**
      * Creating for each Group a linearLayout
@@ -119,8 +160,11 @@ public class FragmentGeneralGruppeActivity extends Fragment {
             verticalLayoutMain[i].setLayoutParams(params);
 
             verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
-            verticalLayoutMain[i].setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.darkblueGrey));
-            verticalLayoutMain[i].setBackgroundResource(R.drawable.boxes_background);
+            if (grplist.get(i).getisJoined() == 1) {
+                verticalLayoutMain[i].setBackgroundResource(R.drawable.boxes_background);
+            } else {
+                verticalLayoutMain[i].setBackgroundResource(R.drawable.boxes_background_notjoined);
+            }
 
             verticalHeadlineLayout[i] = new LinearLayout(getActivity());
             verticalHeadlineLayout[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
@@ -169,33 +213,5 @@ public class FragmentGeneralGruppeActivity extends Fragment {
             i++;
         }
     }
-
-//todo maybe unregister receiver onDestroy
-//    @Override
-//    protected void onPause() {
-//        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRegistrationBroadcastReceiver);
-//        isReceiverRegistered = false;
-//        super.onPause();
 }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        registerReceiver();
-//    }
-////}
-//
-//    private void registerReceiver(){
-//        if(!isReceiverRegistered) {
-//            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mRegistrationBroadcastReceiver,
-//                    new IntentFilter("grouparraycomein"));
-//            isReceiverRegistered = true;
-//        }
-//    }
-//
-//    private void unregisterReceiver() {
-//        if(isReceiverRegistered) {
-//            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRegistrationBroadcastReceiver);
-//            isReceiverRegistered = false;
-//        }
-//    }

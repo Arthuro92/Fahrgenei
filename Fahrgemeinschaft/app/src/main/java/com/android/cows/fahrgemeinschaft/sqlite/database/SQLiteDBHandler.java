@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.dataobjects.Group;
@@ -17,13 +18,15 @@ import java.util.ArrayList;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper{
     //new new new
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 42;
+    private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
-    private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(255));";
-    private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER PRIMARY KEY, gid VARCHAR(255), jsonInString VARCHAR(255));";
-    private static final String TABLE_GROUPS = "CREATE TABLE groups(gid VARCHAR(255) PRIMARY KEY, jsonInString VARCHAR(255));";
+    private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
+    private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER PRIMARY KEY, gid VARCHAR(255), jsonInString VARCHAR(400));";
+    private static final String TABLE_GROUPS = "CREATE TABLE groups(gid VARCHAR(255) PRIMARY KEY, isJoined INTEGER, jsonInString VARCHAR(400));";
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
     private static final String GET_GROUPS = "SELECT * FROM groups";
+    private static final String GET_GROUP = "SELECT * FROM groups WHERE gid = ";
 
     private String setChatMessage(Chat c) {
         Gson gson = new Gson();
@@ -71,14 +74,24 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         return alc;
     }
 
-
+    public void joinGroup(Group group) {
+        Log.i(TAG, "Joining Group");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("isJoined", 1);
+        cv.put("jsonInString", groupToJson(group));
+        db.update("groups",cv, "gid = '" + group.getGid() + "'", null);
+        db.close();
+    }
 
     public void addGroup(Group group) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("gid", group.getGid());
+        cv.put("isJoined", group.getisJoined());
         cv.put("jsonInString", groupToJson(group));
         db.insert("groups", null, cv);
+        db.close();
     }
 
     public ArrayList<Group> getGroups() {
@@ -95,6 +108,18 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         }
         db.close();
         return groupArrayList;
+    }
+
+    public Group getGroup(String gid) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_GROUP + "'" + gid + "'", null);
+        cur.moveToFirst();
+        if(cur.getString(cur.getColumnIndex("jsonInString")) != null) {
+            db.close();
+            return jsonToGroup(cur.getString(cur.getColumnIndex("jsonInString")));
+        }
+        db.close();
+        return null;
     }
 
     @Override

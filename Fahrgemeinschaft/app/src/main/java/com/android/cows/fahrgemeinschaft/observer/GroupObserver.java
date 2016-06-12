@@ -2,12 +2,14 @@ package com.android.cows.fahrgemeinschaft.observer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.dataobjects.Group;
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,25 +37,64 @@ public class GroupObserver implements MessageObserver {
         if(this.payload.getString("task_category").equals("group")) {
         switch (this.payload.getString("task")) {
             case "grouparray":
-                Log.i(TAG, "first switch task = grouparray");
+                Log.i(TAG, "GroupArray");
                 groupArray();
                 break;
-            case "groupmemberjoined": //todo this might be not a valid task
-                Log.i(TAG, "second switch task = groupmemberjoined");
+            case "invitationsuccess":
+                Log.i(TAG, "Invitation Success");
+                invitationSuccess();
                 break;
             case "groupinsertsuccess" :
                 Log.i(TAG, "Group Insert Sucess");
                 updateLocalDatabase(jsonToGroup(this.payload.getString("content")));
                 insertSuccess();
                 break;
+            case "groupinvitation" :
+                Log.i(TAG, "Groupinvitation");
+                groupInvitation();
+                //todo request to user if he wants to join this group
+                break;
             default :
                 if(this.payload.getString("task").startsWith("error")) {
-                    Log.i(TAG, "second switch task = ERRORAppointment");
+                    Log.i(TAG, "ERROR Group");
                     errorGroup(this.payload.getString("task"));
                 }
                 Log.i(TAG,"default case");
         }
         }
+    }
+
+    private void invitationSuccess() {
+        Intent insertSuccess = new Intent("invitesuccess");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(insertSuccess);
+    }
+
+    private void groupInvitation() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        Group grp = jsonToGroup(this.payload.getString("content"));
+        sqLiteDBHandler.addGroup(grp);
+        System.out.println("ADDING GROUP");
+        sendInvitationAccept();
+        sendUpdateBroadcast();
+
+    }
+    private void sendUpdateBroadcast() {
+        Intent intent = new Intent("update");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sendInvitationAccept() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        Group grp = jsonToGroup(this.payload.getString("content"));
+        grp.setJoined(1);
+        sqLiteDBHandler.joinGroup(grp);
+        MyGcmSend myGcmSend = new MyGcmSend();
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String[] string = new String[2];
+        string[0] = grp.getGid();
+        string[1] = prefs.getString("userid" , "");
+
+        myGcmSend.send("group", "invitationaccept", context, string);
     }
 
     private Group jsonToGroup(String jsonInString) {

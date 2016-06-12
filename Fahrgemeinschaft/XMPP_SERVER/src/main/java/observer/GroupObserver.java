@@ -37,26 +37,91 @@ public class GroupObserver implements MessageObserver {
 
                 switch (this.payload.get("task")) {
                     case "getgrouparray":
-                        logger.log(Level.INFO, "first switch task = grouparray");
-
-                        SmackCcsClient smackclient = SmackCcsClient.getInstance();
-                        try {
-                            ArrayList<Group> grplist = Databaseoperator.getGroupList();
-                            smackclient.sendDownstreamMessage("group","grouparray", (String) jsonObject.get("from"), grplist );
-                        } catch (SmackException.NotConnectedException e) {
-                            e.printStackTrace();
-                        }
+                        logger.log(Level.INFO, "GroupArray: " + getGroupArray());
                         break;
-
                     case "insertgroup":
-                        //todo boolean does not get printed maybe handle boolean
                        logger.log(Level.INFO, "InsertGroup: " + insertGroup());
                         break;
-
+                    case "inviteuser":
+                        logger.log(Level.INFO, "User: " + this.payload.get("extra0") + " invited to: "+ this.payload.get("extra1")+ " from: " + jsonObject.get("from"));
+                        inviteUser();
+                        break;
+                    case "invitationaccept":
+                        logger.log(Level.INFO, "User: " + this.payload.get("extra1") + "accepted Group Invitation for Group: " + this.payload.get("extra0"));
+                        invitationaccepted();
+                        break;
                     default:
                         logger.log(Level.INFO, "default case");
                 }
             }
+        }
+    }
+
+    private void invitationaccepted() {
+        Databaseoperator.updateUserIsInGroup(this.payload.get("extra0"), this.payload.get("extra1"));
+    }
+
+    public boolean inviteUser() {
+        String token = Databaseoperator.getUserTokenByEmail(this.payload.get("extra0"));
+        if( token == null) {
+            sendGroupError(ErrorMessages.USER_NOT_FOUND);
+            return false;
+        }
+
+        String userid = Databaseoperator.getUserIdByEmail(this.payload.get("extra0"));
+        if(userid == null) {
+            sendGroupError(ErrorMessages.MYSQL_ERROR);
+            return false;
+        }
+        if(!Databaseoperator.userIsInGroup(this.payload.get("extra1"), userid, 0)) {
+            sendGroupError(ErrorMessages.MYSQL_ERROR);
+        }
+        if(!sendInvitation(token)) {
+            sendGroupError(ErrorMessages.SENDING_INVITATION_FAILED);
+            Databaseoperator.deleteUserIsInGroup(this.payload.get("extra1"), userid);
+            return false;
+        }
+
+
+    logger.log(Level.INFO, "Sending InvitationSucessMessage: " + sendInvitationSuccess());
+    return true;
+    }
+
+    private boolean sendInvitationSuccess() {
+        SmackCcsClient smackclient = SmackCcsClient.getInstance();
+        try {
+            smackclient.sendDownstreamMessage("group", "invitationsuccess", (String) jsonObject.get("from"), jsonToGroup(this.payload.get("content")));
+            return true;
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean sendInvitation(String token) {
+        SmackCcsClient smackclient = SmackCcsClient.getInstance();
+        try {
+            Gson gson = new Gson();
+            Group grp = gson.fromJson(this.payload.get("extra2"), Group.class);
+            grp.setJoined(0);
+            smackclient.sendDownstreamMessage("group", "groupinvitation", token, grp);
+            return true;
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean getGroupArray() {
+        SmackCcsClient smackclient = SmackCcsClient.getInstance();
+        try {
+            ArrayList<Group> grplist = Databaseoperator.getGroupList();
+            smackclient.sendDownstreamMessage("group","grouparray", (String) jsonObject.get("from"), grplist );
+            return true;
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -68,16 +133,16 @@ public class GroupObserver implements MessageObserver {
             Group grp = gson.fromJson(this.payload.get("content"), Group.class);
 
             if(Databaseoperator.insertNewGroup(grp.getGid(), this.payload.get("content") )) {
-                if(Databaseoperator.userIsInGroup(grp.getGid(), grp.getAdminid())) {
+                if(Databaseoperator.userIsInGroup(grp.getGid(), grp.getAdminid(), 1)) {
                     sendInsertGroupSuccess();
                     return true;
                 } else {
                     Databaseoperator.deleteGroup(grp.getGid());
-                    sendInsertGroupError(ErrorMessages.mysqlError);
+                    sendGroupError(ErrorMessages.MYSQL_ERROR);
                     return false;
                 }
             } else {
-                sendInsertGroupError(ErrorMessages.mysqlError);
+                sendGroupError(ErrorMessages.MYSQL_ERROR);
                 return false;
             }
         }
@@ -99,7 +164,7 @@ public class GroupObserver implements MessageObserver {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean sendInsertGroupError(String errortype) {
+    public boolean sendGroupError(String errortype) {
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
             smackCcsClient.sendDownstreamMessage("group" , errortype, (String) jsonObject.get("from"),null);
@@ -109,6 +174,12 @@ public class GroupObserver implements MessageObserver {
             //todo maybe retry?
             return false;
         }
+    }
+
+
+    private Group jsonToGroup(String jsonInString) {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonInString, Group.class);
     }
     /**
      * Constructs a new GroupObserver and registers it to a MessageSubject

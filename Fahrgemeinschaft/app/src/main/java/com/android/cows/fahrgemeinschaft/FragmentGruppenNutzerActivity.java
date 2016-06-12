@@ -1,5 +1,6 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class FragmentGruppenNutzerActivity extends Fragment {
 
@@ -25,13 +25,18 @@ public class FragmentGruppenNutzerActivity extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//todo button kann raus, da er nur als demonstartion des fragments dient. dort muss noch ein Listview rein bzw. die Group übersicht.
 
         Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Button", Toast.LENGTH_SHORT).show();
+                //todo this in popup please not as activity
+
+                Intent intent = new Intent(getActivity(), AddUserActivity.class);
+                Bundle bundle = getActivity().getIntent().getExtras();
+                intent.putExtra("gid", bundle.getString("gid"));
+
+                startActivity(intent);
             }
         });
 
