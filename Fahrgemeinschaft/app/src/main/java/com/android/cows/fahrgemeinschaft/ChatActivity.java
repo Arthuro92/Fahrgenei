@@ -58,7 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
         this.listView.setSelection(listView.getAdapter().getCount() - 1);
-        myGcmSend.send("chat", "chat", chatMessage, ChatActivity.this, null);
+        myGcmSend.send("chat", "chat", chatMessage, ChatActivity.this);
     }
 
     /**
