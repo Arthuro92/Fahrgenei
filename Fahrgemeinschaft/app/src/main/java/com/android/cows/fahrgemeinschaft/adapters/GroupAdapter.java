@@ -1,37 +1,35 @@
 package com.android.cows.fahrgemeinschaft.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
+import com.android.cows.fahrgemeinschaft.GroupTabsActivity;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.dataobjects.Group;
+
 import java.util.ArrayList;
 
 /**
  * Created by david on 12.06.2016.
  */
 public class GroupAdapter extends ArrayAdapter {
-    //new new new new
+
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
-    /**
-     * Gets the User by accessing the shared preferences
-     * @return user String
-     */
-    private String getGroupUser() {
-        SharedPreferences sharedPreferences = this.context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("username", "Blubb");
-    }
 
     private View setGroupView(View groupView, Group group) {
+        TextView textview = (TextView) groupView.findViewById(R.id.groupId1);
+        textview.setText(group.getName());
         return groupView;
     }
+
 
     /**
      * Sets the LayoutInflater to the base View to display the item at position
@@ -42,8 +40,19 @@ public class GroupAdapter extends ArrayAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Group group = (Group) getItem(position);
+        final Group group = (Group) getItem(position);
         View groupView = this.layoutInflater.inflate(R.layout.group_layout, parent, false);
+        groupView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                    Intent intent = new Intent(context, GroupTabsActivity.class);
+                    intent.putExtra("name", group.getName());
+                    intent.putExtra("adminname", group.getAdminid());
+                    intent.putExtra("gid", group.getGid());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+//
+            }
+        });
         return setGroupView(groupView, group);
     }
 
