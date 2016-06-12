@@ -3,6 +3,7 @@ package com.android.cows.fahrgemeinschaft;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,22 +12,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.android.cows.fahrgemeinschaft.adapters.ChatMessageAdapter;
 import com.android.cows.fahrgemeinschaft.dataobjects.Chat;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 
 public class ChatActivity extends AppCompatActivity {
-    //new new new
+    //new new new new
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
-    private ArrayList<Chat> arrayListChat;
+    public ArrayList<Chat> arrayListChat;
     private ChatMessageAdapter chatMessageAdapter;
-    private ListView lv;
+    private ListView listView;
+    private ChatReceiver chatReceiver;
 
     /**
      * Gets the User by accessing the shared preferences
@@ -55,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
         addChatMessageDB(chatMessage);
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
+        this.listView.setSelection(listView.getAdapter().getCount() - 1);
         myGcmSend.send("chat", "chat", chatMessage, ChatActivity.this, null);
     }
 
@@ -73,10 +76,11 @@ public class ChatActivity extends AppCompatActivity {
      * Adds Chat object to ArrayList from Intent
      * @param intent an Intent with an Extra to be added
      */
-    private void setArrayListFromExtra(Intent intent) {
+    public void setArrayListFromExtra(Intent intent) {
         Chat chatMessage = (Chat) intent.getSerializableExtra("Chat");
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
+        this.listView.setSelection(listView.getAdapter().getCount() - 1);
     }
 
     /**
@@ -84,8 +88,8 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void setChatView() {
         this.chatMessageAdapter = new ChatMessageAdapter(this, arrayListChat);
-        this.lv = (ListView) findViewById(R.id.chat_list_view);
-        this.lv.setAdapter(chatMessageAdapter);
+        this.listView = (ListView) findViewById(R.id.chat_list_view);
+        this.listView.setAdapter(chatMessageAdapter);
         Button send = (Button) findViewById(R.id.send_message_button);
         send.setOnClickListener(new View.OnClickListener() {
 
@@ -106,6 +110,15 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
+     * Sets a Receiver to get new chat messages
+     */
+    private void setChatReceiver() {
+        this.chatReceiver = new ChatReceiver(this);
+        IntentFilter intentFilter = new IntentFilter("com.android.cows.fahrgemeinschaft.UPDATECHAT");
+        registerReceiver(this.chatReceiver, intentFilter);
+    }
+
+    /**
      * Sets the ArrayList when app is created
      * @param savedInstanceState
      */
@@ -119,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
-     * Cancels first notification and sets activeActivity to true/active
+     * Cancels first notification and sets activeActivity to true/active, also starts receiver
      */
     @Override
     protected void onStart() {
@@ -127,31 +140,18 @@ public class ChatActivity extends AppCompatActivity {
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NID);
         activeActivity = true;
+        setChatReceiver();
         System.out.println("CHATACTIVITY STARTED");
     }
 
     /**
-     * Sets activeActivity to false/not active on app stop
+     * Sets activeActivity to false/not active on app stop, also unregisters receiver
      */
     @Override
     protected void onStop() {
         super.onStop();
         activeActivity = false;
+        unregisterReceiver(this.chatReceiver);
         System.out.println("CHATACTIVITY STOPPED");
-    }
-
-    /**
-     * Handles new Intents while Activity is active
-     * @param intent an Intent triggered while Activity in foreground
-     */
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if(intent.hasExtra("Chat")) {
-            setArrayListFromExtra(intent);
-        }
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(NID);
-        System.out.println("NEWINTENT TRIGGERED");
     }
 }
