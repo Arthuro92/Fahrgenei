@@ -1,10 +1,14 @@
 package com.android.cows.fahrgemeinschaft;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,17 +54,68 @@ public class FragmentGruppenTermineActivity extends Fragment {
 
                 Log.i(TAG, "switch to createAppointmentActivity");
                 Intent intent = new Intent(getActivity(), CreateAppointmentActivity.class);
-                startActivity(intent);
+                Bundle bundle = getActivity().getIntent().getExtras();
+                intent.putExtra("name", (String) bundle.get("name"));
+                intent.putExtra("adminid", (String) bundle.get("adminid"));
+                intent.putExtra("gid", (String) bundle.get("gid"));
                 startActivity(intent);
             }
         });
-        
+
+        hideButtonIfNotAdmin();
         loadAppointmentList();
+        createReceiver();
+
+    }
+
+
+    public void createReceiver() {
+        updategrplist = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadAppointmentList();
+            }
+        };
+        registerReceiver();
+    }
+
+    private void registerReceiver() {
+        if (!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("update"));
+            isReceiverRegistered = true;
+        }
+    }
+
+    private void unregisterReceiver() {
+        if (isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updategrplist);
+            isReceiverRegistered = false;
+        }
+    }
+
+    private void hideButtonIfNotAdmin() {
+        if (!checkAdminStatus()) {
+            Log.i(TAG, "No Admin Rights for this Group");
+            Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
+            btn.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private boolean checkAdminStatus() {
+        Bundle bundle = getActivity().getIntent().getExtras();
+        SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String id = prefs.getString("userid", "");
+        if (id.equals(bundle.get("adminid"))) {
+            return true;
+        } else {
+            return false;
+    }
     }
 
     private void loadAppointmentList() {
+        Bundle bundle = getActivity().getIntent().getExtras();
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
-        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments();
+        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(bundle.getString("gid"));
         if (appointmentlist.size() > 0) {
             System.out.println("create APPOINTMENTLIST");
             createAppointments(appointmentlist);
@@ -70,6 +125,13 @@ public class FragmentGruppenTermineActivity extends Fragment {
             toast.show();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver();
+    }
+
     /**
      * Creating for each Group a linearLayout
      *

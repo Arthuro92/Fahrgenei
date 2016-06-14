@@ -56,6 +56,7 @@ public class SmackCcsClient<T> {
     private static final Logger logger = Logger.getLogger("SmackCcsClient");
 
     private static final String GCM_SERVER = "gcm.googleapis.com";
+//    private static final String GCM_SERVER = "fcm-xmpp.googleapis.com";
     private static final int GCM_PORT = 5235;
 
     private static final String GCM_ELEMENT_NAME = "gcm";

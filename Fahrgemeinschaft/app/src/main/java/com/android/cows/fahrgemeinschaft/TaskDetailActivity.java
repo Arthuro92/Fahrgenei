@@ -30,9 +30,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         // String test = bundle.getString("test");
 
-        taskName.setText(bundle.getString("test"));
-        taskDescr.setText(bundle.getString("test2"));
-        taskAssignee.setText(bundle.getString("test3"));
+        taskName.setText(bundle.getString("taskname"));
+        taskDescr.setText(bundle.getString("taskdescription"));
+        taskAssignee.setText(bundle.getString("taskincharge"));
 
 
     }

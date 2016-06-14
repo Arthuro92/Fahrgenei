@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Appointment;
 
 import java.util.Date;
@@ -43,7 +44,20 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         MyGcmSend gcmsend = new MyGcmSend();
 
-        Appointment gapm1 = new Appointment("1", "grp 1100732276496073160540", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg");
+        Bundle bundle = getIntent().getExtras();
+
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+        int id = sqLiteDBHandler.getNextAppointmentID(bundle.getString("gid"));
+        Appointment gapm1;
+
+        if(id == 0) {
+            Log.i(TAG, "no appointments, create appointment with id 1");
+            gapm1 = new Appointment(1, (String) bundle.get("gid"), (String) bundle.get("name") + " " + 1, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+        } else {
+            id ++;
+            Log.i(TAG, "Create Appointment with id " + id);
+            gapm1 = new Appointment(id, (String) bundle.get("gid"), (String) bundle.get("name") + " " + id, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+        }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 
         createReceiver();
@@ -69,6 +83,10 @@ public class CreateAppointmentActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
                 Intent intent2 = new Intent(CreateAppointmentActivity.this, GroupTabsActivity.class);
+                Bundle bundle = getIntent().getExtras();
+                intent2.putExtra("name", (String) bundle.get("name"));
+                intent2.putExtra("adminid", (String) bundle.get("adminid"));
+                intent2.putExtra("gid", (String) bundle.get("gid"));
                 startActivity(intent2);
             }
         };

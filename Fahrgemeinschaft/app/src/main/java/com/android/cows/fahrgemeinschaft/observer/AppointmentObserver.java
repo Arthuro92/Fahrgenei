@@ -39,6 +39,12 @@ public class AppointmentObserver implements MessageObserver {
                     Log.i(TAG, "Appointmentinsersuccess");
                     updateLocalDatabase(1);
                     appointmentInsertSuccess();
+                    break;
+                case "newappointment":
+                    Log.i(TAG, "new Appointment received");
+                    updateLocalDatabase(0);
+                    sendLocalUpdateBroadcast();
+                    break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
                         Log.i(TAG, "ERRORAppointment");
@@ -47,6 +53,11 @@ public class AppointmentObserver implements MessageObserver {
                     break;
             }
         }
+    }
+
+    private void sendLocalUpdateBroadcast() {
+        Intent intent = new Intent("update");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
     private void updateLocalDatabase(int isParticipant) {

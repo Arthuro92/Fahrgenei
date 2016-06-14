@@ -84,6 +84,10 @@ public class InviteUser extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
                 Intent intent2 = new Intent(InviteUser.this, GroupTabsActivity.class);
+                Bundle bundle = getIntent().getExtras();
+                intent2.putExtra("name", (String) bundle.get("name"));
+                intent2.putExtra("adminid", (String) bundle.get("adminid"));
+                intent2.putExtra("gid", (String) bundle.get("gid"));
                 startActivity(intent2);
             }
         };

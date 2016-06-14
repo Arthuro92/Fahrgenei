@@ -27,6 +27,12 @@ public class GroupAdapter extends ArrayAdapter {
     private View setGroupView(View groupView, Group group) {
         TextView textview = (TextView) groupView.findViewById(R.id.groupTextView1);
         textview.setText(group.getName());
+
+        if(group.getisJoined() == 0) {
+            groupView.setBackgroundResource(R.color.red);
+        } else {
+            groupView.setBackgroundResource(R.color.blue_grey_500);
+        }
         return groupView;
     }
 
@@ -47,7 +53,7 @@ public class GroupAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, GroupTabsActivity.class);
                 intent.putExtra("name", group.getName());
-                intent.putExtra("adminname", group.getAdminid());
+                intent.putExtra("adminid", group.getAdminid());
                 intent.putExtra("gid", group.getGid());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

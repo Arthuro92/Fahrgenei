@@ -80,7 +80,10 @@ public class AppointmentObserver implements MessageObserver {
         try {
 
             Gson gson = new Gson();
-            smackclient.sendDownstreamMessage("appointment", "appointmentinsertsuccess", (String) jsonObject.get("from"), gson.fromJson(this.payload.get("content"), Appointment.class));
+            Appointment   appointment = gson.fromJson(this.payload.get("content"), Appointment.class);
+            smackclient.sendDownstreamMessage("appointment", "appointmentinsertsuccess", (String) jsonObject.get("from"),appointment);
+            appointment.setIsParticipant(0);
+            smackclient.sendDownstreamMessage("appointment", "newappointment", "/topics/" + appointment.getGid(), appointment);
             return true;
         } catch (SmackException.NotConnectedException e) {
             //todo what now XD? retry or something

@@ -298,7 +298,7 @@ public class Databaseoperator {
         }
     }
 
-    public static boolean userIsInAppointment(String aid, String gid, String uid, int isParticipant) {
+    public static boolean userIsInAppointment(int aid, String gid, String uid, int isParticipant) {
 
         if (!checkIsUserInAppointment(aid, gid, uid)) {
             Connection con = null;
@@ -322,7 +322,7 @@ public class Databaseoperator {
         }
     }
 
-    public static boolean checkIsUserInAppointment(String aid, String gid, String uid) {
+    public static boolean checkIsUserInAppointment(int aid, String gid, String uid) {
         Connection con = null;
 
         try {
@@ -361,7 +361,7 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean insertNewAppointment(String aid, String gid, String jsonInString) {
+    static public boolean insertNewAppointment(int aid, String gid, String jsonInString) {
         if (!checkAppointmentInDatabase(aid, gid)) {
             Connection con = null;
             logger.log(Level.INFO, "Try adding new Appointment");
@@ -382,7 +382,7 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean checkAppointmentInDatabase(String aid, String gid ) {
+    static public boolean checkAppointmentInDatabase(int aid, String gid ) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -434,7 +434,7 @@ public class Databaseoperator {
         }
     }
 
-    public static boolean deleteAppointment(String aid, String gid) {
+    public static boolean deleteAppointment(int aid, String gid) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);

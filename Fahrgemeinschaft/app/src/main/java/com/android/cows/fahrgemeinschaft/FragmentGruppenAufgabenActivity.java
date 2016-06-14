@@ -81,9 +81,9 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
                 public void onClick(View v) {
                     Log.i(TAG, tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenName());
                     Intent intent = new Intent(getActivity(), TaskDetailActivity.class);
-                    intent.putExtra("test", tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenName());
-                    intent.putExtra("test2", tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenBeschreibung());
-                    intent.putExtra("test3", tsklist.get(v.getId() - tsklist.size() - 1).getBearbeiter());
+                    intent.putExtra("taskname", tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenName());
+                    intent.putExtra("taskdescription", tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenBeschreibung());
+                    intent.putExtra("taskincharge", tsklist.get(v.getId() - tsklist.size() - 1).getBearbeiter());
                     //based on item add info to intent
                     startActivity(intent);
                 }

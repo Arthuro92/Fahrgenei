@@ -29,7 +29,7 @@ public class Test {
 
 //        Databaseoperator.insertNewAppointment();
 
-        testchat(ccsClient);
+//        testchat(ccsClient);
 
         while (true) {
             try {
@@ -51,10 +51,11 @@ public class Test {
         Chat cu = new Chat("Hon", myTime, "Cucumber");
 //     ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", co);
 
-        ccsClient.sendDownstreamMessage("chat", "chat", "/topics/Grp1100732276496073160540", po);
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/Grp1100732276496073160540", no );
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/Grp1100732276496073160540", pa );
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/Grp1100732276496073160540", me );
+
+        ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", po);
+     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", no );
+     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", pa );
+     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", me );
 
     }
 }

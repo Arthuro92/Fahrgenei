@@ -28,7 +28,7 @@ public class MyGcmSend<T> {
      * @param javaobject    every valid javaobject
      * @param con           the context try this, as context
      */
-    public void send(String task_category, String task, T javaobject, Context con) {
+    public void send(String task_category, String task, Object javaobject, Context con) {
 
 
         // Add custom implementation, as needed.

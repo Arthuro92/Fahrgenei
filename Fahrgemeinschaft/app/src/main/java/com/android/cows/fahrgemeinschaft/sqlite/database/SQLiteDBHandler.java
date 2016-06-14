@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 51;
+    private static final int DATABASE_VERSION = 69;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -33,8 +33,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 //                    "FOREIGN KEY(uid) REFEREMCES ";
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
     private static final String GET_GROUPS = "SELECT * FROM groups";
-    private static final String GET_APPOINTMENTS = "SELECT * FROM appointments";
+    private static final String GET_APPOINTMENTS = "SELECT * FROM appointments WHERE gid = ";
+    private static final String GET_APPOINTMENT_1 = "SELECT * FROM appointments WHERE aid = ";
+    private static final String GET_APPOINTMENT_2 = " AND gid = ";
     private static final String GET_GROUP = "SELECT * FROM groups WHERE gid = ";
+    private static final String GET_HIGHEST_ID_1 = "SELECT aid FROM appointments WHERE gid = ";
+    private static final String GET_HIGHEST_ID_2 = " ORDER BY aid DESC LIMIT 1 ";
 
     private String setChatMessage(Chat c) {
         Gson gson = new Gson();
@@ -88,7 +92,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("isJoined", 1);
         cv.put("jsonInString", groupToJson(group));
-        db.update("groups", cv, "gid = '" + group.getGid() + "'", null);
+        db.update("groups", cv, "gid = '" + group.getGid() + "'" , null);
         db.close();
     }
 
@@ -130,20 +134,6 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return null;
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_CHAT_MESSAGE);
-        db.execSQL(TABLE_APPOINTMENTS);
-        db.execSQL(TABLE_GROUPS);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS chat_message;");
-        db.execSQL("DROP TABLE IF EXISTS appointments;");
-        db.execSQL("DROP TABLE IF EXISTS groups;");
-        onCreate(db);
-    }
 
     public SQLiteDBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -161,20 +151,26 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
     public void addAppointment(Appointment appointment, int isParticipant) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("jsonInString", appointmentToJson(appointment));
-        cv.put("gid", appointment.getGid());
-        cv.put("aid", appointment.getAid());
-        cv.put("isParticipant", isParticipant);
-        db.insert("appointments", null, cv);
+        if(getAppointment(appointment.getAid(), appointment.getGid()) == null) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put("jsonInString", appointmentToJson(appointment));
+            cv.put("gid", appointment.getGid());
+            cv.put("aid", appointment.getAid());
+            cv.put("isParticipant", isParticipant);
+            db.insert("appointments", null, cv);
+            db.close();
+        } else {
+            Log.i(TAG, "Appointment already in Database");
+        }
+
     }
 
 
-    public ArrayList<Appointment> getAppointments() {
+    public ArrayList<Appointment> getAppointments(String gid) {
         ArrayList<Appointment> appointmentArrayList = new ArrayList<Appointment>();
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cur = db.rawQuery(GET_APPOINTMENTS, null);
+        Cursor cur = db.rawQuery(GET_APPOINTMENTS + "'" + gid + "'", null);
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
             if (cur.getString(cur.getColumnIndex("jsonInString")) != null) {
@@ -185,6 +181,46 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return appointmentArrayList;
+    }
+
+    public Appointment getAppointment(int aid, String gid) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_APPOINTMENT_1 + aid + GET_APPOINTMENT_2 + "'" + gid + "'", null);
+        cur.moveToFirst();
+        if (!cur.isAfterLast()) {
+            db.close();
+            return  jsonToAppointment(cur.getString(cur.getColumnIndex("jsonInString")));
+        }
+        db.close();
+        return null;
+    }
+
+    public int getNextAppointmentID(String gid) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_HIGHEST_ID_1 + "'" +gid + "'" +GET_HIGHEST_ID_2, null);
+        cur.moveToFirst();
+        if (!cur.isAfterLast()) {
+            db.close();
+            return cur.getInt(cur.getColumnIndex("aid"));
+        }
+        db.close();
+        return 0;
+    }
+
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(TABLE_CHAT_MESSAGE);
+        db.execSQL(TABLE_APPOINTMENTS);
+        db.execSQL(TABLE_GROUPS);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS chat_message;");
+        db.execSQL("DROP TABLE IF EXISTS appointments;");
+        db.execSQL("DROP TABLE IF EXISTS groups;");
+        onCreate(db);
     }
 
 }

@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
-import com.android.cows.fahrgemeinschaft.GroupTabsActivity;
 import com.android.cows.fahrgemeinschaft.R;
 import com.dataobjects.Appointment;
 
@@ -43,7 +43,7 @@ public class AppointmentAdapter extends ArrayAdapter {
         View appointmentView = this.layoutInflater.inflate(R.layout.appointment_layout, parent, false);
         appointmentView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(context, GroupTabsActivity.class);
+                Intent intent = new Intent(context, AppointmentDetailActivity.class);
                 intent.putExtra("name", appointment.getName());
                 intent.putExtra("startingtime", appointment.getAbfahrzeit());
                 intent.putExtra("meetingpoint", appointment.getTreffpunkt());

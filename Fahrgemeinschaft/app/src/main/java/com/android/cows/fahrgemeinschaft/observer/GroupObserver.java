@@ -78,11 +78,11 @@ public class GroupObserver implements MessageObserver {
         sqLiteDBHandler.addGroup(grp);
         System.out.println("ADDING GROUP");
         sendInvitationAccept();
-        sendUpdateBroadcast();
+        sendLocalUpdateBroadcast();
 
     }
 
-    private void sendUpdateBroadcast() {
+    private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("update");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
@@ -103,7 +103,6 @@ public class GroupObserver implements MessageObserver {
 
     private Group jsonToGroup(String jsonInString) {
         Gson gson = new Gson();
-        System.out.println(jsonInString);
         Group grp = gson.fromJson(jsonInString, Group.class);
         return grp;
     }
