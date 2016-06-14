@@ -26,6 +26,11 @@ public class AppointmentAdapter extends ArrayAdapter {
     private View setAppointmentView(View appointmentView, Appointment appointment) {
         TextView textview = (TextView) appointmentView.findViewById(R.id.appointmentTextView1);
         textview.setText(appointment.getName() + " TESTS");
+        if(appointment.getIsParticipant() == 0) {
+            appointmentView.setBackgroundResource(R.color.red);
+        } else {
+            appointmentView.setBackgroundResource(R.color.blue_grey_500);
+        }
         return appointmentView;
     }
 
