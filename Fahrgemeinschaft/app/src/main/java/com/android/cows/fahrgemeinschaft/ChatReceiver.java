@@ -13,8 +13,9 @@ public class ChatReceiver extends BroadcastReceiver {
 
     /**
      * Sets chat message history via ChatActivity
+     *
      * @param context a Context of the ChatReceiver
-     * @param intent a received Intent
+     * @param intent  a received Intent
      */
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,6 +24,7 @@ public class ChatReceiver extends BroadcastReceiver {
 
     /**
      * Constructs a ChatReceiver to handle chat messages
+     *
      * @param chatActivity the ChatActivity this ChatReceiver is referring to
      */
     public ChatReceiver(ChatActivity chatActivity) {

@@ -35,6 +35,7 @@ public class FragmentGruppenChatActivity extends Fragment {
 
     /**
      * Gets the User by accessing the shared preferences
+     *
      * @return user String
      */
     private String getChatUser() {
@@ -44,6 +45,7 @@ public class FragmentGruppenChatActivity extends Fragment {
 
     /**
      * Adds chatMessage to local database
+     *
      * @param chatMessage a Chat object to be added
      */
     private void addChatMessageDB(Chat chatMessage) {
@@ -53,6 +55,7 @@ public class FragmentGruppenChatActivity extends Fragment {
 
     /**
      * Sends a Chat object to the server
+     *
      * @param chatMessage
      */
     private void sendChatMessage(Chat chatMessage) {
@@ -69,13 +72,14 @@ public class FragmentGruppenChatActivity extends Fragment {
     private void getChatMessage() {
         EditText editText = (EditText) getActivity().findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
-        if(!editText.getText().toString().equals("")) {
+        if (!editText.getText().toString().equals("")) {
             sendChatMessage(new Chat(getChatUser(), time, editText.getText().toString()));
         }
     }
 
     /**
      * Adds Chat object to ArrayList from Intent
+     *
      * @param intent an Intent with an Extra to be added
      */
     private void setArrayListFromExtra(Intent intent) {
@@ -103,12 +107,14 @@ public class FragmentGruppenChatActivity extends Fragment {
 
     /**
      * Gets chat history from local database
+     *
      * @return an ArrayList containing the history
      */
     private ArrayList<Chat> getArrayListFromDB() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         return sqLiteDBHandler.getChatMessages();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -125,6 +131,7 @@ public class FragmentGruppenChatActivity extends Fragment {
         setChatView();
         System.out.println("CHATACTIVITY CREATED");
     }
+
     /**
      * Cancels first notification and sets activeActivity to true/active
      */

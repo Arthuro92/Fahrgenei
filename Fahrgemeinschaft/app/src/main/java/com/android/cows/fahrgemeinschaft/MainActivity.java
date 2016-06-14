@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
     While initializing the GoogleApiClient object, request the Plus.SCOPE_PLUS_LOGIN scope.
     */
 
-    private void buidNewGoogleApiClient(){
+    private void buidNewGoogleApiClient() {
 
-        google_api_client =  new GoogleApiClient.Builder(this)
+        google_api_client = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .addApi(Plus.API,Plus.PlusOptions.builder().build())
+                .addApi(Plus.API, Plus.PlusOptions.builder().build())
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
     }
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
       Plus.SCOPE_PLUS_LOGIN scope to see the  difference.
     */
 
-    private void custimizeSignBtn(){
+    private void custimizeSignBtn() {
 
         signIn_btn = (SignInButton) findViewById(R.id.sign_in_button);
         signIn_btn.setSize(SignInButton.SIZE_STANDARD);
@@ -109,10 +109,12 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
             }
         });
     }
+
     protected void onStart() {
         super.onStart();
         google_api_client.connect();
     }
+
     protected void onStop() {
         super.onStop();
         if (google_api_client.isConnected()) {
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         }
     }
 
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         if (google_api_client.isConnected()) {
             google_api_client.connect();
@@ -142,15 +144,16 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
         //noinspection SimplifiableIfStatement
         //if (id == R.id.action_settings) {
-         //   return true;
+        //   return true;
         //}
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         if (!result.hasResolution()) {
-            google_api_availability.getErrorDialog(this, result.getErrorCode(),request_code).show();
+            google_api_availability.getErrorDialog(this, result.getErrorCode(), request_code).show();
             return;
         }
 
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
     protected void onActivityResult(int requestCode, int responseCode,
                                     Intent intent) {
         // Check which request we're responding to
-        if (requestCode == SIGN_IN_CODE) {  
+        if (requestCode == SIGN_IN_CODE) {
             request_code = requestCode;
             if (responseCode != RESULT_OK) {
                 is_signInBtn_clicked = false;
@@ -198,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         changeUI(true);
 
     }
+
     @Override
     public void onConnectionSuspended(int arg0) {
         google_api_client.connect();
@@ -230,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
     private void gPlusSignIn() {
         if (!google_api_client.isConnecting()) {
-            Log.d("user connected","connected");
+            Log.d("user connected", "connected");
             is_signInBtn_clicked = true;
             progress_dialog.show();
             resolveSignInError();
@@ -319,21 +323,21 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
      set the User information into the views defined in the layout
      */
 
-    private void setPersonalInfo(Person currentPerson){
+    private void setPersonalInfo(Person currentPerson) {
 
         String personName = currentPerson.getDisplayName();
         String personPhotoUrl = currentPerson.getImage().getUrl();
         String email = Plus.AccountApi.getAccountName(google_api_client);
-        TextView   user_name = (TextView) findViewById(R.id.userName);
-        user_name.setText("Name: "+personName);
-        TextView gemail_id = (TextView)findViewById(R.id.emailId);
-        gemail_id.setText("Email Id: " +email);
-        TextView dob = (TextView)findViewById(R.id.dob);
-        dob.setText("DOB: "+currentPerson.getBirthday());
-        TextView tag_line = (TextView)findViewById(R.id.tag_line);
-        tag_line.setText("Tag Line: " +currentPerson.getTagline());
-        TextView about_me = (TextView)findViewById(R.id.about_me);
-        about_me.setText("About Me: "+currentPerson.getAboutMe());
+        TextView user_name = (TextView) findViewById(R.id.userName);
+        user_name.setText("Name: " + personName);
+        TextView gemail_id = (TextView) findViewById(R.id.emailId);
+        gemail_id.setText("Email Id: " + email);
+        TextView dob = (TextView) findViewById(R.id.dob);
+        dob.setText("DOB: " + currentPerson.getBirthday());
+        TextView tag_line = (TextView) findViewById(R.id.tag_line);
+        tag_line.setText("Tag Line: " + currentPerson.getTagline());
+        TextView about_me = (TextView) findViewById(R.id.about_me);
+        about_me.setText("About Me: " + currentPerson.getAboutMe());
         setProfilePic(personPhotoUrl);
         progress_dialog.dismiss();
         Toast.makeText(this, "Person information is shown!", Toast.LENGTH_LONG).show();
@@ -344,11 +348,11 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
      If you need a bigger image we have to change the query parameter value from 50 to the size you want
     */
 
-    private void setProfilePic(String profile_pic){
+    private void setProfilePic(String profile_pic) {
         profile_pic = profile_pic.substring(0,
                 profile_pic.length() - 2)
                 + PROFILE_PIC_SIZE;
-        ImageView    user_picture = (ImageView)findViewById(R.id.profile_pic);
+        ImageView user_picture = (ImageView) findViewById(R.id.profile_pic);
         new LoadProfilePic(user_picture).execute(profile_pic);
     }
 

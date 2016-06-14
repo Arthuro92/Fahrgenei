@@ -23,6 +23,7 @@ public class UserAdapter extends ArrayAdapter {
 
     /**
      * Gets the User by accessing the shared preferences
+     *
      * @return user String
      */
     private String getUserUser() {
@@ -36,7 +37,8 @@ public class UserAdapter extends ArrayAdapter {
 
     /**
      * Sets the LayoutInflater to the base View to display the item at position
-     * @param position an Integer referencing the position of the current Chat object in the ArrayList
+     *
+     * @param position    an Integer referencing the position of the current Chat object in the ArrayList
      * @param convertView
      * @param parent
      * @return the fully set displayable view for one list element
@@ -50,7 +52,8 @@ public class UserAdapter extends ArrayAdapter {
 
     /**
      * Constructs an Adapter
-     * @param context a Context the Adapter is constructed from
+     *
+     * @param context  a Context the Adapter is constructed from
      * @param resource an ArrayList to be handled and displayed by the Adapter
      */
     public UserAdapter(Context context, ArrayList<User> resource) {

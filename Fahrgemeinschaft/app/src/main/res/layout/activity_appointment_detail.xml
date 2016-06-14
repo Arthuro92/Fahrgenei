@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_height="80dp">
+        <TableRow android:layout_height="80dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/terminName"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
         </TableRow>
 
         <TableRow>
@@ -48,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/terminTreffZeit"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
         </TableRow>
 
         <TableRow>
@@ -66,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/terminTreffOrt"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
         </TableRow>
 
         <TableRow>
@@ -84,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/terminAbfahrtZeit"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
         </TableRow>
 
         <TableRow

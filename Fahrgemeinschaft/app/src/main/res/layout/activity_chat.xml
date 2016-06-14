@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#E0D8CD"
     tools:context="com.android.cows.fahrgemeinschaft.ChatActivity">
-    
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,6 +43,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/send_message_button"
-        android:layout_alignTop="@id/send_message_button"/>
+        android:layout_alignTop="@id/send_message_button" />
 
 </RelativeLayout>

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 public class GroupTabsActivity extends AppCompatActivity {
 
 
-
     ViewPager viewPagerGroup;
     TabLayout tabLayoutGroup;
 
@@ -16,7 +15,6 @@ public class GroupTabsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_tabs);
-
 
 
         viewPagerGroup = (ViewPager) findViewById(R.id.viewpagerGroup);
@@ -46,6 +44,7 @@ public class GroupTabsActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-            }});
-        }
+            }
+        });
+    }
 }

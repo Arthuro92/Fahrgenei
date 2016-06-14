@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.gcm.TopicSubscriber;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Group;
 import com.google.gson.Gson;
@@ -27,40 +28,42 @@ public class GroupObserver implements MessageObserver {
     private static final String TAG = "GroupOberserver";
 
 
-
     /**
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setGroup method so long as the task_category key of payload equals group
+     *
      * @param jsonObject a Bundle the payload for this object is updated to
      */
     public void updateMessageObserver(Bundle jsonObject) {
-        this.payload = jsonObject;;
-        if(this.payload.getString("task_category").equals("group")) {
-        switch (this.payload.getString("task")) {
-            case "grouparray":
-                Log.i(TAG, "GroupArray");
-                groupArray();
-                break;
-            case "invitationsuccess":
-                Log.i(TAG, "Invitation Success");
-                invitationSuccess();
-                break;
-            case "groupinsertsuccess" :
-                Log.i(TAG, "Group Insert Sucess");
-                updateLocalDatabase(jsonToGroup(this.payload.getString("content")));
-                insertSuccess();
-                break;
-            case "groupinvitation" :
-                Log.i(TAG, "Groupinvitation");
-                groupInvitation();
-                //todo request to user if he wants to join this group
-                break;
-            default :
-                if(this.payload.getString("task").startsWith("error")) {
-                    Log.i(TAG, "ERROR Group");
-                    errorGroup(this.payload.getString("task"));
-                }
-                Log.i(TAG,"default case");
-        }
+        this.payload = jsonObject;
+        ;
+        if (this.payload.getString("task_category").equals("group")) {
+            switch (this.payload.getString("task")) {
+                case "grouparray":
+                    Log.i(TAG, "GroupArray");
+                    groupArray();
+                    break;
+                case "invitationsuccess":
+                    Log.i(TAG, "Invitation Success");
+                    invitationSuccess();
+                    break;
+                case "groupinsertsuccess":
+                    Log.i(TAG, "Group Insert Sucess");
+                    updateLocalDatabase();
+                    TopicSubscriber.subscribeToTopic(jsonToGroup(this.payload.getString("content")).getGid());
+                    insertSuccess();
+                    break;
+                case "groupinvitation":
+                    Log.i(TAG, "Groupinvitation");
+                    groupInvitation();
+                    //todo request to user if he wants to join this group
+                    break;
+                default:
+                    if (this.payload.getString("task").startsWith("error")) {
+                        Log.i(TAG, "ERROR Group");
+                        errorGroup(this.payload.getString("task"));
+                    }
+                    Log.i(TAG, "default case");
+            }
         }
     }
 
@@ -78,6 +81,7 @@ public class GroupObserver implements MessageObserver {
         sendUpdateBroadcast();
 
     }
+
     private void sendUpdateBroadcast() {
         Intent intent = new Intent("update");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
@@ -92,8 +96,8 @@ public class GroupObserver implements MessageObserver {
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String[] string = new String[2];
         string[0] = grp.getGid();
-        string[1] = prefs.getString("userid" , "");
-
+        string[1] = prefs.getString("userid", "");
+        TopicSubscriber.subscribeToTopic(grp.getGid());
         myGcmSend.send("group", "invitationaccept", context, string);
     }
 
@@ -104,9 +108,9 @@ public class GroupObserver implements MessageObserver {
         return grp;
     }
 
-    private void updateLocalDatabase(Group group) {
+    private void updateLocalDatabase() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        sqLiteDBHandler.addGroup(group);
+        sqLiteDBHandler.addGroup(jsonToGroup(this.payload.getString("content")));
     }
 
     private void insertSuccess() {
@@ -116,14 +120,13 @@ public class GroupObserver implements MessageObserver {
 
     private void errorGroup(String error) {
         Intent errorGroup = new Intent("ERRORGroup");
-        errorGroup.putExtra("error", error );
-//        CharSequence text = "" + error;
-//        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        errorGroup.putExtra("error", error);
         LocalBroadcastManager.getInstance(context).sendBroadcast(errorGroup);
     }
 
     /**
      * Constructs a new GroupObserver and registers it to a MessageSubject
+     *
      * @param ms a MessageSubject to register to
      */
     public GroupObserver(MessageSubject ms) {
@@ -135,12 +138,12 @@ public class GroupObserver implements MessageObserver {
 
         Gson gson = new Gson();
         String content = this.payload.getString("content");
-        ArrayList<Group> grplist = gson.fromJson(content, new TypeToken<List<Group>>(){}.getType());
+        ArrayList<Group> grplist = gson.fromJson(content, new TypeToken<List<Group>>() {
+        }.getType());
 
 //        for(Group grp : grplist) {
 //            updateLocalDatabase(grp);
 //        }
-
 
 
         Intent gotgrouparray = new Intent("grouparraycomein");

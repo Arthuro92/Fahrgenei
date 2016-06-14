@@ -10,7 +10,6 @@ import android.view.View;
 public class GeneralTabsActivity extends AppCompatActivity {
 
 
-
     ViewPager viewPagerGeneral;
     TabLayout tabLayoutGeneral;
 
@@ -18,7 +17,6 @@ public class GeneralTabsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_group_tabs);
-
 
 
         viewPagerGeneral = (ViewPager) findViewById(R.id.viewpagerGeneral);
@@ -48,8 +46,9 @@ public class GeneralTabsActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-            }});
-        }
+            }
+        });
+    }
 
     public void createGroup(View view) {
         Intent intent = new Intent(this, CreateGroupActivity.class);

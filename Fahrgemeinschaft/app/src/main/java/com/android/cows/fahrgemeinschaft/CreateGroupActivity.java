@@ -19,11 +19,14 @@ import android.widget.Toast;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.dataobjects.Group;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class CreateGroupActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateGroupActivity";
     private BroadcastReceiver insertGroupSuccess;
-    private BroadcastReceiver errorReceivingAppointment;
+    private BroadcastReceiver errorGroupInsert;
     private ProgressBar mRegistrationProgressBar;
     private boolean isReceiverRegistered;
 
@@ -64,6 +67,12 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
     }
 
+    private boolean checkRegEx(String text) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void setLayoutInvisible() {
         findViewById(R.id.createGroupProgressBar).setVisibility(ProgressBar.VISIBLE);
@@ -88,7 +97,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         };
 
-        errorReceivingAppointment = new BroadcastReceiver() {
+        errorGroupInsert = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Bundle bundle = intent.getExtras();
@@ -106,7 +115,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(insertGroupSuccess, new IntentFilter("createdgroup"));
-            LocalBroadcastManager.getInstance(this).registerReceiver(errorReceivingAppointment, new IntentFilter("ERRORGroup"));
+            LocalBroadcastManager.getInstance(this).registerReceiver(errorGroupInsert, new IntentFilter("ERRORGroup"));
             isReceiverRegistered = true;
         }
     }
@@ -114,7 +123,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(insertGroupSuccess);
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(errorReceivingAppointment);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(errorGroupInsert);
             isReceiverRegistered = false;
         }
         //todo do we need unregistering for receiver?

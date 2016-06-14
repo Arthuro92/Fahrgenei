@@ -58,7 +58,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
             }
         });
 
-        loadgrplist();
+        loadGrpList();
         createReceiver();
 
     }
@@ -73,7 +73,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         updategrplist = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                loadgrplist();
+                loadGrpList();
             }
         };
         registerReceiver();
@@ -94,7 +94,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
     }
 
 
-    public void loadgrplist() {
+    public void loadGrpList() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         ArrayList<Group> grplist = sqLiteDBHandler.getGroups();
         if (grplist.size() > 0) {

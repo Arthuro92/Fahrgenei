@@ -17,7 +17,7 @@
         android:id="@+id/inviteEmail"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:hint="Email zum Einladen eingeben"/>
+        android:hint="Email zum Einladen eingeben" />
 
     <Button
         android:layout_width="wrap_content"
@@ -36,5 +36,5 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/inviteUserProgressBar"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 </RelativeLayout>

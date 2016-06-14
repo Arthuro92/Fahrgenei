@@ -1,11 +1,8 @@
 package com.android.cows.fahrgemeinschaft;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.content.Intent;
-
-import org.w3c.dom.Text;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
@@ -31,7 +28,7 @@ public class TaskDetailActivity extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getExtras();
-       // String test = bundle.getString("test");
+        // String test = bundle.getString("test");
 
         taskName.setText(bundle.getString("test"));
         taskDescr.setText(bundle.getString("test2"));

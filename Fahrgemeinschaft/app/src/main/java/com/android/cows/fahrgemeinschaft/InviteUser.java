@@ -48,11 +48,11 @@ public class InviteUser extends AppCompatActivity {
             string[1] = bundle.getString("gid");
 
             Group group = sqLiteDBHandler.getGroup(string[1]);
-            if(group != null) {
+            if (group != null) {
                 //todo handle invites with own email or email already invited
                 Gson gson = new Gson();
                 string[2] = gson.toJson(group);
-                gcmSend.send("group", "inviteuser",this, string);
+                gcmSend.send("group", "inviteuser", this, string);
                 createReceiver();
             } else {
                 CharSequence text = "Fehler Gruppe in die Eingeladen werden soll nicht gefunden in SQLLight Db";
@@ -78,7 +78,6 @@ public class InviteUser extends AppCompatActivity {
     }
 
 
-
     private void createReceiver() {
         inviteSuccess = new BroadcastReceiver() {
             @Override
@@ -102,6 +101,7 @@ public class InviteUser extends AppCompatActivity {
         };
         registerReceiver();
     }
+
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(inviteSuccess, new IntentFilter("invitesuccess"));

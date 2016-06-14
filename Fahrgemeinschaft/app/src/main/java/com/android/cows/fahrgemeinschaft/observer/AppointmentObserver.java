@@ -7,6 +7,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+import com.dataobjects.Appointment;
 import com.google.gson.Gson;
 
 /**
@@ -16,12 +18,13 @@ import com.google.gson.Gson;
 public class AppointmentObserver implements MessageObserver {
     //new new
     private Bundle payload;
-    private Context con = GlobalAppContext.getAppContext();
+    private Context context = GlobalAppContext.getAppContext();
     private static final String TAG = "AppointmentObserver";
 
 
     /**
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setAppointment method so long as the task_category key of payload equals appointment
+     *
      * @param jsonObject a Bundle the payload for this object is updated to
      */
     public void updateMessageObserver(Bundle jsonObject) {
@@ -29,12 +32,16 @@ public class AppointmentObserver implements MessageObserver {
         if (this.payload.getString("task_category").equals("appointment")) {
             switch (this.payload.getString("task")) {
                 case "singleAppointment":
-                    Log.i(TAG, "first switch task = grouparray");
+                    Log.i(TAG, "single Appointment");
                     singleAppointment();
                     break;
+                case "appointmentinsertsuccess":
+                    Log.i(TAG, "Appointmentinsersuccess");
+                    updateLocalDatabase(1);
+                    appointmentInsertSuccess();
                 default:
-                    if(this.payload.getString("task").startsWith("error")) {
-                        Log.i(TAG, "second switch task = ERRORAppointment");
+                    if (this.payload.getString("task").startsWith("error")) {
+                        Log.i(TAG, "ERRORAppointment");
                         errorAppointment(this.payload.getString("task"));
                     }
                     break;
@@ -42,10 +49,25 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
+    private void updateLocalDatabase(int isParticipant) {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        sqLiteDBHandler.addAppointment(jsonToAppointment(this.payload.getString("content")), isParticipant);
+    }
+
+    private Appointment jsonToAppointment(String jsonInString) {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonInString, Appointment.class);
+    }
+
+    private void appointmentInsertSuccess() {
+        Intent errorappointment = new Intent("createdAppointment");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
+    }
+
     private void errorAppointment(String error) {
         Intent errorappointment = new Intent("ERRORAppointment");
-        errorappointment.putExtra("error", error );
-        LocalBroadcastManager.getInstance(con).sendBroadcast(errorappointment);
+        errorappointment.putExtra("error", error);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
     }
 
     public void singleAppointment() {
@@ -53,18 +75,18 @@ public class AppointmentObserver implements MessageObserver {
         String content = this.payload.getString("content");
 
 
-//        SharedPreferences prefs = con.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+//        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
 //        prefs.edit().putString("applist", content).apply();
 
 
-
         Intent singleappointment = new Intent("singleAppointment");
-        LocalBroadcastManager.getInstance(con).sendBroadcast(singleappointment);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(singleappointment);
     }
 
 
     /**
      * Constructs a new AppointmentObserver and registers it to a MessageSubject
+     *
      * @param ms a MessageSubject to register to
      */
     public AppointmentObserver(MessageSubject ms) {

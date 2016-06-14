@@ -24,6 +24,7 @@ public class ChatMessageAdapter extends ArrayAdapter {
 
     /**
      * Gets the User by accessing the shared preferences
+     *
      * @return user String
      */
     private String getChatUser() {
@@ -33,8 +34,9 @@ public class ChatMessageAdapter extends ArrayAdapter {
 
     /**
      * Sets the view for one Listelement
+     *
      * @param chatMessageView a View to display the chatMessage
-     * @param chatMessage a Chat object to be displayed
+     * @param chatMessage     a Chat object to be displayed
      * @return a view ready to be displayed
      */
     private View setChatMessageView(View chatMessageView, Chat chatMessage) {
@@ -49,7 +51,8 @@ public class ChatMessageAdapter extends ArrayAdapter {
 
     /**
      * Sets the LayoutInflater to the base View to display the chatMessage depending on the sender of the message
-     * @param position an Integer referencing the position of the current Chat object in the ArrayList
+     *
+     * @param position    an Integer referencing the position of the current Chat object in the ArrayList
      * @param convertView
      * @param parent
      * @return the fully set displayable view for one list element
@@ -58,7 +61,7 @@ public class ChatMessageAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Chat chatMessage = (Chat) getItem(position);
         View chatMessageView;
-        if(chatMessage.getChatMessageFrom().equals(getChatUser())) {
+        if (chatMessage.getChatMessageFrom().equals(getChatUser())) {
             chatMessageView = this.layoutInflater.inflate(R.layout.chat_message_layout_out, parent, false);
         } else {
             chatMessageView = this.layoutInflater.inflate(R.layout.chat_message_layout, parent, false);
@@ -68,7 +71,8 @@ public class ChatMessageAdapter extends ArrayAdapter {
 
     /**
      * Constructs a ChatMessageAdapter
-     * @param context a Context the Adapter is constructed from
+     *
+     * @param context  a Context the Adapter is constructed from
      * @param resource an ArrayList to be handled and displayed by the Adapter
      */
     public ChatMessageAdapter(Context context, ArrayList<Chat> resource) {

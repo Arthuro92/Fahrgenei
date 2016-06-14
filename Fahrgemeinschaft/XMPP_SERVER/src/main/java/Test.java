@@ -29,61 +29,32 @@ public class Test {
 
 //        Databaseoperator.insertNewAppointment();
 
-//        testchat(ccsClient);
+        testchat(ccsClient);
 
-
-        while(true) {
+        while (true) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
     }
-}
 
- @SuppressWarnings("unchecked")
- public static void testchat(SmackCcsClient ccsClient) throws SmackException.NotConnectedException {
-     String myTime = DateFormat.getDateTimeInstance().format(new Date());
-     Chat co = new Chat("Don", myTime, "Cookies");
-     Chat po = new Chat("Jon", myTime, "Potatoes");
-     Chat no = new Chat("Ron", myTime, "Noodles");
-     Chat pa = new Chat("Bon", myTime, "Pasta");
-     Chat me = new Chat("Zon", myTime, "Meat");
-     Chat cu = new Chat("Hon", myTime, "Cucumber");
-     ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", co);
+    @SuppressWarnings("unchecked")
+    public static void testchat(SmackCcsClient ccsClient) throws SmackException.NotConnectedException {
+        String myTime = DateFormat.getDateTimeInstance().format(new Date());
+        Chat co = new Chat("Don", myTime, "Cookies");
+        Chat po = new Chat("Jon", myTime, "Potatoes");
+        Chat no = new Chat("Ron", myTime, "Noodles");
+        Chat pa = new Chat("Bon", myTime, "Pasta");
+        Chat me = new Chat("Zon", myTime, "Meat");
+        Chat cu = new Chat("Hon", myTime, "Cucumber");
+//     ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", co);
 
-     try {
-         Thread.sleep(1000);
-     } catch (InterruptedException ex) {
-         Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", po );
+        ccsClient.sendDownstreamMessage("chat", "chat", "/topics/Grp1100732276496073160540", po);
+     ccsClient.sendDownstreamMessage("chat","chat","/topics/Grp1100732276496073160540", no );
+     ccsClient.sendDownstreamMessage("chat","chat","/topics/Grp1100732276496073160540", pa );
+     ccsClient.sendDownstreamMessage("chat","chat","/topics/Grp1100732276496073160540", me );
 
-     try {
-         Thread.sleep(1000);
-     } catch (InterruptedException ex) {
-         Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", no );
-
-     try {
-         Thread.sleep(1000);
-     } catch (InterruptedException ex) {
-         Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", pa );
-
-     try {
-         Thread.sleep(1000);
-     } catch (InterruptedException ex) {
-         Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", me );
-
-     try {
-         Thread.sleep(1000);
-     } catch (InterruptedException ex) {
-         Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-     }
-      }
+    }
 }

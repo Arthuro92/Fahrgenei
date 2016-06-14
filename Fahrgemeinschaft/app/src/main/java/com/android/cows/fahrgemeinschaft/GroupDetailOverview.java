@@ -1,9 +1,7 @@
 package com.android.cows.fahrgemeinschaft;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 
 public class GroupDetailOverview extends AppCompatActivity {
@@ -29,12 +27,4 @@ public class GroupDetailOverview extends AppCompatActivity {
 
     }
 
-    public void appointments(View view) {
-        Intent intent = new Intent(this, SingleAppointmentOverviewActivity.class);
-        Bundle bundle = getIntent().getExtras();
-        intent.putExtra("gid" , bundle.getString("gid"));
-        intent.putExtra("userid" , bundle.getString("userid"));
-        startActivity(intent);
-
-    }
 }

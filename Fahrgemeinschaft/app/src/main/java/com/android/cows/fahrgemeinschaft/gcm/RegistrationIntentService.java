@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Google Inc. All Rights Reserved.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -62,7 +62,7 @@ public class RegistrationIntentService extends IntentService {
             sendRegistrationToServer(token);
 
             // Subscribe to topic channels
-            subscribeTopics(token);
+            subscribeTopics();
 
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
@@ -93,9 +93,9 @@ public class RegistrationIntentService extends IntentService {
         MyGcmSend gcmsender = new MyGcmSend();
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        String id = prefs.getString("userid" , "");
-        String name = prefs.getString("username" , "");
-        String email = prefs.getString("useremail" , "");
+        String id = prefs.getString("userid", "");
+        String name = prefs.getString("username", "");
+        String email = prefs.getString("useremail", "");
 
         User user = new User(id, token, name, email);
 
@@ -103,18 +103,13 @@ public class RegistrationIntentService extends IntentService {
     }
 
 
-
-
     /**
      * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.
-     *
-     * @param token GCM token
      * @throws IOException if unable to reach the GCM PubSub service
      */
     // [START subscribe_topics]
-    private void subscribeTopics(String token) throws IOException {
-//        GcmPubSub pubSub = GcmPubSub.getInstance(this);
-        FirebaseMessaging pubSub =   FirebaseMessaging.getInstance();
+    private void subscribeTopics() throws IOException {
+        FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
         for (String topic : TOPICS) {
             pubSub.subscribeToTopic(topic);
         }

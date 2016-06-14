@@ -12,7 +12,9 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TableRow>
+
             <TextView
                 android:id="@+id/textView1"
                 android:text="Aufgabenbezichnung "
@@ -43,6 +45,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/textView2"
                 android:text="Beschreibung "
@@ -57,20 +60,21 @@
             android:layout_height="match_parent">
 
             <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="New Text"
-              android:id="@+id/taskDescr"
-              android:layout_below="@+id/taskName"
-              android:layout_alignParentLeft="true"
-              android:layout_alignParentStart="true"
-              android:layout_alignParentRight="true"
-              android:layout_alignParentEnd="true"
-              android:height="400px"
-              android:textColor="@color/black" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/taskDescr"
+                android:layout_below="@+id/taskName"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:height="400px"
+                android:textColor="@color/black" />
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/textView3"
                 android:text="Bearbeiter "
@@ -85,17 +89,17 @@
             android:layout_height="match_parent">
 
             <TextView
-             android:layout_width="181dp"
-             android:layout_height="wrap_content"
-             android:text="New Text"
-             android:id="@+id/taskAssignee"
-             android:layout_alignParentLeft="true"
-             android:layout_alignParentStart="true"
-             android:layout_below="@+id/taskDescr"
-             android:layout_alignParentRight="true"
-             android:layout_alignParentEnd="true"
-             android:height="100px"
-             android:textColor="@color/black" />
+                android:layout_width="181dp"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/taskAssignee"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/taskDescr"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:height="100px"
+                android:textColor="@color/black" />
         </TableRow>
 
     </TableLayout>
