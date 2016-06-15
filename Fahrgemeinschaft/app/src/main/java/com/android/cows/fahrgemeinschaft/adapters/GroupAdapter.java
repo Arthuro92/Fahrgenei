@@ -25,15 +25,22 @@ public class GroupAdapter extends ArrayAdapter {
 
 
     private View setGroupView(View groupView, Group group) {
-        TextView textview = (TextView) groupView.findViewById(R.id.groupId1);
+        TextView textview = (TextView) groupView.findViewById(R.id.groupTextView1);
         textview.setText(group.getName());
+
+        if(group.getisJoined() == 0) {
+            groupView.setBackgroundResource(R.color.red);
+        } else {
+            groupView.setBackgroundResource(R.color.blue_grey_500);
+        }
         return groupView;
     }
 
 
     /**
      * Sets the LayoutInflater to the base View to display the item at position
-     * @param position an Integer referencing the position of the current Chat object in the ArrayList
+     *
+     * @param position    an Integer referencing the position of the current Chat object in the ArrayList
      * @param convertView
      * @param parent
      * @return the fully set displayable view for one list element
@@ -44,12 +51,12 @@ public class GroupAdapter extends ArrayAdapter {
         View groupView = this.layoutInflater.inflate(R.layout.group_layout, parent, false);
         groupView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                    Intent intent = new Intent(context, GroupTabsActivity.class);
-                    intent.putExtra("name", group.getName());
-                    intent.putExtra("adminname", group.getAdminid());
-                    intent.putExtra("gid", group.getGid());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
+                Intent intent = new Intent(context, GroupTabsActivity.class);
+                intent.putExtra("name", group.getName());
+                intent.putExtra("adminid", group.getAdminid());
+                intent.putExtra("gid", group.getGid());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
 //
             }
         });
@@ -58,7 +65,8 @@ public class GroupAdapter extends ArrayAdapter {
 
     /**
      * Constructs an Adapter
-     * @param context a Context the Adapter is constructed from
+     *
+     * @param context  a Context the Adapter is constructed from
      * @param resource an ArrayList to be handled and displayed by the Adapter
      */
     public GroupAdapter(Context context, ArrayList<Group> resource) {

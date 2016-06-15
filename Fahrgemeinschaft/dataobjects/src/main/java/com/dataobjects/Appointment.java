@@ -7,13 +7,14 @@ import java.util.Date;
  */
 public class Appointment {
 
-    private String aid;
+    private int aid;
     private String gid;
     private String name;
     private Date abfahrzeit;
     private Date treffpunkt_zeit;
     private String treffpunkt;
     private String zielort;
+    private int isParticipant;
 
     public String getZielort() {
         return zielort;
@@ -23,14 +24,23 @@ public class Appointment {
         this.zielort = zielort;
     }
 
-    public Appointment(String tid, String gid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort) {
-        this.aid = tid;
+    public Appointment(int aid, String gid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
+        this.aid = aid;
         this.gid = gid;
         this.name = name;
         this.abfahrzeit = abfahrzeit;
         this.treffpunkt_zeit = treffpunkt_zeit;
         this.treffpunkt = treffpunkt;
         this.zielort = zielort;
+        this.isParticipant = isParticipant;
+    }
+
+    public int getIsParticipant() {
+        return isParticipant;
+    }
+
+    public void setIsParticipant(int isParticipant) {
+        this.isParticipant = isParticipant;
     }
 
     public Date getAbfahrzeit() {
@@ -49,11 +59,11 @@ public class Appointment {
         this.name = name;
     }
 
-    public String getAid() {
+    public int getAid() {
         return aid;
     }
 
-    public void setAid(String aid) {
+    public void setAid(int aid) {
         this.aid = aid;
     }
 

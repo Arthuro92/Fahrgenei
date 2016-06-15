@@ -39,13 +39,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView username = (TextView) findViewById(R.id.userNameinhalt);
         TextView email = (TextView) findViewById(R.id.emailinhalt);
-        username.setText( " "+ prefs.getString("username", ""));
+        username.setText(" " + prefs.getString("username", ""));
         email.setText(" " + prefs.getString("useremail", ""));
 
 
     }
-
-
 
 
     // [START signOut]

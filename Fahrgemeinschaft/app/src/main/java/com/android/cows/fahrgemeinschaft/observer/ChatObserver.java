@@ -29,6 +29,7 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Sets the intent to launch ChatActivity
+     *
      * @param chatMessage a Chat object to be added as Extra
      * @return Intent that launches ChatActivity
      */
@@ -42,6 +43,7 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Sets and issues a Notification concerning the contents of the jsonObject
+     *
      * @param i an Intent that is triggered on Notification click
      */
     private void issueNotification(Intent i) {
@@ -59,6 +61,7 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Gets the User by accessing the shared preferences
+     *
      * @return user String
      */
     private String getChatUser() {
@@ -68,16 +71,18 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Parses certain parts of the jsonObject to a Chat object
+     *
      * @param jsonInString a Json String to be parsed
      * @return a resulting Chat object
      */
-    private Chat setChatMessage(String jsonInString){
+    private Chat setChatMessage(String jsonInString) {
         Gson gson = new Gson();
         return gson.fromJson(jsonInString, Chat.class);
     }
 
     /**
      * Adds a chatMessage to the local database
+     *
      * @param chatMessage Chat object to be added to database
      */
     private void updateLocalDatabase(Chat chatMessage) {
@@ -87,34 +92,37 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Handles chat relevant data and notifies
+     *
      * @param chatMessage a Chat object to be handled
      */
     public void setInfoAndData(Chat chatMessage) {
         Log.i(TAG, "CHAT MESSAGE: " + chatMessage.getChatMessageText());
-        if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
+        if (!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
             updateLocalDatabase(chatMessage);
             issueNotification(new Intent(context, ChatActivity.class));
-            Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
-        } else if(!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
+            Log.i(TAG, "ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
+        } else if (!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
             updateLocalDatabase(chatMessage);
             context.sendBroadcast(setChatIntent(chatMessage));
-            Log.i(TAG,"ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
+            Log.i(TAG, "ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
         }
     }
 
     /**
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setChat method so long as the task_category key of payload equals chat
+     *
      * @param jsonObject a Bundle the payload for this object is updated to
      */
     public void updateMessageObserver(Bundle jsonObject) {
         this.payload = jsonObject;
-        if(this.payload.getString("task_category").equals("chat")) {
+        if (this.payload.getString("task_category").equals("chat")) {
             setInfoAndData(setChatMessage(this.payload.getString("content")));
         }
     }
 
     /**
      * Constructs a new ChatObserver and registers it to a MessageSubject
+     *
      * @param messageSubject a MessageSubject to register to
      */
     public ChatObserver(MessageSubject messageSubject) {

@@ -7,25 +7,16 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateGroupActivity">
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/groupname"
-        android:hint="Gruppenname"
-        android:layout_marginTop="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    tools:context="com.android.cows.fahrgemeinschaft.CreateAppointmentActivity">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gruppe hinzufügen"
-        android:id="@+id/button"
-        android:onClick="creategroup"
-        android:layout_below="@+id/groupname"
-        android:layout_centerHorizontal="true" />
+        android:text="Termin erstellen"
+        android:id="@+id/button4"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="createAppointment" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
@@ -33,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/createGroupProgressBar"
+        android:id="@+id/createAppointmentProgBar"
         android:visibility="invisible" />
-
 </RelativeLayout>

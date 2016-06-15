@@ -11,7 +11,7 @@ public class ViewPagerAdapterGeneralTabs extends FragmentPagerAdapter {
 
     String[] tabtitlearrayGeneral = {"Gruppen", "Termine"};
 
-    public ViewPagerAdapterGeneralTabs(FragmentManager manager){
+    public ViewPagerAdapterGeneralTabs(FragmentManager manager) {
 
         super(manager);
     }

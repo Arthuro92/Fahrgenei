@@ -82,6 +82,7 @@
             android:layout_margin="1dp"
             android:background="@drawable/overview_background"
             android:layout_marginBottom="20dp" />
+
         <TextView
             android:layout_width="159dp"
             android:layout_height="wrap_content"
@@ -90,20 +91,23 @@
             android:id="@+id/textView9"
             android:gravity="left|center" />
     </LinearLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_row="1"
         android:layout_column="2">
-    <ImageButton
-        android:layout_width="@dimen/iconsize"
-        android:layout_height="@dimen/iconsize"
-        android:scaleType="fitXY"
-        android:id="@+id/notesButton"
-        android:src="@drawable/notes"
-        android:layout_margin="1dp"
-        android:background="@drawable/overview_background"/>
+
+        <ImageButton
+            android:layout_width="@dimen/iconsize"
+            android:layout_height="@dimen/iconsize"
+            android:scaleType="fitXY"
+            android:id="@+id/notesButton"
+            android:src="@drawable/notes"
+            android:layout_margin="1dp"
+            android:background="@drawable/overview_background" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,21 +115,24 @@
             android:textColor="@color/black"
             android:id="@+id/textView10"
             android:gravity="center" />
-</LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_row="2"
         android:layout_column="0">
-    <ImageButton
-        android:layout_width="@dimen/iconsize"
-        android:layout_height="@dimen/iconsize"
-        android:scaleType="fitXY"
-        android:id="@+id/mailButton"
-        android:src="@drawable/mail"
-        android:layout_margin="1dp"
-        android:background="@drawable/overview_background"/>
+
+        <ImageButton
+            android:layout_width="@dimen/iconsize"
+            android:layout_height="@dimen/iconsize"
+            android:scaleType="fitXY"
+            android:id="@+id/mailButton"
+            android:src="@drawable/mail"
+            android:layout_margin="1dp"
+            android:background="@drawable/overview_background" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -133,21 +140,24 @@
             android:textColor="@color/black"
             android:id="@+id/textView11"
             android:gravity="center" />
-</LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_row="2"
         android:layout_column="2">
-    <ImageButton
-        android:layout_width="@dimen/iconsize"
-        android:layout_height="@dimen/iconsize"
-        android:scaleType="fitXY"
-        android:id="@+id/settingsButton"
-        android:src="@drawable/settings"
-        android:layout_margin="1dp"
-        android:background="@drawable/overview_background"/>
+
+        <ImageButton
+            android:layout_width="@dimen/iconsize"
+            android:layout_height="@dimen/iconsize"
+            android:scaleType="fitXY"
+            android:id="@+id/settingsButton"
+            android:src="@drawable/settings"
+            android:layout_margin="1dp"
+            android:background="@drawable/overview_background" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,5 +165,5 @@
             android:textColor="@color/black"
             android:id="@+id/textView12"
             android:gravity="center" />
-</LinearLayout>
+    </LinearLayout>
 </GridLayout>

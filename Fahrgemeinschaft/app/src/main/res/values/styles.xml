@@ -21,13 +21,14 @@
 
 
     </style>
- <style name="toolbarstyle" parent="Theme.AppCompat">
 
-     <item name="popupTheme">@style/Theme.AppCompat.Light</item>
-     <item name="colorPrimary">#00bbff</item>
-     <item name="colorPrimaryDark">#099acf</item>
-     <item name="colorAccent">#fff</item>
- </style>
+    <style name="toolbarstyle" parent="Theme.AppCompat">
+
+        <item name="popupTheme">@style/Theme.AppCompat.Light</item>
+        <item name="colorPrimary">#00bbff</item>
+        <item name="colorPrimaryDark">#099acf</item>
+        <item name="colorAccent">#fff</item>
+    </style>
 
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

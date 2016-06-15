@@ -41,9 +41,9 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        Appointment gapm1 = new Appointment("1", "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg");
-        Appointment gapm2 = new Appointment("2", "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz");
-        Appointment gapm3 = new Appointment("3", "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover");
+        Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz", 1);
+        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover", 1);
         List<Appointment> apmlist = new ArrayList<Appointment>();
         apmlist.add(gapm1);
         apmlist.add(gapm2);
@@ -52,8 +52,10 @@ public class FragmentGeneralTermineActivity extends Fragment {
         createAppointmentOverview(apmlist);
 
     }
+
     /**
      * Creating for each Appointment a linearLayout
+     *
      * @param apmlist list of Appointments which should be displayed
      */
     public void createAppointmentOverview(final List<Appointment> apmlist) {
@@ -68,14 +70,14 @@ public class FragmentGeneralTermineActivity extends Fragment {
         RelativeLayout[] relativeLayoutWrapper = new RelativeLayout[apmlist.size()];
 
         int i = 0;
-        while(i < apmlist.size()) {
+        while (i < apmlist.size()) {
 
             relativeLayoutWrapper[i] = new RelativeLayout(getActivity());
-            relativeLayoutWrapper[i].setId(apmlist.size()+1+i);
+            relativeLayoutWrapper[i].setId(apmlist.size() + 1 + i);
             RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params2.setMargins(0,0,0,30);
-            if(i > 0) {
-                params2.addRule(RelativeLayout.BELOW, apmlist.size()+i);
+            params2.setMargins(0, 0, 0, 30);
+            if (i > 0) {
+                params2.addRule(RelativeLayout.BELOW, apmlist.size() + i);
                 relativeLayoutWrapper[i].setLayoutParams(params2);
             } else {
                 relativeLayoutWrapper[i].setLayoutParams(params2);
@@ -85,14 +87,14 @@ public class FragmentGeneralTermineActivity extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //TODO Onclick farbe ändern
-                    Log.i(TAG, apmlist.get(v.getId()-apmlist.size()-1).getName());
+                    Log.i(TAG, apmlist.get(v.getId() - apmlist.size() - 1).getName());
                     DateFormat dfm = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                     Intent intent = new Intent(getActivity(), AppointmentDetailActivity.class);
-                    intent.putExtra("test6", apmlist.get(v.getId()-apmlist.size()-1).getName());
-                    intent.putExtra("test7", dfm.format(apmlist.get(v.getId()-apmlist.size()-1).getAbfahrzeit()));
-                    intent.putExtra("test8", apmlist.get(v.getId()-apmlist.size()-1).getTreffpunkt());
-                    intent.putExtra("test9", dfm.format(apmlist.get(v.getId()-apmlist.size()-1).getTreffpunkt_zeit()));
-                    intent.putExtra("test10", apmlist.get(v.getId()-apmlist.size()-1).getZielort());
+                    intent.putExtra("name", apmlist.get(v.getId() - apmlist.size() - 1).getName());
+                    intent.putExtra("startingtime", dfm.format(apmlist.get(v.getId() - apmlist.size() - 1).getAbfahrzeit()));
+                    intent.putExtra("meetingpoint", apmlist.get(v.getId() - apmlist.size() - 1).getTreffpunkt());
+                    intent.putExtra("meetingtime", dfm.format(apmlist.get(v.getId() - apmlist.size() - 1).getTreffpunkt_zeit()));
+                    intent.putExtra("destination", apmlist.get(v.getId() - apmlist.size() - 1).getZielort());
                     startActivity(intent);
                 }
             });
@@ -101,7 +103,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
             verticalLayoutMain[i] = new LinearLayout(getActivity());
             verticalLayoutMain[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0,0,0,2200);
+            params.setMargins(0, 0, 0, 2200);
             verticalLayoutMain[i].setLayoutParams(params);
 
             verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
@@ -126,9 +128,9 @@ public class FragmentGeneralTermineActivity extends Fragment {
             TextView membercounttxt = new TextView(getActivity());
             TextView admintxt = new TextView(getActivity());
 
-            verticalHeadlineLayout[i].setPadding(50,10,0,0);
-            verticalContentLayout1[i].setPadding(50,0,0,0);
-            verticalContentLayout2[i].setPadding(50,0,0,25);
+            verticalHeadlineLayout[i].setPadding(50, 10, 0, 0);
+            verticalContentLayout1[i].setPadding(50, 0, 0, 0);
+            verticalContentLayout2[i].setPadding(50, 0, 0, 25);
 
             nametxt.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
             membercounttxt.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));

@@ -16,15 +16,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/tablayoutGroup"
         android:theme="@style/toolbarstyle"
-        android:background="?attr/colorPrimary"
-        />
+        android:background="?attr/colorPrimary" />
 
     <android.support.v4.view.ViewPager
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayoutGroup"
-        android:id="@+id/viewpagerGroup"
-        />
+        android:id="@+id/viewpagerGroup" />
 
 </RelativeLayout>

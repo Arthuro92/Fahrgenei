@@ -20,7 +20,7 @@ public class Group {
         this.membercount = membercount;
         this.adminid = adminid;
         this.adminname = adminname;
-        this.gid = gid;
+        this.gid = gid.replaceAll("\\s","");
         this.isJoined = isJoined;
     }
 
@@ -37,7 +37,7 @@ public class Group {
     }
 
     public void setGid(String gid) {
-        this.gid = gid;
+        this.gid = gid = gid.replaceAll("\\s","");
     }
 
     public String getName() {

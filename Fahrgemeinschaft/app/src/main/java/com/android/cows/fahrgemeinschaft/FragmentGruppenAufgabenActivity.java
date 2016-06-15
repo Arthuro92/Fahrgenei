@@ -35,9 +35,9 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Task tsk1 = new Task("1","Trikots waschen", "Trikots müssen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
-        Task tsk2 = new Task("2","Brötchen mitbringen", "Beim nächsten Hallenturnier bieten wir belegte Brötchen an ", "Lenni");
-        Task tsk3 = new Task("3","Leibchen waschen", "Die Leibchen müssen auch gewaschen werden.", "Arthur");
+        Task tsk1 = new Task("1", "Trikots waschen", "Trikots müssen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
+        Task tsk2 = new Task("2", "Brötchen mitbringen", "Beim nächsten Hallenturnier bieten wir belegte Brötchen an ", "Lenni");
+        Task tsk3 = new Task("3", "Leibchen waschen", "Die Leibchen müssen auch gewaschen werden.", "Arthur");
         List<Task> tsklist = new ArrayList<Task>();
         tsklist.add(tsk1);
         tsklist.add(tsk2);
@@ -45,8 +45,10 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
 
         createTaskOverview(tsklist);
     }
+
     /**
      * Creating for each Group a linearLayout
+     *
      * @param tsklist list of Groups which should be displayed
      */
     public void createTaskOverview(final List<Task> tsklist) {
@@ -61,14 +63,14 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
         RelativeLayout[] relativeLayoutWrapper = new RelativeLayout[tsklist.size()];
 
         int i = 0;
-        while(i < tsklist.size()) {
+        while (i < tsklist.size()) {
 
             relativeLayoutWrapper[i] = new RelativeLayout(getActivity());
-            relativeLayoutWrapper[i].setId(tsklist.size()+1+i);
+            relativeLayoutWrapper[i].setId(tsklist.size() + 1 + i);
             RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params2.setMargins(0,0,0,30);
-            if(i > 0) {
-                params2.addRule(RelativeLayout.BELOW, tsklist.size()+i);
+            params2.setMargins(0, 0, 0, 30);
+            if (i > 0) {
+                params2.addRule(RelativeLayout.BELOW, tsklist.size() + i);
                 relativeLayoutWrapper[i].setLayoutParams(params2);
             } else {
                 relativeLayoutWrapper[i].setLayoutParams(params2);
@@ -77,11 +79,11 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
             relativeLayoutWrapper[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG, tsklist.get(v.getId()-tsklist.size()-1).getAufgabenName());
+                    Log.i(TAG, tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenName());
                     Intent intent = new Intent(getActivity(), TaskDetailActivity.class);
-                    intent.putExtra("test", tsklist.get(v.getId()-tsklist.size()-1).getAufgabenName());
-                    intent.putExtra("test2", tsklist.get(v.getId()-tsklist.size()-1).getAufgabenBeschreibung());
-                    intent.putExtra("test3", tsklist.get(v.getId()-tsklist.size()-1).getBearbeiter());
+                    intent.putExtra("taskname", tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenName());
+                    intent.putExtra("taskdescription", tsklist.get(v.getId() - tsklist.size() - 1).getAufgabenBeschreibung());
+                    intent.putExtra("taskincharge", tsklist.get(v.getId() - tsklist.size() - 1).getBearbeiter());
                     //based on item add info to intent
                     startActivity(intent);
                 }
@@ -91,7 +93,7 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
             verticalLayoutMain[i] = new LinearLayout(getActivity());
             verticalLayoutMain[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0,0,0,2200);
+            params.setMargins(0, 0, 0, 2200);
             verticalLayoutMain[i].setLayoutParams(params);
 
             verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
@@ -116,9 +118,9 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
             TextView membercounttxt = new TextView(getActivity());
             TextView admintxt = new TextView(getActivity());
 
-            verticalHeadlineLayout[i].setPadding(50,10,0,0);
-            verticalContentLayout1[i].setPadding(50,0,0,0);
-            verticalContentLayout2[i].setPadding(50,0,0,25);
+            verticalHeadlineLayout[i].setPadding(50, 10, 0, 0);
+            verticalContentLayout1[i].setPadding(50, 0, 0, 0);
+            verticalContentLayout2[i].setPadding(50, 0, 0, 25);
 
             nametxt.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
             membercounttxt.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));

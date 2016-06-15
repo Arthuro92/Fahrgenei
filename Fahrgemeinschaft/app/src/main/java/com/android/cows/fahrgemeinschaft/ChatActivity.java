@@ -33,6 +33,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Gets the User by accessing the shared preferences
+     *
      * @return user String
      */
     private String getChatUser() {
@@ -42,6 +43,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Adds chatMessage to local database
+     *
      * @param chatMessage a Chat object to be added
      */
     private void addChatMessageDB(Chat chatMessage) {
@@ -51,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Sends a Chat object to the server
+     *
      * @param chatMessage
      */
     private void sendChatMessage(Chat chatMessage) {
@@ -68,13 +71,14 @@ public class ChatActivity extends AppCompatActivity {
     private void getChatMessage() {
         EditText editText = (EditText) findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
-        if(!editText.getText().toString().equals("")) {
+        if (!editText.getText().toString().equals("")) {
             sendChatMessage(new Chat(getChatUser(), time, editText.getText().toString()));
         }
     }
 
     /**
      * Adds Chat object to ArrayList from Intent
+     *
      * @param intent an Intent with an Extra to be added
      */
     public void setArrayListFromExtra(Intent intent) {
@@ -103,6 +107,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Gets chat history from local database
+     *
      * @return an ArrayList containing the history
      */
     private ArrayList<Chat> getArrayListFromDB() {
@@ -121,6 +126,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Sets the ArrayList when app is created
+     *
      * @param savedInstanceState
      */
     @Override

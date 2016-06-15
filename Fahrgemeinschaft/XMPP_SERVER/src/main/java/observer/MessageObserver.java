@@ -7,8 +7,10 @@ import java.util.Map;
  */
 public interface MessageObserver {
     //new
+
     /**
      * Updates the MessageObserver for this object on changes in the jsonObject
+     *
      * @param jsonObject a Map the MessageObserver is updated on
      */
     public abstract void updateMessageObserver(Map<String, Object> jsonObject);

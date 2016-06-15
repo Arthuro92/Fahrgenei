@@ -1,12 +1,14 @@
 package com.android.cows.fahrgemeinschaft.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.dataobjects.Appointment;
@@ -21,36 +23,50 @@ public class AppointmentAdapter extends ArrayAdapter {
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
-    /**
-     * Gets the User by accessing the shared preferences
-     * @return user String
-     */
-    private String getAppointmentUser() {
-        SharedPreferences sharedPreferences = this.context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("username", "Blubb");
-    }
-
     private View setAppointmentView(View appointmentView, Appointment appointment) {
+        TextView textview = (TextView) appointmentView.findViewById(R.id.appointmentTextView1);
+        textview.setText(appointment.getName() + " TESTS");
+        if(appointment.getIsParticipant() == 0) {
+            appointmentView.setBackgroundResource(R.color.red);
+        } else {
+            appointmentView.setBackgroundResource(R.color.blue_grey_500);
+        }
         return appointmentView;
     }
 
     /**
      * Sets the LayoutInflater to the base View to display the item at position
-     * @param position an Integer referencing the position of the current Chat object in the ArrayList
+     *
+     * @param position    an Integer referencing the position of the current Chat object in the ArrayList
      * @param convertView
      * @param parent
      * @return the fully set displayable view for one list element
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Appointment appointment = (Appointment) getItem(position);
+        final Appointment appointment = (Appointment) getItem(position);
         View appointmentView = this.layoutInflater.inflate(R.layout.appointment_layout, parent, false);
+        appointmentView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AppointmentDetailActivity.class);
+                intent.putExtra("name", appointment.getName());
+                intent.putExtra("startingtime", appointment.getAbfahrzeit());
+                intent.putExtra("meetingpoint", appointment.getTreffpunkt());
+                intent.putExtra("meetingtime", appointment.getTreffpunkt_zeit());
+                intent.putExtra("destination", appointment.getZielort());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+//
+            }
+        });
+
         return setAppointmentView(appointmentView, appointment);
     }
 
     /**
      * Constructs an Adapter
-     * @param context a Context the Adapter is constructed from
+     *
+     * @param context  a Context the Adapter is constructed from
      * @param resource an ArrayList to be handled and displayed by the Adapter
      */
     public AppointmentAdapter(Context context, ArrayList<Appointment> resource) {

@@ -7,16 +7,13 @@
     tools:context="com.android.cows.fahrgemeinschaft.GeneralTabsActivity">
 
 
-
-
     <android.support.design.widget.TabLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tablayoutGeneral"
         android:theme="@style/toolbarstyle"
-        android:background="?attr/colorPrimary"
-        />
+        android:background="?attr/colorPrimary" />
 
 
     <android.support.v4.view.ViewPager
@@ -24,50 +21,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayoutGeneral"
-        android:id="@+id/viewpagerGeneral"
-        />
+        android:id="@+id/viewpagerGeneral" />
 
-<android.support.v7.widget.Toolbar
-    android:id="@+id/standalone_toolbar"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:theme="@style/toolbarstyle"
-    android:background="?attr/colorPrimary"
-    android:layout_alignParentBottom="true">
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/standalone_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/toolbarstyle"
+        android:background="?attr/colorPrimary"
+        android:layout_alignParentBottom="true">
 
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        >
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-        <ImageButton
-            android:layout_width="@dimen/toolbaricons"
-            android:layout_height="@dimen/toolbaricons"
-            android:scaleType="fitXY"
-            android:id="@+id/btnToolbar1"
-            android:src="@drawable/glyphicons4user"
-            android:onClick="createGroup" />
+            <ImageButton
+                android:layout_width="@dimen/toolbaricons"
+                android:layout_height="@dimen/toolbaricons"
+                android:scaleType="fitXY"
+                android:id="@+id/btnToolbar1"
+                android:src="@drawable/glyphicons4user"
+                android:onClick="createGroup" />
 
-        <ImageButton
-            android:layout_width="@dimen/toolbaricons"
-            android:layout_height="@dimen/toolbaricons"
-            android:scaleType="fitXY"
-            android:id="@+id/btnToolbar2"
-            android:src="@drawable/glyphicons4user"/>
+            <ImageButton
+                android:layout_width="@dimen/toolbaricons"
+                android:layout_height="@dimen/toolbaricons"
+                android:scaleType="fitXY"
+                android:id="@+id/btnToolbar2"
+                android:src="@drawable/glyphicons4user" />
 
-        <ImageButton
-            android:layout_width="@dimen/toolbaricons"
-            android:layout_height="@dimen/toolbaricons"
-            android:scaleType="fitXY"
-            android:id="@+id/btnToolbar3"
-            android:src="@drawable/glyphicons4user"/>
-    </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/toolbaricons"
+                android:layout_height="@dimen/toolbaricons"
+                android:scaleType="fitXY"
+                android:id="@+id/btnToolbar3"
+                android:src="@drawable/glyphicons4user" />
+        </LinearLayout>
 
-</android.support.v7.widget.Toolbar>
-
+    </android.support.v7.widget.Toolbar>
 
 
 </RelativeLayout>

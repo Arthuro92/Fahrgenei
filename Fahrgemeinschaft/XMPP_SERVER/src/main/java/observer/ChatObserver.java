@@ -21,23 +21,25 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Parses certain parts of the jsonObject to a Chat object
+     *
      * @param jsonInString a Json String to be parsed
      * @return a resulting Chat object
      */
-    private Chat setChatMessage(String jsonInString){
+    private Chat setChatMessage(String jsonInString) {
         Gson gson = new Gson();
         return gson.fromJson(jsonInString, Chat.class);
     }
 
     /**
      * Broadcasts chatMessage to all subscribers of a topic
+     *
      * @param chatMessage a Chat object to be broadcast
      */
     public void broadcastChatMessage(Chat chatMessage) {
         logger.log(Level.INFO, "Server recieved Chat Message:" + chatMessage.getChatMessageText());
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
-            smackCcsClient.sendDownstreamMessage("chat","chat","/topics/global", chatMessage);
+            smackCcsClient.sendDownstreamMessage("chat", "chat", "/topics/global", chatMessage);
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
@@ -45,12 +47,13 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Updates the Map payload for this object to the jsonObject. Also calls the setChat method so long as the task_category key of payload equals chat
+     *
      * @param jsonObject a Map the payload for this object is updated to
      */
     public void updateMessageObserver(Map<String, Object> jsonObject) {
-        if(jsonObject.containsKey("data")) {
+        if (jsonObject.containsKey("data")) {
             this.payload = (Map<String, String>) jsonObject.get("data");
-            if(this.payload.get("task_category").equals("chat")) {
+            if (this.payload.get("task_category").equals("chat")) {
                 broadcastChatMessage(setChatMessage(this.payload.get("content")));
             }
         }
@@ -58,6 +61,7 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Constructs a new ChatObserver and registers it to a MessageSubject
+     *
      * @param messageSubject a MessageSubject to register to
      */
     public ChatObserver(MessageSubject messageSubject) {
