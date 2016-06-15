@@ -9,4 +9,5 @@ public class ErrorMessages {
     public static final String INVALID_INFORMTION = "error: Information_invalid (Extras send to server not correct)";
     public static final String USER_NOT_FOUND = "error: Nutzer nicht gefunden!";
     public static final String SENDING_INVITATION_FAILED = "error: Fehler beim senden der Einladung! Versuchen Sie es erneut!";
+    public static final String SEND_BROADCAST_USER_FAILED = "error: Fehler beim senden der Einladung! Versuchen Sie es erneut!";
 }

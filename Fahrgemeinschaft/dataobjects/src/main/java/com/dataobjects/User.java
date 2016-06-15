@@ -8,6 +8,7 @@ public class User {
     private String token;
     private String name;
     private String email;
+    private String gid;
 
     public User(String id, String token, String name, String email) {
         this.id = id;
@@ -46,5 +47,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 }

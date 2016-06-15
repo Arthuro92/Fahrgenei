@@ -75,11 +75,9 @@ public class FragmentGruppenNutzerActivity extends Fragment {
         listView.setAdapter(userAdapter);
 
 
-      //  Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
-      //  btn.setOnClickListener(new View.OnClickListener() {
-
-
-       /**     @Override
+        Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 //todo this in popup please not as activity
 
@@ -89,7 +87,7 @@ public class FragmentGruppenNutzerActivity extends Fragment {
 
                 startActivity(intent);
             }
-        });*/
+        });
 
 
 
