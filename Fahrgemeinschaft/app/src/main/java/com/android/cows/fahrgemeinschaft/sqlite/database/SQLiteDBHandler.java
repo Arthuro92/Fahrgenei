@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.dataobjects.Chat;
 import com.dataobjects.Group;
+import com.dataobjects.User;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -18,15 +19,20 @@ import java.util.ArrayList;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper{
     //new new new
-    private static final int DATABASE_VERSION = 42;
+    private static final int DATABASE_VERSION = 44;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
     private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER PRIMARY KEY, gid VARCHAR(255), jsonInString VARCHAR(400));";
     private static final String TABLE_GROUPS = "CREATE TABLE groups(gid VARCHAR(255) PRIMARY KEY, isJoined INTEGER, jsonInString VARCHAR(400));";
+    private static final String TABLE_USERS = "CREATE TABLE user(uid VARCHAR(255) PRIMARY KEY, jsonInString VARCHAR(400));";
+    private static final String TABLE_IS_IN_GROUP = "CREATE TABLE is_in_group(gid VARCHAR(255) , uid VARCHAR(255), isJoined INTEGER , PRIMARY KEY(gid, uid));";
+    /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
     private static final String GET_GROUPS = "SELECT * FROM groups";
     private static final String GET_GROUP = "SELECT * FROM groups WHERE gid = ";
+    private static final String GET_USER_IN_GROUP = "SELECT uid FROM  is_in_group WHERE gid = ";
+    private static final String GET_USERS = "SELECT * FROM user";
 
     private String setChatMessage(Chat c) {
         Gson gson = new Gson();
@@ -45,9 +51,19 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         return gson.fromJson(jsonInString, Group.class);
     }
 
+    private User jsonToUser(String jsonInString) {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonInString, User.class);
+    }
+
     private String groupToJson(Group group) {
         Gson gson = new Gson();
         return gson.toJson(group);
+    }
+
+    private String userToJson(User user) {
+        Gson gson = new Gson();
+        return gson.toJson(user);
     }
 
     public void addChatMessage(Chat c) {
@@ -94,6 +110,44 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
+    public void addUser(User user) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("uid", user.getId());
+        cv.put("jsonInString",  userToJson(user));
+        db.insert("user", null, cv);
+        db.close();
+    }
+
+    public void addIsInGroup(String gid, String uid, int isJoined){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("gid", gid);
+        cv.put("isJoined", isJoined);
+        cv.put("uid", uid);
+        db.insert("is_in_group", null, cv);
+        db.close();
+    }
+
+
+    public ArrayList<User> getUserListOfGroup(){
+        ArrayList<User> userArrayList = new ArrayList<User>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_USERS, null);
+        cur.moveToFirst();
+        while(!cur.isAfterLast()) {
+            if(cur.getString(cur.getColumnIndex("uid")) != null) {
+
+                userArrayList.add(jsonToUser(cur.getString(cur.getColumnIndex("jsonInString"))));
+                System.out.println("DATABASE GET: " + cur.getString(cur.getColumnIndex("jsonInString")));
+                cur.moveToNext();
+            }
+        }
+        db.close();
+        return userArrayList;
+
+    }
+
     public ArrayList<Group> getGroups() {
         ArrayList<Group> groupArrayList = new ArrayList<Group>();
         SQLiteDatabase db = getWritableDatabase();
@@ -127,6 +181,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         db.execSQL(TABLE_CHAT_MESSAGE);
         db.execSQL(TABLE_APPOINTMENTS);
         db.execSQL(TABLE_GROUPS);
+        db.execSQL(TABLE_IS_IN_GROUP);
+        db.execSQL(TABLE_USERS);
+
     }
 
     @Override
@@ -134,6 +191,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS chat_message;");
         db.execSQL("DROP TABLE IF EXISTS appointments;");
         db.execSQL("DROP TABLE IF EXISTS groups;");
+        db.execSQL("DROP TABLE IF EXISTS is_in_group;");
+        db.execSQL("DROP TABLE IF EXISTS user;");
         onCreate(db);
     }
 

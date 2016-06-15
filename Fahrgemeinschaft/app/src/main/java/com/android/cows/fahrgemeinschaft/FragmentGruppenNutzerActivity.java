@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.cows.fahrgemeinschaft.adapters.UserAdapter;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.User;
 
 import java.util.ArrayList;
@@ -54,12 +55,16 @@ public class FragmentGruppenNutzerActivity extends Fragment {
 
 
         User user1 = new User("1","2","Cem","Cem@Homo.de");
-        User user2 = new User("1","2","Tim","Tim@Homo.de");
-        User user3 = new User("1","2","Blub","blub@Homo.de");
-        ArrayList<User> user_list = new ArrayList<User>();
-        user_list.add(user1);
+        User user2 = new User("2","2","Tim","Tim@Homo.de");
+        User user3 = new User("3","2","Blub","blub@Homo.de");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
+        sqLiteDBHandler.addUser(user1);
+        sqLiteDBHandler.addUser(user2);
+        sqLiteDBHandler.addUser(user3);
+        ArrayList<User> user_list = sqLiteDBHandler.getUserListOfGroup();
+     /**   user_list.add(user1);
         user_list.add(user2);
-        user_list.add(user3);
+        user_list.add(user3);*/
         UserAdapter userAdapter = new UserAdapter( getActivity() ,R.layout.item_row, user_list);
 
 

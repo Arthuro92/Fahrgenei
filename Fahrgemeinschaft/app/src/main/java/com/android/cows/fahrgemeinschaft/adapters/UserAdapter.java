@@ -64,6 +64,7 @@ public class UserAdapter extends ArrayAdapter {
             holder = new UserHolder();
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
+            holder.inv_status = (TextView)row.findViewById(R.id.inv_status);
 
             row.setTag(holder);
         }
@@ -76,6 +77,7 @@ public class UserAdapter extends ArrayAdapter {
         holder.txtTitle.setText(user.getName());
         Log.d("UserAdapter: ","Holdername als "+user.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.user128);
+        holder.inv_status.setText("Angenommen");
 
         return row;
     }
@@ -96,6 +98,7 @@ public class UserAdapter extends ArrayAdapter {
     {
         ImageView imgIcon;
         TextView txtTitle;
+        TextView inv_status;
     }
 
 
