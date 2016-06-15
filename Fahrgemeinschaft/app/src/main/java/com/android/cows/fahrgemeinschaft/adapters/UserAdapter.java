@@ -53,6 +53,8 @@ public class UserAdapter extends ArrayAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+
         View row = convertView;
         UserHolder holder = null;
 

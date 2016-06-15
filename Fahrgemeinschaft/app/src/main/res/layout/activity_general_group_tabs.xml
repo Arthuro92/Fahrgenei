@@ -38,12 +38,15 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:layout_width="@dimen/toolbaricons"
-                android:layout_height="@dimen/toolbaricons"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:scaleType="fitXY"
                 android:id="@+id/btnToolbar1"
-                android:src="@drawable/glyphicons4user"
-                android:onClick="createGroup" />
+                android:src="@mipmap/icon_group_add"
+                android:onClick="createGroup"
+                android:background="#FFFFFF"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"/>
 
             <ImageButton
                 android:layout_width="@dimen/toolbaricons"
