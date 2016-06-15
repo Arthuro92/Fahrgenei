@@ -59,4 +59,5 @@
     <string name="taskName">To Do: %1$s</string>
     <string name="taskDescr">Aufgabenbeschreibung: %1$s</string>
     <string name="taskBearbeiter">Bearbeiter: %1$s</string>
+    <string name="inv_status">Angenommen</string>
 </resources>
