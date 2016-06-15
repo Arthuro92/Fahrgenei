@@ -42,25 +42,31 @@
                 android:layout_height="50dp"
                 android:scaleType="fitXY"
                 android:id="@+id/btnToolbar1"
-                android:src="@mipmap/icon_group_add"
+                android:src="@mipmap/icon_group_add2"
                 android:onClick="createGroup"
-                android:background="#FFFFFF"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent" />
 
             <ImageButton
-                android:layout_width="@dimen/toolbaricons"
-                android:layout_height="@dimen/toolbaricons"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:scaleType="fitXY"
                 android:id="@+id/btnToolbar2"
-                android:src="@drawable/glyphicons4user" />
+                android:src="@drawable/profil"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/transparent"/>
 
             <ImageButton
-                android:layout_width="@dimen/toolbaricons"
-                android:layout_height="@dimen/toolbaricons"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:scaleType="fitXY"
                 android:id="@+id/btnToolbar3"
-                android:src="@drawable/glyphicons4user" />
+                android:src="@drawable/task"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@android:color/transparent"/>
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
