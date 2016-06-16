@@ -75,8 +75,8 @@ public class FragmentGruppenNutzerActivity extends Fragment {
         listView.setAdapter(userAdapter);
 
 
-      //  Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
-      //  btn.setOnClickListener(new View.OnClickListener() {
+        //  Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
+        //  btn.setOnClickListener(new View.OnClickListener() {
 
 
        /**     @Override
