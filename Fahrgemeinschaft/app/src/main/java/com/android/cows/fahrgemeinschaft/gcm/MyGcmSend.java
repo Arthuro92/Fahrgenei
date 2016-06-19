@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
+import com.dataobjects.JsonCollection;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -44,8 +44,7 @@ public class MyGcmSend<T> {
             payload.putString("task_category", task_category);
             payload.putString("task", task);
 
-            Gson gson = new Gson();
-            String javaobjectstring = gson.toJson(javaobject);
+            String javaobjectstring = JsonCollection.objectToJson(javaobject);
             payload.putString("content", javaobjectstring);
 
             gcm.send(senderId + "@gcm.googleapis.com", msgId, payload);

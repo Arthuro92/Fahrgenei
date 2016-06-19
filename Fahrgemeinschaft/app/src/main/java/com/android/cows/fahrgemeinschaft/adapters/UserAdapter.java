@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.User;
+import com.dataobjects.UserInGroup;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public class UserAdapter extends ArrayAdapter {
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
     private int layoutResourceId;
-    ArrayList<User> data = new ArrayList<User>();
+    ArrayList<UserInGroup> data = new ArrayList<UserInGroup>();
 
 
 
@@ -75,7 +77,17 @@ public class UserAdapter extends ArrayAdapter {
             holder = (UserHolder)row.getTag();
         }
 
-        User user =  data.get(position);
+        UserInGroup userInGroup =  data.get(position);
+
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        System.out.println("UID " + userInGroup.getUid());
+        User user = sqLiteDBHandler.getUser(userInGroup.getUid());
+
+        if(userInGroup.getIsJoined() == 0) {
+            row.setBackgroundResource(R.color.red);
+        }
+
+
         holder.txtTitle.setText(user.getName());
         Log.d("UserAdapter: ","Holdername als "+user.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.user128);
@@ -88,11 +100,10 @@ public class UserAdapter extends ArrayAdapter {
      * Constructs an Adapter
      *
      * @param context  a Context the Adapter is constructed from
-     * @param resource an ArrayList to be handled and displayed by the Adapter
      * @param context a Context the Adapter is constructed from
      * @param data an ArrayList to be handled and displayed by the Adapter
      */
-    public UserAdapter(Context context, int layoutResourceId, ArrayList<User> data) {
+    public UserAdapter(Context context, int layoutResourceId, ArrayList<UserInGroup> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;

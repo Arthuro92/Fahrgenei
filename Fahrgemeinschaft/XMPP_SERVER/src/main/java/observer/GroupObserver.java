@@ -1,8 +1,9 @@
 package observer;
 
 import com.dataobjects.Group;
+import com.dataobjects.JsonCollection;
 import com.dataobjects.User;
-import com.google.gson.Gson;
+import com.dataobjects.UserInGroup;
 
 import org.jivesoftware.smack.SmackException;
 
@@ -49,7 +50,7 @@ public class GroupObserver implements MessageObserver {
                         inviteUser();
                         break;
                     case "invitationaccept":
-                        logger.log(Level.INFO, "User: " + this.payload.get("extra1") + "accepted Group Invitation for Group: " + this.payload.get("extra0"));
+                        logger.log(Level.INFO, "User: " + this.payload.get("extra1") + " accepted Group Invitation for Group: " + this.payload.get("extra0"));
                         invitationaccepted();
                         break;
                     default:
@@ -60,7 +61,14 @@ public class GroupObserver implements MessageObserver {
     }
 
     private void invitationaccepted() {
+        SmackCcsClient smackclient = SmackCcsClient.getInstance();
         Databaseoperator.updateUserIsInGroup(this.payload.get("extra0"), this.payload.get("extra1"), 1);
+        UserInGroup userInGroup = new UserInGroup(this.payload.get("extra1"), this.payload.get("extra0"), 1);
+        try {
+            smackclient.sendDownstreamMessage("user", "userjoinedgroup", "/topics/" + this.payload.get("extra0"), userInGroup );
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean inviteUser() {
@@ -75,7 +83,7 @@ public class GroupObserver implements MessageObserver {
             sendGroupError(ErrorMessages.MYSQL_ERROR);
             return false;
         }
-        if (!Databaseoperator.userIsInGroup(this.payload.get("extra1"), userid, 0)) {
+        if (!Databaseoperator.setUserIsInGroup(this.payload.get("extra1"), userid, 0)) {
             sendGroupError(ErrorMessages.MYSQL_ERROR);
         }
         if (!sendInvitation(token)) {
@@ -85,7 +93,7 @@ public class GroupObserver implements MessageObserver {
         }
         if(!broadcastNewUser()) {
             sendGroupError(ErrorMessages.SEND_BROADCAST_USER_FAILED);
-            System.out.println("something in broadcast new user went wrong");
+            logger.log(Level.INFO, "something in broadcastNewUser went wrong");
             return false;
             //todo what to do xD?
         }
@@ -98,11 +106,15 @@ public class GroupObserver implements MessageObserver {
     private boolean broadcastNewUser() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
-            User user = jsonToUser(Databaseoperator.getUserByEmail(this.payload.get("extra0")));
-            Group group = jsonToGroup(this.payload.get("extra2"));
-            user.setGid(group.getGid());
+            User user = JsonCollection.jsonToUser(Databaseoperator.getUserByEmail(this.payload.get("extra0")));
+            Group group = JsonCollection.jsonToGroup(this.payload.get("extra2"));
+            UserInGroup userInGroup = new UserInGroup(user.getId(), group.getGid(), 0);
 
-            smackclient.sendDownstreamMessage("user", "newuser", "/topics/" + group.getGid(), user);
+            String[] stringarray = new String[2];
+            stringarray[0] =  user.getJsonInString();
+            stringarray[1] = userInGroup.getJsonInString();
+
+            smackclient.sendDownstreamMessage("user", "newuser", "/topics/" + group.getGid(), stringarray);
             return true;
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
@@ -125,10 +137,18 @@ public class GroupObserver implements MessageObserver {
     private boolean sendInvitation(String token) {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
-            Gson gson = new Gson();
-            Group grp = gson.fromJson(this.payload.get("extra2"), Group.class);
-            grp.setJoined(0);
-            smackclient.sendDownstreamMessage("group", "groupinvitation", token, grp);
+            Group grp = JsonCollection.jsonToGroup(this.payload.get("extra2"));
+            System.out.println(this.payload.get("extra2"));
+            ArrayList<User> userList = Databaseoperator.getUsersWithGroupId(grp.getGid());
+            ArrayList<UserInGroup> userIsInGroup = Databaseoperator.getUsersInGroupWithGroupId(grp.getGid());
+
+
+            String[] stringarray = new String[3];
+            stringarray[0] = grp.getJsonInString();
+            stringarray[1] = JsonCollection.objectToJson(userList);
+            stringarray[2] = JsonCollection.objectToJson(userIsInGroup);
+
+            smackclient.sendDownstreamMessage("group", "groupinvitation", token, stringarray);
             return true;
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
@@ -149,11 +169,10 @@ public class GroupObserver implements MessageObserver {
     }
 
     private boolean insertGroup() {
-        Gson gson = new Gson();
-        Group grp = gson.fromJson(this.payload.get("content"), Group.class);
+        Group grp = JsonCollection.jsonToGroup(this.payload.get("content"));
 
         if (Databaseoperator.insertNewGroup(grp.getGid(), this.payload.get("content"))) {
-            if (Databaseoperator.userIsInGroup(grp.getGid(), grp.getAdminid(), 1)) {
+            if (Databaseoperator.setUserIsInGroup(grp.getGid(), grp.getAdminid(), 1)) {
                 sendInsertGroupSuccess();
                 return true;
             } else {
@@ -172,9 +191,7 @@ public class GroupObserver implements MessageObserver {
     private boolean sendInsertGroupSuccess() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
-
-            Gson gson = new Gson();
-            smackclient.sendDownstreamMessage("group", "groupinsertsuccess", (String) jsonObject.get("from"), gson.fromJson(this.payload.get("content"), Group.class));
+            smackclient.sendDownstreamMessage("group", "groupinsertsuccess", (String) jsonObject.get("from"), JsonCollection.jsonToGroup(this.payload.get("content")));
             return true;
         } catch (SmackException.NotConnectedException e) {
             //todo what now XD? retry or something
@@ -197,15 +214,7 @@ public class GroupObserver implements MessageObserver {
     }
 
 
-    private Group jsonToGroup(String jsonInString) {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonInString, Group.class);
-    }
 
-    private User jsonToUser(String jsonInString) {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonInString, User.class);
-    }
 
     /**
      * Constructs a new GroupObserver and registers it to a MessageSubject

@@ -1,6 +1,6 @@
 package SmackCcsClient;
 
-import com.google.gson.Gson;
+import com.dataobjects.JsonCollection;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
@@ -116,8 +116,7 @@ public class SmackCcsClient<T> {
             payload.put("task", task);
 
             if (javaobject != null) {
-                Gson gson = new Gson();
-                String javaobjectstring = gson.toJson(javaobject);
+                String javaobjectstring = JsonCollection.objectToJson(javaobject);
                 payload.put("content", javaobjectstring);
             }
 

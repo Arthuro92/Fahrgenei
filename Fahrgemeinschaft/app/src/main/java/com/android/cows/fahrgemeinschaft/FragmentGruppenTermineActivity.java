@@ -54,10 +54,6 @@ public class FragmentGruppenTermineActivity extends Fragment {
 
                 Log.i(TAG, "switch to createAppointmentActivity");
                 Intent intent = new Intent(getActivity(), CreateAppointmentActivity.class);
-                Bundle bundle = getActivity().getIntent().getExtras();
-                intent.putExtra("name", (String) bundle.get("name"));
-                intent.putExtra("adminid", (String) bundle.get("adminid"));
-                intent.putExtra("gid", (String) bundle.get("gid"));
                 startActivity(intent);
             }
         });
@@ -102,10 +98,10 @@ public class FragmentGruppenTermineActivity extends Fragment {
     }
 
     private boolean checkAdminStatus() {
-        Bundle bundle = getActivity().getIntent().getExtras();
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String id = prefs.getString("userid", "");
-        if (id.equals(bundle.get("adminid"))) {
+        String adminid = prefs.getString("currentgroupadminid", "");
+        if (id.equals(adminid)) {
             return true;
         } else {
             return false;
@@ -113,9 +109,10 @@ public class FragmentGruppenTermineActivity extends Fragment {
     }
 
     private void loadAppointmentList() {
-        Bundle bundle = getActivity().getIntent().getExtras();
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
-        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(bundle.getString("gid"));
+        SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String gid = prefs.getString("currentgid", "");
+        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
         if (appointmentlist.size() > 0) {
             System.out.println("create APPOINTMENTLIST");
             createAppointments(appointmentlist);
@@ -142,5 +139,17 @@ public class FragmentGruppenTermineActivity extends Fragment {
         this.appointmentAdapter = new AppointmentAdapter(getActivity(), appointmentArrayList);
         this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
         this.listView.setAdapter(appointmentAdapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        unregisterReceiver();
     }
 }

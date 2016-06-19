@@ -9,7 +9,7 @@ import android.util.Log;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Appointment;
-import com.google.gson.Gson;
+import com.dataobjects.JsonCollection;
 
 /**
  * Created by david on 24.05.2016.
@@ -66,8 +66,7 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private Appointment jsonToAppointment(String jsonInString) {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonInString, Appointment.class);
+        return JsonCollection.jsonToAppointment(jsonInString);
     }
 
     private void appointmentInsertSuccess() {
@@ -82,13 +81,10 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     public void singleAppointment() {
-        Gson gson = new Gson();
         String content = this.payload.getString("content");
-
 
 //        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
 //        prefs.edit().putString("applist", content).apply();
-
 
         Intent singleappointment = new Intent("singleAppointment");
         LocalBroadcastManager.getInstance(context).sendBroadcast(singleappointment);

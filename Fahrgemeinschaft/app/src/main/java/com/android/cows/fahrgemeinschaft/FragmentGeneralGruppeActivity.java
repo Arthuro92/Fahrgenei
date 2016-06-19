@@ -62,12 +62,24 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         createReceiver();
 
     }
+//
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        unregisterReceiver();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        unregisterReceiver();
+//    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        unregisterReceiver();
+//    }
 
     public void createReceiver() {
         updategrplist = new BroadcastReceiver() {

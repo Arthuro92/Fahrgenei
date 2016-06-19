@@ -1,7 +1,7 @@
 package observer;
 
 import com.dataobjects.Appointment;
-import com.google.gson.Gson;
+import com.dataobjects.JsonCollection;
 
 import org.jivesoftware.smack.SmackException;
 
@@ -56,11 +56,10 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private boolean createAppointment() {
-        Gson gson = new Gson();
-        Appointment appointment = gson.fromJson(this.payload.get("content"), Appointment.class);
+        Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
 
         if (Databaseoperator.insertNewAppointment(appointment.getAid(), appointment.getGid(), this.payload.get("content"))) {
-            if (Databaseoperator.userIsInAppointment(appointment.getAid(),appointment.getGid(), Databaseoperator.getUserIdByToken( (String) this.jsonObject.get("from")), 1)) {
+            if (Databaseoperator.checkUserIsInAppointment(appointment.getAid(),appointment.getGid(), Databaseoperator.getUserIdByToken( (String) this.jsonObject.get("from")), 1)) {
                 sendInsertAppointmentSucess();
                 return true;
             } else {
@@ -78,9 +77,7 @@ public class AppointmentObserver implements MessageObserver {
     private boolean sendInsertAppointmentSucess() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
-
-            Gson gson = new Gson();
-            Appointment   appointment = gson.fromJson(this.payload.get("content"), Appointment.class);
+            Appointment   appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
             smackclient.sendDownstreamMessage("appointment", "appointmentinsertsuccess", (String) jsonObject.get("from"),appointment);
             appointment.setIsParticipant(0);
             smackclient.sendDownstreamMessage("appointment", "newappointment", "/topics/" + appointment.getGid(), appointment);
@@ -110,8 +107,6 @@ public class AppointmentObserver implements MessageObserver {
         //Fehler falls Informationen fehlen
         if (!payload.containsKey("extra0") || !payload.containsKey("extra1")) {
             logger.log(Level.INFO, "Information invalid!");
-            System.out.println(payload.containsKey("extra0"));
-            System.out.println(payload.containsKey("extra1"));
             sendSingleAppointmentError(ErrorMessages.INVALID_INFORMTION);
             return false;
         }
@@ -131,11 +126,10 @@ public class AppointmentObserver implements MessageObserver {
         }
 
         ArrayList<Appointment> appointmentlist = new ArrayList<>();
-        Gson gson = new Gson();
 
         int i = 0;
         while (i < result.size()) {
-            Appointment app = gson.fromJson(result.get(i), Appointment.class);
+            Appointment app = JsonCollection.jsonToAppointment(result.get(i));
             appointmentlist.add(app);
             i++;
         }

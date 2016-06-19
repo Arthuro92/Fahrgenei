@@ -8,15 +8,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
-import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.gcm.TopicSubscriber;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Group;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.dataobjects.JsonCollection;
+import com.dataobjects.User;
+import com.dataobjects.UserInGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by david on 23.05.2016.
@@ -48,8 +47,9 @@ public class GroupObserver implements MessageObserver {
                     break;
                 case "groupinsertsuccess":
                     Log.i(TAG, "Group Insert Sucess");
-                    updateLocalDatabase();
-                    TopicSubscriber.subscribeToTopic(jsonToGroup(this.payload.getString("content")).getGid());
+                    updateLocalGroupTable();
+                    updateLocalUserIsInGroup(1);
+                    TopicSubscriber.subscribeToTopic(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid());
                     insertSuccess();
                     break;
                 case "groupinvitation":
@@ -72,50 +72,68 @@ public class GroupObserver implements MessageObserver {
         LocalBroadcastManager.getInstance(context).sendBroadcast(insertSuccess);
     }
 
-    private void groupInvitation() {
-        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        Group grp = jsonToGroup(this.payload.getString("content"));
-        sqLiteDBHandler.addGroup(grp);
-        System.out.println("ADDING GROUP");
-        sendInvitationAccept();
-        sendLocalUpdateBroadcast();
-
-    }
-
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("update");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-    private void sendInvitationAccept() {
+
+
+    private void updateLocalGroupTable() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        Group grp = jsonToGroup(this.payload.getString("content"));
-        grp.setJoined(1);
-        sqLiteDBHandler.joinGroup(grp);
-        MyGcmSend myGcmSend = new MyGcmSend();
+        sqLiteDBHandler.addGroup(JsonCollection.jsonToGroup(this.payload.getString("content")));
+    }
+
+    private void groupInvitation() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
+        Group grp = JsonCollection.jsonToGroup(stringArray[0]);
+
+        sqLiteDBHandler.addGroup(grp);
+
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        String[] string = new String[2];
-        string[0] = grp.getGid();
-        string[1] = prefs.getString("userid", "");
-        TopicSubscriber.subscribeToTopic(grp.getGid());
-        myGcmSend.send("group", "invitationaccept", context, string);
+        sqLiteDBHandler.joinGroup(grp.getGid(),  prefs.getString("userid", ""),0);
+
+        System.out.println("ADDING GROUP " + stringArray[0]);
+        updateLocalInsertNewGroupMembers();
+        sendLocalUpdateBroadcast();
+
     }
 
-    private Group jsonToGroup(String jsonInString) {
-        Gson gson = new Gson();
-        Group grp = gson.fromJson(jsonInString, Group.class);
-        return grp;
-    }
-
-    private void updateLocalDatabase() {
+    private void updateLocalUserIsInGroup(int i) {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        sqLiteDBHandler.addGroup(jsonToGroup(this.payload.getString("content")));
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String uid = prefs.getString("userid", "");
+        sqLiteDBHandler.addIsInGroup(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid(),uid, i);
+    }
+
+    private void updateLocalInsertNewGroupMembers() {
+        Log.i(TAG, "update Local DB, Insert New Group Members");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
+        ArrayList<User> userList = JsonCollection.jsonToUserList(stringArray[1]);
+
+        ArrayList<UserInGroup> userInGroupList = JsonCollection.jsonToUserInGroupList(stringArray[2]);
+        System.out.println("USERLIST SIZE" + userList.size());
+        System.out.println("USERLIST SIZE" + userInGroupList.size());
+        for(User user : userList) {
+            System.out.println("bla bla bla bla " + user.getName());
+            sqLiteDBHandler.addUser(user);
+        }
+        for(UserInGroup userInGroup : userInGroupList) {
+            System.out.println("uid " + userInGroup.getUid());
+            System.out.println("gid " + userInGroup.getGid());
+            System.out.println("isjoint " + userInGroup.getIsJoined());
+            sqLiteDBHandler.addIsInGroup(userInGroup);
+        }
+
     }
 
     private void insertSuccess() {
         Intent insertSuccess = new Intent("createdgroup");
         LocalBroadcastManager.getInstance(context).sendBroadcast(insertSuccess);
     }
+
 
     private void errorGroup(String error) {
         Intent errorGroup = new Intent("ERRORGroup");
@@ -135,13 +153,11 @@ public class GroupObserver implements MessageObserver {
 
     public void groupArray() {
 
-        Gson gson = new Gson();
         String content = this.payload.getString("content");
-        ArrayList<Group> grplist = gson.fromJson(content, new TypeToken<List<Group>>() {
-        }.getType());
+        ArrayList<Group> grplist = JsonCollection.jsonToGroupList(content);
 
 //        for(Group grp : grplist) {
-//            updateLocalDatabase(grp);
+//            updateLocalGroupTable(grp);
 //        }
 
 

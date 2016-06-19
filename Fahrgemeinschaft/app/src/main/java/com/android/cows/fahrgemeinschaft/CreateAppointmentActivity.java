@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -44,19 +45,21 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         MyGcmSend gcmsend = new MyGcmSend();
 
-        Bundle bundle = getIntent().getExtras();
+        SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String gid = prefs.getString("currentgid", "");
+        String gname = prefs.getString("currentgroupname", "");
 
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
-        int id = sqLiteDBHandler.getNextAppointmentID(bundle.getString("gid"));
+        int id = sqLiteDBHandler.getNextAppointmentID(gid);
         Appointment gapm1;
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, (String) bundle.get("gid"), (String) bundle.get("name") + " " + 1, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+            gapm1 = new Appointment(1, gid, gname + " " + 1, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
-            gapm1 = new Appointment(id, (String) bundle.get("gid"), (String) bundle.get("name") + " " + id, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+            gapm1 = new Appointment(id, gid, gname + " " + id, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
         }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 
@@ -84,9 +87,6 @@ public class CreateAppointmentActivity extends AppCompatActivity {
                 unregisterReceiver();
                 Intent intent2 = new Intent(CreateAppointmentActivity.this, GroupTabsActivity.class);
                 Bundle bundle = getIntent().getExtras();
-                intent2.putExtra("name", (String) bundle.get("name"));
-                intent2.putExtra("adminid", (String) bundle.get("adminid"));
-                intent2.putExtra("gid", (String) bundle.get("gid"));
                 startActivity(intent2);
             }
         };

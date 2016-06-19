@@ -1,7 +1,9 @@
 package database;
 
 import com.dataobjects.Group;
-import com.google.gson.Gson;
+import com.dataobjects.JsonCollection;
+import com.dataobjects.User;
+import com.dataobjects.UserInGroup;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -94,8 +96,7 @@ public class Databaseoperator {
 
             while (rs.next()) {
                 String objectstring = rs.getString("objectstring");
-                Gson gson = new Gson();
-                Group grpobject = gson.fromJson(objectstring, Group.class);
+                Group grpobject = JsonCollection.jsonToGroup(objectstring);
                 grplist.add(grpobject);
                 //todo this has bad perfomance since the object has to be transformed back to String for sending it
             }
@@ -135,7 +136,7 @@ public class Databaseoperator {
             if (userindatabase == null) {
                 query = "INSERT INTO users (userid, token, objectstring, email) VALUES ('" + id + "','" + token + "','" + objectstring + "','" + email + "');";
             } else {
-                query = "UPDATE user SET token = " + "'" + token + "'" + ", objectstring = '" + objectstring + "' WHERE userid = '" + id + "'";
+                query = "UPDATE users SET token = " + "'" + token + "'" + ", objectstring = '" + objectstring + "' WHERE userid = '" + id + "'";
             }
 
             Connection con = null;
@@ -276,8 +277,59 @@ public class Databaseoperator {
         }
     }
 
+    static public ArrayList<User> getUsersWithGroupId(String gid) {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "SELECT * FROM users LEFT JOIN is_in_group ON users.userid = is_in_group.uid WHERE gid = '" + gid + "'";
+            ResultSet rs = stmt.executeQuery(query);
 
-    static public boolean userIsInGroup(String gid, String uid, int isJoined) {
+            ArrayList<User> userlist = new ArrayList();
+
+            while (rs.next()) {
+                String objectstring = rs.getString("objectstring");
+                User user = JsonCollection.jsonToUser(objectstring);
+                userlist.add(user);
+                //todo this has bad perfomance since the object has to be transformed back to String for sending it
+            }
+
+            stmt.close();
+            con.close();
+            return userlist;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static public ArrayList<UserInGroup> getUsersInGroupWithGroupId(String gid) {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "SELECT * FROM is_in_group WHERE gid = '" + gid + "'";
+            ResultSet rs = stmt.executeQuery(query);
+
+            ArrayList<UserInGroup> userIsInGroupList = new ArrayList();
+
+            while (rs.next()) {
+                UserInGroup userInGroup = new UserInGroup(rs.getString("uid"), rs.getString("gid"), rs.getInt("isJoined"));
+                userIsInGroupList.add(userInGroup);
+            }
+
+            stmt.close();
+            con.close();
+            return userIsInGroupList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    static public boolean setUserIsInGroup(String gid, String uid, int isJoined) {
         if (!checkIsUserInGroup(gid, uid)) {
             Connection con = null;
 
@@ -322,7 +374,7 @@ public class Databaseoperator {
         }
     }
 
-    public static boolean userIsInAppointment(int aid, String gid, String uid, int isParticipant) {
+    public static boolean checkUserIsInAppointment(int aid, String gid, String uid, int isParticipant) {
 
         if (!checkIsUserInAppointment(aid, gid, uid)) {
             Connection con = null;
@@ -473,6 +525,7 @@ public class Databaseoperator {
             return false;
         }
     }
+
 
 
 }

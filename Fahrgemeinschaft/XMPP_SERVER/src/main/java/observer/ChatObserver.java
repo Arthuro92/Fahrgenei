@@ -1,7 +1,7 @@
 package observer;
 
 import com.dataobjects.Chat;
-import com.google.gson.Gson;
+import com.dataobjects.JsonCollection;
 
 import org.jivesoftware.smack.SmackException;
 
@@ -26,8 +26,7 @@ public class ChatObserver implements MessageObserver {
      * @return a resulting Chat object
      */
     private Chat setChatMessage(String jsonInString) {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonInString, Chat.class);
+        return JsonCollection.jsonToChat(jsonInString);
     }
 
     /**

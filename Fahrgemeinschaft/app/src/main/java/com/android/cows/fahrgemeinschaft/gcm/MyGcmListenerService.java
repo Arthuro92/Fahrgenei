@@ -60,8 +60,8 @@ public class MyGcmListenerService extends GcmListenerService {
         ms.setJsonObject(data);
 
 //        Gson gson = new Gson();
-//        String jsonInString = data.getString("user");
-//        User user = gson.fromJson(jsonInString, User.class);
+//        String JsonInString = data.getString("user");
+//        User user = gson.fromJson(JsonInString, User.class);
         //todo non topic message handling
         if (from.startsWith("/topics/")) {
             // message received from some topic.

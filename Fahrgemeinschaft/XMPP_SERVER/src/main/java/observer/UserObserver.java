@@ -29,7 +29,6 @@ public class UserObserver implements MessageObserver {
             if (this.payload.get("task_category").equals("user")) {
                 switch (this.payload.get("task")) {
                     case "registration":
-                        logger.log(Level.INFO, "first switch task = registration");
                         logger.log(Level.INFO, "register new user: " + registration());
                         break;
                     default:

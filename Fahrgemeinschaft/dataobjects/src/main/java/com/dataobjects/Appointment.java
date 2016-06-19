@@ -1,5 +1,7 @@
 package com.dataobjects;
 
+import com.google.gson.Gson;
+
 import java.util.Date;
 
 /**
@@ -16,14 +18,6 @@ public class Appointment {
     private String zielort;
     private int isParticipant;
 
-    public String getZielort() {
-        return zielort;
-    }
-
-    public void setZielort(String zielort) {
-        this.zielort = zielort;
-    }
-
     public Appointment(int aid, String gid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
         this.aid = aid;
         this.gid = gid;
@@ -33,6 +27,15 @@ public class Appointment {
         this.treffpunkt = treffpunkt;
         this.zielort = zielort;
         this.isParticipant = isParticipant;
+    }
+
+
+    public String getZielort() {
+        return zielort;
+    }
+
+    public void setZielort(String zielort) {
+        this.zielort = zielort;
     }
 
     public int getIsParticipant() {
@@ -89,5 +92,9 @@ public class Appointment {
 
     public void setGid(String gid) {
         this.gid = gid;
+    }
+
+    public String getJsonInString() {
+        return new Gson().toJson(this);
     }
 }

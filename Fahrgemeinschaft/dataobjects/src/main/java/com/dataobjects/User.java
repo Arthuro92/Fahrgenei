@@ -1,5 +1,7 @@
 package com.dataobjects;
 
+import com.google.gson.Gson;
+
 /**
  * Created by lenna on 23.05.2016.
  */
@@ -8,7 +10,6 @@ public class User {
     private String token;
     private String name;
     private String email;
-    private String gid;
 
     public User(String id, String token, String name, String email) {
         this.id = id;
@@ -49,11 +50,7 @@ public class User {
         this.email = email;
     }
 
-    public String getGid() {
-        return gid;
-    }
-
-    public void setGid(String gid) {
-        this.gid = gid;
+    public String getJsonInString() {
+        return new Gson().toJson(this);
     }
 }

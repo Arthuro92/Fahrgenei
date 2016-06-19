@@ -1,14 +1,22 @@
 package com.dataobjects;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 /**
  * Created by david on 26.05.2016.
  */
-public class Chat implements Serializable {
+public class Chat implements Serializable{
     private String chatMessageFrom;
     private String chatMessageTime;
     private String chatMessageText;
+
+    public Chat(String chatMessageFrom, String chatMessageTime, String chatMessageText) {
+        this.chatMessageFrom = chatMessageFrom;
+        this.chatMessageTime = chatMessageTime;
+        this.chatMessageText = chatMessageText;
+    }
 
     public String getChatMessageFrom() {
         return chatMessageFrom;
@@ -34,9 +42,7 @@ public class Chat implements Serializable {
         this.chatMessageText = chatMessageText;
     }
 
-    public Chat(String chatMessageFrom, String chatMessageTime, String chatMessageText) {
-        this.chatMessageFrom = chatMessageFrom;
-        this.chatMessageTime = chatMessageTime;
-        this.chatMessageText = chatMessageText;
+    public String getJsonInString() {
+        return new Gson().toJson(this);
     }
 }

@@ -30,7 +30,6 @@ public class Test {
 //        Databaseoperator.insertNewAppointment();
 
 //        testchat(ccsClient);
-
         while (true) {
             try {
                 Thread.sleep(1000);

@@ -14,7 +14,7 @@ import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Chat;
-import com.google.gson.Gson;
+import com.dataobjects.JsonCollection;
 
 
 /**
@@ -76,8 +76,7 @@ public class ChatObserver implements MessageObserver {
      * @return a resulting Chat object
      */
     private Chat setChatMessage(String jsonInString) {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonInString, Chat.class);
+        return JsonCollection.jsonToChat(jsonInString);
     }
 
     /**

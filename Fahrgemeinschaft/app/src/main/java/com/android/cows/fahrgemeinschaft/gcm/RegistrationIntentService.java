@@ -25,6 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.User;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -96,9 +97,11 @@ public class RegistrationIntentService extends IntentService {
         String id = prefs.getString("userid", "");
         String name = prefs.getString("username", "");
         String email = prefs.getString("useremail", "");
+        prefs.edit().putString("usertoken", token).apply();
 
         User user = new User(id, token, name, email);
-
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+        sqLiteDBHandler.addUser(user);
         gcmsender.send("user", "registration", user, this);
     }
 

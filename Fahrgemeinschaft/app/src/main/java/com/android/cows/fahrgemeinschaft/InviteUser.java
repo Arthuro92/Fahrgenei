@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Group;
-import com.google.gson.Gson;
 
 public class InviteUser extends AppCompatActivity {
     private static final String TAG = "InviteUser";
@@ -42,17 +42,19 @@ public class InviteUser extends AppCompatActivity {
             setLayoutInvisible();
             MyGcmSend gcmSend = new MyGcmSend();
 
-            String[] string = new String[3];
-            string[0] = editText.getText().toString();
-            Bundle bundle = getIntent().getExtras();
-            string[1] = bundle.getString("gid");
+            String[] stringarray = new String[3];
+            stringarray[0] = editText.getText().toString();
 
-            Group group = sqLiteDBHandler.getGroup(string[1]);
+            SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+            String gid = prefs.getString("currentgid", "");
+            stringarray[1] = gid;
+
+            Group group = sqLiteDBHandler.getGroup(stringarray[1]);
             if (group != null) {
                 //todo handle invites with own email or email already invited
-                Gson gson = new Gson();
-                string[2] = gson.toJson(group);
-                gcmSend.send("group", "inviteuser", this, string);
+
+                stringarray[2] = group.getJsonInString();
+                gcmSend.send("group", "inviteuser", this, stringarray);
                 createReceiver();
             } else {
                 CharSequence text = "Fehler Gruppe in die Eingeladen werden soll nicht gefunden in SQLLight Db";
@@ -84,10 +86,6 @@ public class InviteUser extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
                 Intent intent2 = new Intent(InviteUser.this, GroupTabsActivity.class);
-                Bundle bundle = getIntent().getExtras();
-                intent2.putExtra("name", (String) bundle.get("name"));
-                intent2.putExtra("adminid", (String) bundle.get("adminid"));
-                intent2.putExtra("gid", (String) bundle.get("gid"));
                 startActivity(intent2);
             }
         };

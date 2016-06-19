@@ -1,6 +1,6 @@
 package com.dataobjects;
 
-import java.util.List;
+import com.google.gson.Gson;
 
 /**
  * Created by Lennart on 09.05.2016.
@@ -11,9 +11,7 @@ public class Group {
     private int membercount;
     private String adminid;
     private String adminname;
-    private List<User> userlist;
     private String gid;
-    private int isJoined;
 
     public Group(String name, int membercount, String adminid, String adminname, String gid, int isJoined) {
         this.name = name;
@@ -21,15 +19,6 @@ public class Group {
         this.adminid = adminid;
         this.adminname = adminname;
         this.gid = gid.replaceAll("\\s","");
-        this.isJoined = isJoined;
-    }
-
-    public int getisJoined() {
-        return isJoined;
-    }
-
-    public void setJoined(int joined) {
-        isJoined = joined;
     }
 
     public String getGid() {
@@ -64,19 +53,15 @@ public class Group {
         this.adminid = adminid;
     }
 
-    public List<User> getUserlist() {
-        return userlist;
-    }
-
-    public void setUserlist(List<User> userlist) {
-        this.userlist = userlist;
-    }
-
     public String getAdminname() {
         return adminname;
     }
 
     public void setAdminname(String adminname) {
         this.adminname = adminname;
+    }
+
+    public String getJsonInString() {
+        return new Gson().toJson(this);
     }
 }

@@ -1,5 +1,7 @@
 package com.dataobjects;
 
+import com.google.gson.Gson;
+
 /**
  * Created by lenna on 23.05.2016.
  */
@@ -46,5 +48,9 @@ public class Task {
 
     public void setBearbeiter(String bearbeiter) {
         this.bearbeiter = bearbeiter;
+    }
+
+    public String getJsonInString() {
+        return new Gson().toJson(this);
     }
 }
