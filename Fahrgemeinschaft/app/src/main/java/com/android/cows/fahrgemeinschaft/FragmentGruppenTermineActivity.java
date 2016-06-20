@@ -139,7 +139,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
      */
     public void createAppointments(ArrayList<Appointment> appointmentArrayList) {
         Log.i(TAG, "createAppointments");
-        this.appointmentAdapter = new AppointmentAdapter(getActivity(), appointmentArrayList);
+        this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row, appointmentArrayList);
         this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
         this.listView.setAdapter(appointmentAdapter);
     }

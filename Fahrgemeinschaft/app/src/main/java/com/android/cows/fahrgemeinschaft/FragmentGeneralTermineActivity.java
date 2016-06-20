@@ -10,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
+import com.android.cows.fahrgemeinschaft.adapters.UserAdapter;
 import com.dataobjects.Appointment;
 
 import java.text.DateFormat;
@@ -26,6 +29,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
     private int lastid;
     private static final String TAG = "AppointmentOverview";
     View contentViewGeneralTermine;
+    ListView listView;
 
     @Nullable
     @Override
@@ -44,20 +48,23 @@ public class FragmentGeneralTermineActivity extends Fragment {
         Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
         Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz", 1);
         Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover", 1);
-        List<Appointment> apmlist = new ArrayList<Appointment>();
+        ArrayList<Appointment> apmlist = new ArrayList<Appointment>();
         apmlist.add(gapm1);
         apmlist.add(gapm2);
         apmlist.add(gapm3);
-
-        createAppointmentOverview(apmlist);
-
+        AppointmentAdapter appointmentAdapter = new AppointmentAdapter( getActivity() ,R.layout.item_row, apmlist);
+       // createAppointmentOverview(apmlist);
+        listView = (ListView) view.findViewById(R.id.apmListView);
+        View header = (View) getActivity().getLayoutInflater().inflate(R.layout.header_row, null);
+        // listView.addHeaderView(header);
+        listView.setAdapter(appointmentAdapter);
     }
 
     /**
      * Creating for each Appointment a linearLayout
      *
      * @param apmlist list of Appointments which should be displayed
-     */
+
     public void createAppointmentOverview(final List<Appointment> apmlist) {
         Log.i(TAG, "createGroup");
 
@@ -157,7 +164,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
             i++;
         }
-    }
+    }*/
 
 
 }

@@ -113,7 +113,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
      */
     public void createGroupOverview(ArrayList<Group> grplist) {
         Log.i(TAG, "createGroup");
-        this.groupAdapter = new GroupAdapter(getActivity(), grplist);
+        this.groupAdapter = new GroupAdapter(getActivity(),R.layout.item_row, grplist);
         this.listView = (ListView) getActivity().findViewById(R.id.general_group_listview);
         this.listView.setAdapter(groupAdapter);
     }
