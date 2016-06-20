@@ -7,10 +7,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateGroupActivity">
+    tools:context=".CreateGroupActivity"
+    android:background="@color/blue_grey_500">
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/groupname"
         android:hint="Gruppenname"
@@ -18,14 +19,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Gruppe hinzufügen"
         android:id="@+id/button"
         android:onClick="creategroup"
         android:layout_below="@+id/groupname"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/PrimaryDark" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
