@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper{
     //new new new
-    private static final int DATABASE_VERSION = 69;
+    private static final int DATABASE_VERSION = 75;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -35,6 +35,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
 //                    "FOREIGN KEY(aid) REFERENCES appointments(aid), " +
 //                    "FOREIGN KEY(gid) REFERENCES appointments(gid) " +
 //                    "FOREIGN KEY(uid) REFEREMCES ";
+    private static final String TABLE_USERS = "CREATE TABLE user(uid VARCHAR(255) PRIMARY KEY, jsonInString VARCHAR(400));";
+    private static final String TABLE_IS_IN_GROUP = "CREATE TABLE is_in_group(gid VARCHAR(255) , uid VARCHAR(255), isJoined INTEGER , PRIMARY KEY(gid, uid));";
+    /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
     private static final String GET_GROUPS = "SELECT * FROM groups";
     private static final String GET_APPOINTMENTS = "SELECT * FROM appointments WHERE gid = ";
@@ -283,3 +286,5 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
     }
 
 }
+
+

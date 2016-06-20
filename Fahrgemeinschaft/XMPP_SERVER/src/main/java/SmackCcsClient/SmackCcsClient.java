@@ -108,7 +108,7 @@ public class SmackCcsClient<T> {
      * @return true when send success, and false when send failed
      * @throws NotConnectedException
      */
-    public boolean sendDownstreamMessage(String task_category, String task, String to, T javaobject) throws NotConnectedException {
+    public boolean sendDownstreamMessage(String task_category, String task, String to, Object javaobject) throws NotConnectedException {
         if (!connectionDraining) {
             String messageId = nextMessageId();
             Map<String, String> payload = new HashMap<String, String>();

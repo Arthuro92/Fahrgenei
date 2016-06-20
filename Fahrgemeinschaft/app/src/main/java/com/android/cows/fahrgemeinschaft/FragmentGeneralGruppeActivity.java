@@ -48,7 +48,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        Button btn = (Button) contentViewGeneralGruppen.findViewById(R.id.button3);
+        /*Button btn = (Button) contentViewGeneralGruppen.findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +56,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
                 Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
                 startActivity(intent);
             }
-        });
+        }); */
 
         loadGrpList();
         createReceiver();

@@ -8,18 +8,18 @@
 
     <include
         android:id="@+id/tool_bar"
-        layout="@layout/toolbar_xml"
+        layout="@layout/toolbar"
         ></include>
 
 
-    <android.support.design.widget.TabLayout
+     <android.support.design.widget.TabLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tool_bar"
         android:id="@+id/tablayoutGeneral"
         android:theme="@style/toolbarstyle"
-        android:background="?attr/colorPrimary"
-        android:layout_below="@+id/tool_bar"/>
+        android:background="?attr/colorPrimary" />
 
 
     <android.support.v4.view.ViewPager
@@ -27,55 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayoutGeneral"
-        android:id="@+id/viewpagerGeneral" />
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/standalone_toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:theme="@style/toolbarstyle"
-        android:background="?attr/colorPrimary"
-        android:layout_alignParentBottom="true">
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="fitXY"
-                android:id="@+id/btnToolbar1"
-                android:src="@mipmap/icon_group_add2"
-                android:onClick="createGroup"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="15dp"
-                android:background="@android:color/transparent" />
-
-            <ImageButton
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:scaleType="fitXY"
-                android:id="@+id/btnToolbar2"
-                android:src="@drawable/profil"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="15dp"
-                android:background="@android:color/transparent"/>
-
-            <ImageButton
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:scaleType="fitXY"
-                android:id="@+id/btnToolbar3"
-                android:src="@drawable/task"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@android:color/transparent"/>
-        </LinearLayout>
-
-    </android.support.v7.widget.Toolbar>
-
+        android:id="@+id/viewpagerGeneral"
+        android:background="@color/blue_grey_500" />
 
 </RelativeLayout>

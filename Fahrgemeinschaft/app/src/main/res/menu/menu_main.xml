@@ -7,20 +7,20 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="test"
+        android:title="@string/app_name"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_addUser"
+        android:orderInCategory="200"
+        android:title="User"
+        android:icon="@drawable/ic_group_add_black_24dp"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_search"
         android:orderInCategory="200"
         android:title="Search"
-        android:icon="@drawable/ic_stat_ic_notification"
+        android:icon="@drawable/ic_directions_car_black_24dp"
         app:showAsAction="ifRoom"
-        ></item>
-    <item
-        android:id="@+id/action_user"
-        android:orderInCategory="300"
-        android:title="User"
-        android:icon="@drawable/mail"
-        app:showAsAction="ifRoom"></item>
+        />
 
 </menu>

@@ -228,6 +228,30 @@ public class Databaseoperator {
         }
     }
 
+    public static String getUserByEmail(String email) {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
+            Statement stmt = con.createStatement();
+            String query = "SELECT * FROM users WHERE email =" + "'" + email + "'";
+            ResultSet rs = stmt.executeQuery(query);
+
+
+            if (rs.next()) {
+                String userid = rs.getString("objectstring");
+                return userid;
+            }
+
+            stmt.close();
+            con.close();
+            return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     static public String getUserIdByToken(String token) {
         Connection con = null;
         try {
@@ -449,4 +473,6 @@ public class Databaseoperator {
             return false;
         }
     }
+
+
 }

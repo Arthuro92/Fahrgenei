@@ -8,7 +8,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -51,12 +53,15 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
         buidNewGoogleApiClient();
         setContentView(R.layout.activity_main);
-        //Customize sign-in button.a red button may be displayed when Google+ scopes are requested
+        //Customize sign-in button.a red button may be displayed when Google+ scopes are requestes
+
         custimizeSignBtn();
         setBtnClickListeners();
         progress_dialog = new ProgressDialog(this);
         progress_dialog.setMessage("Signing in....");
+
     }
+
 
     /*
     create and  initialize GoogleApiClient object to use Google Plus Api.
@@ -142,10 +147,10 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        //if (id == R.id.action_settings) {
-        //   return true;
-        //}
+      /*  //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+          return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
