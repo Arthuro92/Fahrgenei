@@ -6,12 +6,18 @@
     tools:context="com.android.cows.fahrgemeinschaft.GroupTabsActivity">
 
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar_xml"
+        ></include>
+
     <android.support.design.widget.TabLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tablayoutGroup"
         android:theme="@style/toolbarstyle"
+        android:layout_below="@+id/tool_bar"
         android:background="?attr/colorPrimary" />
 
     <android.support.v4.view.ViewPager
