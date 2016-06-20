@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by david on 29.05.2016.
  */
-public class SQLiteDBHandler extends SQLiteOpenHelper{
+public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
     private static final int DATABASE_VERSION = 75;
     private static final String TAG = "SQLiteDbHandler";
@@ -26,9 +26,6 @@ public class SQLiteDBHandler extends SQLiteOpenHelper{
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
     private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER , gid VARCHAR(255), isParticipant INTEGER, jsonInString VARCHAR(400), PRIMARY KEY(aid, gid), FOREIGN KEY(gid) REFERENCES groups(gid));";
     private static final String TABLE_GROUPS = "CREATE TABLE groups(gid VARCHAR(255) PRIMARY KEY, isJoined INTEGER, jsonInString VARCHAR(400));";
-    private static final String TABLE_USERS = "CREATE TABLE user(uid VARCHAR(255) PRIMARY KEY, jsonInString VARCHAR(400));";
-    private static final String TABLE_IS_IN_GROUP = "CREATE TABLE is_in_group(gid VARCHAR(255) , uid VARCHAR(255), isJoined INTEGER , PRIMARY KEY(gid, uid));";
-    /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
     //    private static final String TABLE_IS_IN_APPOINTMENT =
 //            "CREATE TABLE is_in_appointment (aid INTEGER, gid VARCHAR(255), uid VARCHAR(255), isParticipant INTEGER, " +
 //                    "PRIMARY KEY(aid, gid, uid)," +

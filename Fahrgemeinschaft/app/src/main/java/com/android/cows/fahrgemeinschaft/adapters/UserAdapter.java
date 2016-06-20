@@ -87,6 +87,8 @@ public class UserAdapter extends ArrayAdapter {
     /**
      * Constructs an Adapter
      *
+     * @param context  a Context the Adapter is constructed from
+     * @param resource an ArrayList to be handled and displayed by the Adapter
      *
      * @param context a Context the Adapter is constructed from
      * @param data an ArrayList to be handled and displayed by the Adapter
