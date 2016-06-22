@@ -13,9 +13,18 @@
         android:id="@+id/action_add_person"
         android:orderInCategory="200"
         android:title="Add Person"
-        android:icon="@drawable/ic_person_add_black_24dp"
+        android:icon="@drawable/ic_person_add_white_24dp"
         app:showAsAction="ifRoom"
         ></item>
+
+    <item
+        android:id="@+id/action_add_event"
+        android:orderInCategory="200"
+        android:title="Add Event"
+        android:icon="@drawable/ic_event_note_white_24dp"
+        app:showAsAction="ifRoom"
+        ></item>
+
     <item
         android:id="@+id/action_add_task"
         android:orderInCategory="200"

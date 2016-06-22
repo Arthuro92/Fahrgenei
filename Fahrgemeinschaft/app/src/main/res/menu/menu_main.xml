@@ -13,8 +13,9 @@
         android:id="@+id/action_addUser"
         android:orderInCategory="200"
         android:title="User"
-        android:icon="@drawable/ic_group_add_black_24dp"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/ic_group_add_white_24dp"
+        app:showAsAction="ifRoom"
+        android:minHeight="4dp"/>
     <item
         android:id="@+id/action_search"
         android:orderInCategory="200"

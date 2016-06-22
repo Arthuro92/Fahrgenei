@@ -15,16 +15,10 @@
         android:id="@+id/userListView"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
+        android:divider="#FFFFFF"
+        android:dividerHeight="1px"
         />
 
-      <Button
-          android:layout_below="@+id/userListView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Weiter"
-          android:id="@+id/buttonFragmentGruppenNutzer"
-          android:layout_alignParentTop="true"
-          android:layout_centerHorizontal="true"
-          android:layout_marginTop="97dp" />
+
 
   </RelativeLayout>

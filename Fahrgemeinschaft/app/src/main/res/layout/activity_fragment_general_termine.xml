@@ -34,12 +34,5 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Test Layout Termine funktioniert!"
-        android:id="@+id/textViewGeneralTermine"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

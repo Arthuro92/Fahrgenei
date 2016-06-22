@@ -15,7 +15,6 @@ public class GeneralTabsActivity extends AppCompatActivity {
 
     ViewPager viewPagerGeneral;
     TabLayout tabLayoutGeneral;
-    Toolbar toolbar;
 
     Toolbar toolbar;
 
@@ -32,10 +31,6 @@ public class GeneralTabsActivity extends AppCompatActivity {
 
         final ViewPagerAdapterGeneralTabs viewPagerAdapter = new ViewPagerAdapterGeneralTabs(getSupportFragmentManager());
         viewPagerGeneral.setAdapter(viewPagerAdapter);
-
-        //NEW
-        toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
-        setSupportActionBar(toolbar);
 
 
         tabLayoutGeneral = (TabLayout) findViewById(R.id.tablayoutGeneral);
@@ -85,28 +80,6 @@ public class GeneralTabsActivity extends AppCompatActivity {
         if (id == R.id.action_addUser) {
             Intent intent = new Intent(this, CreateGroupActivity.class);
             startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

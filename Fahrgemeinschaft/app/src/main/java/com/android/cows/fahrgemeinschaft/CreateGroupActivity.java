@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -29,6 +30,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private BroadcastReceiver errorGroupInsert;
     private ProgressBar mRegistrationProgressBar;
     private boolean isReceiverRegistered;
+    private AppCompatButton createGroupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,41 @@ public class CreateGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_group);
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.createGroupProgressBar);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
+        createGroupButton = (AppCompatButton) findViewById(R.id.createGroupButton);
+
+        createGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText groupname = (EditText) findViewById(R.id.groupname);
+                if (groupname.getText().toString().trim().length() == 0) {
+                    Toast.makeText(CreateGroupActivity.this, "Kein gültiger Gruppenname!", Toast.LENGTH_LONG).show();
+                } else {
+
+                    setLayoutInvisible();
+
+                    Log.i(TAG, "Create Group");
+                    SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                    //todo maybe error when no string in sharedpref
+
+                    Group newgroup = new Group(groupname.getText().toString(),
+                            1,
+                            prefs.getString("userid", ""),
+                            prefs.getString("username", ""),
+                            groupname.getText().toString() + prefs.getString("userid", ""),
+                            1);
+
+                    MyGcmSend gcmsend = new MyGcmSend();
+
+                    gcmsend.send("group", "insertgroup", newgroup, CreateGroupActivity.this);
+
+                    createReceiver();
+
+                }
+            }
+        });
     }
 
-
+/**
     public void creategroup(View view) {
         EditText groupname = (EditText) findViewById(R.id.groupname);
         if (groupname.getText().toString().trim().length() == 0) {
@@ -66,7 +100,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         }
     }
-
+*/
     private boolean checkRegEx(String text) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher matcher = pattern.matcher(text);
@@ -77,14 +111,14 @@ public class CreateGroupActivity extends AppCompatActivity {
     private void setLayoutInvisible() {
         findViewById(R.id.createGroupProgressBar).setVisibility(ProgressBar.VISIBLE);
         findViewById(R.id.groupname).setVisibility(View.INVISIBLE);
-        findViewById(R.id.button).setVisibility(View.INVISIBLE);
+        findViewById(R.id.createGroupButton).setVisibility(View.INVISIBLE);
     }
 
     @SuppressWarnings("ConstantConditions")
     private void setLayoutVisible() {
         findViewById(R.id.createGroupProgressBar).setVisibility(ProgressBar.GONE);
         findViewById(R.id.groupname).setVisibility(View.VISIBLE);
-        findViewById(R.id.button).setVisibility(View.VISIBLE);
+        findViewById(R.id.createGroupButton).setVisibility(View.VISIBLE);
     }
 
     private void createReceiver() {

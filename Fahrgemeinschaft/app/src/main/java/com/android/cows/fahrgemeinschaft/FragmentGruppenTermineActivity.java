@@ -46,7 +46,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
+      /**  Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +60,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
                 intent.putExtra("gid", (String) bundle.get("gid"));
                 startActivity(intent);
             }
-        });
+        });*/
 
         hideButtonIfNotAdmin();
         loadAppointmentList();

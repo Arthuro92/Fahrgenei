@@ -28,6 +28,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayoutGeneral"
         android:id="@+id/viewpagerGeneral"
-        android:background="@color/blue_grey_500" />
+        android:background="#E0E0E0" />
 
 </RelativeLayout>

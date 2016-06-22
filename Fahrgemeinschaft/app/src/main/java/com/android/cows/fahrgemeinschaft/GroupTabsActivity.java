@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ public class GroupTabsActivity extends AppCompatActivity {
 
         });
 
+        setTitle(getIntent().getStringExtra("name"));
 
     }
 
@@ -87,6 +89,14 @@ public class GroupTabsActivity extends AppCompatActivity {
             Bundle bundle = GroupTabsActivity.this.getIntent().getExtras();
             intent.putExtra("gid", bundle.getString("gid"));
 
+            startActivity(intent);
+        }
+        if (id ==R.id.action_add_event){
+            Intent intent = new Intent(GroupTabsActivity.this, CreateAppointmentActivity.class);
+            Bundle bundle = GroupTabsActivity.this.getIntent().getExtras();
+            intent.putExtra("name", (String) bundle.get("name"));
+            intent.putExtra("adminid", (String) bundle.get("adminid"));
+            intent.putExtra("gid", (String) bundle.get("gid"));
             startActivity(intent);
         }
 
