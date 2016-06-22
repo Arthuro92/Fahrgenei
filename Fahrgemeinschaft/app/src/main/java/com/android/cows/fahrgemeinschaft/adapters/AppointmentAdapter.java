@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.R;
+
 import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
-import com.android.cows.fahrgemeinschaft.R;
-import com.dataobjects.Appointment;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class AppointmentAdapter extends ArrayAdapter {
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
-    private View setAppointmentView(View appointmentView, Appointment appointment) {
+    private View setAppointmentView(View appointmentView, de.dataobjects.Appointment appointment) {
         TextView textview = (TextView) appointmentView.findViewById(R.id.appointmentTextView1);
         textview.setText(appointment.getName() + " TESTS");
         if(appointment.getIsParticipant() == 0) {
@@ -44,7 +44,7 @@ public class AppointmentAdapter extends ArrayAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Appointment appointment = (Appointment) getItem(position);
+        final de.dataobjects.Appointment appointment = (de.dataobjects.Appointment) getItem(position);
         View appointmentView = this.layoutInflater.inflate(R.layout.appointment_layout, parent, false);
         appointmentView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -69,7 +69,7 @@ public class AppointmentAdapter extends ArrayAdapter {
      * @param context  a Context the Adapter is constructed from
      * @param resource an ArrayList to be handled and displayed by the Adapter
      */
-    public AppointmentAdapter(Context context, ArrayList<Appointment> resource) {
+    public AppointmentAdapter(Context context, ArrayList<de.dataobjects.Appointment> resource) {
         super(context, R.layout.appointment_layout, resource);
     }
 }

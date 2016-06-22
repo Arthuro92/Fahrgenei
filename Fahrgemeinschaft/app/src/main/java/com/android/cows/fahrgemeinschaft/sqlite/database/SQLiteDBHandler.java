@@ -7,12 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.dataobjects.Appointment;
-import com.dataobjects.Chat;
-import com.dataobjects.JsonCollection;
-import com.dataobjects.Group;
-import com.dataobjects.User;
-import com.dataobjects.UserInGroup;
+import de.dataobjects.JsonCollection;
+import de.dataobjects.User;
+import de.dataobjects.UserInGroup;
 
 import java.util.ArrayList;
 
@@ -59,7 +56,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
 
 
-    public void addChatMessage(Chat c) {
+    public void addChatMessage(de.dataobjects.Chat c) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("message", c.getJsonInString());
@@ -67,8 +64,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Chat> getChatMessages() {
-        ArrayList<Chat> alc = new ArrayList<Chat>();
+    public ArrayList<de.dataobjects.Chat> getChatMessages() {
+        ArrayList<de.dataobjects.Chat> alc = new ArrayList<de.dataobjects.Chat>();
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_CHAT_MESSAGES, null);
         cur.moveToFirst();
@@ -94,7 +91,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addGroup(Group group) {
+    public void addGroup(de.dataobjects.Group group) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("gid", group.getGid());
@@ -184,8 +181,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return -1;
     }
 
-    public ArrayList<Group> getGroups() {
-        ArrayList<Group> groupArrayList = new ArrayList<Group>();
+    public ArrayList<de.dataobjects.Group> getGroups() {
+        ArrayList<de.dataobjects.Group> groupArrayList = new ArrayList<de.dataobjects.Group>();
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_GROUPS, null);
         cur.moveToFirst();
@@ -200,14 +197,14 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return groupArrayList;
     }
 
-    public Group getGroup(String gid) {
+    public de.dataobjects.Group getGroup(String gid) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_GROUP + "'" + gid + "'", null);
         cur.moveToFirst();
         if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
             db.close();
             Log.i(TAG, "getGroup " + cur.getString(cur.getColumnIndex("JsonInString")));
-            Group group = JsonCollection.jsonToGroup(cur.getString(cur.getColumnIndex("JsonInString")));
+            de.dataobjects.Group group = JsonCollection.jsonToGroup(cur.getString(cur.getColumnIndex("JsonInString")));
             return group;
         }
         db.close();
@@ -232,7 +229,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
 
-    public void addAppointment(Appointment appointment, int isParticipant) {
+    public void addAppointment(de.dataobjects.Appointment appointment, int isParticipant) {
         if (getAppointment(appointment.getAid(), appointment.getGid()) == null) {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues cv = new ContentValues();
@@ -249,8 +246,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<Appointment> getAppointments(String gid) {
-        ArrayList<Appointment> appointmentArrayList = new ArrayList<Appointment>();
+    public ArrayList<de.dataobjects.Appointment> getAppointments(String gid) {
+        ArrayList<de.dataobjects.Appointment> appointmentArrayList = new ArrayList<de.dataobjects.Appointment>();
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_APPOINTMENTS + "'" + gid + "'", null);
         cur.moveToFirst();
@@ -265,7 +262,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return appointmentArrayList;
     }
 
-    public Appointment getAppointment(int aid, String gid) {
+    public de.dataobjects.Appointment getAppointment(int aid, String gid) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_APPOINTMENT_1 + aid + GET_APPOINTMENT_2 + "'" + gid + "'", null);
         cur.moveToFirst();

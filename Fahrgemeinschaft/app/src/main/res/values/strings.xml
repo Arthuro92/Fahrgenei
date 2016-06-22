@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Fahrgemeinschaft</string>
     <string name="gcm_send_message">Token retrieved and sent to server! You can now use gcmsender to
-        send downstream messages to this app.</string>
+        send downstream messages to this repositoryCollection.</string>
     <string name="registering_message">Generating InstanceID token...</string>
     <string name="token_error_message">An error occurred while either fetching the InstanceID token,
         sending the fetched token to the server or subscribing to the PubSub topic. Please try
@@ -9,7 +9,7 @@
     <string name="grpname">"Gruppenname: %1$s "</string>
     <string name="membercount">"Mitgliederanzahl: %1$s "</string>
     <string name="grpadmin">"Gruppenadmin: %1$s"</string>
-    <string name="apm_name">Appointment: %1$s</string>
+    <string name="apm_name">database.Appointment: %1$s</string>
     <string name="treffpunkt_zeit">Treffen %1$s</string>
     <string name="treffpunkt_ort">Treffen %1$s</string>
     <string name="addgroup">Gruppe hinzufügen</string>

@@ -8,9 +8,10 @@ import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.JsonCollection;
-import com.dataobjects.User;
-import com.dataobjects.UserInGroup;
+
+import de.dataobjects.JsonCollection;
+import de.dataobjects.User;
+import de.dataobjects.UserInGroup;
 
 /**
  * Created by david on 23.05.2016.

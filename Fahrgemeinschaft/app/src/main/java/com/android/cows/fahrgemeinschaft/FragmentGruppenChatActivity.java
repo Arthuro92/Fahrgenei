@@ -17,7 +17,8 @@ import android.widget.ListView;
 import com.android.cows.fahrgemeinschaft.adapters.ChatMessageAdapter;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Chat;
+
+import de.dataobjects.Chat;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class FragmentGruppenChatActivity extends Fragment {
     //new new new
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
-    private ArrayList<Chat> arrayListChat;
+    private ArrayList<de.dataobjects.Chat> arrayListChat;
     private ChatMessageAdapter chatMessageAdapter;
     private ListView lv;
 
@@ -48,7 +49,7 @@ public class FragmentGruppenChatActivity extends Fragment {
      *
      * @param chatMessage a Chat object to be added
      */
-    private void addChatMessageDB(Chat chatMessage) {
+    private void addChatMessageDB(de.dataobjects.Chat chatMessage) {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         sqLiteDBHandler.addChatMessage(chatMessage);
     }
@@ -58,8 +59,8 @@ public class FragmentGruppenChatActivity extends Fragment {
      *
      * @param chatMessage
      */
-    private void sendChatMessage(Chat chatMessage) {
-        MyGcmSend<Chat> myGcmSend = new MyGcmSend<Chat>();
+    private void sendChatMessage(de.dataobjects.Chat chatMessage) {
+        MyGcmSend<Chat> myGcmSend = new MyGcmSend<de.dataobjects.Chat>();
         addChatMessageDB(chatMessage);
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
@@ -73,7 +74,7 @@ public class FragmentGruppenChatActivity extends Fragment {
         EditText editText = (EditText) getActivity().findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
         if (!editText.getText().toString().equals("")) {
-            sendChatMessage(new Chat(getChatUser(), time, editText.getText().toString()));
+            sendChatMessage(new de.dataobjects.Chat(getChatUser(), time, editText.getText().toString()));
         }
     }
 
@@ -83,7 +84,7 @@ public class FragmentGruppenChatActivity extends Fragment {
      * @param intent an Intent with an Extra to be added
      */
     private void setArrayListFromExtra(Intent intent) {
-        Chat chatMessage = (Chat) intent.getSerializableExtra("Chat");
+        de.dataobjects.Chat chatMessage = (de.dataobjects.Chat) intent.getSerializableExtra("Chat");
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
     }
@@ -110,7 +111,7 @@ public class FragmentGruppenChatActivity extends Fragment {
      *
      * @return an ArrayList containing the history
      */
-    private ArrayList<Chat> getArrayListFromDB() {
+    private ArrayList<de.dataobjects.Chat> getArrayListFromDB() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         return sqLiteDBHandler.getChatMessages();
     }

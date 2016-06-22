@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.adapters.GroupAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Group;
+import de.dataobjects.Group;
 
 import java.util.ArrayList;
 

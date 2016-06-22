@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 import com.android.cows.fahrgemeinschaft.adapters.UserAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.UserInGroup;
+import de.dataobjects.UserInGroup;
 
 import java.util.ArrayList;
 

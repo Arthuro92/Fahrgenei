@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
-import com.dataobjects.JsonCollection;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 import java.util.UUID;
+
+import de.dataobjects.JsonCollection;
 
 /**
  * Created by Lennart on 13.05.2016.

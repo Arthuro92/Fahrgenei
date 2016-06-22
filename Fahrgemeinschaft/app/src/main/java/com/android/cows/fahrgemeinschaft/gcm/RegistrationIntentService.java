@@ -26,12 +26,13 @@ import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.User;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
+
+import de.dataobjects.User;
 
 public class RegistrationIntentService extends IntentService {
 

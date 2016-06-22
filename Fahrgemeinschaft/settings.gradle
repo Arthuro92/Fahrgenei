@@ -1,2 +1,2 @@
-include ':app', ':dataobjects'
+include ':app', ':dataobjects', ':database'
 include 'XMPP_SERVER'

@@ -13,7 +13,7 @@
         android:textSize="22dp"
         android:textColor="#FFFFFF"
         android:padding="10dp"
-        android:text="User List"
+        android:text="database.User List"
         android:background="#336699" />
 
 </LinearLayout>

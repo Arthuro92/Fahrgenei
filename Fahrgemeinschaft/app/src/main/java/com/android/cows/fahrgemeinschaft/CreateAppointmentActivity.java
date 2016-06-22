@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Appointment;
 
 import java.util.Date;
 
@@ -51,15 +50,15 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
         int id = sqLiteDBHandler.getNextAppointmentID(gid);
-        Appointment gapm1;
+        de.dataobjects.Appointment gapm1;
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, gid, gname + " " + 1, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+            gapm1 = new de.dataobjects.Appointment(1, gid, gname + " " + 1, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
-            gapm1 = new Appointment(id, gid, gname + " " + id, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+            gapm1 = new de.dataobjects.Appointment(id, gid, gname + " " + id, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
         }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 

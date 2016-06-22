@@ -136,7 +136,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chat"
+            android:text="database.Chat"
             android:textColor="@color/black"
             android:id="@+id/textView11"
             android:gravity="center" />

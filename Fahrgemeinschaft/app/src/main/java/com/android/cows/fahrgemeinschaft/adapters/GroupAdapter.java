@@ -17,7 +17,6 @@ import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.gcm.TopicSubscriber;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Group;
 
 import java.util.ArrayList;
 
@@ -30,7 +29,7 @@ public class GroupAdapter extends ArrayAdapter {
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
 
-    private View setGroupView(View groupView, final Group group) {
+    private View setGroupView(View groupView, final de.dataobjects.Group group) {
         TextView textview = (TextView) groupView.findViewById(R.id.groupTextView1);
         textview.setText(group.getName());
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
@@ -67,7 +66,7 @@ public class GroupAdapter extends ArrayAdapter {
         return groupView;
     }
 
-    private void sendInvitationAccept(Group group) {
+    private void sendInvitationAccept(de.dataobjects.Group group) {
         Log.i(TAG, "Send Invitation Accept");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         MyGcmSend myGcmSend = new MyGcmSend();
@@ -94,7 +93,7 @@ public class GroupAdapter extends ArrayAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Group group = (Group) getItem(position);
+        final de.dataobjects.Group group = (de.dataobjects.Group) getItem(position);
         View groupView = this.layoutInflater.inflate(R.layout.group_layout, parent, false);
         return setGroupView(groupView, group);
     }
@@ -105,7 +104,7 @@ public class GroupAdapter extends ArrayAdapter {
      * @param context  a Context the Adapter is constructed from
      * @param resource an ArrayList to be handled and displayed by the Adapter
      */
-    public GroupAdapter(Context context, ArrayList<Group> resource) {
+    public GroupAdapter(Context context, ArrayList<de.dataobjects.Group> resource) {
         super(context, R.layout.group_layout, resource);
     }
 }

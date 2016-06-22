@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
-
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.User;
-import com.dataobjects.UserInGroup;
 
 import java.util.ArrayList;
+
+import de.dataobjects.User;
+import de.dataobjects.UserInGroup;
 
 /**
  * Created by david on 12.06.2016.

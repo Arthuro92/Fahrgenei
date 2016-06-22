@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
-import com.dataobjects.Group;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,7 +50,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             //todo maybe error when no string in sharedpref
 
-            Group newgroup = new Group(groupname.getText().toString(),
+            de.dataobjects.Group newgroup = new de.dataobjects.Group(groupname.getText().toString(),
                     1,
                     prefs.getString("userid", ""),
                     prefs.getString("username", ""),

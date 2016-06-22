@@ -10,10 +10,9 @@ import android.util.Log;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.gcm.TopicSubscriber;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Group;
-import com.dataobjects.JsonCollection;
-import com.dataobjects.User;
-import com.dataobjects.UserInGroup;
+
+import de.dataobjects.JsonCollection;
+import de.dataobjects.UserInGroup;
 
 import java.util.ArrayList;
 
@@ -87,7 +86,7 @@ public class GroupObserver implements MessageObserver {
     private void groupInvitation() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
-        Group grp = JsonCollection.jsonToGroup(stringArray[0]);
+        de.dataobjects.Group grp = JsonCollection.jsonToGroup(stringArray[0]);
 
         sqLiteDBHandler.addGroup(grp);
 
@@ -111,12 +110,12 @@ public class GroupObserver implements MessageObserver {
         Log.i(TAG, "update Local DB, Insert New Group Members");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
-        ArrayList<User> userList = JsonCollection.jsonToUserList(stringArray[1]);
+        ArrayList<de.dataobjects.User> userList = JsonCollection.jsonToUserList(stringArray[1]);
 
         ArrayList<UserInGroup> userInGroupList = JsonCollection.jsonToUserInGroupList(stringArray[2]);
         System.out.println("USERLIST SIZE" + userList.size());
         System.out.println("USERLIST SIZE" + userInGroupList.size());
-        for(User user : userList) {
+        for(de.dataobjects.User user : userList) {
             System.out.println("bla bla bla bla " + user.getName());
             sqLiteDBHandler.addUser(user);
         }
@@ -154,7 +153,7 @@ public class GroupObserver implements MessageObserver {
     public void groupArray() {
 
         String content = this.payload.getString("content");
-        ArrayList<Group> grplist = JsonCollection.jsonToGroupList(content);
+        ArrayList<de.dataobjects.Group> grplist = JsonCollection.jsonToGroupList(content);
 
 //        for(Group grp : grplist) {
 //            updateLocalGroupTable(grp);

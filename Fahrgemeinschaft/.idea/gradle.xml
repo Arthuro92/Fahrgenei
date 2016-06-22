@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/XMPP_SERVER" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/dataobjects" />
           </set>
         </option>
@@ -18,6 +19,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/XMPP_SERVER" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/dataobjects" />
           </set>
         </option>

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.android.cows.fahrgemeinschaft.FragmentGeneralTermineActivity">
+    tools:context=".FragmentGeneralTermineActivity">
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Test Layout Termine funktioniert!"
+        android:text="errors.jpa.errors.database.server.database.com.example.Test Layout Termine funktioniert!"
         android:id="@+id/textViewGeneralTermine"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Appointment;
 
 import java.util.ArrayList;
 
@@ -112,7 +111,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
-        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
+        ArrayList<de.dataobjects.Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
         if (appointmentlist.size() > 0) {
             System.out.println("create APPOINTMENTLIST");
             createAppointments(appointmentlist);
@@ -134,7 +133,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
      *
      * @param appointmentArrayList list of Groups which should be displayed
      */
-    public void createAppointments(ArrayList<Appointment> appointmentArrayList) {
+    public void createAppointments(ArrayList<de.dataobjects.Appointment> appointmentArrayList) {
         Log.i(TAG, "createAppointments");
         this.appointmentAdapter = new AppointmentAdapter(getActivity(), appointmentArrayList);
         this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);

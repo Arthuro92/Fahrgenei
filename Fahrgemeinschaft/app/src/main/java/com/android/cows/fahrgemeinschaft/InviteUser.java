@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Group;
 
 public class InviteUser extends AppCompatActivity {
     private static final String TAG = "InviteUser";
@@ -49,7 +48,7 @@ public class InviteUser extends AppCompatActivity {
             String gid = prefs.getString("currentgid", "");
             stringarray[1] = gid;
 
-            Group group = sqLiteDBHandler.getGroup(stringarray[1]);
+            de.dataobjects.Group group = sqLiteDBHandler.getGroup(stringarray[1]);
             if (group != null) {
                 //todo handle invites with own email or email already invited
 

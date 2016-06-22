@@ -13,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dataobjects.Appointment;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,10 +39,10 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
-        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz", 1);
-        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover", 1);
-        List<Appointment> apmlist = new ArrayList<Appointment>();
+        de.dataobjects.Appointment gapm1 = new de.dataobjects.Appointment(1, "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+        de.dataobjects.Appointment gapm2 = new de.dataobjects.Appointment(2, "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz", 1);
+        de.dataobjects.Appointment gapm3 = new de.dataobjects.Appointment(3, "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover", 1);
+        List<de.dataobjects.Appointment> apmlist = new ArrayList<de.dataobjects.Appointment>();
         apmlist.add(gapm1);
         apmlist.add(gapm2);
         apmlist.add(gapm3);
@@ -58,7 +56,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
      *
      * @param apmlist list of Appointments which should be displayed
      */
-    public void createAppointmentOverview(final List<Appointment> apmlist) {
+    public void createAppointmentOverview(final List<de.dataobjects.Appointment> apmlist) {
         Log.i(TAG, "createGroup");
 
         RelativeLayout relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.relativelayoutGeneralTermine);

@@ -13,8 +13,8 @@ import com.android.cows.fahrgemeinschaft.ChatActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Chat;
-import com.dataobjects.JsonCollection;
+
+import de.dataobjects.JsonCollection;
 
 
 /**
@@ -33,7 +33,7 @@ public class ChatObserver implements MessageObserver {
      * @param chatMessage a Chat object to be added as Extra
      * @return Intent that launches ChatActivity
      */
-    private Intent setChatIntent(Chat chatMessage) {
+    private Intent setChatIntent(de.dataobjects.Chat chatMessage) {
         Intent i = new Intent();
         i.putExtra("Chat", chatMessage);
         i.setAction("com.android.cows.fahrgemeinschaft.UPDATECHAT");
@@ -75,7 +75,7 @@ public class ChatObserver implements MessageObserver {
      * @param jsonInString a Json String to be parsed
      * @return a resulting Chat object
      */
-    private Chat setChatMessage(String jsonInString) {
+    private de.dataobjects.Chat setChatMessage(String jsonInString) {
         return JsonCollection.jsonToChat(jsonInString);
     }
 
@@ -84,7 +84,7 @@ public class ChatObserver implements MessageObserver {
      *
      * @param chatMessage Chat object to be added to database
      */
-    private void updateLocalDatabase(Chat chatMessage) {
+    private void updateLocalDatabase(de.dataobjects.Chat chatMessage) {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         sqLiteDBHandler.addChatMessage(chatMessage);
     }
@@ -94,7 +94,7 @@ public class ChatObserver implements MessageObserver {
      *
      * @param chatMessage a Chat object to be handled
      */
-    public void setInfoAndData(Chat chatMessage) {
+    public void setInfoAndData(de.dataobjects.Chat chatMessage) {
         Log.i(TAG, "CHAT MESSAGE: " + chatMessage.getChatMessageText());
         if (!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
             updateLocalDatabase(chatMessage);

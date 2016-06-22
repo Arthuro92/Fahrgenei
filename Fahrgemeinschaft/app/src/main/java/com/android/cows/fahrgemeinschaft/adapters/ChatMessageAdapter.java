@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
-import com.dataobjects.Chat;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,7 @@ public class ChatMessageAdapter extends ArrayAdapter {
      * @param chatMessage     a Chat object to be displayed
      * @return a view ready to be displayed
      */
-    private View setChatMessageView(View chatMessageView, Chat chatMessage) {
+    private View setChatMessageView(View chatMessageView, de.dataobjects.Chat chatMessage) {
         TextView chatMessageFrom = (TextView) chatMessageView.findViewById(R.id.chat_message_from);
         TextView chatMessageTime = (TextView) chatMessageView.findViewById(R.id.chat_message_time);
         TextView chatMessageText = (TextView) chatMessageView.findViewById(R.id.chat_message_text);
@@ -59,7 +58,7 @@ public class ChatMessageAdapter extends ArrayAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Chat chatMessage = (Chat) getItem(position);
+        de.dataobjects.Chat chatMessage = (de.dataobjects.Chat) getItem(position);
         View chatMessageView;
         if (chatMessage.getChatMessageFrom().equals(getChatUser())) {
             chatMessageView = this.layoutInflater.inflate(R.layout.chat_message_layout_out, parent, false);
@@ -75,7 +74,7 @@ public class ChatMessageAdapter extends ArrayAdapter {
      * @param context  a Context the Adapter is constructed from
      * @param resource an ArrayList to be handled and displayed by the Adapter
      */
-    public ChatMessageAdapter(Context context, ArrayList<Chat> resource) {
+    public ChatMessageAdapter(Context context, ArrayList<de.dataobjects.Chat> resource) {
         super(context, R.layout.chat_message_layout, resource);
     }
 }
