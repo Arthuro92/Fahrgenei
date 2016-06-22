@@ -21,8 +21,11 @@ import com.dataobjects.Appointment;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class FragmentGeneralTermineActivity extends Fragment {
 
@@ -45,9 +48,29 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
-        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz", 1);
-        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover", 1);
+        //Init von den Testdaten
+        //1
+        Calendar abfahrtt_zeit1 = Calendar.getInstance();
+        abfahrtt_zeit1.set(2016, 10, 10, 10, 00);
+        Calendar treffpunkt_zeit1 = Calendar.getInstance();
+        treffpunkt_zeit1.set(2016, 10, 10, 9, 30);
+        //2
+        Calendar abfahrtt_zeit2 = Calendar.getInstance();
+        abfahrtt_zeit2.set(2016, 9, 9, 9, 00);
+        Calendar treffpunkt_zeit2 = Calendar.getInstance();
+        treffpunkt_zeit2.set(2016, 10, 10, 8, 45);
+        //3
+        Calendar abfahrtt_zeit3 = Calendar.getInstance();
+        abfahrtt_zeit3.set(2016, 8, 8, 8, 00);
+        Calendar treffpunkt_zeit3 = Calendar.getInstance();
+        treffpunkt_zeit3.set(2016, 10, 10, 8, 45);
+
+
+
+
+        Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", abfahrtt_zeit1, treffpunkt_zeit1, "Uni", "Wolfsburg", 1);
+        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", abfahrtt_zeit2, treffpunkt_zeit2, "Sportplatz", "Sportplatz", 1);
+        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", abfahrtt_zeit3, treffpunkt_zeit3, "Bahnhof", "Hannover", 1);
         ArrayList<Appointment> apmlist = new ArrayList<Appointment>();
         apmlist.add(gapm1);
         apmlist.add(gapm2);

@@ -1,5 +1,6 @@
 package com.dataobjects;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -10,8 +11,8 @@ public class Appointment {
     private int aid;
     private String gid;
     private String name;
-    private Date abfahrzeit;
-    private Date treffpunkt_zeit;
+    private Calendar abfahrzeit;
+    private Calendar treffpunkt_zeit;
     private String treffpunkt;
     private String zielort;
     private int isParticipant;
@@ -24,7 +25,7 @@ public class Appointment {
         this.zielort = zielort;
     }
 
-    public Appointment(int aid, String gid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
+    public Appointment(int aid, String gid, String name, Calendar abfahrzeit, Calendar treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
         this.aid = aid;
         this.gid = gid;
         this.name = name;
@@ -43,11 +44,11 @@ public class Appointment {
         this.isParticipant = isParticipant;
     }
 
-    public Date getAbfahrzeit() {
+    public Calendar getAbfahrzeit() {
         return abfahrzeit;
     }
 
-    public void setAbfahrzeit(Date abfahrzeit) {
+    public void setAbfahrzeit(Calendar abfahrzeit) {
         this.abfahrzeit = abfahrzeit;
     }
 
@@ -67,11 +68,11 @@ public class Appointment {
         this.aid = aid;
     }
 
-    public Date getTreffpunkt_zeit() {
+    public Calendar getTreffpunkt_zeit() {
         return treffpunkt_zeit;
     }
 
-    public void setTreffpunkt_zeit(Date treffpunkt_zeit) {
+    public void setTreffpunkt_zeit(Calendar treffpunkt_zeit) {
         this.treffpunkt_zeit = treffpunkt_zeit;
     }
 

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.android.cows.fahrgemeinschaft.GeneralTabsActivity">
+    tools:context="com.android.cows.fahrgemeinschaft.GeneralTabsActivity"
+    android:background="@color/BackgroundLightGrey">
 
     <include
         android:id="@+id/tool_bar"
@@ -28,6 +29,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayoutGeneral"
         android:id="@+id/viewpagerGeneral"
-        android:background="#E0E0E0" />
+        android:background="@color/BackgroundLightGrey" />
 
 </RelativeLayout>

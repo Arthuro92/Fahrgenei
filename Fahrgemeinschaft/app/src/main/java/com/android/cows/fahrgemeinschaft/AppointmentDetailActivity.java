@@ -4,6 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class AppointmentDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "AppointmentDetailActivity";
@@ -26,10 +30,19 @@ public class AppointmentDetailActivity extends AppCompatActivity {
         TextView terminZielOrt = (TextView) findViewById(R.id.terminZielOrt);
 
         Bundle bundle = getIntent().getExtras();
+        Calendar startingtimeCal = (Calendar) bundle.get("startingtime");
+        Calendar meetingtimeCal = (Calendar) bundle.get("meetingtime");
+
+        SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+        String startingTimeFormated = format1.format( startingtimeCal.getTime()) +" Uhr";
+        String meetingtimeFormated = format1.format( meetingtimeCal.getTime()) +" Uhr";
+
         terminName.setText(bundle.getString("name"));
-        terminAbfahrtZeit.setText(bundle.getString("startingtime"));
+        terminAbfahrtZeit.setText(startingTimeFormated);
         terminTreffOrt.setText(bundle.getString("meetingpoint"));
-        terminTreffZeit.setText(bundle.getString("meetingtime"));
+        terminTreffZeit.setText(meetingtimeFormated);
         terminZielOrt.setText(bundle.getString("destination"));
     }
+
 }
+

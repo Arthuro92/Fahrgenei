@@ -18,6 +18,7 @@ import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Appointment;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class CreateAppointmentActivity extends AppCompatActivity {
@@ -50,13 +51,19 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         int id = sqLiteDBHandler.getNextAppointmentID(bundle.getString("gid"));
         Appointment gapm1;
 
+
+        Calendar abfahrtt_zeit4 = Calendar.getInstance();
+        abfahrtt_zeit4.set(2016, 10, 10, 10, 00);
+        Calendar treff_zeit4 = Calendar.getInstance();
+        abfahrtt_zeit4.set(2016, 10, 10, 10, 00);
+
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, (String) bundle.get("gid"), (String) bundle.get("name") + " " + 1, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+            gapm1 = new Appointment(1, (String) bundle.get("gid"), (String) bundle.get("name") + " " + 1,  abfahrtt_zeit4, treff_zeit4, "Uni", "Wolfsburg", 1);
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
-            gapm1 = new Appointment(id, (String) bundle.get("gid"), (String) bundle.get("name") + " " + id, new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
+            gapm1 = new Appointment(id, (String) bundle.get("gid"), (String) bundle.get("name") + " " + id, abfahrtt_zeit4, treff_zeit4, "Uni", "Wolfsburg", 1);
         }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 

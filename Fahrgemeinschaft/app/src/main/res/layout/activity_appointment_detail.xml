@@ -10,9 +10,15 @@
     tools:context="com.android.cows.fahrgemeinschaft.AppointmentDetailActivity"
     android:background="@color/blue_grey_500">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        ></include>
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        android:layout_below="@id/tool_bar"
 
         <TableRow android:layout_height="80dp">
 
