@@ -96,8 +96,8 @@ public class FragmentGruppenTermineActivity extends Fragment {
     private void hideButtonIfNotAdmin() {
         if (!checkAdminStatus()) {
             Log.i(TAG, "No Admin Rights for this Group");
-          //  Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
-          //  btn.setVisibility(View.INVISIBLE);
+            //Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
+           // btn.setVisibility(View.INVISIBLE);
         }
     }
 
