@@ -13,76 +13,182 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="@color/white">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@android:drawable/sym_def_app_icon"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="242dp"
-            android:layout_height="28dp"
-            android:weightSum="1">
+            android:layout_height="47dp"
+            android:weightSum="1"
+            android:background="@color/white">
 
             <TextView
-                android:id="@+id/emailid"
+                android:id="@+id/emailFeld"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email:"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
-                android:layout_below="@+id/profile_pic"
-                android:layout_alignRight="@+id/userName"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/emailinhalt"
+            <EditText
+                android:id="@+id/emailid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
-                android:layout_below="@+id/profile_pic"
-                android:layout_alignRight="@+id/userName"
-                android:layout_weight="0.65" />
-
+                android:layout_alignRight="@+id/emailid"
+                android:layout_weight="1"
+                android:editable="false" />
         </LinearLayout>
 
-        <LinearLayout
+
+    <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:layout_width="349dp"
+            android:layout_height="47dp"
+            android:weightSum="1"
+            android:background="@color/white">
 
             <TextView
-                android:id="@+id/userName"
+                android:id="@+id/userNameFeld"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Benutzer:"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
-                android:layout_below="@+id/emailid"
+                android:layout_below="@+id/emailFeld"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="39dp"
+                android:layout_marginTop="20dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/userNameinhalt"
+            <EditText
+                android:id="@+id/userNameid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
-                android:layout_marginTop="39dp"
-                android:layout_weight="0.80" />
+                android:layout_marginTop="20dp"
+                android:layout_weight="1" />
+    </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="349dp"
+                android:layout_height="64dp"
+                android:weightSum="1"
+                android:background="@color/white">
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Besitzen Sie einen Führerschein?"
+                android:id="@+id/fuehrerscheinBesitz"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical" />
+
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Switch"
+                    android:id="@+id/fuehrerscheinSwitch"
+                    android:checked="true"
+                    android:layout_alignRight="@+id/fuehrerscheinBesitz"
+                    />
+
+
         </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="349dp"
+        android:layout_height="64dp"
+        android:weightSum="1"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/autoBesitz"
+            android:text="Besitzen Sie ein eigenes Auto?"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical" />
+
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Switch"
+            android:id="@+id/autoSwitch"
+            android:checked="true"
+            android:layout_alignRight="@+id/autoBesitz"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="349dp"
+        android:layout_height="64dp"
+        android:weightSum="1"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/plaetze"
+            android:text="Wie viele freie Plätze hat Ihr Auto?"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical" />
+
+        <Spinner
+            android:id="@+id/sitzAnzahl_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/blue_grey_500"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="349dp"
+        android:layout_height="64dp"
+        android:weightSum="1"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/drivingmembers"
+            android:text="Fahren Sie alleine??"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical" />
+
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Switch"
+            android:id="@+id/drivingmembersSwitch"
+            android:checked="true"
+            android:layout_alignRight="@+id/drivingmembers"/>
+    </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="242dp"
+            android:layout_height="177dp"
+            android:weightSum="1"
+            android:background="@color/white">
 
         <Button
             android:layout_width="wrap_content"
@@ -91,6 +197,9 @@
             android:id="@+id/signOutButtonSettings"
             android:layout_centerVertical="true"
             android:layout_alignStart="@+id/emailid"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignLeft="@+id/emailid"
             android:layout_alignParentEnd="false"
             android:layout_alignParentStart="false" />
 
@@ -102,6 +211,16 @@
             android:layout_below="@+id/signOutButtonSettings"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speichern"
+            android:id="@+id/saveSettings"
+            android:layout_below="@+id/disconnectButtonSettings"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </LinearLayout>
 
     </LinearLayout>
 
