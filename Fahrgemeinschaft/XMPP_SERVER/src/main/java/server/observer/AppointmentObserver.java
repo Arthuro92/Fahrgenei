@@ -1,22 +1,22 @@
 package server.observer;
 
+import com.example.dataobjects.Appointment;
+import com.example.dataobjects.JsonCollection;
+import com.example.dataobjects.UserInAppointment;
+
 import org.jivesoftware.smack.SmackException;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.dataobjects.Appointment;
-import de.dataobjects.JsonCollection;
-import server.database.Databaseoperator;
 import server.errors.ErrorMessages;
 import server.smackccsclient.SmackCcsClient;
 
 /**
  * Created by david on 24.05.2016.
  */
-public class AppointmentObserver implements MessageObserver {
+public class AppointmentObserver extends RepositorieConnector implements MessageObserver {
     //new
     private Map<String, String> payload;
     private Map<String, Object> jsonObject;
@@ -55,22 +55,20 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private boolean createAppointment() {
-        Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
-
-        if (Databaseoperator.insertNewAppointment(appointment.getAid(), appointment.getGid(), this.payload.get("content"))) {
-            if (Databaseoperator.checkUserIsInAppointment(appointment.getAid(),appointment.getGid(), Databaseoperator.getUserIdByToken( (String) this.jsonObject.get("from")), 1)) {
-                sendInsertAppointmentSucess();
-                return true;
-            } else {
-                Databaseoperator.deleteAppointment(appointment.getAid(), appointment.getGid());
-                sendAppointmentError(ErrorMessages.MYSQL_ERROR);
-                return false;
-            }
-        } else {
+        try {
+            Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
+            appointmentRepository.save(appointment);
+            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), userRepository.findByToken((String) this.jsonObject.get("from")).getId(), 1);
+            userInAppointmentRepository.save(userInAppointment);
+            sendInsertAppointmentSucess();
+            return true;
+        } catch (NullPointerException e) {
+            logger.log(Level.INFO, "NullPointerException");
             sendAppointmentError(ErrorMessages.MYSQL_ERROR);
             return false;
         }
     }
+
 
     @SuppressWarnings("unchecked")
     private boolean sendInsertAppointmentSucess() {
@@ -100,55 +98,11 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
-    //todo use this method and update datebaseperator for syncing all getAppointments
-    private boolean syncAppointments() {
-
-        //Fehler falls Informationen fehlen
-        if (!payload.containsKey("extra0") || !payload.containsKey("extra1")) {
-            logger.log(Level.INFO, "Information invalid!");
-            sendSingleAppointmentError(ErrorMessages.INVALID_INFORMTION);
-            return false;
-        }
-
-        ArrayList<String> result = Databaseoperator.getAppointments(payload.get("extra0"), payload.get("extra1"));
-
-        if (result.get(0).equals("error:NO_ACCESS")) {
-            logger.log(Level.INFO, "Access for getting database.Appointment denied!");
-            sendSingleAppointmentError(ErrorMessages.NO_ACCESS);
-            return false;
-        }
-
-        if (result.get(0).equals("error:sqlexception")) {
-            logger.log(Level.INFO, "SQL Exception!");
-            sendSingleAppointmentError(ErrorMessages.MYSQL_ERROR);
-            return false;
-        }
-
-        ArrayList<Appointment> appointmentlist = new ArrayList<>();
-
-        int i = 0;
-        while (i < result.size()) {
-            Appointment app = JsonCollection.jsonToAppointment(result.get(i));
-            appointmentlist.add(app);
-            i++;
-        }
-
-        SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
-        try {
-            smackCcsClient.sendDownstreamMessage("appointment", "singleAppointment", (String) jsonObject.get("from"), appointmentlist);
-            return true;
-        } catch (SmackException.NotConnectedException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
 
     /**
      * Sending Error back to Client, because an Error occured
      *
-     * @return
+     * @return true when sending sucess / false when fail
      */
     @SuppressWarnings("unchecked")
     private boolean sendSingleAppointmentError(String errortype) {
@@ -165,11 +119,12 @@ public class AppointmentObserver implements MessageObserver {
 
     /**
      * Constructs a new AppointmentObserver and registers it to a MessageSubject
-     *
+     * calling initRepositories
      * @param messageSubject a MessageSubject to register to
      */
     public AppointmentObserver(MessageSubject messageSubject) {
         messageSubject.registerMessageObserver(this);
+        initRepositories();
         logger.log(Level.INFO, "Appointmentobserver registered");
     }
 }

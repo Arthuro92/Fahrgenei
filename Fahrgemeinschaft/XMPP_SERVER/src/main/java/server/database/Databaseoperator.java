@@ -1,9 +1,10 @@
 package server.database;
 
-import de.dataobjects.Group;
-import de.dataobjects.JsonCollection;
-import de.dataobjects.User;
-import de.dataobjects.UserInGroup;
+
+import com.example.dataobjects.Groups;
+import com.example.dataobjects.JsonCollection;
+import com.example.dataobjects.User;
+import com.example.dataobjects.UserInGroup;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,9 +25,9 @@ public class Databaseoperator {
     private static final String PASSWORD = "androidcows";
 
 
-    static public boolean insertNewGroup(String gid, String jsonInString) {
-        if (!checkGroupInDatabase(gid)) {
-            logger.log(Level.INFO, "Try adding new database.Groups");
+    static public boolean insertNewGroups(String gid, String jsonInString) {
+        if (!checkGroupsInDatabase(gid)) {
+            logger.log(Level.INFO, "Try adding new database.groups");
             Connection con = null;
             try {
                 con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -45,7 +46,7 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean checkGroupInDatabase(String gid) {
+    static public boolean checkGroupsInDatabase(String gid) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -54,7 +55,7 @@ public class Databaseoperator {
             ResultSet rs = stmt.executeQuery(query);
 
             if (!rs.next()) {
-                logger.log(Level.INFO, "database.Groups not in Database!");
+                logger.log(Level.INFO, "database.groups not in Database!");
                 con.close();
                 rs.close();
                 return false;
@@ -68,7 +69,7 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean deleteGroup(String gid) {
+    static public boolean deleteGroups(String gid) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -84,7 +85,7 @@ public class Databaseoperator {
         }
     }
 
-    static public ArrayList<Group> getGroupList() throws NullPointerException {
+    static public ArrayList<Groups> getGroupsList() throws NullPointerException {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -92,11 +93,11 @@ public class Databaseoperator {
             String query = "SELECT * FROM groups";
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<Group> grplist = new ArrayList();
+            ArrayList<Groups> grplist = new ArrayList();
 
             while (rs.next()) {
                 String objectstring = rs.getString("objectstring");
-                Group grpobject = JsonCollection.jsonToGroup(objectstring);
+                Groups grpobject = JsonCollection.jsonToGroup(objectstring);
                 grplist.add(grpobject);
                 //todo this has bad perfomance since the object has to be transformed back to String for sending it
             }
@@ -111,12 +112,12 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean deleteUserIsInGroup(String gid, String userid) {
+    static public boolean deleteUserIsInGroups(String gid, String userid) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
             Statement stmt = con.createStatement();
-            String query = "DELETE FROM users WHERE gid = '" + gid + "' AND uid = '" + userid + "'";
+            String query = "DELETE FROM is_in_group WHERE gid = '" + gid + "' AND uid = '" + userid + "'";
             stmt.executeUpdate(query);
             stmt.close();
             con.close();
@@ -277,7 +278,7 @@ public class Databaseoperator {
         }
     }
 
-    static public ArrayList<User> getUsersWithGroupId(String gid) {
+    static public ArrayList<User> getUsersWithGroupsId(String gid) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -304,7 +305,7 @@ public class Databaseoperator {
         }
     }
 
-    static public ArrayList<UserInGroup> getUsersInGroupWithGroupId(String gid) {
+    static public ArrayList<UserInGroup> getUsersInGroupsWithGroupsId(String gid) {
         Connection con = null;
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
@@ -312,16 +313,16 @@ public class Databaseoperator {
             String query = "SELECT * FROM is_in_group WHERE gid = '" + gid + "'";
             ResultSet rs = stmt.executeQuery(query);
 
-            ArrayList<UserInGroup> userIsInGroupList = new ArrayList();
+            ArrayList<UserInGroup> userIsInGroupsList = new ArrayList();
 
             while (rs.next()) {
-                UserInGroup userInGroup = new UserInGroup(rs.getString("uid"), rs.getString("gid"), rs.getInt("isJoined"));
-                userIsInGroupList.add(userInGroup);
+                UserInGroup UserInGroup = new UserInGroup(rs.getString("uid"), rs.getString("gid"), rs.getInt("isJoined"));
+                userIsInGroupsList.add(UserInGroup);
             }
 
             stmt.close();
             con.close();
-            return userIsInGroupList;
+            return userIsInGroupsList;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -329,7 +330,7 @@ public class Databaseoperator {
         }
     }
 
-    static public boolean setUserIsInGroup(String gid, String uid, int isJoined) {
+    static public boolean setUserIsInGroups(String gid, String uid, int isJoined) {
         if (!checkIsUserInGroup(gid, uid)) {
             Connection con = null;
 
@@ -420,9 +421,9 @@ public class Databaseoperator {
         }
     }
 
-    public static boolean updateUserIsInGroup(String gid, String uid, int isJoined) {
+    public static boolean updateUserIsInGroups(String gid, String uid, int isJoined) {
         Connection con = null;
-        logger.log(Level.INFO, "updateUserIsInGroup");
+        logger.log(Level.INFO, "updateUserIsInGroups");
         try {
             con = DriverManager.getConnection(CON_URL, USERNAME, PASSWORD);
             Statement stmt = con.createStatement();

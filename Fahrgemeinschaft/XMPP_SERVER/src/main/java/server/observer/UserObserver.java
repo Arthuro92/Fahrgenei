@@ -1,21 +1,25 @@
 package server.observer;
 
-import de.dataobjects.User;
+import com.example.dataobjects.User;
 import com.google.gson.Gson;
 
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.database.Databaseoperator;
+//import de.dataobjects.User;
 
 /**
  * Created by david on 23.05.2016.
  */
-public class UserObserver implements MessageObserver {
+public class UserObserver extends RepositorieConnector implements MessageObserver {
     //new
     private Map<String, String> payload;
+
+
+
     private static final Logger logger = Logger.getLogger("UserObserver ");
+
 
 
     /**
@@ -39,14 +43,14 @@ public class UserObserver implements MessageObserver {
     }
 
     private boolean registration() {
-        logger.log(Level.INFO, "first switch task = registration");
-
-        Gson gson = new Gson();
-        User user = gson.fromJson(this.payload.get("content"), User.class);
-
-        if (Databaseoperator.insertNewUser(user.getId(), user.getToken(), this.payload.get("content"), user.getEmail())) {
+        try {
+            logger.log(Level.INFO, "first switch task = registration");
+            Gson gson = new Gson();
+            User user = gson.fromJson(this.payload.get("content"), User.class);
+            userRepository.save(user);
             return true;
-        } else {
+        } catch (NullPointerException e) {
+            logger.log(Level.WARNING, "NullPointerException in registration");
             return false;
         }
     }
@@ -59,6 +63,7 @@ public class UserObserver implements MessageObserver {
      */
     public UserObserver(server.observer.MessageSubject messageSubject) {
         messageSubject.registerMessageObserver(this);
+        initRepositories();
         logger.log(Level.INFO, "Userobserver registered");
     }
 }

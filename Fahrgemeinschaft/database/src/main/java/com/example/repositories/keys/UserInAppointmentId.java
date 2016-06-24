@@ -43,4 +43,25 @@ public class UserInAppointmentId implements Serializable {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserInAppointmentId that = (UserInAppointmentId) o;
+
+        if (aid != that.aid) return false;
+        if (!gid.equals(that.gid)) return false;
+        return uid.equals(that.uid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = aid;
+        result = 31 * result + gid.hashCode();
+        result = 31 * result + uid.hashCode();
+        return result;
+    }
 }

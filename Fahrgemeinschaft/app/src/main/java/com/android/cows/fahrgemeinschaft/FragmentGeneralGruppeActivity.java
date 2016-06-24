@@ -18,9 +18,10 @@ import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.adapters.GroupAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import de.dataobjects.Group;
 
 import java.util.ArrayList;
+
+import de.dataobjects.Groups;
 
 public class FragmentGeneralGruppeActivity extends Fragment {
     private static final String TAG = "FGenGroupActivity";
@@ -108,7 +109,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
 
     public void loadGrpList() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
-        ArrayList<Group> grplist = sqLiteDBHandler.getGroups();
+        ArrayList<Groups> grplist = sqLiteDBHandler.getGroups();
         if (grplist.size() > 0) {
             createGroupOverview(grplist);
         } else {
@@ -123,7 +124,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
      *
      * @param grplist list of Groups which should be displayed
      */
-    public void createGroupOverview(ArrayList<Group> grplist) {
+    public void createGroupOverview(ArrayList<Groups> grplist) {
         Log.i(TAG, "createGroup");
         this.groupAdapter = new GroupAdapter(getActivity(), grplist);
         this.listView = (ListView) getActivity().findViewById(R.id.general_group_listview);

@@ -50,7 +50,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             //todo maybe error when no string in sharedpref
 
-            de.dataobjects.Group newgroup = new de.dataobjects.Group(groupname.getText().toString(),
+            de.dataobjects.Groups newgroup = new de.dataobjects.Groups(groupname.getText().toString(),
                     1,
                     prefs.getString("userid", ""),
                     prefs.getString("username", ""),

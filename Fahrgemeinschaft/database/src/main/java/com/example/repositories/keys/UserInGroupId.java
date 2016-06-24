@@ -33,4 +33,23 @@ public class UserInGroupId implements Serializable {
     public void setGid(String gid) {
         this.gid = gid;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserInGroupId that = (UserInGroupId) o;
+
+        if (!uid.equals(that.uid)) return false;
+        return gid.equals(that.gid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uid.hashCode();
+        result = 31 * result + gid.hashCode();
+        return result;
+    }
 }

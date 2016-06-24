@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+
 import de.dataobjects.Appointment;
 import de.dataobjects.JsonCollection;
 

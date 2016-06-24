@@ -1,7 +1,7 @@
 package server.observer;
 
-import de.dataobjects.Chat;
-import de.dataobjects.JsonCollection;
+import com.example.dataobjects.Chat;
+import com.example.dataobjects.JsonCollection;
 
 import org.jivesoftware.smack.SmackException;
 

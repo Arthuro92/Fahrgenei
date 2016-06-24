@@ -30,6 +30,9 @@ public class UserInAppointment implements Serializable {
     @Column
     private int isParticipant;
 
+    public UserInAppointment() {
+    }
+
     public UserInAppointment(int aid, String gid, String uid, int isParticipant) {
         this.aid = aid;
         this.gid = gid;

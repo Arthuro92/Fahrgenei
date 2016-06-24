@@ -1,10 +1,8 @@
 package server;
 
-import de.dataobjects.Chat;
-import com.example.RepositoryCollection;
-import com.example.InitDatabaseRepositories;
-import com.example.dataobjects.User;
+import com.example.dataobjects.Chat;
 
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 
 import java.text.DateFormat;
@@ -23,14 +21,10 @@ public class Test {
         final long senderId = 634948576599L; // your GCM sender id
         final String password = "AIzaSyCJGcfOGX9KrxznVVy_4DJoLAK-vF8KS3s";
 
-//        SmackConfiguration.DEBUG_ENABLED = false;
-//        SmackCcsClient ccsClient = SmackCcsClient.getInstance();
-//        ccsClient.connect(senderId, password);
+        SmackConfiguration.DEBUG_ENABLED = false;
+        SmackCcsClient ccsClient = SmackCcsClient.getInstance();
+        ccsClient.connect(senderId, password);
 
-        RepositoryCollection repositoryCollection = InitDatabaseRepositories.init();
-        User user = new User("lenni1", "ABC", "lennart", "lennart.c.land@gmail.com");
-        repositoryCollection.getUserRepository().save(user);
-        System.out.println(repositoryCollection.getUserRepository().findOne("lenni1").getName());
 
 //        ArrayList<String> result = Databaseoperator.getAppointments("lennart1234", "100732276496073160540");
 

@@ -26,6 +26,9 @@ public class UserInGroup implements Serializable {
     @Column
     private int isJoined;
 
+    public UserInGroup() {
+    }
+
     public UserInGroup(String uid, String gid, int isJoined) {
         this.uid = uid;
         this.gid = gid;

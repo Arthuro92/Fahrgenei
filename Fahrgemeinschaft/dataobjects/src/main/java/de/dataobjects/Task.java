@@ -2,14 +2,22 @@ package de.dataobjects;
 
 import com.google.gson.Gson;
 
+
 /**
  * Created by lenna on 23.05.2016.
  */
 public class Task {
+
     private String aufgabenId;
+
     private String aufgabenName;
+
     private String aufgabenBeschreibung;
+
     private String bearbeiter;
+
+    public Task() {
+    }
 
     public Task(String aufgabenId, String aufgabenName, String aufgabenBeschreibung, String bearbeiter) {
         this.aufgabenId = aufgabenId;

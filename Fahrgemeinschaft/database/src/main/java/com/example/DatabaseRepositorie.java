@@ -9,15 +9,33 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @EnableJpaRepositories("com.example")
 @ComponentScan("com.example")
-public class InitDatabaseRepositories {
+public class DatabaseRepositorie {
 
-    public static RepositoryCollection init() {
+    static DatabaseRepositorie databaseRepositorie;
+    static RepositoryCollection repositoryCollection;
+
+    private DatabaseRepositorie() {
+    }
+
+    public static DatabaseRepositorie getInstance() {
+        if (databaseRepositorie == null) {
+            databaseRepositorie = new DatabaseRepositorie();
+            init();
+        }
+            return databaseRepositorie;
+        }
+
+
+    private static void init() {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         ctx.register(AppConfig.class);
         ctx.refresh();
 
-        RepositoryCollection bean = ctx.getBean(RepositoryCollection.class);
-        return bean;
+        repositoryCollection = ctx.getBean(RepositoryCollection.class);
+    }
+
+    public RepositoryCollection getRepositoryCollection() {
+        return repositoryCollection;
     }
 
 //    public static void main(String[] args) {

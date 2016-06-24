@@ -17,9 +17,10 @@ import android.widget.ListView;
 
 import com.android.cows.fahrgemeinschaft.adapters.UserAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import de.dataobjects.UserInGroup;
 
 import java.util.ArrayList;
+
+import de.dataobjects.UserInGroup;
 
 public class FragmentGruppenNutzerActivity extends Fragment {
 

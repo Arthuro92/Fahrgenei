@@ -55,6 +55,8 @@ public class Appointment implements Serializable {
         this.isParticipant = isParticipant;
     }
 
+    public Appointment() {
+    }
 
     public String getZielort() {
         return zielort;

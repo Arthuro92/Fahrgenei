@@ -48,7 +48,7 @@ public class InviteUser extends AppCompatActivity {
             String gid = prefs.getString("currentgid", "");
             stringarray[1] = gid;
 
-            de.dataobjects.Group group = sqLiteDBHandler.getGroup(stringarray[1]);
+            de.dataobjects.Groups group = sqLiteDBHandler.getGroup(stringarray[1]);
             if (group != null) {
                 //todo handle invites with own email or email already invited
 

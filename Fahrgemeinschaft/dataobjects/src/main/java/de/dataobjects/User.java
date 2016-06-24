@@ -5,11 +5,19 @@ import com.google.gson.Gson;
 /**
  * Created by lenna on 23.05.2016.
  */
+
 public class User {
+
     private String id;
+
     private String token;
+
     private String name;
+
     private String email;
+
+    public User() {
+    }
 
     public User(String id, String token, String name, String email) {
         this.id = id;

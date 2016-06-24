@@ -1,5 +1,6 @@
 package de.dataobjects;
 
+
 import com.google.gson.Gson;
 
 import java.util.Date;
@@ -7,15 +8,25 @@ import java.util.Date;
 /**
  * Created by Arthur on 25.05.2016.
  */
-public class Appointment {
+
+public class Appointment  {
+
 
     private int aid;
+
     private String gid;
+
     private String name;
+
     private Date abfahrzeit;
+
     private Date treffpunkt_zeit;
+
     private String treffpunkt;
+
     private String zielort;
+
+
     private int isParticipant;
 
     public Appointment(int aid, String gid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
@@ -29,6 +40,8 @@ public class Appointment {
         this.isParticipant = isParticipant;
     }
 
+    public Appointment() {
+    }
 
     public String getZielort() {
         return zielort;

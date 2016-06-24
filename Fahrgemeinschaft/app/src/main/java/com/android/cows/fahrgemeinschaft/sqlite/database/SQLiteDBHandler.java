@@ -7,18 +7,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import de.dataobjects.JsonCollection;
 import de.dataobjects.User;
 import de.dataobjects.UserInGroup;
-
-import java.util.ArrayList;
 
 /**
  * Created by david on 29.05.2016.
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 120;
+    private static final int DATABASE_VERSION = 121;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -91,7 +91,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addGroup(de.dataobjects.Group group) {
+    public void addGroup(de.dataobjects.Groups group) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("gid", group.getGid());
@@ -181,8 +181,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return -1;
     }
 
-    public ArrayList<de.dataobjects.Group> getGroups() {
-        ArrayList<de.dataobjects.Group> groupArrayList = new ArrayList<de.dataobjects.Group>();
+    public ArrayList<de.dataobjects.Groups> getGroups() {
+        ArrayList<de.dataobjects.Groups> groupArrayList = new ArrayList<de.dataobjects.Groups>();
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_GROUPS, null);
         cur.moveToFirst();
@@ -197,14 +197,14 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return groupArrayList;
     }
 
-    public de.dataobjects.Group getGroup(String gid) {
+    public de.dataobjects.Groups getGroup(String gid) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_GROUP + "'" + gid + "'", null);
         cur.moveToFirst();
         if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
             db.close();
             Log.i(TAG, "getGroup " + cur.getString(cur.getColumnIndex("JsonInString")));
-            de.dataobjects.Group group = JsonCollection.jsonToGroup(cur.getString(cur.getColumnIndex("JsonInString")));
+            de.dataobjects.Groups group = JsonCollection.jsonToGroup(cur.getString(cur.getColumnIndex("JsonInString")));
             return group;
         }
         db.close();

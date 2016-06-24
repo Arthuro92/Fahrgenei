@@ -33,4 +33,23 @@ public class AppointmentId implements Serializable {
     public void setAid(int aid) {
         this.aid = aid;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppointmentId that = (AppointmentId) o;
+
+        if (aid != that.aid) return false;
+        return gid.equals(that.gid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = gid.hashCode();
+        result = 31 * result + aid;
+        return result;
+    }
 }

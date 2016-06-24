@@ -11,8 +11,8 @@ import java.util.List;
  * Created by Lennart on 18.06.2016.
  */
 public class JsonCollection {
-    public static Group jsonToGroup(String jsonInString) {
-        return new Gson().fromJson(jsonInString, Group.class);
+    public static Groups jsonToGroup(String jsonInString) {
+        return new Gson().fromJson(jsonInString, Groups.class);
     }
 
     public static User jsonToUser(String jsonInString) {
@@ -44,8 +44,8 @@ public class JsonCollection {
         return new Gson().fromJson(userList, new TypeToken<ArrayList<UserInGroup>>(){}.getType());
     }
 
-    public static ArrayList<Group> jsonToGroupList(String groupList) {
-       return new Gson().fromJson(groupList, new TypeToken<List<Group>>() {}.getType());
+    public static ArrayList<Groups> jsonToGroupList(String groupList) {
+       return new Gson().fromJson(groupList, new TypeToken<List<Groups>>() {}.getType());
     }
 
     public static String objectToJson(Object object) {

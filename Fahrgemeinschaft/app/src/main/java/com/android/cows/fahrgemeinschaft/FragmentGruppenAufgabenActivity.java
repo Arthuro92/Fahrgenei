@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import de.dataobjects.Task;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import de.dataobjects.Task;
 
 public class FragmentGruppenAufgabenActivity extends Fragment {
 

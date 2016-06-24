@@ -5,15 +5,24 @@ import com.google.gson.Gson;
 /**
  * Created by Lennart on 09.05.2016.
  */
-public class Group {
 
-    private String name;
-    private int membercount;
-    private String adminid;
-    private String adminname;
+public class Groups {
+
+
     private String gid;
 
-    public Group(String name, int membercount, String adminid, String adminname, String gid, int isJoined) {
+    private String name;
+
+    private int membercount;
+
+    private String adminid;
+
+    private String adminname;
+
+    public Groups() {
+    }
+
+    public Groups(String name, int membercount, String adminid, String adminname, String gid, int isJoined) {
         this.name = name;
         this.membercount = membercount;
         this.adminid = adminid;

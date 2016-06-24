@@ -16,11 +16,11 @@ import com.android.cows.fahrgemeinschaft.adapters.ChatMessageAdapter;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
-import de.dataobjects.Chat;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import de.dataobjects.Chat;
 
 
 public class ChatActivity extends AppCompatActivity {

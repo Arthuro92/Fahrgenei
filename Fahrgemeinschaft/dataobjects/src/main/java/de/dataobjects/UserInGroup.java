@@ -2,13 +2,21 @@ package de.dataobjects;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+
 /**
  * Created by Lennart on 17.06.2016.
  */
-public class UserInGroup {
+public class UserInGroup implements Serializable {
+
     private String uid;
+
     private String gid;
+
     private int isJoined;
+
+    public UserInGroup() {
+    }
 
     public UserInGroup(String uid, String gid, int isJoined) {
         this.uid = uid;

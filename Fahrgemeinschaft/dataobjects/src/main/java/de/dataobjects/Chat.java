@@ -12,6 +12,9 @@ public class Chat implements Serializable{
     private String chatMessageTime;
     private String chatMessageText;
 
+    public Chat() {
+    }
+
     public Chat(String chatMessageFrom, String chatMessageTime, String chatMessageText) {
         this.chatMessageFrom = chatMessageFrom;
         this.chatMessageTime = chatMessageTime;

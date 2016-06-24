@@ -1,6 +1,6 @@
 package server.smackccsclient;
 
-import de.dataobjects.JsonCollection;
+import com.example.dataobjects.JsonCollection;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;

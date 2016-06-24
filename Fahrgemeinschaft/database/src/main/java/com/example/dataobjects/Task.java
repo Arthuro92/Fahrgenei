@@ -24,6 +24,9 @@ public class Task {
     @Column
     private String bearbeiter;
 
+    public Task() {
+    }
+
     public Task(String aufgabenId, String aufgabenName, String aufgabenBeschreibung, String bearbeiter) {
         this.aufgabenId = aufgabenId;
         this.aufgabenName = aufgabenName;

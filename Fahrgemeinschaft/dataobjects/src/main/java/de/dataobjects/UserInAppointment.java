@@ -1,15 +1,25 @@
 package de.dataobjects;
 
-import com.google.gson.Gson;
+    import com.google.gson.Gson;
+
+import java.io.Serializable;
+
 
 /**
  * Created by Lennart on 17.06.2016.
  */
-public class UserInAppointment {
+
+public class UserInAppointment implements Serializable {
     private int aid;
+
     private String gid;
+
     private String uid;
+
     private int isParticipant;
+
+    public UserInAppointment() {
+    }
 
     public UserInAppointment(int aid, String gid, String uid, int isParticipant) {
         this.aid = aid;
