@@ -9,8 +9,10 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.dataobjects.Appointment;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 public class CreateAppointmentActivity extends AppCompatActivity {
     private static final String TAG = "CreateGroupActivity";
@@ -51,6 +54,17 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         int id = sqLiteDBHandler.getNextAppointmentID(bundle.getString("gid"));
         Appointment gapm1;
 
+        EditText _input_treffpunktZeit = (EditText) findViewById(R.id.input_treffpunktZeit);
+        EditText _input_treffpunkt = (EditText) findViewById(R.id.input_treffpunkt);
+        EditText _input_abfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
+        EditText _input_zielort = (EditText) findViewById(R.id.input_zielort);
+
+        //Todo String von Abfahrtzeit & Treffpunktzeit in Calendar ändern oder ähnliches
+        String treffpunkt = _input_treffpunkt.getText().toString();
+        String zielort = _input_zielort.getText().toString();
+        String treffpunktZeit = _input_treffpunktZeit.getText().toString();
+        String abfahrtzeit = _input_abfahrtzeit.getText().toString();
+
 
         Calendar abfahrtt_zeit4 = Calendar.getInstance();
         abfahrtt_zeit4.set(2016, 10, 10, 10, 00);
@@ -59,7 +73,7 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, (String) bundle.get("gid"), (String) bundle.get("name") + " " + 1,  abfahrtt_zeit4, treff_zeit4, "Uni", "Wolfsburg", 1);
+            gapm1 = new Appointment(1, (String) bundle.get("gid"), (String) bundle.get("name") + " " + 1,  abfahrtt_zeit4, treff_zeit4, treffpunkt, zielort, 1);
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
