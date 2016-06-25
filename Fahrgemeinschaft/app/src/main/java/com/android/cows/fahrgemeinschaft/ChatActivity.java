@@ -11,19 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.android.cows.fahrgemeinschaft.adapters.ChatMessageAdapter;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.dataobjects.Chat;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ChatActivity extends AppCompatActivity {
-    //new new new new
+    //new new new new new
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
     public ArrayList<Chat> arrayListChat;
@@ -50,6 +50,17 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
+     * Checks text against a regular expression
+     * @param text a String the regular expression is checked against
+     * @return true if regular expression holds, false else
+     */
+    private boolean checkRegEx(String text) {
+        Pattern pattern = Pattern.compile("^\\s*$");
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
+    }
+
+    /**
      * Sends a Chat object to the server
      * @param chatMessage
      */
@@ -68,7 +79,7 @@ public class ChatActivity extends AppCompatActivity {
     private void getChatMessage() {
         EditText editText = (EditText) findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
-        if(!editText.getText().toString().equals("")) {
+        if(!checkRegEx(editText.getText().toString())) {
             sendChatMessage(new Chat(getChatUser(), time, editText.getText().toString()));
         }
     }
@@ -129,6 +140,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         this.arrayListChat = getArrayListFromDB();
         setChatView();
+        this.listView.setSelection(listView.getAdapter().getCount() - 1);
         System.out.println("CHATACTIVITY CREATED");
     }
 

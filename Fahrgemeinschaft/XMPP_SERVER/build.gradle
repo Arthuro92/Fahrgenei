@@ -23,6 +23,7 @@ dependencies {
     // http://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile 'mysql:mysql-connector-java:5.1.6'
     compile project(':dataobjects')
+    compile 'org.bouncycastle:bcprov-jdk16:1.46'
 }
 
 jar {

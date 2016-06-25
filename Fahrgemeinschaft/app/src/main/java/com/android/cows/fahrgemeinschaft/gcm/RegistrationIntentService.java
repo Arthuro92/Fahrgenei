@@ -25,6 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
+import com.android.cows.fahrgemeinschaft.cryptography.AsymmetricEncryptionClient;
 import com.dataobjects.User;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -89,8 +90,13 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(final String token) {
-
+        //todo encryption public key request
         MyGcmSend gcmsender = new MyGcmSend();
+//        try{
+//            AsymmetricEncryptionClient asymmetricEncryptionClient = AsymmetricEncryptionClient.getInstance();
+//        } catch(Exception exception) {
+//            System.err.println("REGISTRATION INTENT: " + exception.toString());
+//        }
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String id = prefs.getString("userid" , "");

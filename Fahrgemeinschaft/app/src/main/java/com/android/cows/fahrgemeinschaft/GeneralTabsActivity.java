@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.android.cows.fahrgemeinschaft.cryptography.AsymmetricEncryptionClient;
+
 public class GeneralTabsActivity extends AppCompatActivity {
 
 
@@ -18,7 +20,6 @@ public class GeneralTabsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_group_tabs);
-
 
 
         viewPagerGeneral = (ViewPager) findViewById(R.id.viewpagerGeneral);

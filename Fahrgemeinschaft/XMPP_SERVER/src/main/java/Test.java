@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import SmackCcsClient.SmackCcsClient;
+import cryptography.AsymmetricEncryptionServer;
 
 /**
  * Created by Lennart on 03.05.2016.
@@ -30,6 +31,7 @@ public class Test {
 //        Databaseoperator.insertNewAppointment();
 
 //        testchat(ccsClient);
+        testSecurity(ccsClient);
 
 
         while(true) {
@@ -86,4 +88,13 @@ public class Test {
          Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
      }
       }
+
+    public static void testSecurity(SmackCcsClient ccsClient) throws SmackException.NotConnectedException {
+        try {
+            AsymmetricEncryptionServer asymmetricEncryptionServer = AsymmetricEncryptionServer.getInstance();
+            ccsClient.sendDownstreamMessage("security", "public_key", "dz6_cNXPbvk:APA91bFMdkiRviyxt-kDTGU-fnlCJei3AyiK_SO_-pOJIMqKMQZ6BPfuT2SBKv3eQGu5-JFHm4WKeb5mpPLednp2pa1TGgs6Kw_5dLY9_QugPJnBtL4hJUtt8N6IETDvPfFv2WJcQcog", asymmetricEncryptionServer.getPublicKeyString());
+        } catch(Exception exception) {
+            System.err.println("EXCEPTION CAUGHT: " + exception.toString());
+        }
+    }
 }

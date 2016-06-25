@@ -34,7 +34,7 @@ public class ChatObserver implements MessageObserver {
      * @param chatMessage a Chat object to be broadcast
      */
     public void broadcastChatMessage(Chat chatMessage) {
-        logger.log(Level.INFO, "Server recieved Chat Message:" + chatMessage.getChatMessageText());
+        logger.log(Level.INFO, "SERVER RECEIVED CHAT MESSAGE:" + chatMessage.getChatMessageText());
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
             smackCcsClient.sendDownstreamMessage("chat","chat","/topics/global", chatMessage);

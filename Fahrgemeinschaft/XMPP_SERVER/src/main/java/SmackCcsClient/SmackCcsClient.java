@@ -37,6 +37,7 @@ import observer.AppointmentObserver;
 import observer.ChatObserver;
 import observer.GroupObserver;
 import observer.MessageSubject;
+import observer.SecurityObserver;
 import observer.UserObserver;
 
 /**
@@ -51,6 +52,7 @@ public class SmackCcsClient<T> {
     private GroupObserver go = new GroupObserver(ms);
     private ChatObserver co = new ChatObserver(ms);
     private AppointmentObserver ao = new AppointmentObserver(ms);
+    private SecurityObserver securityObserver = new SecurityObserver(ms);
 
 
     private static final Logger logger = Logger.getLogger("SmackCcsClient");
@@ -162,21 +164,6 @@ public class SmackCcsClient<T> {
     protected void handleUpstreamMessage(Map<String, Object> jsonObject) {
         logger.log(Level.INFO, "Handle incoming Message " + (String) jsonObject.get("from"));
         ms.setJsonObject(jsonObject);
-        // PackageName of the application that sent this message.
-//        String category = (String) jsonObject.get("category");
-//        String from = (String) jsonObject.get("from");
-//        @SuppressWarnings("unchecked")
-//        Map<String, String> payload = (Map<String, String>) jsonObject.get("data");
-//        payload.put("ECHO", "Application: " + category);
-//
-//        // Send an ECHO response back
-//        String echo = new SmackCcsClient.JsonMessage(from, nextMessageId(), payload, "echo:CollapseKey", null, false).getMessage();
-//
-//        try {
-//            sendDownstreamMessage(echo);
-//        } catch (NotConnectedException e) {
-//            logger.log(Level.WARNING, "Not connected anymore, echo message is not sent", e);
-//        }
     }
 
     /**
