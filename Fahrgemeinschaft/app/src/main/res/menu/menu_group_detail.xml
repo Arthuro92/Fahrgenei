@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/leave_group"
+        android:orderInCategory="100"
+        android:title="Aus der Gruppe austreten"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_person"
+        android:orderInCategory="200"
+        android:title="Add Person"
+        android:icon="@drawable/ic_person_add_white_24dp"
+        app:showAsAction="ifRoom"
+        ></item>
+
+    <item
+        android:id="@+id/action_add_event"
+        android:orderInCategory="200"
+        android:title="Add Event"
+        android:icon="@drawable/ic_event_note_white_24dp"
+        app:showAsAction="ifRoom"
+        ></item>
+
+    <item
+        android:id="@+id/action_add_task"
+        android:orderInCategory="200"
+        android:title="Add Task"
+        android:icon="@drawable/ic_assignment_turned_in_white_24dp"
+        app:showAsAction="ifRoom"
+        ></item>
+</menu>

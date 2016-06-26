@@ -3,14 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:repositoryCollection="http://schemas.android.com/apk/res-auto"
-    tools:context=".GeneralTabsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.android.cows.fahrgemeinschaft.GeneralTabsActivity"
+    android:background="@color/BackgroundLightGrey">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        ></include>
 
 
-    <android.support.design.widget.TabLayout
+     <android.support.design.widget.TabLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tool_bar"
         android:id="@+id/tablayoutGeneral"
         android:theme="@style/toolbarstyle"
         android:background="?attr/colorPrimary" />
@@ -21,46 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayoutGeneral"
-        android:id="@+id/viewpagerGeneral" />
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/standalone_toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:theme="@style/toolbarstyle"
-        android:background="?attr/colorPrimary"
-        android:layout_alignParentBottom="true">
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:layout_width="@dimen/toolbaricons"
-                android:layout_height="@dimen/toolbaricons"
-                android:scaleType="fitXY"
-                android:id="@+id/btnToolbar1"
-                android:src="@drawable/glyphicons4user"
-                android:onClick="createGroup" />
-
-            <ImageButton
-                android:layout_width="@dimen/toolbaricons"
-                android:layout_height="@dimen/toolbaricons"
-                android:scaleType="fitXY"
-                android:id="@+id/btnToolbar2"
-                android:src="@drawable/glyphicons4user" />
-
-            <ImageButton
-                android:layout_width="@dimen/toolbaricons"
-                android:layout_height="@dimen/toolbaricons"
-                android:scaleType="fitXY"
-                android:id="@+id/btnToolbar3"
-                android:src="@drawable/glyphicons4user" />
-        </LinearLayout>
-
-    </android.support.v7.widget.Toolbar>
-
+        android:id="@+id/viewpagerGeneral"
+        android:background="@color/BackgroundLightGrey" />
 
 </RelativeLayout>

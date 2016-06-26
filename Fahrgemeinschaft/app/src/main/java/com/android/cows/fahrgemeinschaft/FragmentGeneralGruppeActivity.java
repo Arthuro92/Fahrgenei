@@ -49,7 +49,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        Button btn = (Button) contentViewGeneralGruppen.findViewById(R.id.button3);
+        /*Button btn = (Button) contentViewGeneralGruppen.findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +57,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
                 Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
                 startActivity(intent);
             }
-        });
+        }); */
 
         loadGrpList();
         createReceiver();
@@ -126,7 +126,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
      */
     public void createGroupOverview(ArrayList<Groups> grplist) {
         Log.i(TAG, "createGroup");
-        this.groupAdapter = new GroupAdapter(getActivity(), grplist);
+        this.groupAdapter = new GroupAdapter(getActivity(),R.layout.item_row, grplist);
         this.listView = (ListView) getActivity().findViewById(R.id.general_group_listview);
         this.listView.setAdapter(groupAdapter);
     }

@@ -34,6 +34,8 @@ public class FragmentGruppenChatActivity extends Fragment {
     private ChatMessageAdapter chatMessageAdapter;
     private ListView lv;
 
+
+
     /**
      * Gets the User by accessing the shared preferences
      *
@@ -76,6 +78,9 @@ public class FragmentGruppenChatActivity extends Fragment {
         if (!editText.getText().toString().equals("")) {
             sendChatMessage(new de.dataobjects.Chat(getChatUser(), time, editText.getText().toString()));
         }
+
+        editText.setText("");
+
     }
 
     /**

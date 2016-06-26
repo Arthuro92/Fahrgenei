@@ -3,33 +3,32 @@ package de.dataobjects;
 
 import com.google.gson.Gson;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Created by Arthur on 25.05.2016.
  */
-
-public class Appointment  {
-
+public class Appointment {
 
     private int aid;
-
     private String gid;
-
     private String name;
-
-    private Date abfahrzeit;
-
-    private Date treffpunkt_zeit;
-
+    private String abfahrzeit;
+    private String treffpunkt_zeit;
     private String treffpunkt;
-
     private String zielort;
-
-
     private int isParticipant;
 
-    public Appointment(int aid, String gid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
+    public String getZielort() {
+        return zielort;
+    }
+
+    public void setZielort(String zielort) {
+        this.zielort = zielort;
+    }
+
+    public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
         this.aid = aid;
         this.gid = gid;
         this.name = name;
@@ -59,11 +58,11 @@ public class Appointment  {
         this.isParticipant = isParticipant;
     }
 
-    public Date getAbfahrzeit() {
+    public String getAbfahrzeit() {
         return abfahrzeit;
     }
 
-    public void setAbfahrzeit(Date abfahrzeit) {
+    public void setAbfahrzeit(String abfahrzeit) {
         this.abfahrzeit = abfahrzeit;
     }
 
@@ -83,11 +82,11 @@ public class Appointment  {
         this.aid = aid;
     }
 
-    public Date getTreffpunkt_zeit() {
+    public String getTreffpunkt_zeit() {
         return treffpunkt_zeit;
     }
 
-    public void setTreffpunkt_zeit(Date treffpunkt_zeit) {
+    public void setTreffpunkt_zeit(String treffpunkt_zeit) {
         this.treffpunkt_zeit = treffpunkt_zeit;
     }
 

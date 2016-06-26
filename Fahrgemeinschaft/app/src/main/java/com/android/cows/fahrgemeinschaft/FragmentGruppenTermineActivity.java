@@ -47,7 +47,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
+      /**  Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +57,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
                 Intent intent = new Intent(getActivity(), CreateAppointmentActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         hideButtonIfNotAdmin();
         loadAppointmentList();
@@ -94,8 +94,8 @@ public class FragmentGruppenTermineActivity extends Fragment {
     private void hideButtonIfNotAdmin() {
         if (!checkAdminStatus()) {
             Log.i(TAG, "No Admin Rights for this Group");
-            Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
-            btn.setVisibility(View.INVISIBLE);
+          //  Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
+          //  btn.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -137,7 +137,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
      */
     public void createAppointments(ArrayList<de.dataobjects.Appointment> appointmentArrayList) {
         Log.i(TAG, "createAppointments");
-        this.appointmentAdapter = new AppointmentAdapter(getActivity(), appointmentArrayList);
+        this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row, appointmentArrayList);
         this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
         this.listView.setAdapter(appointmentAdapter);
     }

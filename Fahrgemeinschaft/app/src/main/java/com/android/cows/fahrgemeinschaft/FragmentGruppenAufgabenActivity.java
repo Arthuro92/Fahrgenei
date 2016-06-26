@@ -10,8 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.cows.fahrgemeinschaft.adapters.TaskAdapter;
+import com.dataobjects.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +26,7 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
 
     View contentViewGruppenAufgaben;
     private static final String TAG = "TaskOverview";
+    ListView listView;
 
     @Nullable
     @Override
@@ -38,12 +43,15 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
         Task tsk1 = new Task("1", "Trikots waschen", "Trikots müssen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
         Task tsk2 = new Task("2", "Brötchen mitbringen", "Beim nächsten Hallenturnier bieten wir belegte Brötchen an ", "Lenni");
         Task tsk3 = new Task("3", "Leibchen waschen", "Die Leibchen müssen auch gewaschen werden.", "Arthur");
-        List<Task> tsklist = new ArrayList<Task>();
+        ArrayList<Task> tsklist = new ArrayList<Task>();
         tsklist.add(tsk1);
         tsklist.add(tsk2);
         tsklist.add(tsk3);
-
-        createTaskOverview(tsklist);
+        TaskAdapter taskAdapter = new TaskAdapter( getActivity() ,R.layout.item_row_task, tsklist);
+        listView = (ListView) view.findViewById(R.id.taskListView);
+        listView.setAdapter(taskAdapter);
+        //createTaskOverview(tsklist);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     /**
@@ -51,7 +59,7 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
      *
      * @param tsklist list of Groups which should be displayed
      */
-    public void createTaskOverview(final List<Task> tsklist) {
+   /* public void createTaskOverview(final List<Task> tsklist) {
         Log.i(TAG, "createGroup");
 
         RelativeLayout relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.relativelayoutGruppenAufgabe);
@@ -146,6 +154,6 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
 
             i++;
         }
-    }
+    }*/
 
 }

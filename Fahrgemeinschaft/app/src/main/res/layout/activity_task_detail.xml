@@ -3,21 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".TaskDetailActivity">
+    android:background="@color/BackgroundLightGrey"
+    tools:context="com.android.cows.fahrgemeinschaft.TaskDetailActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        ></include>
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar">
+       <!--
         <TableRow>
 
             <TextView
                 android:id="@+id/textView1"
-                android:text="Aufgabenbezichnung "
+                android:text="Aufgabenbezeichnung "
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -42,7 +45,7 @@
                 android:height="100px"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
-        </TableRow>
+        </TableRow>-->
 
         <TableRow>
 

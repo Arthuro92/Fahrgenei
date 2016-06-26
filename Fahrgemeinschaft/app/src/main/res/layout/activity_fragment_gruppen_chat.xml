@@ -42,13 +42,17 @@
         android:layout_alignParentRight="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_text_message"
         android:background="#DCF8C7"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:hint="type message"
         android:layout_toLeftOf="@id/send_message_button"
-        android:layout_alignTop="@id/send_message_button" />
+        android:layout_alignTop="@id/send_message_button"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        />
 
 </RelativeLayout>

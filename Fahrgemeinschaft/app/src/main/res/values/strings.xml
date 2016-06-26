@@ -43,6 +43,7 @@
 
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>
+    <string name="desc_logo_auto">Fahrgemeinschaft Logo</string>
 
     <!-- Rationale for asking for Contacts -->
     <string name="contacts_permission_rationale">Contacts access is needed in order to retrieve your email address.</string>
@@ -60,4 +61,12 @@
     <string name="taskDescr">Aufgabenbeschreibung: %1$s</string>
     <string name="taskBearbeiter">Bearbeiter: %1$s</string>
     <string name="inv_status">Angenommen</string>
+
+    <string-array name="sitzAnzahl_array">
+        <item>1</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+    </string-array>
+
 </resources>

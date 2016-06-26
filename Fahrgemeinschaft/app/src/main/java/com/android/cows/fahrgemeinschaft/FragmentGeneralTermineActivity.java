@@ -10,20 +10,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
+import com.android.cows.fahrgemeinschaft.adapters.UserAdapter;
+import com.dataobjects.Appointment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class FragmentGeneralTermineActivity extends Fragment {
 
     private int lastid;
     private static final String TAG = "AppointmentOverview";
     View contentViewGeneralTermine;
+    ListView listView;
 
     @Nullable
     @Override
@@ -39,24 +48,47 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        de.dataobjects.Appointment gapm1 = new de.dataobjects.Appointment(1, "Termin1", "testgrp1", new Date(2016, 10, 10, 10, 00), new Date(2016, 10, 10, 9, 45), "Uni", "Wolfsburg", 1);
-        de.dataobjects.Appointment gapm2 = new de.dataobjects.Appointment(2, "Termin2", "testgrp1", new Date(2016, 9, 9, 9, 00), new Date(2016, 10, 10, 8, 45), "Sportplatz", "Sportplatz", 1);
-        de.dataobjects.Appointment gapm3 = new de.dataobjects.Appointment(3, "Termin3", "testgrp1", new Date(2016, 8, 8, 8, 00), new Date(2016, 10, 10, 8, 45), "Bahnhof", "Hannover", 1);
-        List<de.dataobjects.Appointment> apmlist = new ArrayList<de.dataobjects.Appointment>();
-        apmlist.add(gapm1);
+        //Init von den Testdaten
+        //1
+        Calendar abfahrtt_zeit1 = Calendar.getInstance();
+        abfahrtt_zeit1.set(2016, 10, 10, 10, 00);
+        Calendar treffpunkt_zeit1 = Calendar.getInstance();
+        treffpunkt_zeit1.set(2016, 10, 10, 9, 30);
+        //2
+        Calendar abfahrtt_zeit2 = Calendar.getInstance();
+        abfahrtt_zeit2.set(2016, 9, 9, 9, 00);
+        Calendar treffpunkt_zeit2 = Calendar.getInstance();
+        treffpunkt_zeit2.set(2016, 10, 10, 8, 45);
+        //3
+        Calendar abfahrtt_zeit3 = Calendar.getInstance();
+        abfahrtt_zeit3.set(2016, 8, 8, 8, 00);
+        Calendar treffpunkt_zeit3 = Calendar.getInstance();
+        treffpunkt_zeit3.set(2016, 10, 10, 8, 45);
+
+
+
+
+        /*Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", "qwertz", "qwertz", "Uni", "Wolfsburg", 1);
+        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", "qwertz", "qwertz", "Sportplatz", "Sportplatz", 1);
+        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", "qwertz", "qwertz", "Bahnhof", "Hannover", 1);*/
+         ArrayList<Appointment> apmlist = new ArrayList<Appointment>();
+       /* apmlist.add(gapm1);
         apmlist.add(gapm2);
-        apmlist.add(gapm3);
-
-        createAppointmentOverview(apmlist);
-
+        apmlist.add(gapm3);*/
+        AppointmentAdapter appointmentAdapter = new AppointmentAdapter( getActivity() ,R.layout.item_row, apmlist);
+       // createAppointmentOverview(apmlist);
+        listView = (ListView) view.findViewById(R.id.apmListView);
+        View header = (View) getActivity().getLayoutInflater().inflate(R.layout.header_row, null);
+        // listView.addHeaderView(header);
+        listView.setAdapter(appointmentAdapter);
     }
 
     /**
      * Creating for each Appointment a linearLayout
      *
      * @param apmlist list of Appointments which should be displayed
-     */
-    public void createAppointmentOverview(final List<de.dataobjects.Appointment> apmlist) {
+
+    public void createAppointmentOverview(final List<Appointment> apmlist) {
         Log.i(TAG, "createGroup");
 
         RelativeLayout relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.relativelayoutGeneralTermine);
@@ -155,7 +187,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
             i++;
         }
-    }
+    }*/
 
 
 }

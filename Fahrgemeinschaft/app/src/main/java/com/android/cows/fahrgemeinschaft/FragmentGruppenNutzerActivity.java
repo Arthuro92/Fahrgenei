@@ -64,16 +64,18 @@ public class FragmentGruppenNutzerActivity extends Fragment {
 
 
 
-        Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
+        //  Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
+        //  btn.setOnClickListener(new View.OnClickListener() {
+
+
+       /**     @Override
             public void onClick(View v) {
                 //todo this in popup please not as activity
 
                 Intent intent = new Intent(getActivity(), InviteUser.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         loadUserList();
         createReceiver();

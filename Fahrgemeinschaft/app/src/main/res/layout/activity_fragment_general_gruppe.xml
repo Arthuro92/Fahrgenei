@@ -8,8 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".FragmentGeneralGruppeActivity">
-
+    tools:context="com.android.cows.fahrgemeinschaft.FragmentGeneralGruppeActivity">
+<!--
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
@@ -18,7 +18,9 @@
         android:id="@+id/button3"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="toCreateGroup" />
+        android:onClick="toCreateGroup" /> -->
+
+    //android:layout_above="@+id/button3"
 
     <ListView
         android:layout_width="match_parent"
@@ -26,7 +28,6 @@
         android:id="@+id/general_group_listview"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:layout_above="@+id/button3"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
