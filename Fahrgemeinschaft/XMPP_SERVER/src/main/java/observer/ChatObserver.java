@@ -15,7 +15,7 @@ import SmackCcsClient.SmackCcsClient;
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
-    //new
+    //version 1
     private Map<String, String> payload;
     private static final Logger logger = Logger.getLogger("ChatObserver");
 

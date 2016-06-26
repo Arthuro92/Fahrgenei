@@ -11,7 +11,7 @@ import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
  * Created by david on 14.06.2016.
  */
 public class SecurityObserver implements MessageObserver {
-    //new new new new new
+    //version 1
     private static final String TAG = "SecurityObserver";
     private Context context = GlobalAppContext.getAppContext();
     private Bundle payload;

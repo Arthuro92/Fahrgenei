@@ -92,11 +92,7 @@ public class RegistrationIntentService extends IntentService {
     private void sendRegistrationToServer(final String token) {
         //todo encryption public key request
         MyGcmSend gcmsender = new MyGcmSend();
-//        try{
-//            AsymmetricEncryptionClient asymmetricEncryptionClient = AsymmetricEncryptionClient.getInstance();
-//        } catch(Exception exception) {
-//            System.err.println("REGISTRATION INTENT: " + exception.toString());
-//        }
+        gcmsender.send("security", "public_key", "Request Key", this);
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String id = prefs.getString("userid" , "");

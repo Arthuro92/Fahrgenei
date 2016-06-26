@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 
 public class ChatActivity extends AppCompatActivity {
-    //new new new new new
+    //version 1
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
     public ArrayList<Chat> arrayListChat;

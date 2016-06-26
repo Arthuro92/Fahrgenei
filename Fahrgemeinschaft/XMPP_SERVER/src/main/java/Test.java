@@ -31,7 +31,7 @@ public class Test {
 //        Databaseoperator.insertNewAppointment();
 
 //        testchat(ccsClient);
-        testSecurity(ccsClient);
+//        testSecurity(ccsClient);
 
 
         while(true) {

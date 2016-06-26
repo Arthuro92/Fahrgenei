@@ -21,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
  * Created by david on 13.06.2016.
  */
 public class AsymmetricEncryptionClient {
-    //new new new new new
+    //version 1
     private PublicKey publicKey;
     private SecretKey symmetricKey;
 
