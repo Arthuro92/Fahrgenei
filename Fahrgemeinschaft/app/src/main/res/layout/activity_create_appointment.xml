@@ -21,7 +21,7 @@
         <EditText android:id="@+id/input_treffpunktZeit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords"
+            android:inputType="date"
             android:hint="Treffpunkt (Zeit)" />
     </android.support.design.widget.TextInputLayout>
 
@@ -45,7 +45,7 @@
         <EditText android:id="@+id/input_abfahrtzeit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords"
+            android:inputType="date"
             android:hint="Abfahrtzeit" />
     </android.support.design.widget.TextInputLayout>
 

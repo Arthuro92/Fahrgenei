@@ -11,8 +11,8 @@ public class Appointment {
     private int aid;
     private String gid;
     private String name;
-    private Calendar abfahrzeit;
-    private Calendar treffpunkt_zeit;
+    private String abfahrzeit;
+    private String treffpunkt_zeit;
     private String treffpunkt;
     private String zielort;
     private int isParticipant;
@@ -25,7 +25,7 @@ public class Appointment {
         this.zielort = zielort;
     }
 
-    public Appointment(int aid, String gid, String name, Calendar abfahrzeit, Calendar treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
+    public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
         this.aid = aid;
         this.gid = gid;
         this.name = name;
@@ -44,11 +44,11 @@ public class Appointment {
         this.isParticipant = isParticipant;
     }
 
-    public Calendar getAbfahrzeit() {
+    public String getAbfahrzeit() {
         return abfahrzeit;
     }
 
-    public void setAbfahrzeit(Calendar abfahrzeit) {
+    public void setAbfahrzeit(String abfahrzeit) {
         this.abfahrzeit = abfahrzeit;
     }
 
@@ -68,11 +68,11 @@ public class Appointment {
         this.aid = aid;
     }
 
-    public Calendar getTreffpunkt_zeit() {
+    public String getTreffpunkt_zeit() {
         return treffpunkt_zeit;
     }
 
-    public void setTreffpunkt_zeit(Calendar treffpunkt_zeit) {
+    public void setTreffpunkt_zeit(String treffpunkt_zeit) {
         this.treffpunkt_zeit = treffpunkt_zeit;
     }
 

@@ -68,13 +68,13 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
 
 
-        Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", abfahrtt_zeit1, treffpunkt_zeit1, "Uni", "Wolfsburg", 1);
-        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", abfahrtt_zeit2, treffpunkt_zeit2, "Sportplatz", "Sportplatz", 1);
-        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", abfahrtt_zeit3, treffpunkt_zeit3, "Bahnhof", "Hannover", 1);
-        ArrayList<Appointment> apmlist = new ArrayList<Appointment>();
-        apmlist.add(gapm1);
+        /*Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", "qwertz", "qwertz", "Uni", "Wolfsburg", 1);
+        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", "qwertz", "qwertz", "Sportplatz", "Sportplatz", 1);
+        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", "qwertz", "qwertz", "Bahnhof", "Hannover", 1);*/
+         ArrayList<Appointment> apmlist = new ArrayList<Appointment>();
+       /* apmlist.add(gapm1);
         apmlist.add(gapm2);
-        apmlist.add(gapm3);
+        apmlist.add(gapm3);*/
         AppointmentAdapter appointmentAdapter = new AppointmentAdapter( getActivity() ,R.layout.item_row, apmlist);
        // createAppointmentOverview(apmlist);
         listView = (ListView) view.findViewById(R.id.apmListView);
