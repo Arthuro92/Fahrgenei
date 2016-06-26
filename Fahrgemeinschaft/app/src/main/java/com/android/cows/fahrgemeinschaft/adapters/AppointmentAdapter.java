@@ -15,10 +15,10 @@ import android.widget.TextView;
 import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
-import com.dataobjects.Appointment;
-import com.dataobjects.User;
 
 import java.util.ArrayList;
+
+import de.dataobjects.Appointment;
 
 /**
  * Created by david on 12.06.2016.

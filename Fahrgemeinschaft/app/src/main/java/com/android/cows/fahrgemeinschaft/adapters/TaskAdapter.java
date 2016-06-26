@@ -9,16 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.TaskDetailActivity;
-import com.dataobjects.Task;
-import com.dataobjects.User;
 
 import java.util.ArrayList;
+
+import de.dataobjects.Task;
+import de.dataobjects.User;
 
 /**
  * Created by Arthur on 16.06.2016.

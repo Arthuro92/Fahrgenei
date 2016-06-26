@@ -22,6 +22,8 @@ import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.dataobjects.Groups;
+
 public class CreateGroupActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateGroupActivity";
@@ -55,7 +57,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                     //todo maybe error when no string in sharedpref
 
-                    Group newgroup = new Group(groupname.getText().toString(),
+                    Groups newgroup = new Groups(groupname.getText().toString(),
                             1,
                             prefs.getString("userid", ""),
                             prefs.getString("username", ""),
@@ -73,35 +75,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
     }
 
-/**
-    public void creategroup(View view) {
-        EditText groupname = (EditText) findViewById(R.id.groupname);
-        if (groupname.getText().toString().trim().length() == 0) {
-            Toast.makeText(CreateGroupActivity.this, "Kein gültiger Gruppenname!", Toast.LENGTH_LONG).show();
-        } else {
 
-            setLayoutInvisible();
-
-            Log.i(TAG, "Create Group");
-            SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-            //todo maybe error when no string in sharedpref
-
-            de.dataobjects.Groups newgroup = new de.dataobjects.Groups(groupname.getText().toString(),
-                    1,
-                    prefs.getString("userid", ""),
-                    prefs.getString("username", ""),
-                    groupname.getText().toString() + prefs.getString("userid", ""),
-                    1);
-
-            MyGcmSend gcmsend = new MyGcmSend();
-
-            gcmsend.send("group", "insertgroup", newgroup, this);
-
-            createReceiver();
-
-        }
-    }
-*/
     private boolean checkRegEx(String text) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher matcher = pattern.matcher(text);

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -31,10 +32,20 @@ public class InviteUser extends AppCompatActivity {
         setContentView(R.layout.activity_add_user);
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.inviteUserProgressBar);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
+
+        Button inviteButton = (Button) findViewById(R.id.invitefriendbtn);
+        inviteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invitefriend(v);
+            }
+        });
+
     }
 
     public void invitefriend(View view) {
         EditText editText = (EditText) findViewById(R.id.inviteEmail);
+        System.out.println("1");
         if (editText.getText().toString().trim().length() != 0) {
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
 
@@ -48,6 +59,7 @@ public class InviteUser extends AppCompatActivity {
             String gid = prefs.getString("currentgid", "");
             stringarray[1] = gid;
 
+            System.out.println("2");
             de.dataobjects.Groups group = sqLiteDBHandler.getGroup(stringarray[1]);
             if (group != null) {
                 //todo handle invites with own email or email already invited

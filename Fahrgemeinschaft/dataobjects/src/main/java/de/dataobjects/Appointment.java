@@ -3,9 +3,6 @@ package de.dataobjects;
 
 import com.google.gson.Gson;
 
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Created by Arthur on 25.05.2016.
  */
@@ -40,14 +37,6 @@ public class Appointment {
     }
 
     public Appointment() {
-    }
-
-    public String getZielort() {
-        return zielort;
-    }
-
-    public void setZielort(String zielort) {
-        this.zielort = zielort;
     }
 
     public int getIsParticipant() {

@@ -19,10 +19,10 @@ import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.gcm.TopicSubscriber;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.dataobjects.Group;
-import com.dataobjects.User;
 
 import java.util.ArrayList;
+
+import de.dataobjects.Groups;
 
 /**
  * Created by david on 12.06.2016.
@@ -32,7 +32,7 @@ public class GroupAdapter extends ArrayAdapter {
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
     private int layoutResourceId;
-    ArrayList<Group> data = new ArrayList<Group>();
+    ArrayList<Groups> data = new ArrayList<Groups>();
 
     private View setGroupView(View groupView, final de.dataobjects.Groups group) {
         TextView textview = (TextView) groupView.findViewById(R.id.groupTextView1);
@@ -119,7 +119,7 @@ public class GroupAdapter extends ArrayAdapter {
             holder = (GroupHolder)row.getTag();
         }
 
-        final Group group =  data.get(position);
+        final Groups group =  data.get(position);
         holder.txtTitle.setText(group.getName());
         Log.d("UserAdapter: ","Holdername als "+group.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.group);
@@ -134,9 +134,11 @@ public class GroupAdapter extends ArrayAdapter {
         row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(context, GroupTabsActivity.class);
-                intent.putExtra("name", group.getName());
-                intent.putExtra("adminid", group.getAdminid());
-                intent.putExtra("gid", group.getGid());
+
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                prefs.edit().putString("currentgroupname", group.getName()).apply();
+                prefs.edit().putString("currentgroupadminid", group.getAdminid()).apply();
+                prefs.edit().putString("currentgid", group.getGid()).apply();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 //
@@ -144,9 +146,9 @@ public class GroupAdapter extends ArrayAdapter {
         });
 
        /* return setGroupView(row, group);*/
-        final de.dataobjects.Groups group = (de.dataobjects.Groups) getItem(position);
         View groupView = this.layoutInflater.inflate(R.layout.group_layout, parent, false);
-        return setGroupView(groupView, group);
+        setGroupView(groupView, group);
+        return row;
     }
 
     /**
@@ -155,7 +157,7 @@ public class GroupAdapter extends ArrayAdapter {
      * @param context  a Context the Adapter is constructed from
      * @param data an ArrayList to be handled and displayed by the Adapter
      */
-    public GroupAdapter(Context context, int layoutResourceId, ArrayList<Group> data) {
+    public GroupAdapter(Context context, int layoutResourceId, ArrayList<Groups> data) {
       //  super(context, R.layout.group_layout, resource);
 
         super(context, layoutResourceId, data);

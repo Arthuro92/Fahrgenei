@@ -22,7 +22,7 @@ public class Databaseoperator {
     private static final Logger logger = Logger.getLogger("Databaseoperator");
     private static final String CON_URL = "jdbc:mysql://localhost:3306/testschema";
     private static final String USERNAME = "testuser";
-    private static final String PASSWORD = "androidcows";
+    private static final String PASSWORD = "android";
 
 
     static public boolean insertNewGroups(String gid, String jsonInString) {

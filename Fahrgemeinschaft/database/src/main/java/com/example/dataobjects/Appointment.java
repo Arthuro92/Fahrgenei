@@ -4,7 +4,6 @@ import com.example.repositories.keys.AppointmentId;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,10 +29,10 @@ public class Appointment implements Serializable {
     private String name;
 
     @Column
-    private Date abfahrzeit;
+    private String abfahrzeit;
 
     @Column
-    private Date treffpunkt_zeit;
+    private String treffpunkt_zeit;
 
     @Column
     private String treffpunkt;
@@ -44,7 +43,7 @@ public class Appointment implements Serializable {
     @Column
     private int isParticipant;
 
-    public Appointment(int aid, String gid, String name, Date abfahrzeit, Date treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
+    public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
         this.aid = aid;
         this.gid = gid;
         this.name = name;
@@ -74,11 +73,11 @@ public class Appointment implements Serializable {
         this.isParticipant = isParticipant;
     }
 
-    public Date getAbfahrzeit() {
+    public String getAbfahrzeit() {
         return abfahrzeit;
     }
 
-    public void setAbfahrzeit(Date abfahrzeit) {
+    public void setAbfahrzeit(String abfahrzeit) {
         this.abfahrzeit = abfahrzeit;
     }
 
@@ -98,11 +97,11 @@ public class Appointment implements Serializable {
         this.aid = aid;
     }
 
-    public Date getTreffpunkt_zeit() {
+    public String getTreffpunkt_zeit() {
         return treffpunkt_zeit;
     }
 
-    public void setTreffpunkt_zeit(Date treffpunkt_zeit) {
+    public void setTreffpunkt_zeit(String treffpunkt_zeit) {
         this.treffpunkt_zeit = treffpunkt_zeit;
     }
 

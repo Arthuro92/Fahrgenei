@@ -1,17 +1,15 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.view.View.OnClickListener;
 
 public class GroupTabsActivity extends AppCompatActivity {
 
@@ -62,7 +60,8 @@ public class GroupTabsActivity extends AppCompatActivity {
 
         });
 
-        setTitle(getIntent().getStringExtra("name"));
+        SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        setTitle(prefs.getString("currentgroupname", ""));
 
     }
 
@@ -86,17 +85,10 @@ public class GroupTabsActivity extends AppCompatActivity {
         }
         if (id ==R.id.action_add_person){
             Intent intent = new Intent(GroupTabsActivity.this, InviteUser.class);
-            Bundle bundle = GroupTabsActivity.this.getIntent().getExtras();
-            intent.putExtra("gid", bundle.getString("gid"));
-
             startActivity(intent);
         }
         if (id ==R.id.action_add_event){
             Intent intent = new Intent(GroupTabsActivity.this, CreateAppointmentActivity.class);
-            Bundle bundle = GroupTabsActivity.this.getIntent().getExtras();
-            intent.putExtra("name", (String) bundle.get("name"));
-            intent.putExtra("adminid", (String) bundle.get("adminid"));
-            intent.putExtra("gid", (String) bundle.get("gid"));
             startActivity(intent);
         }
 

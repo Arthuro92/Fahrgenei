@@ -65,11 +65,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Termin erstellen"
-        android:id="@+id/button4"
+        android:id="@+id/createappointbutton"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
-        android:padding="12dp"
-        android:onClick="createAppointment" />
+        android:padding="12dp"/>
+        <!--android:onClick="createAppointment" -->
+            />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
