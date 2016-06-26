@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * Created by david on 17.05.2016.
  */
 public class MessageSubject {
-    //new
+    //version 1
     private static final Logger logger = Logger.getLogger("MessageSubject");
     private Vector<MessageObserver> messageObservers;
     private Map<String, Object> jsonObject;

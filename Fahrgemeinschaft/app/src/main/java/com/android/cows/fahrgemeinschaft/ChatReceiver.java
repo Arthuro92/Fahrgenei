@@ -8,7 +8,7 @@ import android.content.Intent;
  * Created by david on 11.06.2016.
  */
 public class ChatReceiver extends BroadcastReceiver {
-    //new new new new
+    //version 1
     ChatActivity chatActivity;
 
     /**

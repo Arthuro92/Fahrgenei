@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import com.android.cows.fahrgemeinschaft.adapters.ChatMessageAdapter;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -19,22 +18,23 @@ import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.dataobjects.Chat;
 
 
 public class ChatActivity extends AppCompatActivity {
-    //new new new new
+    //version 1
     private static final int NID = 987654321;
     public static boolean activeActivity = false;
-    public ArrayList<de.dataobjects.Chat> arrayListChat;
+    public ArrayList<Chat> arrayListChat;
     private ChatMessageAdapter chatMessageAdapter;
     private ListView listView;
     private ChatReceiver chatReceiver;
 
     /**
      * Gets the User by accessing the shared preferences
-     *
      * @return user String
      */
     private String getChatUser() {
@@ -44,21 +44,30 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Adds chatMessage to local database
-     *
      * @param chatMessage a Chat object to be added
      */
-    private void addChatMessageDB(de.dataobjects.Chat chatMessage) {
+    private void addChatMessageDB(Chat chatMessage) {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
         sqLiteDBHandler.addChatMessage(chatMessage);
     }
 
     /**
+     * Checks text against a regular expression
+     * @param text a String the regular expression is checked against
+     * @return true if regular expression holds, false else
+     */
+    private boolean checkRegEx(String text) {
+        Pattern pattern = Pattern.compile("^\\s*$");
+        Matcher matcher = pattern.matcher(text);
+        return matcher.find();
+    }
+
+    /**
      * Sends a Chat object to the server
-     *
      * @param chatMessage
      */
-    private void sendChatMessage(de.dataobjects.Chat chatMessage) {
-        MyGcmSend<Chat> myGcmSend = new MyGcmSend<de.dataobjects.Chat>();
+    private void sendChatMessage(Chat chatMessage) {
+        MyGcmSend<Chat> myGcmSend = new MyGcmSend<Chat>();
         addChatMessageDB(chatMessage);
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
@@ -72,18 +81,17 @@ public class ChatActivity extends AppCompatActivity {
     private void getChatMessage() {
         EditText editText = (EditText) findViewById(R.id.edit_text_message);
         String time = DateFormat.getDateTimeInstance().format(new Date());
-        if (!editText.getText().toString().equals("")) {
-            sendChatMessage(new de.dataobjects.Chat(getChatUser(), time, editText.getText().toString()));
+        if(!checkRegEx(editText.getText().toString())) {
+            sendChatMessage(new Chat(getChatUser(), time, editText.getText().toString()));
         }
     }
 
     /**
      * Adds Chat object to ArrayList from Intent
-     *
      * @param intent an Intent with an Extra to be added
      */
     public void setArrayListFromExtra(Intent intent) {
-        de.dataobjects.Chat chatMessage = (de.dataobjects.Chat) intent.getSerializableExtra("Chat");
+        Chat chatMessage = (Chat) intent.getSerializableExtra("Chat");
         this.arrayListChat.add(chatMessage);
         this.chatMessageAdapter.notifyDataSetChanged();
         this.listView.setSelection(listView.getAdapter().getCount() - 1);
@@ -108,10 +116,9 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Gets chat history from local database
-     *
      * @return an ArrayList containing the history
      */
-    private ArrayList<de.dataobjects.Chat> getArrayListFromDB() {
+    private ArrayList<Chat> getArrayListFromDB() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
         return sqLiteDBHandler.getChatMessages();
     }
@@ -127,7 +134,6 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * Sets the ArrayList when app is created
-     *
      * @param savedInstanceState
      */
     @Override
@@ -136,6 +142,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         this.arrayListChat = getArrayListFromDB();
         setChatView();
+        this.listView.setSelection(listView.getAdapter().getCount() - 1);
         System.out.println("CHATACTIVITY CREATED");
     }
 

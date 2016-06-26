@@ -15,15 +15,14 @@ import server.smackccsclient.SmackCcsClient;
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
-    //new
+    //version 1
     private Map<String, String> payload;
     private static final Logger logger = Logger.getLogger("ChatObserver");
 
     /**
-     * Parses certain parts of the jsonObject to a database.Chat object
-     *
+     * Parses certain parts of the jsonObject to a Chat object
      * @param jsonInString a Json String to be parsed
-     * @return a resulting database.Chat object
+     * @return a resulting Chat object
      */
     private Chat setChatMessage(String jsonInString) {
         return JsonCollection.jsonToChat(jsonInString);
@@ -31,11 +30,10 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Broadcasts chatMessage to all subscribers of a topic
-     *
-     * @param chatMessage a database.Chat object to be broadcast
+     * @param chatMessage a Chat object to be broadcast
      */
     public void broadcastChatMessage(Chat chatMessage) {
-        logger.log(Level.INFO, "Server recieved database.Chat Message:" + chatMessage.getChatMessageText());
+        logger.log(Level.INFO, "SERVER RECEIVED CHAT MESSAGE:" + chatMessage.getChatMessageText());
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
             smackCcsClient.sendDownstreamMessage("chat", "chat", "/topics/global", chatMessage);
@@ -46,7 +44,6 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Updates the Map payload for this object to the jsonObject. Also calls the setChat method so long as the task_category key of payload equals chat
-     *
      * @param jsonObject a Map the payload for this object is updated to
      */
     public void updateMessageObserver(Map<String, Object> jsonObject) {
@@ -60,7 +57,6 @@ public class ChatObserver implements MessageObserver {
 
     /**
      * Constructs a new ChatObserver and registers it to a MessageSubject
-     *
      * @param messageSubject a MessageSubject to register to
      */
     public ChatObserver(MessageSubject messageSubject) {

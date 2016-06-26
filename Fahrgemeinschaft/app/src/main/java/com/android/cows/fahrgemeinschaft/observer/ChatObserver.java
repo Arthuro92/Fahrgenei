@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
 import com.android.cows.fahrgemeinschaft.ChatActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
@@ -21,7 +20,7 @@ import de.dataobjects.JsonCollection;
  * Created by david on 23.05.2016.
  */
 public class ChatObserver implements MessageObserver {
-    //new new new new
+    //version 1
     private static final String TAG = "ChatObserver";
     private static final int NID = 987654321;
     private Context context = GlobalAppContext.getAppContext();
