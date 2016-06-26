@@ -94,7 +94,7 @@ public class FragmentGeneralGruppeActivity extends Fragment {
 
     private void registerReceiver() {
         if (!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("update"));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("updategroupgeneral"));
             isReceiverRegistered = true;
         }
     }

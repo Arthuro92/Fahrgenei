@@ -4,8 +4,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import SmackCcsClient.SmackCcsClient;
 import cryptography.AsymmetricEncryptionServer;
+import server.observer.MessageObserver;
+import server.observer.MessageSubject;
+import server.smackccsclient.SmackCcsClient;
 
 /**
  * Created by david on 24.06.2016.

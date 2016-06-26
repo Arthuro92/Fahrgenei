@@ -13,7 +13,10 @@ import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 
+import de.dataobjects.Appointment;
+import de.dataobjects.Groups;
 import de.dataobjects.JsonCollection;
+import de.dataobjects.User;
 import de.dataobjects.UserInGroup;
 
 /**
@@ -71,12 +74,10 @@ public class GroupObserver implements MessageObserver {
         LocalBroadcastManager.getInstance(context).sendBroadcast(insertSuccess);
     }
 
-    private void sendLocalUpdateBroadcast() {
-        Intent intent = new Intent("update");
+    private void sendLocalUpdateGroupsBroadcast() {
+        Intent intent = new Intent("updategroupgeneral");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
-
-
 
     private void updateLocalGroupTable() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
@@ -86,7 +87,7 @@ public class GroupObserver implements MessageObserver {
     private void groupInvitation() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
-        de.dataobjects.Groups grp = JsonCollection.jsonToGroup(stringArray[0]);
+        Groups grp = JsonCollection.jsonToGroup(stringArray[0]);
 
         sqLiteDBHandler.addGroup(grp);
 
@@ -95,8 +96,20 @@ public class GroupObserver implements MessageObserver {
 
         System.out.println("ADDING GROUP " + stringArray[0]);
         updateLocalInsertNewGroupMembers();
-        sendLocalUpdateBroadcast();
+        updateLocalAppointmentTable();
+        sendLocalUpdateGroupsBroadcast();
+    }
 
+    public void updateLocalAppointmentTable() {
+        Log.i(TAG, "update Local DB, Insert New Appointments");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
+        ArrayList<Appointment> appointmentArrayList = JsonCollection.jsonToAppointmentList(stringArray[3]);
+
+        for(Appointment appointment : appointmentArrayList) {
+            appointment.setIsParticipant(0);
+            sqLiteDBHandler.addAppointment(appointment, 0);
+        }
     }
 
     private void updateLocalUserIsInGroup(int i) {
@@ -110,10 +123,10 @@ public class GroupObserver implements MessageObserver {
         Log.i(TAG, "update Local DB, Insert New Group Members");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
-        ArrayList<de.dataobjects.User> userList = JsonCollection.jsonToUserList(stringArray[1]);
+        ArrayList<User> userList = JsonCollection.jsonToUserList(stringArray[1]);
 
         ArrayList<UserInGroup> userInGroupList = JsonCollection.jsonToUserInGroupList(stringArray[2]);
-        for(de.dataobjects.User user : userList) {
+        for(User user : userList) {
             sqLiteDBHandler.addUser(user);
         }
         for(UserInGroup userInGroup : userInGroupList) {

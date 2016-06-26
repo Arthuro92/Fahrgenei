@@ -13,6 +13,7 @@ import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
+import de.dataobjects.Chat;
 import de.dataobjects.JsonCollection;
 
 
@@ -74,7 +75,7 @@ public class ChatObserver implements MessageObserver {
      * @param jsonInString a Json String to be parsed
      * @return a resulting Chat object
      */
-    private de.dataobjects.Chat setChatMessage(String jsonInString) {
+    private Chat setChatMessage(String jsonInString) {
         return JsonCollection.jsonToChat(jsonInString);
     }
 

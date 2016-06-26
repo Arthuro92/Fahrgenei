@@ -48,8 +48,13 @@ public class JsonCollection {
        return new Gson().fromJson(groupList, new TypeToken<List<Groups>>() {}.getType());
     }
 
+    public static ArrayList<Appointment> jsonToAppointmentList(String appointmentList) {
+        return new Gson().fromJson(appointmentList,new TypeToken<List<Appointment>>() {}.getType());
+    }
+
     public static String objectToJson(Object object) {
         return new Gson().toJson(object);
     }
+
 }
 

@@ -102,7 +102,6 @@ public class FragmentGruppenNutzerActivity extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 loadUserList();
-                System.out.println("receiver triggered");
             }
         };
         registerReceiver();
@@ -110,16 +109,16 @@ public class FragmentGruppenNutzerActivity extends Fragment {
 
     private void registerReceiver() {
         if (!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("update"));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("updategroupuser"));
             isReceiverRegistered = true;
         }
     }
 
     private void unregisterReceiver() {
-//        if (isReceiverRegistered) {
-//            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updategrplist);
-//            isReceiverRegistered = false;
-//        }
+        if (isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updategrplist);
+            isReceiverRegistered = false;
+        }
     }
     @Override
     public void onPause() {
@@ -130,6 +129,6 @@ public class FragmentGruppenNutzerActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        unregisterReceiver();
+        registerReceiver();
     }
 }

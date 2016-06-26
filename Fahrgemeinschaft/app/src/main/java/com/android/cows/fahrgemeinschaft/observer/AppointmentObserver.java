@@ -57,7 +57,7 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private void sendLocalUpdateBroadcast() {
-        Intent intent = new Intent("update");
+        Intent intent = new Intent("updategroupappointments");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 

@@ -22,10 +22,12 @@ import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 
+import de.dataobjects.Appointment;
+
 public class FragmentGruppenTermineActivity extends Fragment {
     private static final String TAG = "FGenTermineActivity";
     View contentViewGruppenTermine;
-    private BroadcastReceiver updategrplist;
+    private BroadcastReceiver updateappointmentlist;
     private boolean isReceiverRegistered;
 
     private AppointmentAdapter appointmentAdapter;
@@ -65,9 +67,10 @@ public class FragmentGruppenTermineActivity extends Fragment {
 
 
     public void createReceiver() {
-        updategrplist = new BroadcastReceiver() {
+        updateappointmentlist = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                System.out.println("update in appointment fired");
                 loadAppointmentList();
             }
         };
@@ -76,14 +79,14 @@ public class FragmentGruppenTermineActivity extends Fragment {
 
     private void registerReceiver() {
         if (!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("update"));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateappointmentlist, new IntentFilter("updategroupappointments"));
             isReceiverRegistered = true;
         }
     }
 
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updategrplist);
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updateappointmentlist);
             isReceiverRegistered = false;
         }
     }
@@ -111,9 +114,8 @@ public class FragmentGruppenTermineActivity extends Fragment {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
-        ArrayList<de.dataobjects.Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
+        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
         if (appointmentlist.size() > 0) {
-            System.out.println("create APPOINTMENTLIST");
             createAppointments(appointmentlist);
         } else {
             CharSequence text = "Keine Termine!";
@@ -149,6 +151,6 @@ public class FragmentGruppenTermineActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        unregisterReceiver();
+        registerReceiver();
     }
 }

@@ -1,7 +1,7 @@
 package server.observer;
 
+import com.example.dataobjects.JsonCollection;
 import com.example.dataobjects.User;
-import com.google.gson.Gson;
 
 import java.util.Map;
 import java.util.logging.Level;
@@ -45,8 +45,8 @@ public class UserObserver extends RepositorieConnector implements MessageObserve
     private boolean registration() {
         try {
             logger.log(Level.INFO, "first switch task = registration");
-            Gson gson = new Gson();
-            User user = gson.fromJson(this.payload.get("content"), User.class);
+
+            User user = JsonCollection.jsonToUser(this.payload.get("content"));
             userRepository.save(user);
             return true;
         } catch (NullPointerException e) {

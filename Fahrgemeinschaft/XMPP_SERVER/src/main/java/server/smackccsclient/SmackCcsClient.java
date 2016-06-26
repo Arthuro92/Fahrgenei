@@ -56,7 +56,6 @@ public class SmackCcsClient<T> {
 
 
     private static final Logger logger = Logger.getLogger("SmackCcsClient");
-
     private static final String GCM_SERVER = "gcm.googleapis.com";
 //    private static final String GCM_SERVER = "fcm-xmpp.googleapis.com";
     private static final int GCM_PORT = 5235;
@@ -145,7 +144,6 @@ public class SmackCcsClient<T> {
     public String nextMessageId() {
         return "m-" + UUID.randomUUID().toString();
     }
-
     /**
      * Sends a packet with contents provided.
      */

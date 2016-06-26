@@ -1,6 +1,7 @@
 package server.observer;
 
 
+import com.example.dataobjects.Appointment;
 import com.example.dataobjects.Groups;
 import com.example.dataobjects.JsonCollection;
 import com.example.dataobjects.User;
@@ -150,10 +151,13 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
                 userList.add(userRepository.findOne(userInGroup.getUid()));
             }
 
-            String[] stringarray = new String[3];
+            ArrayList<Appointment> appointmentArrayList = appointmentRepository.findByGid(grp.getGid());
+
+            String[] stringarray = new String[4];
             stringarray[0] = grp.getJsonInString();
             stringarray[1] = JsonCollection.objectToJson(userList);
             stringarray[2] = JsonCollection.objectToJson(userInGroupList);
+            stringarray[3] = JsonCollection.objectToJson(appointmentArrayList);
 
             smackclient.sendDownstreamMessage("group", "groupinvitation", token, stringarray);
             return true;
@@ -162,7 +166,8 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
             e.printStackTrace();
             return false;
         } catch (NullPointerException e) {
-                logger.log(Level.INFO, "Error sending Invitation: NullPointerException");
+            logger.log(Level.INFO, "Error sending Invitation: NullPointerException");
+            e.printStackTrace();
                 return false;
         }
     }
@@ -188,6 +193,7 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
             smackclient.sendDownstreamMessage("group", "groupinsertsuccess", (String) jsonObject.get("from"), JsonCollection.jsonToGroup(this.payload.get("content")));
+            System.out.println((String) jsonObject.get("from"));
             return true;
         } catch (SmackException.NotConnectedException e) {
             //todo what now XD? retry or something

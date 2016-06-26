@@ -38,7 +38,6 @@ public class MyGcmSend<T> {
         final String msgId = nextMessageId();
 
         Log.i(TAG, "Try Sending Message");
-
         String logstring = "";
         try {
             Bundle payload = new Bundle();
