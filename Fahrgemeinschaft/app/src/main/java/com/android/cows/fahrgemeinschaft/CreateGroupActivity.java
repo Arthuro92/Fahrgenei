@@ -32,6 +32,8 @@ public class CreateGroupActivity extends AppCompatActivity {
     private boolean isReceiverRegistered;
     private AppCompatButton createGroupButton;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

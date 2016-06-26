@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ public class GeneralTabsActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +27,6 @@ public class GeneralTabsActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-
 
         viewPagerGeneral = (ViewPager) findViewById(R.id.viewpagerGeneral);
 
@@ -76,6 +77,7 @@ public class GeneralTabsActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
 
         if (id == R.id.action_addUser) {
             Intent intent = new Intent(this, CreateGroupActivity.class);
