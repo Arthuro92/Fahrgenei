@@ -31,7 +31,6 @@ public class GroupObserver implements MessageObserver {
 
     /**
      * Updates the Bundle payload for this object to the jsonObject. Also calls the setGroup method so long as the task_category key of payload equals group
-     *
      * @param jsonObject a Bundle the payload for this object is updated to
      */
     public void updateMessageObserver(Bundle jsonObject) {
@@ -59,6 +58,9 @@ public class GroupObserver implements MessageObserver {
                     groupInvitation();
                     //todo request to user if he wants to join this group
                     break;
+                case "groupinformation" :
+                    Log.i(TAG, "Group Information");
+                    addGroupInformations();
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
                         Log.i(TAG, "ERROR Group");
@@ -86,15 +88,19 @@ public class GroupObserver implements MessageObserver {
 
     private void groupInvitation() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
-        Groups grp = JsonCollection.jsonToGroup(stringArray[0]);
+
+        Groups grp = JsonCollection.jsonToGroup(this.payload.getString("content"));
 
         sqLiteDBHandler.addGroup(grp);
 
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         sqLiteDBHandler.joinGroup(grp.getGid(),  prefs.getString("userid", ""),0);
 
-        System.out.println("ADDING GROUP " + stringArray[0]);
+        Log.i(TAG, "ADDING GROUP" + grp.getName());
+        updateLocalGroupTable();
+    }
+
+    public void addGroupInformations() {
         updateLocalInsertNewGroupMembers();
         updateLocalAppointmentTable();
         sendLocalUpdateGroupsBroadcast();
@@ -104,7 +110,7 @@ public class GroupObserver implements MessageObserver {
         Log.i(TAG, "update Local DB, Insert New Appointments");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
-        ArrayList<Appointment> appointmentArrayList = JsonCollection.jsonToAppointmentList(stringArray[3]);
+        ArrayList<Appointment> appointmentArrayList = JsonCollection.jsonToAppointmentList(stringArray[2]);
 
         for(Appointment appointment : appointmentArrayList) {
             appointment.setIsParticipant(0);
@@ -123,16 +129,15 @@ public class GroupObserver implements MessageObserver {
         Log.i(TAG, "update Local DB, Insert New Group Members");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
-        ArrayList<User> userList = JsonCollection.jsonToUserList(stringArray[1]);
+        ArrayList<User> userList = JsonCollection.jsonToUserList(stringArray[0]);
 
-        ArrayList<UserInGroup> userInGroupList = JsonCollection.jsonToUserInGroupList(stringArray[2]);
+        ArrayList<UserInGroup> userInGroupList = JsonCollection.jsonToUserInGroupList(stringArray[1]);
         for(User user : userList) {
             sqLiteDBHandler.addUser(user);
         }
         for(UserInGroup userInGroup : userInGroupList) {
             sqLiteDBHandler.addIsInGroup(userInGroup);
         }
-
     }
 
     private void insertSuccess() {
