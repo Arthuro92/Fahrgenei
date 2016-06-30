@@ -32,6 +32,7 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
     static EditText DateTreffpunktzeit;
     static EditText DateAbfahrtzeit;
+    //static EditText Terminname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,25 +147,27 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         int id = sqLiteDBHandler.getNextAppointmentID(gid);
         de.dataobjects.Appointment gapm1;
 
-        // EditText _input_treffpunktZeit = (EditText) findViewById(R.id.input_treffpunktZeit);
+        EditText _input_treffpunktZeit = (EditText) findViewById(R.id.input_treffpunktZeit);
         EditText _input_treffpunkt = (EditText) findViewById(R.id.input_treffpunkt);
-        //EditText _input_abfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
+        EditText _input_abfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
         EditText _input_zielort = (EditText) findViewById(R.id.input_zielort);
+        EditText _input_terminname = (EditText) findViewById(R.id.input_terminname);
 
         //Todo String von Abfahrtzeit & Treffpunktzeit in Calendar ändern oder ähnliches
         String treffpunkt = _input_treffpunkt.getText().toString();
         String zielort = _input_zielort.getText().toString();
-        String treffpunktZeit = DateTreffpunktzeit.getText().toString();
-        String abfahrtzeit = DateAbfahrtzeit.getText().toString();
+        String treffpunktZeit = _input_treffpunktZeit.getText().toString();
+        String abfahrtzeit = _input_abfahrtzeit.getText().toString();
+        String terminname = _input_terminname.getText().toString();
 
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + 1,  treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
+            gapm1 = new Appointment(1, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
-            gapm1 = new Appointment(id, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + id, treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
+            gapm1 = new Appointment(id, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
         }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 

@@ -31,6 +31,7 @@ public class AppointmentDetailActivity extends AppCompatActivity {
 
 
         //TextView terminName = (TextView) findViewById(R.id.terminName);
+
         TextView terminTreffZeit = (TextView) findViewById(R.id.terminTreffZeit);
         TextView terminTreffOrt = (TextView) findViewById(R.id.terminTreffOrt);
         TextView terminAbfahrtZeit = (TextView) findViewById(R.id.terminAbfahrtZeit);
