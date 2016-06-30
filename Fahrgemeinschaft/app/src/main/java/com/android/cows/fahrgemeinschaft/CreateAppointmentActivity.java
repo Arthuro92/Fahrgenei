@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +37,8 @@ public class CreateAppointmentActivity extends AppCompatActivity {
     static EditText DateAbfahrtzeit;
     //static EditText Terminname;
 
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,10 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.createAppointmentProgBar);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         createDateOnClickListener();
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Termin erstellen");
 
 
         Button createAppointmentButton = (Button) findViewById(R.id.createappointbutton);
@@ -52,6 +61,13 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         });
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.create_appointment_menu, menu);
+        return true;
+    }
+
 
     private void createDateOnClickListener() {
         DateTreffpunktzeit = (EditText) findViewById(R.id.input_treffpunktZeit);
