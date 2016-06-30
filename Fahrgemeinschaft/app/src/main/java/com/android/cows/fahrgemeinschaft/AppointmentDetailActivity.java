@@ -37,17 +37,17 @@ public class AppointmentDetailActivity extends AppCompatActivity {
         TextView terminZielOrt = (TextView) findViewById(R.id.terminZielOrt);
 
         Bundle bundle = getIntent().getExtras();
-        Calendar startingtimeCal = (Calendar) bundle.get("startingtime");
+       /* Calendar startingtimeCal = (Calendar) bundle.get("startingtime");
         Calendar meetingtimeCal = (Calendar) bundle.get("meetingtime");
 
         SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
         String startingTimeFormated = format1.format( startingtimeCal.getTime()) +" Uhr";
-        String meetingtimeFormated = format1.format( meetingtimeCal.getTime()) +" Uhr";
+        String meetingtimeFormated = format1.format( meetingtimeCal.getTime()) +" Uhr";*/
 
 //        terminName.setText(bundle.getString("name"));
-        terminAbfahrtZeit.setText(startingTimeFormated);
+        terminAbfahrtZeit.setText(bundle.getString("startingtime"));
         terminTreffOrt.setText(bundle.getString("meetingpoint"));
-        terminTreffZeit.setText(meetingtimeFormated);
+        terminTreffZeit.setText(bundle.getString("meetingtime"));
         terminZielOrt.setText(bundle.getString("destination"));
         setTitle(bundle.getString("name"));
     }
