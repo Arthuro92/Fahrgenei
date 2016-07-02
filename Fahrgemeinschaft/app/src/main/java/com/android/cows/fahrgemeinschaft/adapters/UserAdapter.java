@@ -83,15 +83,22 @@ public class UserAdapter extends ArrayAdapter {
         System.out.println("UID " + userInGroup.getUid());
         User user = sqLiteDBHandler.getUser(userInGroup.getUid());
 
-        if(userInGroup.getIsJoined() == 0) {
+        /* if(userInGroup.getIsJoined() == 0) {
             row.setBackgroundResource(R.color.red);
         }
-
+*/
 
         holder.txtTitle.setText(user.getName());
         Log.d("UserAdapter: ","Holdername als "+user.getName()+" gesetzt.");
-        holder.imgIcon.setImageResource(R.drawable.user128);
-        holder.inv_status.setText("Angenommen");
+
+        if(userInGroup.getIsJoined() == 0){
+            holder.imgIcon.setImageResource(R.drawable.user_nicht_angenommen);
+            holder.inv_status.setText("Bestätigung ausstehend");
+        }
+        else {
+            holder.imgIcon.setImageResource(R.drawable.user128);
+            holder.inv_status.setText("Angenommen");
+        }
 
         return row;
     }
