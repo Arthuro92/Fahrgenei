@@ -1,5 +1,6 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -20,7 +21,6 @@ public class GeneralTabsActivity extends AppCompatActivity {
     TabLayout tabLayoutGeneral;
 
     Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,12 @@ public class GeneralTabsActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CreateGroupActivity.class);
             startActivity(intent);
         }
+
+        if (id== R.id.action_search){
+            final Dialog dialog = new Dialog(getApplicationContext());
+            dialog.setTitle("Title...");
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

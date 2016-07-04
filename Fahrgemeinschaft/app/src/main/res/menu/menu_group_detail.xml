@@ -12,7 +12,7 @@
     <item
         android:id="@+id/action_add_person"
         android:orderInCategory="200"
-        android:title="Add Person"
+        android:title="Person hinzufügen"
         android:icon="@drawable/ic_person_add_white_24dp"
         app:showAsAction="ifRoom"
         ></item>
@@ -20,15 +20,15 @@
     <item
         android:id="@+id/action_add_event"
         android:orderInCategory="200"
-        android:title="Add Event"
+        android:title="Termin hinzufügen"
         android:icon="@drawable/ic_event_note_white_24dp"
         app:showAsAction="ifRoom"
         ></item>
 
     <item
-        android:id="@+id/action_add_task"
+        android:id="@+id/action_delete_group"
         android:orderInCategory="200"
-        android:title="Add Task"
+        android:title="Gruppe löschen"
         android:icon="@drawable/ic_assignment_turned_in_white_24dp"
         app:showAsAction="ifRoom"
         ></item>

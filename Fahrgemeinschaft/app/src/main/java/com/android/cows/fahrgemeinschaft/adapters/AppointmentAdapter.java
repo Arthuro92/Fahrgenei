@@ -97,6 +97,7 @@ public class AppointmentAdapter extends ArrayAdapter {
         row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(context, AppointmentDetailActivity.class);
+                intent.putExtra("aid", appointment.getAid());
                 intent.putExtra("name", appointment.getName());
                 intent.putExtra("startingtime", appointment.getAbfahrzeit());
                 intent.putExtra("meetingpoint", appointment.getTreffpunkt());

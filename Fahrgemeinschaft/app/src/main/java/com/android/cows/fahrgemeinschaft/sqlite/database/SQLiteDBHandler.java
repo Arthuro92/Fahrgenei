@@ -18,7 +18,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 121;
+    private static final int DATABASE_VERSION = 123;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -50,6 +50,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String GET_IS_JOINT_2 = " AND uid = ";
     private static final String GET_HIGHEST_ID_1 = "SELECT aid FROM appointments WHERE gid = ";
     private static final String GET_HIGHEST_ID_2 = " ORDER BY aid DESC LIMIT 1 ";
+
+    private static final String DELETE_USER_IN_GROUP1 ="DELETE FROM is_in_group WHERE gid = ";
+    private static final String DELETE_USER_IN_GROUP2 =" AND uid = ";
+
+    private static final String DELETE_GROUP = "DELETE FROM groups WHERE gid =";
+    private static final String DELETE_APPOINTMENT = "DELETE FROM appointments WHERE aid =";
 
 
 
@@ -181,6 +187,40 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return -1;
     }
 
+    public void setIsJoint(String groupId, String userId ,  int isJoined) {
+        Log.i(TAG, "Set isJoined ");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("gid", groupId);
+        cv.put("uid", userId);
+        cv.put("isJoined",isJoined);
+        db.insertWithOnConflict("is_in_group", null, cv,SQLiteDatabase.CONFLICT_REPLACE );
+        db.close();
+    }
+
+    // DELETE USER FROM SQL LITE DATABASE
+    public void deleteUserInGroup(String groupId, String userId){
+        Log.i(TAG, "Delete UserinGroup ");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        //cv.put("gid", groupId);
+        //cv.put("uid", userId);
+        String delete_is_in_group  = DELETE_GROUP + "'" + groupId +"'" ;
+        db.execSQL(delete_is_in_group);
+        //db.delete();
+        db.close();
+    }
+
+    // DELETE USER FROM SQL LITE DATABASE
+    public void deleteAppoinment(int aid){
+        Log.i(TAG, "Delete Appointment ");
+        SQLiteDatabase db = getWritableDatabase();
+        String delete_appoint  = DELETE_APPOINTMENT + "'" + aid +"'" ;
+        db.execSQL(delete_appoint);
+        //db.delete();
+        db.close();
+    }
+
     public ArrayList<de.dataobjects.Groups> getGroups() {
         ArrayList<de.dataobjects.Groups> groupArrayList = new ArrayList<de.dataobjects.Groups>();
         SQLiteDatabase db = getWritableDatabase();
@@ -190,8 +230,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
                 groupArrayList.add(JsonCollection.jsonToGroup(cur.getString(cur.getColumnIndex("JsonInString"))));
                 Log.i(TAG, "getGroups  " + cur.getString(cur.getColumnIndex("JsonInString")));
-                cur.moveToNext();
+
             }
+            cur.moveToNext();
         }
         db.close();
         return groupArrayList;
