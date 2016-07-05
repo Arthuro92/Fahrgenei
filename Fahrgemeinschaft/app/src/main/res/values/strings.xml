@@ -69,4 +69,10 @@
         <item>8</item>
     </string-array>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gruppen_einladung_annehmen">Möchten Sie die Einladung in die Gruppe annehmen?</string>
+    <string name="ja">Ja</string>
+    <string name="nein">Nein</string>
+
 </resources>

@@ -1,6 +1,8 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 public class GroupTabsActivity extends AppCompatActivity {
 
@@ -17,6 +23,7 @@ public class GroupTabsActivity extends AppCompatActivity {
     ViewPager viewPagerGroup;
     TabLayout tabLayoutGroup;
     Toolbar toolbar;
+    private Context context = GlobalAppContext.getAppContext();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,8 @@ public class GroupTabsActivity extends AppCompatActivity {
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -89,6 +98,15 @@ public class GroupTabsActivity extends AppCompatActivity {
         }
         if (id == R.id.action_add_event){
             Intent intent = new Intent(GroupTabsActivity.this, CreateAppointmentActivity.class);
+            startActivity(intent);
+        }
+        if (id ==R.id.action_delete_group){
+            //@TODO Lenni oder David! Bitte vom Server löschen.
+            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+            String gid = prefs.getString("currentgid", "");
+            sqLiteDBHandler.deleteUserInGroup(gid ,prefs.getString("userid", "") );
+            Intent intent = new Intent(GroupTabsActivity.this, GeneralTabsActivity.class);
             startActivity(intent);
         }
         if(id == R.id.action_add_task) {

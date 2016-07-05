@@ -1,7 +1,9 @@
 package com.android.cows.fahrgemeinschaft.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.GroupTabsActivity;
@@ -34,6 +37,7 @@ public class GroupAdapter extends ArrayAdapter {
     private int layoutResourceId;
     ArrayList<Groups> data = new ArrayList<Groups>();
 
+
     private View setGroupView(View groupView, final de.dataobjects.Groups group) {
         TextView textview = (TextView) groupView.findViewById(R.id.groupTextView1);
         textview.setText(group.getName());
@@ -45,7 +49,12 @@ public class GroupAdapter extends ArrayAdapter {
             groupView.setBackgroundResource(R.color.red);
             groupView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    sendInvitationAccept(group);
+
+                        // TODO Auto-generated method stub
+                //        openAlert(v);
+
+
+                    //sendInvitationAccept(group);
                 }
             });
 
@@ -55,6 +64,9 @@ public class GroupAdapter extends ArrayAdapter {
             groupView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
+                       // openAlert(v);
+
+                    /*
                     SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                     prefs.edit().putString("currentgroupname", group.getName()).apply();
                     prefs.edit().putString("currentgroupadminid", group.getAdminid()).apply();
@@ -62,7 +74,7 @@ public class GroupAdapter extends ArrayAdapter {
 
                     Intent intent = new Intent(context, GroupTabsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
+                    context.startActivity(intent);*/
                 }
             });
             groupView.setBackgroundResource(R.color.blue_grey_500);
@@ -88,6 +100,59 @@ public class GroupAdapter extends ArrayAdapter {
         Intent intent = new Intent("updategroupgeneral");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
+
+
+
+
+    private void openAlert(View view, final Groups group) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setTitle("Abfrage");
+
+        alertDialogBuilder.setMessage("Möchten Sie dieser Gruppe beitreten?");
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                sqLiteDBHandler.setIsJoint( group.getGid(), prefs.getString("userid", "") , 1);
+                // go to a new activity of the app
+                dialog.cancel();
+               /* Toast.makeText(getContext(), "You chose a positiv answer",
+                        Toast.LENGTH_LONG).show(); */
+
+                Intent intent = new Intent(context, GroupTabsActivity.class);
+                // SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                prefs.edit().putString("currentgroupname", group.getName()).apply();
+                prefs.edit().putString("currentgroupadminid", group.getAdminid()).apply();
+                prefs.edit().putString("currentgid", group.getGid()).apply();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+ //@Todo Lennart oder David! Bitte auch vom Server den Eintrag "User In Group" löschen.
+                SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                sqLiteDBHandler.deleteUserInGroup(group.getGid(),prefs.getString("userid", "") );
+                sendLocalUpdateBroadcast();
+                // cancel the alert box and put a Toast to the user
+                dialog.cancel();
+                Toast.makeText(getContext(), "Sie haben die Einladung nicht angenommen.",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+        // set neutral button: Exit the app message
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+    }
+
+
     /**
      * Sets the LayoutInflater to the base View to display the item at position
      *
@@ -133,14 +198,39 @@ public class GroupAdapter extends ArrayAdapter {
 
         row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(context, GroupTabsActivity.class);
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                final int isJoined = sqLiteDBHandler.getIsJoint(group.getGid(), prefs.getString("userid", ""));
+
+
+                if(isJoined == 0) {
+                    openAlert(v, group);
+                   // sqLiteDBHandler.setIsJoint( group.getGid(), prefs.getString("userid", "") , 1);
+
+
+                } else if ( isJoined == -1){
+                    Log.i(TAG, "Error in getting IsJoined Value in");
+                } else{
+
+                    Intent intent = new Intent(context, GroupTabsActivity.class);
+                   // SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                    prefs.edit().putString("currentgroupname", group.getName()).apply();
+                    prefs.edit().putString("currentgroupadminid", group.getAdminid()).apply();
+                    prefs.edit().putString("currentgid", group.getGid()).apply();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+
+                }
+
+                /*Intent intent = new Intent(context, GroupTabsActivity.class);
 
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                 prefs.edit().putString("currentgroupname", group.getName()).apply();
                 prefs.edit().putString("currentgroupadminid", group.getAdminid()).apply();
                 prefs.edit().putString("currentgid", group.getGid()).apply();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                context.startActivity(intent);*/
+                //openAlert(v);
 //
             }
         });

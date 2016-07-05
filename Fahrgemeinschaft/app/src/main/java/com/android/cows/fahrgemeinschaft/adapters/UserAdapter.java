@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
@@ -84,14 +85,20 @@ public class UserAdapter extends ArrayAdapter {
         User user = sqLiteDBHandler.getUser(userInGroup.getUid());
 
         if(userInGroup.getIsJoined() == 0) {
-            row.setBackgroundResource(R.color.red);
+            // @TODO  Das Umschalten des Status klappt auch noch nich. Muss eventuell in der Server DB noch was geändert werden.
+            //row.setBackgroundResource(R.color.red);
+            holder.inv_status.setText("Einladung versandt");
+        } else if(userInGroup.getIsJoined() == -1) {
+            Toast.makeText(getContext(), "Fehler. IsJoinend-Value ist falsch gesetzt.",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            holder.inv_status.setText("Angenommen");
         }
 
 
         holder.txtTitle.setText(user.getName());
         Log.d("UserAdapter: ","Holdername als "+user.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.user128);
-        holder.inv_status.setText("Angenommen");
 
         return row;
     }
