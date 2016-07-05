@@ -160,11 +160,11 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + 1,  "10", "10", "10", "10", 1);
+            gapm1 = new Appointment(1, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + 1,  "10", "10", "10", "10");
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
-            gapm1 = new Appointment(id, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + id, "10", "10", "10", "10", 1);
+            gapm1 = new Appointment(id, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + id, "10", "10", "10", "10");
         }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 
@@ -191,7 +191,6 @@ public class CreateAppointmentActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
                 Intent intent2 = new Intent(CreateAppointmentActivity.this, GroupTabsActivity.class);
-                Bundle bundle = getIntent().getExtras();
                 startActivity(intent2);
             }
         };

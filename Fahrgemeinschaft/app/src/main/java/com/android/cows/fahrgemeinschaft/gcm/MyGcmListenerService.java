@@ -16,23 +16,15 @@
 
 package com.android.cows.fahrgemeinschaft.gcm;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.android.cows.fahrgemeinschaft.GcmActivity;
-import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.observer.AppointmentObserver;
 import com.android.cows.fahrgemeinschaft.observer.ChatObserver;
 import com.android.cows.fahrgemeinschaft.observer.GroupObserver;
 import com.android.cows.fahrgemeinschaft.observer.MessageSubject;
 import com.android.cows.fahrgemeinschaft.observer.SecurityObserver;
+import com.android.cows.fahrgemeinschaft.observer.TaskObserver;
 import com.android.cows.fahrgemeinschaft.observer.UserObserver;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -42,6 +34,7 @@ public class MyGcmListenerService extends GcmListenerService {
     private static SecurityObserver securityObserver = new SecurityObserver(ms);
     private static UserObserver uo = new UserObserver(ms);
     private static ChatObserver co = new ChatObserver(ms);
+    private static TaskObserver taskObserver = new TaskObserver(ms);
     private static AppointmentObserver ao = new AppointmentObserver(ms);
     private static GroupObserver go = new GroupObserver(ms);
 

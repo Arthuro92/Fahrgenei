@@ -25,6 +25,8 @@ public class Appointment implements Serializable {
     @Column
     private String gid;
 
+
+
     @Column
     private String name;
 
@@ -40,10 +42,7 @@ public class Appointment implements Serializable {
     @Column
     private String zielort;
 
-    @Column
-    private int isParticipant;
-
-    public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
+    public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort) {
         this.aid = aid;
         this.gid = gid;
         this.name = name;
@@ -51,7 +50,6 @@ public class Appointment implements Serializable {
         this.treffpunkt_zeit = treffpunkt_zeit;
         this.treffpunkt = treffpunkt;
         this.zielort = zielort;
-        this.isParticipant = isParticipant;
     }
 
     public Appointment() {
@@ -63,14 +61,6 @@ public class Appointment implements Serializable {
 
     public void setZielort(String zielort) {
         this.zielort = zielort;
-    }
-
-    public int getIsParticipant() {
-        return isParticipant;
-    }
-
-    public void setIsParticipant(int isParticipant) {
-        this.isParticipant = isParticipant;
     }
 
     public String getAbfahrzeit() {

@@ -28,6 +28,10 @@ public class JsonCollection {
         return new Gson().fromJson(appointment, Appointment.class);
     }
 
+    public static Task jsonToTask(String task) {
+        return new Gson().fromJson(task, Task.class);
+    }
+
     public static String[] jsonToStringArray(String jsonInString) {
         return new Gson().fromJson(jsonInString,String[].class);
     }

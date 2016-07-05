@@ -17,6 +17,7 @@ import de.dataobjects.Appointment;
 import de.dataobjects.Groups;
 import de.dataobjects.JsonCollection;
 import de.dataobjects.User;
+import de.dataobjects.UserInAppointment;
 import de.dataobjects.UserInGroup;
 
 /**
@@ -61,6 +62,7 @@ public class GroupObserver implements MessageObserver {
                 case "groupinformation" :
                     Log.i(TAG, "Group Information");
                     addGroupInformations();
+                    break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
                         Log.i(TAG, "ERROR Group");
@@ -97,7 +99,7 @@ public class GroupObserver implements MessageObserver {
         sqLiteDBHandler.joinGroup(grp.getGid(),  prefs.getString("userid", ""),0);
 
         Log.i(TAG, "ADDING GROUP" + grp.getName());
-        updateLocalGroupTable();
+        sendLocalUpdateGroupsBroadcast();
     }
 
     public void addGroupInformations() {
@@ -109,11 +111,13 @@ public class GroupObserver implements MessageObserver {
     public void updateLocalAppointmentTable() {
         Log.i(TAG, "update Local DB, Insert New Appointments");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
         ArrayList<Appointment> appointmentArrayList = JsonCollection.jsonToAppointmentList(stringArray[2]);
 
         for(Appointment appointment : appointmentArrayList) {
-            appointment.setIsParticipant(0);
+            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), prefs.getString("userid",""),0);
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
             sqLiteDBHandler.addAppointment(appointment, 0);
         }
     }

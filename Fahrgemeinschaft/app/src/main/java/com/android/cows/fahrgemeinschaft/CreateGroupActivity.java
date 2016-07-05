@@ -61,8 +61,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                             1,
                             prefs.getString("userid", ""),
                             prefs.getString("username", ""),
-                            groupname.getText().toString() + prefs.getString("userid", ""),
-                            1);
+                            groupname.getText().toString() + prefs.getString("userid", ""));
 
                     MyGcmSend gcmsend = new MyGcmSend();
 

@@ -10,7 +10,9 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import de.dataobjects.JsonCollection;
+import de.dataobjects.Task;
 import de.dataobjects.User;
+import de.dataobjects.UserInAppointment;
 import de.dataobjects.UserInGroup;
 
 /**
@@ -18,14 +20,15 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 122;
+    private static final int DATABASE_VERSION = 125;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
-    private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER , gid VARCHAR(255), isParticipant INTEGER, JsonInString VARCHAR(400), PRIMARY KEY(aid, gid), FOREIGN KEY(gid) REFERENCES groups(gid));";
+    private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER , gid VARCHAR(255), JsonInString VARCHAR(400), PRIMARY KEY(aid, gid), FOREIGN KEY(gid) REFERENCES groups(gid));";
     private static final String TABLE_GROUPS = "CREATE TABLE groups(gid VARCHAR(255) PRIMARY KEY, isJoined INTEGER, JsonInString VARCHAR(400));";
     private static final String TABLE_IS_IN_APPOINTMENT =
                     "CREATE TABLE is_in_appointment (aid INTEGER, gid VARCHAR(255), uid VARCHAR(255), isParticipant INTEGER, " +
+                    "JsonInString VARCHAR(400), " +
                     "FOREIGN KEY(aid) REFERENCES appointments(aid), " +
                     "FOREIGN KEY(gid) REFERENCES appointments(gid), " +
                     "FOREIGN KEY(uid) REFERENCES user(uid), " +
@@ -35,6 +38,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                     "FOREIGN KEY(gid) REFERENCES groups(gid) " +
                     "PRIMARY KEY(uid, gid));" ;
     private static final String TABLE_USERS = "CREATE TABLE user(uid VARCHAR(255) PRIMARY KEY, JsonInString VARCHAR(400));";
+    private static final String TABLE_TASK = "CREATE TABLE task(taskid VARCHAR(255), aid INTEGER, gid VARCHAR(255), taskname VARCHAR(255), taskdescription VARCHAR(400), responsible VARCHAR(255))";
     /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
 
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
@@ -50,8 +54,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String GET_IS_JOINT_2 = " AND uid = ";
     private static final String GET_HIGHEST_ID_1 = "SELECT aid FROM appointments WHERE gid = ";
     private static final String GET_HIGHEST_ID_2 = " ORDER BY aid DESC LIMIT 1 ";
-
-
+    private static final String GET_TASKS_1 = "SELECT * FROM task WHERE aid = ";
+    private static final String GET_TASKS_2 = "AND gid = ";
 
 
 
@@ -146,7 +150,6 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     }
 
-
     public ArrayList<UserInGroup> getIsInGroupWithGroupId(String gid) {
         ArrayList<UserInGroup> isInGroupList = new ArrayList<UserInGroup>();
         SQLiteDatabase db = getWritableDatabase();
@@ -224,27 +227,19 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return null;
     }
 
-    public SQLiteDBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-    }
-
-
-    public void addAppointment(de.dataobjects.Appointment appointment, int isParticipant) {
+    public void addAppointment(de.dataobjects.Appointment appointment) {
         if (getAppointment(appointment.getAid(), appointment.getGid()) == null) {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues cv = new ContentValues();
             cv.put("JsonInString", appointment.getJsonInString());
             cv.put("gid", appointment.getGid());
             cv.put("aid", appointment.getAid());
-            cv.put("isParticipant", isParticipant);
             db.insertWithOnConflict("appointments", null, cv, SQLiteDatabase.CONFLICT_IGNORE);
             db.close();
         } else {
             Log.i(TAG, "Appointment already in Database");
         }
-
     }
-
 
     public ArrayList<de.dataobjects.Appointment> getAppointments(String gid) {
         ArrayList<de.dataobjects.Appointment> appointmentArrayList = new ArrayList<de.dataobjects.Appointment>();
@@ -288,6 +283,50 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return 0;
     }
 
+    public void addTask(Task task) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("taskid", task.getTaskId());
+        cv.put("aid", task.getAid());
+        cv.put("gid", task.getGid());
+        cv.put("taskname", task.getTaskName());
+        cv.put("taskdescription", task.getTaskdescription());
+        cv.put("responsible", task.getResponsible());
+        db.insertWithOnConflict("task", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+        db.close();
+    }
+
+    public ArrayList<Task> getTasks(String aid, String gid) {
+        ArrayList<Task> taskArrayList = new ArrayList<Task>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_TASKS_1 + "'" + aid + "'" + GET_TASKS_2 + "'" + gid + "'", null);
+        cur.moveToFirst();
+        while (!cur.isAfterLast()) {
+            if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+                taskArrayList.add(JsonCollection.jsonToTask(cur.getString(cur.getColumnIndex("JsonInString"))));
+                Log.i(TAG, "getTasks  " + cur.getString(cur.getColumnIndex("JsonInString")));
+                cur.moveToNext();
+            }
+        }
+        db.close();
+        return taskArrayList;
+    }
+
+    public void addIsInAppointment(UserInAppointment userInAppointment) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("aid", userInAppointment.getAid());
+        cv.put("gid", userInAppointment.getGid());
+        cv.put("uid", userInAppointment.getUid());
+        cv.put("JsonInString", userInAppointment.getJsonInString());
+        cv.put("isParticipant", userInAppointment.getIsParticipant());
+        db.insertWithOnConflict("is_in_appointment", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+        db.close();
+    }
+
+    public SQLiteDBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
+        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -297,6 +336,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.execSQL(TABLE_IS_IN_GROUP);
         db.execSQL(TABLE_USERS);
         db.execSQL(TABLE_IS_IN_APPOINTMENT);
+        db.execSQL(TABLE_TASK);
 
     }
 
@@ -308,8 +348,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS is_in_group;");
         db.execSQL("DROP TABLE IF EXISTS user;");
         db.execSQL("DROP TABLE IF EXISTS is_in_appointment;");
+        db.execSQL("DROP TABLE IF EXISTS task;");
         onCreate(db);
     }
+
 
 }
 

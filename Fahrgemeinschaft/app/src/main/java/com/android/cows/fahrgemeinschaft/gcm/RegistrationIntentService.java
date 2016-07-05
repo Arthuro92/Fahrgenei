@@ -26,7 +26,6 @@ import android.util.Log;
 
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-import com.android.cows.fahrgemeinschaft.cryptography.AsymmetricEncryptionClient;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -97,19 +96,17 @@ public class RegistrationIntentService extends IntentService {
         gcmsender.send("security", "public_key", "Request Key", this);
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        String id = prefs.getString("userid", "");
-        String name = prefs.getString("username", "");
-        String email = prefs.getString("useremail", "");
         prefs.edit().putString("usertoken", token).apply();
 
-        User user = new User(id, token, name, email);
-        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
-        sqLiteDBHandler.addUser(user);
-        gcmsender.send("user", "registration", user, this);
+        if(prefs.getBoolean("userprofile", false)) {
+            Log.i(TAG, "sending new Token");
+            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+            User user = sqLiteDBHandler.getUser(prefs.getString("userid",""));
+            user.setToken(token);
+            sqLiteDBHandler.addUser(user);
+            gcmsender.send("user", "registration", user, this);
+        }
     }
-
-
-
 
     /**
      * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.

@@ -2,6 +2,7 @@ package com.android.cows.fahrgemeinschaft;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import de.dataobjects.User;
 
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -130,6 +135,25 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
                 break;
         }
 
+    }
+
+    public void saveSettings(View view) {
+        //todo check if user filled the information fields
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        MyGcmSend gcmsender = new MyGcmSend();
+        String id = prefs.getString("userid", "");
+        String name = prefs.getString("username", "");
+        String email = prefs.getString("useremail", "");
+        String token = prefs.getString("usertoken", "");
+
+
+        User user = new User(id, token, name, email,true, 3);
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(SettingsActivity.this, null);
+        sqLiteDBHandler.addUser(user);
+        gcmsender.send("user", "registration", user, SettingsActivity.this);
+        prefs.edit().putBoolean("userprofile",true).apply();
+        Intent intent = new Intent(this, GeneralTabsActivity.class);
+        startActivity(intent);
     }
 }
 

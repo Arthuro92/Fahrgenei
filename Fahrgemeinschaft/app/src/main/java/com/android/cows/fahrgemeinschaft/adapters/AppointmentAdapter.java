@@ -69,8 +69,7 @@ public class AppointmentAdapter extends ArrayAdapter {
         View row = convertView;
         AppointmentHolder holder = null;
 
-        if(row == null)
-        {
+        if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
@@ -80,9 +79,7 @@ public class AppointmentAdapter extends ArrayAdapter {
             holder.inv_status = (TextView)row.findViewById(R.id.inv_status);
 
             row.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (AppointmentHolder) row.getTag();
         }
 

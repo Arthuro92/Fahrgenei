@@ -66,12 +66,22 @@ public class GcmActivity extends AppCompatActivity {
                 boolean sentToken = sharedPreferences.getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
 
                 if (sentToken) {
+
                     mInformationTextView.setText(getString(R.string.gcm_send_message));
-                    Intent intent2 = new Intent(GcmActivity.this, GeneralTabsActivity.class);
-                    startActivity(intent2);
 
+
+                    SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+
+                    if(prefs.getBoolean("userprofile", false)) {
+                        Log.i(TAG, "Userprofile in Database");
+                        Intent intent2 = new Intent(GcmActivity.this, GeneralTabsActivity.class);
+                        startActivity(intent2);
+                    } else {
+                        Log.i(TAG, "Userprofile not in Database");
+                        Intent intent3 = new Intent(GcmActivity.this, SettingsActivity.class);
+                        startActivity(intent3);
+                    }
                 } else {
-
                     Button nextbtn = (Button) findViewById(R.id.next1);
                     nextbtn.setVisibility(View.VISIBLE);
                     mInformationTextView.setText(getString(R.string.token_error_message));

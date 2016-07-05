@@ -37,6 +37,7 @@ import server.observer.AppointmentObserver;
 import server.observer.ChatObserver;
 import server.observer.GroupObserver;
 import server.observer.MessageSubject;
+import server.observer.TaskObserver;
 import server.observer.UserObserver;
 import observer.SecurityObserver;
 
@@ -53,6 +54,7 @@ public class SmackCcsClient<T> {
     private ChatObserver co = new ChatObserver(ms);
     private AppointmentObserver ao = new AppointmentObserver(ms);
     private SecurityObserver securityObserver = new SecurityObserver(ms);
+    private TaskObserver taskObserver = new TaskObserver(ms);
 
 
     private static final Logger logger = Logger.getLogger("SmackCcsClient");
@@ -184,8 +186,11 @@ public class SmackCcsClient<T> {
     protected void handleNackReceipt(Map<String, Object> jsonObject) {
         String messageId = (String) jsonObject.get("message_id");
         String from = (String) jsonObject.get("from");
+        String error =  (String) jsonObject.get("error");
+        String errordescription = (String) jsonObject.get("error_description");
+
         logger.log(Level.INFO, "handleNackReceipt() from: " + from + ", messageId: " + messageId + " Error: "
-                + jsonObject.get("error") + " Error Description: " + jsonObject.get("error_description"));
+                + error + " Error Description: " + errordescription);
     }
 
     protected void handleControlMessage(Map<String, Object> jsonObject) {

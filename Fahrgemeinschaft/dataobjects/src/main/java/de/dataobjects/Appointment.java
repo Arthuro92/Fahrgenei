@@ -1,31 +1,29 @@
 package de.dataobjects;
 
-
 import com.google.gson.Gson;
+
+import java.io.Serializable;
 
 /**
  * Created by Arthur on 25.05.2016.
  */
-public class Appointment {
+public class Appointment implements Serializable {
 
     private int aid;
+
     private String gid;
+
     private String name;
+
     private String abfahrzeit;
+
     private String treffpunkt_zeit;
+
     private String treffpunkt;
+
     private String zielort;
-    private int isParticipant;
 
-    public String getZielort() {
-        return zielort;
-    }
-
-    public void setZielort(String zielort) {
-        this.zielort = zielort;
-    }
-
-    public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort, int isParticipant) {
+    public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort) {
         this.aid = aid;
         this.gid = gid;
         this.name = name;
@@ -33,18 +31,17 @@ public class Appointment {
         this.treffpunkt_zeit = treffpunkt_zeit;
         this.treffpunkt = treffpunkt;
         this.zielort = zielort;
-        this.isParticipant = isParticipant;
     }
 
     public Appointment() {
     }
 
-    public int getIsParticipant() {
-        return isParticipant;
+    public String getZielort() {
+        return zielort;
     }
 
-    public void setIsParticipant(int isParticipant) {
-        this.isParticipant = isParticipant;
+    public void setZielort(String zielort) {
+        this.zielort = zielort;
     }
 
     public String getAbfahrzeit() {

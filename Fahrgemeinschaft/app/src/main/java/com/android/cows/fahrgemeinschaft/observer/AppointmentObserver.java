@@ -63,7 +63,7 @@ public class AppointmentObserver implements MessageObserver {
 
     private void updateLocalDatabase(int isParticipant) {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        sqLiteDBHandler.addAppointment(jsonToAppointment(this.payload.getString("content")), isParticipant);
+        sqLiteDBHandler.addAppointment(jsonToAppointment(this.payload.getString("content")));
     }
 
     private Appointment jsonToAppointment(String jsonInString) {
@@ -76,9 +76,9 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private void errorAppointment(String error) {
-        Intent errorappointment = new Intent("ERRORAppointment");
-        errorappointment.putExtra("error", error);
-        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
+        Intent errorAppointment = new Intent("ERRORAppointment");
+        errorAppointment.putExtra("error", error);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(errorAppointment);
     }
 
     public void singleAppointment() {

@@ -80,20 +80,20 @@ public class TaskAdapter extends ArrayAdapter {
         }
 
         final Task task =  data.get(position);
-        holder.nameFeld.setText(task.getAufgabenName());
-        Log.d("UserAdapter: ","Holdername als "+task.getAufgabenName()+" gesetzt.");
+        holder.nameFeld.setText(task.getTaskName());
+        Log.d("UserAdapter: ","Holdername als "+task.getTaskName()+" gesetzt.");
         // holder.imgIcon.setImageResource(R.drawable.user128);
         // holder.inv_status.setText("Angenommen");
-        holder.beschreibungsFeld.setText(task.getAufgabenBeschreibung());
-        holder.bearbeiterFeld.setText("Bearbeiter: " + task.getBearbeiter());
+        holder.beschreibungsFeld.setText(task.getTaskdescription());
+        holder.bearbeiterFeld.setText("Bearbeiter: " + task.getResponsible());
 
         row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.i(TAG, task.getAufgabenName() );
+                Log.i(TAG, task.getTaskName() );
                 Intent intent = new Intent(context, TaskDetailActivity.class);
-                intent.putExtra("taskname", task.getAufgabenName());
-                intent.putExtra("taskdescription", task.getAufgabenBeschreibung());
-                intent.putExtra("taskincharge", task.getBearbeiter());
+                intent.putExtra("taskname", task.getTaskName());
+                intent.putExtra("taskdescription", task.getTaskdescription());
+                intent.putExtra("taskincharge", task.getResponsible());
                 //based on item add info to intent
                 context.startActivity(intent);
             };

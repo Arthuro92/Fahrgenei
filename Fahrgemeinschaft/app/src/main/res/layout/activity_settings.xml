@@ -75,37 +75,8 @@
                 android:layout_weight="1" />
     </LinearLayout>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="349dp"
-                android:layout_height="64dp"
-                android:weightSum="1"
-                android:background="@color/white">
 
-                <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Besitzen Sie einen Führerschein?"
-                android:id="@+id/fuehrerscheinBesitz"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical" />
-
-
-                <Switch
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Switch"
-                    android:id="@+id/fuehrerscheinSwitch"
-                    android:checked="true"
-                    android:layout_alignRight="@+id/fuehrerscheinBesitz"
-                    />
-
-
-        </LinearLayout>
-
-
-    <LinearLayout
+        <LinearLayout
         android:orientation="horizontal"
         android:layout_width="349dp"
         android:layout_height="64dp"
@@ -116,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/autoBesitz"
-            android:text="Besitzen Sie ein eigenes Auto?"
+            android:text="Können Sie Fahren?"
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_gravity="center_vertical" />
@@ -127,7 +98,7 @@
             android:layout_height="wrap_content"
             android:text="New Switch"
             android:id="@+id/autoSwitch"
-            android:checked="true"
+            android:checked="false"
             android:layout_alignRight="@+id/autoBesitz"/>
 
     </LinearLayout>
@@ -158,31 +129,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="349dp"
-        android:layout_height="64dp"
-        android:weightSum="1"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/drivingmembers"
-            android:text="Fahren Sie alleine??"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical" />
-
-
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Switch"
-            android:id="@+id/drivingmembersSwitch"
-            android:checked="true"
-            android:layout_alignRight="@+id/drivingmembers"/>
-    </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="242dp"
@@ -219,7 +165,8 @@
             android:id="@+id/saveSettings"
             android:layout_below="@+id/disconnectButtonSettings"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:onClick="saveSettings" />
     </LinearLayout>
 
     </LinearLayout>

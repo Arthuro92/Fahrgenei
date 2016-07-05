@@ -85,7 +85,7 @@ public class GroupAdapter extends ArrayAdapter {
         sendLocalUpdateBroadcast();
     }
     private void sendLocalUpdateBroadcast() {
-        Intent intent = new Intent("update");
+        Intent intent = new Intent("updategroupgeneral");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
     /**

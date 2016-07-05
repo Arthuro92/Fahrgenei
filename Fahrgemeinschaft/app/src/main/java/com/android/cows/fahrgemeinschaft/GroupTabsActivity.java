@@ -83,12 +83,16 @@ public class GroupTabsActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        if (id ==R.id.action_add_person){
+        if (id == R.id.action_add_person){
             Intent intent = new Intent(GroupTabsActivity.this, InviteUser.class);
             startActivity(intent);
         }
-        if (id ==R.id.action_add_event){
+        if (id == R.id.action_add_event){
             Intent intent = new Intent(GroupTabsActivity.this, CreateAppointmentActivity.class);
+            startActivity(intent);
+        }
+        if(id == R.id.action_add_task) {
+            Intent intent = new Intent(GroupTabsActivity.this, CreateTaskActivity.class);
             startActivity(intent);
         }
 

@@ -11,8 +11,7 @@ import java.util.List;
  * Created by Lennart on 18.06.2016.
  */
 public class JsonCollection {
-    public static Groups jsonToGroup(String jsonInString) {
-        System.out.println("JSONINSTRING " + jsonInString);
+    public static Groups jsonToGroup(String jsonInString) {;
         return new Gson().fromJson(jsonInString, Groups.class);
     }
 
@@ -53,9 +52,14 @@ public class JsonCollection {
         return new Gson().fromJson(appointmentList,new TypeToken<List<Appointment>>() {}.getType());
     }
 
+    public static Task jsonToTask(String task) {
+     return new Gson().fromJson(task, Task.class);
+    }
+
     public static String objectToJson(Object object) {
         return new Gson().toJson(object);
     }
+
 
 }
 

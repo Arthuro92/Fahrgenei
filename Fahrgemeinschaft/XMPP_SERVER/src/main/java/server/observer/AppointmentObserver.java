@@ -47,12 +47,14 @@ public class AppointmentObserver extends RepositorieConnector implements Message
                         logger.log(Level.INFO, "In insertappointment");
                         createAppointment();
                         break;
+
                     default:
                         break;
                 }
             }
         }
     }
+
 
     private boolean createAppointment() {
         try {
@@ -76,7 +78,6 @@ public class AppointmentObserver extends RepositorieConnector implements Message
         try {
             Appointment   appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
             smackclient.sendDownstreamMessage("appointment", "appointmentinsertsuccess", (String) jsonObject.get("from"),appointment);
-            appointment.setIsParticipant(0);
             smackclient.sendDownstreamMessage("appointment", "newappointment", "/topics/" + appointment.getGid(), appointment);
             return true;
         } catch (SmackException.NotConnectedException e) {

@@ -16,14 +16,36 @@ public class User {
 
     private String email;
 
+    private boolean driver;
+
+    private int freeSeats;
+
     public User() {
     }
 
-    public User(String id, String token, String name, String email) {
+    public User(String id, String token, String name, String email, boolean driver, int freeSeats) {
         this.id = id;
         this.token = token;
         this.name = name;
         this.email = email;
+        this.driver = driver;
+        this.freeSeats = freeSeats;
+    }
+
+    public boolean isDriver() {
+        return driver;
+    }
+
+    public void setDriver(boolean driver) {
+        this.driver = driver;
+    }
+
+    public int getFreeSeats() {
+        return freeSeats;
+    }
+
+    public void setFreeSeats(int freeSeats) {
+        this.freeSeats = freeSeats;
     }
 
     public String getId() {
