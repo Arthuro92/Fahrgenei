@@ -118,7 +118,7 @@ public class GroupObserver implements MessageObserver {
         for(Appointment appointment : appointmentArrayList) {
             UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), prefs.getString("userid",""),0);
             sqLiteDBHandler.addIsInAppointment(userInAppointment);
-            sqLiteDBHandler.addAppointment(appointment, 0);
+            sqLiteDBHandler.addAppointment(appointment);
         }
     }
 
