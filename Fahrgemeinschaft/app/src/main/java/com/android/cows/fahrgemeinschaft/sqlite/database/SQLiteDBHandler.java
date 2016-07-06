@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import de.dataobjects.Appointment;
 import de.dataobjects.JsonCollection;
 import de.dataobjects.Task;
 import de.dataobjects.User;
@@ -56,6 +57,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String GET_HIGHEST_ID_2 = " ORDER BY aid DESC LIMIT 1 ";
     private static final String GET_TASKS_1 = "SELECT * FROM task WHERE aid = ";
     private static final String GET_TASKS_2 = "AND gid = ";
+
+
 
     private static final String DELETE_USER_IN_GROUP1 ="DELETE FROM is_in_group WHERE gid = ";
     private static final String DELETE_USER_IN_GROUP2 =" AND uid = ";
@@ -278,7 +281,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             cv.put("JsonInString", appointment.getJsonInString());
             cv.put("gid", appointment.getGid());
             cv.put("aid", appointment.getAid());
-            db.insertWithOnConflict("appointments", null, cv, SQLiteDatabase.CONFLICT_IGNORE);
+            db.insertWithOnConflict("appointments", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
             db.close();
         } else {
             Log.i(TAG, "Appointment already in Database");
@@ -369,6 +372,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.insertWithOnConflict("is_in_appointment", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
+
+
 
     public SQLiteDBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);

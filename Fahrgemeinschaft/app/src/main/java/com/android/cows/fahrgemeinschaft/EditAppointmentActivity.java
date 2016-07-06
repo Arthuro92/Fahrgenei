@@ -2,12 +2,18 @@ package com.android.cows.fahrgemeinschaft;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+
+import de.dataobjects.Appointment;
 
 public class EditAppointmentActivity extends AppCompatActivity {
     private static final String TAG = "EditAppointmentActivity";
@@ -46,6 +52,13 @@ public class EditAppointmentActivity extends AppCompatActivity {
         savaData.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //@TODO SQLITE DB und SERVER DB MUESSEN DEN EINTRAG FÜR DEN TERMIN ÄNDERN
+
+                MyGcmSend gcmsend = new MyGcmSend();
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                Appointment gapm1 = new Appointment(aid, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + aid, terminAbfahrtZeit.getText().toString(), terminTreffZeit.getText().toString(), terminZielOrt.getText().toString(), terminTreffOrt.getText().toString());
+
+
+
                 Intent intent = new Intent(context, AppointmentDetailActivity.class);
                 Log.i("Taskdaten",aid +" "+terminName.getText()+" "+terminAbfahrtZeit.getText()+" "+terminTreffOrt.getText());
                 intent.putExtra("aid", aid);
@@ -54,6 +67,9 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 intent.putExtra("meetingpoint", terminTreffOrt.getText().toString());
                 intent.putExtra("meetingtime", terminTreffZeit.getText().toString());
                 intent.putExtra("destination", terminZielOrt.getText().toString());
+                gcmsend.send("appointment", "insertappointment", gapm1, context);
+
+
                 startActivity(intent);
             }
         });
