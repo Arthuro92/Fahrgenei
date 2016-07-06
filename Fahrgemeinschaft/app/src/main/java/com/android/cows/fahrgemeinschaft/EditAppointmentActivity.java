@@ -46,7 +46,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
         savaData.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //@TODO SQLITE DB und SERVER DB MUESSEN DEN EINTRAG FÜR DEN TERMIN ÄNDERN
-                Intent intent = new Intent(context, AppointmentDetailActivity.class);
+                Intent intent = new Intent(context, AppointmentTabsActivity.class);
                 Log.i("Taskdaten",aid +" "+terminName.getText()+" "+terminAbfahrtZeit.getText()+" "+terminTreffOrt.getText());
                 intent.putExtra("aid", aid);
                 intent.putExtra("name", terminName.getText().toString()  );

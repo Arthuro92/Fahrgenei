@@ -79,6 +79,7 @@
         <activity android:name=".AppointmentDetailActivity" />
         <activity android:name=".GeneralTabsActivity" />
         <activity android:name=".GroupTabsActivity" />
+        <activity android:name=".AppointmentTabsActivity" />
         <!--
         evtl raus  <activity android:name=".FragmentGruppeActivity"/>
         <activity android:name=".FragmentTermineActivity"/>
@@ -87,7 +88,8 @@
         <activity android:name=".InviteUser" />
         <activity android:name=".CreateAppointmentActivity" />
         <activity android:name=".CreateTaskActivity" />
-        <activity android:name=".EditAppointmentActivity"></activity>
+        <activity android:name=".EditAppointmentActivity" />
+        <activity android:name=".EditTaskActivity"></activity>
     </application>
 
 </manifest>
