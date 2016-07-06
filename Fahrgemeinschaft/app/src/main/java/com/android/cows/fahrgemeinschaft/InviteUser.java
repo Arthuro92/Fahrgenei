@@ -52,7 +52,12 @@ public class InviteUser extends AppCompatActivity {
             MyGcmSend gcmSend = new MyGcmSend();
 
             String[] stringarray = new String[3];
-            stringarray[0] = editText.getText().toString();
+
+            String email = editText.getText().toString();
+            if(!email.contains("@gmail.com")) {
+                email += "@gmail.com";
+            }
+            stringarray[0] = email;
 
             SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             String gid = prefs.getString("currentgid", "");
