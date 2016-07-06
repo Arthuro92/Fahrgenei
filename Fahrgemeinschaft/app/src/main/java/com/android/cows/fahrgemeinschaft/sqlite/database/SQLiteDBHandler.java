@@ -275,7 +275,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
     public void addAppointment(de.dataobjects.Appointment appointment) {
-        if (getAppointment(appointment.getAid(), appointment.getGid()) == null) {
+
             SQLiteDatabase db = getWritableDatabase();
             ContentValues cv = new ContentValues();
             cv.put("JsonInString", appointment.getJsonInString());
@@ -283,9 +283,6 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             cv.put("aid", appointment.getAid());
             db.insertWithOnConflict("appointments", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
             db.close();
-        } else {
-            Log.i(TAG, "Appointment already in Database");
-        }
 
     }
 
