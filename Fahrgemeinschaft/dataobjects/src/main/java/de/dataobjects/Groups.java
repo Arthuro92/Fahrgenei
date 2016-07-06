@@ -2,12 +2,12 @@ package de.dataobjects;
 
 import com.google.gson.Gson;
 
+
 /**
  * Created by Lennart on 09.05.2016.
  */
 
 public class Groups {
-
 
     private String gid;
 

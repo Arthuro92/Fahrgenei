@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class JsonCollection {
     public static Groups jsonToGroup(String jsonInString) {
+        System.out.println("JSONINSTRING " + jsonInString);
         return new Gson().fromJson(jsonInString, Groups.class);
     }
 

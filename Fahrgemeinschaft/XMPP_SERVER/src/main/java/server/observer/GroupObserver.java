@@ -63,12 +63,37 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         UserInGroup userInGroup = new UserInGroup(this.payload.get("extra1"), this.payload.get("extra0"), 1);
         userInGroupRepository.save(userInGroup);
-
+            sendGroupInformation();
             smackclient.sendDownstreamMessage("user", "userjoinedgroup", "/topics/" + this.payload.get("extra0"), userInGroup );
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
             logger.log(Level.INFO, "Error updating UserinGroup in invitationaccepted");
+        }
+    }
+
+    private void sendGroupInformation() {
+        try {
+            Groups grp = JsonCollection.jsonToGroup(this.payload.get("extra2"));
+            SmackCcsClient smackclient = SmackCcsClient.getInstance();
+
+            ArrayList<UserInGroup> userInGroupList = userInGroupRepository.findByGid(grp.getGid());
+            ArrayList<User> userList = new ArrayList<>();
+            for (UserInGroup userInGroup : userInGroupList) {
+                userList.add(userRepository.findOne(userInGroup.getUid()));
+            }
+
+            ArrayList<Appointment> appointmentArrayList = appointmentRepository.findByGid(grp.getGid());
+
+            String[] stringarray = new String[3];
+            stringarray[0] = JsonCollection.objectToJson(userList);
+            stringarray[1] = JsonCollection.objectToJson(userInGroupList);
+            stringarray[2] = JsonCollection.objectToJson(appointmentArrayList);
+            smackclient.sendDownstreamMessage("group", "groupinformation", (String) jsonObject.get("from"), stringarray);
+        } catch (NullPointerException e) {
+            logger.log(Level.INFO, "Error sending Group Information");
+        } catch (SmackException.NotConnectedException e) {
+            logger.log(Level.INFO, "Not Connected Error SmackClient");
         }
     }
 
@@ -140,26 +165,13 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
     }
 
 
+
     private boolean sendInvitation(String token) {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
             Groups grp = JsonCollection.jsonToGroup(this.payload.get("extra2"));
-
-            ArrayList<UserInGroup> userInGroupList = userInGroupRepository.findByGid(grp.getGid());
-            ArrayList<User> userList = new ArrayList<>();
-            for(UserInGroup userInGroup : userInGroupList) {
-                userList.add(userRepository.findOne(userInGroup.getUid()));
-            }
-
-            ArrayList<Appointment> appointmentArrayList = appointmentRepository.findByGid(grp.getGid());
-
-            String[] stringarray = new String[4];
-            stringarray[0] = grp.getJsonInString();
-            stringarray[1] = JsonCollection.objectToJson(userList);
-            stringarray[2] = JsonCollection.objectToJson(userInGroupList);
-            stringarray[3] = JsonCollection.objectToJson(appointmentArrayList);
-
-            smackclient.sendDownstreamMessage("group", "groupinvitation", token, stringarray);
+            System.out.println(grp.getJsonInString());
+            smackclient.sendDownstreamMessage("group", "groupinvitation", token, grp);
             return true;
         } catch (SmackException.NotConnectedException e) {
             logger.log(Level.INFO, "Smack Not Connected Exception");
