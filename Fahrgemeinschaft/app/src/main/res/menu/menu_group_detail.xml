@@ -5,13 +5,13 @@
     tools:context=".MainActivity">
     <item
         android:id="@+id/leave_group"
-        android:orderInCategory="100"
+        android:orderInCategory="1000"
         android:title="Aus der Gruppe austreten"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_add_person"
-        android:orderInCategory="200"
+        android:orderInCategory="100"
         android:title="Person hinzufügen"
         android:icon="@drawable/ic_person_add_white_24dp"
         app:showAsAction="ifRoom"
@@ -27,7 +27,7 @@
 
     <item
         android:id="@+id/action_delete_group"
-        android:orderInCategory="200"
+        android:orderInCategory="400"
         android:title="Gruppe löschen"
         android:icon="@drawable/ic_assignment_turned_in_white_24dp"
         app:showAsAction="ifRoom"
@@ -35,7 +35,7 @@
 
     <item
         android:id="@+id/action_add_task"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         android:title="Aufgabe hinzufügen"
         android:icon="@drawable/ic_assignment_turned_in_white_24dp"
         app:showAsAction="ifRoom"

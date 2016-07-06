@@ -86,7 +86,8 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".InviteUser" />
         <activity android:name=".CreateAppointmentActivity" />
-        <activity android:name=".CreateTaskActivity"></activity>
+        <activity android:name=".CreateTaskActivity" />
+        <activity android:name=".EditAppointmentActivity"></activity>
     </application>
 
 </manifest>
