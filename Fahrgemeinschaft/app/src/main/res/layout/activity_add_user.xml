@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <ScrollView
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 android:fitsSystemWindows="true"
+android:background="@color/BackgroundLightGrey"
 tools:context=".InviteUser">
 
-
-<LinearLayout
-    android:orientation="vertical"
+    <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="56dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/inviteEmail"
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        ></include>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords"
-            android:hint="Email zum Einladen eingeben" />
-    </android.support.design.widget.TextInputLayout>
+            android:paddingTop="84dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
-    <android.support.v7.widget.AppCompatButton
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="einladen"
-        android:id="@+id/invitefriendbtn"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:padding="12dp"/>
-        <!--android:onClick="invitefriend" -->
-        />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/inviteEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:textColor="@color/black"
+                    android:hint="Email zum Einladen eingeben" />
+            </android.support.design.widget.TextInputLayout>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/inviteUserProgressBar"
-        android:visibility="invisible" />
-
-</LinearLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="einladen"
+                android:id="@+id/invitefriendbtn"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="12dp"
+                android:background="@color/Primary"/>
+                <!--android:onClick="invitefriend" -->
+                />
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/inviteUserProgressBar"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"></ProgressBar>
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
 

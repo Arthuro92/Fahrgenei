@@ -111,7 +111,15 @@ public class UserAdapter extends ArrayAdapter {
 
         holder.txtTitle.setText(user.getName());
         Log.d("UserAdapter: ","Holdername als "+user.getName()+" gesetzt.");
-        holder.imgIcon.setImageResource(R.drawable.user128);
+
+        if(userInGroup.getIsJoined() == 0){
+            holder.imgIcon.setImageResource(R.drawable.user_nicht_angenommen);
+            holder.inv_status.setText("Bestätigung ausstehend");
+        }
+        else {
+            holder.imgIcon.setImageResource(R.drawable.user128);
+            holder.inv_status.setText("Angenommen");
+        }
 
         return row;
     }

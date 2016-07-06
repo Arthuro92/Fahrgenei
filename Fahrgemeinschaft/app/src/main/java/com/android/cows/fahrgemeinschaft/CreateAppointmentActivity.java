@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +35,9 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
     static EditText DateTreffpunktzeit;
     static EditText DateAbfahrtzeit;
+    //static EditText Terminname;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,10 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.createAppointmentProgBar);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         createDateOnClickListener();
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Termin erstellen");
 
 
         Button createAppointmentButton = (Button) findViewById(R.id.createappointbutton);
@@ -51,6 +61,13 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         });
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.create_appointment_menu, menu);
+        return true;
+    }
+
 
     private void createDateOnClickListener() {
         DateTreffpunktzeit = (EditText) findViewById(R.id.input_treffpunktZeit);
@@ -146,25 +163,27 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         int id = sqLiteDBHandler.getNextAppointmentID(gid);
         de.dataobjects.Appointment gapm1;
 
-        // EditText _input_treffpunktZeit = (EditText) findViewById(R.id.input_treffpunktZeit);
+        EditText _input_treffpunktZeit = (EditText) findViewById(R.id.input_treffpunktZeit);
         EditText _input_treffpunkt = (EditText) findViewById(R.id.input_treffpunkt);
-        //EditText _input_abfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
+        EditText _input_abfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
         EditText _input_zielort = (EditText) findViewById(R.id.input_zielort);
+        EditText _input_terminname = (EditText) findViewById(R.id.input_terminname);
 
         //Todo String von Abfahrtzeit & Treffpunktzeit in Calendar ändern oder ähnliches
         String treffpunkt = _input_treffpunkt.getText().toString();
         String zielort = _input_zielort.getText().toString();
-        String treffpunktZeit = DateTreffpunktzeit.getText().toString();
-        String abfahrtzeit = DateAbfahrtzeit.getText().toString();
+        String treffpunktZeit = _input_treffpunktZeit.getText().toString();
+        String abfahrtzeit = _input_abfahrtzeit.getText().toString();
+        String terminname = _input_terminname.getText().toString();
 
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + 1,  "10", "10", "10", "10");
+            gapm1 = new Appointment(1, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
-            gapm1 = new Appointment(id, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + id, "10", "10", "10", "10");
+            gapm1 = new Appointment(id, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
         }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 
@@ -191,6 +210,7 @@ public class CreateAppointmentActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
                 Intent intent2 = new Intent(CreateAppointmentActivity.this, GroupTabsActivity.class);
+                Bundle bundle = getIntent().getExtras();
                 startActivity(intent2);
             }
         };
