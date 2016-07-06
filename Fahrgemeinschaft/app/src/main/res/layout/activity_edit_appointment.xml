@@ -13,12 +13,27 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
+
+
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/input_treffpunktZeit"
+        <EditText android:id="@+id/input_name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="Terminbezeichnung" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/input_treffpunktZeit2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
@@ -30,8 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
-
-        <EditText android:id="@+id/input_treffpunkt"
+        <EditText android:id="@+id/input_treffpunkt2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
@@ -43,44 +57,33 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/input_abfahrtzeit"
+        <EditText android:id="@+id/input_abfahrtzeit2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
             android:hint="Abfahrtzeit" />
     </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/input_zielort2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_zielort"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapWords"
-                android:hint="Zielort" />
-        </android.support.design.widget.TextInputLayout>
+            android:inputType="textCapWords"
+            android:hint="Zielort" />
+    </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
+    <android.support.v7.widget.AppCompatButton
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Termin erstellen"
-        android:id="@+id/createappointbutton"
+        android:id="@+id/saveAppointmentButton"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:padding="12dp"/>
-        <!--android:onClick="createAppointment" -->
-            />
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/createAppointmentProgBar"
-        android:visibility="invisible" />
 
     </LinearLayout>
 </ScrollView>

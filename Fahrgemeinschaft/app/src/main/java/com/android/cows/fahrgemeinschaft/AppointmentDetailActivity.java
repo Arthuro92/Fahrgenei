@@ -75,6 +75,16 @@ public class AppointmentDetailActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit_event) {
+            Bundle bundle = getIntent().getExtras();
+            Intent intent = new Intent(context, EditAppointmentActivity.class);
+            intent.putExtra("aid", bundle.getSerializable("aid") );
+            intent.putExtra("name", bundle.getString("name"));
+            intent.putExtra("startingtime", bundle.getString("startingtime"));
+            intent.putExtra("meetingpoint", bundle.getString("meetingpoint"));
+            intent.putExtra("meetingtime", bundle.getString("meetingtime"));
+            intent.putExtra("destination", bundle.getString("destination"));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
             return true;
         }
 
