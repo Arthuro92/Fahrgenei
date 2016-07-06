@@ -44,12 +44,15 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
                         logger.log(Level.INFO, "InsertGroup: " + insertGroup());
                         break;
                     case "inviteuser":
-                        logger.log(Level.INFO, "database.User: " + this.payload.get("extra0") + " invited to: " + this.payload.get("extra1") + " from: " + jsonObject.get("from"));
+                        logger.log(Level.INFO, "User: " + this.payload.get("extra0") + " invited to: " + this.payload.get("extra1") + " from: " + jsonObject.get("from"));
                         inviteUser();
                         break;
                     case "invitationaccept":
-                        logger.log(Level.INFO, "database.User: " + this.payload.get("extra1") + " accepted database.Groups Invitation for database.Groups: " + this.payload.get("extra0"));
+                        logger.log(Level.INFO, "User: " + this.payload.get("extra1") + " accepted Groups Invitation for database.Groups: " + this.payload.get("extra0"));
                         invitationaccepted();
+                        break;
+                    case "newsubstitute":
+                        logger.log(Level.INFO, "New Substitute");
                         break;
                     default:
                         logger.log(Level.INFO, "default case");

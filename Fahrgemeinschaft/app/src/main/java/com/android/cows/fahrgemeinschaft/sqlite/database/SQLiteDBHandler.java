@@ -278,7 +278,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             cv.put("JsonInString", appointment.getJsonInString());
             cv.put("gid", appointment.getGid());
             cv.put("aid", appointment.getAid());
-            db.insertWithOnConflict("appointments", null, cv, SQLiteDatabase.CONFLICT_IGNORE);
+            db.insertWithOnConflict("appointments", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
             db.close();
         } else {
             Log.i(TAG, "Appointment already in Database");

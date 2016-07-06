@@ -2,6 +2,7 @@ package server.observer;
 
 import com.example.dataobjects.Appointment;
 import com.example.dataobjects.JsonCollection;
+import com.example.dataobjects.User;
 import com.example.dataobjects.UserInAppointment;
 
 import org.jivesoftware.smack.SmackException;
@@ -59,8 +60,28 @@ public class AppointmentObserver extends RepositorieConnector implements Message
     private boolean createAppointment() {
         try {
             Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
+            System.out.println("vor AppointmentRepository.save");
             appointmentRepository.save(appointment);
-            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), userRepository.findByToken((String) this.jsonObject.get("from")).getId(), 1);
+            System.out.println("vor UserinAppointment");
+
+            String string = (String) this.jsonObject.get("from");
+
+            System.out.println("String" + string);
+
+            User user = userRepository.findByToken(string);
+
+            System.out.println("User found " + user.getName());
+
+            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), user.getId(), 1);
+
+            System.out.println("Aid " + appointment.getAid());
+            System.out.println("Gid " + appointment.getGid());
+            System.out.println("Name " + appointment.getName());
+            System.out.println();
+            System.out.println("Gid" + userInAppointment.getGid());
+            System.out.println("Uid" + userInAppointment.getUid());
+            System.out.println("Aid" + userInAppointment.getAid());
+            System.out.println("IsParticipant" + userInAppointment.getIsParticipant());
             userInAppointmentRepository.save(userInAppointment);
             sendInsertAppointmentSucess();
             return true;

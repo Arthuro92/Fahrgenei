@@ -27,6 +27,9 @@ public class Groups {
     @Column
     private String adminname;
 
+    @Column
+    private String substitute;
+
     public Groups() {
     }
 
@@ -36,6 +39,14 @@ public class Groups {
         this.adminid = adminid;
         this.adminname = adminname;
         this.gid = gid.replaceAll("\\s","");
+    }
+
+    public String getSubstitute() {
+        return substitute;
+    }
+
+    public void setSubstitute(String substitute) {
+        this.substitute = substitute;
     }
 
     public String getGid() {
