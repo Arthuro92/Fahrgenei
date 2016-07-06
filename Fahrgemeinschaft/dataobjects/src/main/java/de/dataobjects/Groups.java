@@ -2,11 +2,9 @@ package de.dataobjects;
 
 import com.google.gson.Gson;
 
-
 /**
  * Created by Lennart on 09.05.2016.
  */
-
 public class Groups {
 
     private String gid;
@@ -19,6 +17,8 @@ public class Groups {
 
     private String adminname;
 
+    private String substitute;
+
     public Groups() {
     }
 
@@ -28,6 +28,14 @@ public class Groups {
         this.adminid = adminid;
         this.adminname = adminname;
         this.gid = gid.replaceAll("\\s","");
+    }
+
+    public String getSubstitute() {
+        return substitute;
+    }
+
+    public void setSubstitute(String substitute) {
+        this.substitute = substitute;
     }
 
     public String getGid() {

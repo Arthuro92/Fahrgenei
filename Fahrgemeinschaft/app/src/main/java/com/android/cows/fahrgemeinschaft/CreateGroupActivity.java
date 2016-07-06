@@ -47,7 +47,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText groupname = (EditText) findViewById(R.id.groupname);
-                if (groupname.getText().toString().trim().length() == 0) {
+                if (checkRegEx(groupname.getText().toString())) {
                     Toast.makeText(CreateGroupActivity.this, "Kein gültiger Gruppenname!", Toast.LENGTH_LONG).show();
                 } else {
 
@@ -55,7 +55,6 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                     Log.i(TAG, "Create Group");
                     SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-                    //todo maybe error when no string in sharedpref
 
                     Groups newgroup = new Groups(groupname.getText().toString(),
                             1,

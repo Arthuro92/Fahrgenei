@@ -45,40 +45,6 @@ public class GroupAdapter extends ArrayAdapter {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         final int isJoined = sqLiteDBHandler.getIsJoint(group.getGid(),prefs.getString("userid", ""));
 
-        if(isJoined == 0) {
-            groupView.setBackgroundResource(R.color.red);
-            groupView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-                        // TODO Auto-generated method stub
-                //        openAlert(v);
-
-
-                    //sendInvitationAccept(group);
-                }
-            });
-
-        } else if(isJoined == -1) {
-            Log.i(TAG, "Error in getting IsJoined Value in");
-        } else {
-            groupView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-                       // openAlert(v);
-
-                    /*
-                    SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-                    prefs.edit().putString("currentgroupname", group.getName()).apply();
-                    prefs.edit().putString("currentgroupadminid", group.getAdminid()).apply();
-                    prefs.edit().putString("currentgid", group.getGid()).apply();
-
-                    Intent intent = new Intent(context, GroupTabsActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);*/
-                }
-            });
-            groupView.setBackgroundResource(R.color.blue_grey_500);
-        }
 
         return groupView;
     }
@@ -122,6 +88,7 @@ public class GroupAdapter extends ArrayAdapter {
 
                 Intent intent = new Intent(context, GroupTabsActivity.class);
                 // SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                sendInvitationAccept(group);
                 prefs.edit().putString("currentgroupname", group.getName()).apply();
                 prefs.edit().putString("currentgroupadminid", group.getAdminid()).apply();
                 prefs.edit().putString("currentgid", group.getGid()).apply();

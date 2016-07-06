@@ -106,6 +106,12 @@ public class GroupObserver implements MessageObserver {
         updateLocalInsertNewGroupMembers();
         updateLocalAppointmentTable();
         sendLocalUpdateGroupsBroadcast();
+        sendLocalUpdateBroadcast();
+    }
+
+    private void sendLocalUpdateBroadcast() {
+        Intent intent = new Intent("updategroupappointments");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
     public void updateLocalAppointmentTable() {

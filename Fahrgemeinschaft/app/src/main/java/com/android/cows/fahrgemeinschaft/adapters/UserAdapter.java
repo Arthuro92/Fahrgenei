@@ -14,10 +14,12 @@ import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 
+import de.dataobjects.Groups;
 import de.dataobjects.User;
 import de.dataobjects.UserInGroup;
 
@@ -26,6 +28,7 @@ import de.dataobjects.UserInGroup;
  */
 public class UserAdapter extends ArrayAdapter {
     //new new new new
+    private static final String TAG = "UserAdapter";
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
     private int layoutResourceId;
@@ -61,8 +64,7 @@ public class UserAdapter extends ArrayAdapter {
         View row = convertView;
         UserHolder holder = null;
 
-        if(row == null)
-        {
+        if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
@@ -72,16 +74,13 @@ public class UserAdapter extends ArrayAdapter {
             holder.inv_status = (TextView)row.findViewById(R.id.inv_status);
 
             row.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (UserHolder)row.getTag();
         }
 
-        UserInGroup userInGroup =  data.get(position);
+        final UserInGroup userInGroup =  data.get(position);
 
-        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        System.out.println("UID " + userInGroup.getUid());
+        final SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         User user = sqLiteDBHandler.getUser(userInGroup.getUid());
 
         if(userInGroup.getIsJoined() == 0) {
@@ -95,6 +94,20 @@ public class UserAdapter extends ArrayAdapter {
             holder.inv_status.setText("Angenommen");
         }
 
+        row.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                Groups group = sqLiteDBHandler.getGroup(prefs.getString("currentgid",""));
+                if(userInGroup.getUid() != group.getAdminid()) {
+                    group.setSubstitute(userInGroup.getUid());
+
+                    Log.i(TAG, group.getName());
+                    Log.i(TAG, userInGroup.getUid());
+                    MyGcmSend myGcmSend = new MyGcmSend();
+                    myGcmSend.send("group", "newsubstitute", group, context);
+                }
+            }
+        });
 
         holder.txtTitle.setText(user.getName());
         Log.d("UserAdapter: ","Holdername als "+user.getName()+" gesetzt.");
