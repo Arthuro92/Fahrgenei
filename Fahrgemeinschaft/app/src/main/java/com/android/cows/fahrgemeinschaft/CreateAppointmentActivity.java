@@ -179,11 +179,11 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
-            gapm1 = new Appointment(1, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
+            gapm1 = new Appointment(1, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit);
         } else {
             id ++;
             Log.i(TAG, "Create Appointment with id " + id);
-            gapm1 = new Appointment(id, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit, 1);
+            gapm1 = new Appointment(id, prefs.getString("currentgid",""), terminname, treffpunkt, zielort, treffpunktZeit, abfahrtzeit);
         }
         gcmsend.send("appointment", "insertappointment", gapm1, this);
 
