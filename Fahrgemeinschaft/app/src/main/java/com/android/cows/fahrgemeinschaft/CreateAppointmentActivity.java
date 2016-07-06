@@ -212,6 +212,7 @@ public class CreateAppointmentActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(CreateAppointmentActivity.this, GroupTabsActivity.class);
                 Bundle bundle = getIntent().getExtras();
                 startActivity(intent2);
+                finish();
             }
         };
 

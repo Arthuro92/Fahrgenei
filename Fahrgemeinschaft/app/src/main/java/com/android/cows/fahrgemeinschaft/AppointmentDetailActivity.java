@@ -85,6 +85,7 @@ public class AppointmentDetailActivity extends AppCompatActivity {
             intent.putExtra("destination", bundle.getString("destination"));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+            finish();
             return true;
         }
 
@@ -99,6 +100,7 @@ public class AppointmentDetailActivity extends AppCompatActivity {
             sqLiteDBHandler.deleteAppoinment(a);
             Intent intent = new Intent(AppointmentDetailActivity.this, GroupTabsActivity.class);
             startActivity(intent);
+
         }
         return super.onOptionsItemSelected(item);
     }
