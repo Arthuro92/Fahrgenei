@@ -11,8 +11,14 @@ import java.util.Calendar;
 /**
  * Created by cemcosgun on 25.06.16.
  */
+
 public class FragmentDatePicker extends DialogFragment implements
         DatePickerDialog.OnDateSetListener {
+
+    public static final int FLAG_START_DATE = 0;
+    public static final int FLAG_END_DATE = 1;
+
+    public static int flag = 0;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -26,10 +32,20 @@ public class FragmentDatePicker extends DialogFragment implements
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Do something with the date chosen by the user
-        CreateAppointmentActivity.DateTreffpunktzeit.setText(day + "/" + (month + 1) + "/" + year);
-        CreateAppointmentActivity.DateAbfahrtzeit.setText(day + "/" + (month + 1) + "/" + year);
+    public void setFlag(int i) {
+        flag = i;
     }
 
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        // Do something with the date chosen by the user
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        if (flag == FLAG_START_DATE) {
+            CreateAppointmentActivity.DateTreffpunktzeit.setText(day + "/" + (month + 1) + "/" + year);
+        } else if (flag == FLAG_END_DATE) {
+            CreateAppointmentActivity.DateAbfahrtzeit.setText(day + "/" + (month + 1) + "/" + year);
+        }
+    }
 }

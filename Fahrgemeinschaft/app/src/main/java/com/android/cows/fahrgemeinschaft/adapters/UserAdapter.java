@@ -1,7 +1,10 @@
 package com.android.cows.fahrgemeinschaft.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
+import com.android.cows.fahrgemeinschaft.GroupTabsActivity;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -124,6 +128,7 @@ public class UserAdapter extends ArrayAdapter {
         return row;
     }
 
+
     /**
      * Constructs an Adapter
      *
@@ -137,6 +142,8 @@ public class UserAdapter extends ArrayAdapter {
         this.context = context;
         this.data = data;
     }
+
+
 
     static class UserHolder
     {

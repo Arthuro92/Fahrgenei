@@ -26,7 +26,7 @@ import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import de.dataobjects.Appointment;
 
-public class CreateAppointmentActivity extends AppCompatActivity {
+public class CreateAppointmentActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "CreateGroupActivity";
     private BroadcastReceiver insertAppointmentsuccess;
     private BroadcastReceiver errorReceivingAppointment;
@@ -37,6 +37,9 @@ public class CreateAppointmentActivity extends AppCompatActivity {
     static EditText DateAbfahrtzeit;
     //static EditText Terminname;
 
+    private FragmentDatePicker mFragmentDatePicker;
+    private FragmentTimePicker mFragmentTimePicker;
+
     Toolbar toolbar;
 
     @Override
@@ -46,11 +49,19 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.createAppointmentProgBar);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
 
-        createDateOnClickListener();
+       // createDateOnClickListener();
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Termin erstellen");
+
+        DateTreffpunktzeit = (EditText) findViewById(R.id.input_treffpunktZeit);
+        DateAbfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
+        mFragmentDatePicker = new FragmentDatePicker();
+        mFragmentTimePicker = new FragmentTimePicker();
+
+        DateTreffpunktzeit.setOnClickListener(this);
+        DateAbfahrtzeit.setOnClickListener(this);
 
 
         Button createAppointmentButton = (Button) findViewById(R.id.createappointbutton);
@@ -63,6 +74,20 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.input_treffpunktZeit) {
+            mFragmentDatePicker.setFlag(FragmentDatePicker.FLAG_START_DATE);
+            mFragmentTimePicker.show(getSupportFragmentManager(), "timePicker");
+            mFragmentDatePicker.show(getSupportFragmentManager(), "datePicker");
+        } else if (id == R.id.input_abfahrtzeit) {
+            mFragmentDatePicker.setFlag(FragmentDatePicker.FLAG_END_DATE);
+            mFragmentTimePicker.show(getSupportFragmentManager(), "timePicker");
+            mFragmentDatePicker.show(getSupportFragmentManager(), "datePicker");
+        }
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_appointment_menu, menu);
@@ -70,9 +95,10 @@ public class CreateAppointmentActivity extends AppCompatActivity {
     }
 
 
-    private void createDateOnClickListener() {
+ /*   private void createDateOnClickListener() {
         DateTreffpunktzeit = (EditText) findViewById(R.id.input_treffpunktZeit);
         DateTreffpunktzeit.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 showTruitonTimePickerDialog(v);
                 showTruitonDatePickerDialog(v);
@@ -81,6 +107,7 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         DateAbfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
         DateAbfahrtzeit.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 showTruitonTimePickerDialog(v);
                 showTruitonDatePickerDialog(v);
@@ -125,7 +152,7 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-
+*/
 //    public static class FragmentTimePicker extends DialogFragment implements
 //            TimePickerDialog.OnTimeSetListener {
 //
