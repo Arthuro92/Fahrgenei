@@ -1,7 +1,10 @@
 package com.android.cows.fahrgemeinschaft.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
+import com.android.cows.fahrgemeinschaft.GroupTabsActivity;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -97,16 +101,51 @@ public class UserAdapter extends ArrayAdapter {
         row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-                Groups group = sqLiteDBHandler.getGroup(prefs.getString("currentgid",""));
-                if(userInGroup.getUid() != group.getAdminid()) {
-                    group.setSubstitute(userInGroup.getUid());
+                final Groups group = sqLiteDBHandler.getGroup(prefs.getString("currentgid",""));
 
+
+
+                if(userInGroup.getUid() != group.getAdminid()) {
+
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                    alertDialogBuilder.setTitle("Abfrage");
+
+                    alertDialogBuilder.setMessage("Soll dieses Mitglied wirklich Admin werden?");
+                    // set positive button: Yes message
+                    alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            group.setSubstitute(userInGroup.getUid());
+                            Log.i(TAG, group.getName());
+                            Log.i(TAG, userInGroup.getUid());
+                            MyGcmSend myGcmSend = new MyGcmSend();
+                            myGcmSend.send("group", "newsubstitute", group, context);
+
+                        }
+                    });
+                    // set negative button: No message
+                    alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            dialog.cancel();
+                        }
+                    });
+                    // set neutral button: Exit the app message
+
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    // show alert
+                    alertDialog.show();
+                }
+
+
+                    /*
+                    group.setSubstitute(userInGroup.getUid());
                     Log.i(TAG, group.getName());
                     Log.i(TAG, userInGroup.getUid());
                     MyGcmSend myGcmSend = new MyGcmSend();
-                    myGcmSend.send("group", "newsubstitute", group, context);
+                    myGcmSend.send("group", "newsubstitute", group, context);*/
                 }
-            }
+
         });
 
         holder.txtTitle.setText(user.getName());
@@ -124,6 +163,7 @@ public class UserAdapter extends ArrayAdapter {
         return row;
     }
 
+
     /**
      * Constructs an Adapter
      *
@@ -137,6 +177,8 @@ public class UserAdapter extends ArrayAdapter {
         this.context = context;
         this.data = data;
     }
+
+
 
     static class UserHolder
     {
