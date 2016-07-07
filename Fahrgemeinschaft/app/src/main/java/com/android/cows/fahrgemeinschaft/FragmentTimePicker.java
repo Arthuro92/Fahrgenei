@@ -47,4 +47,3 @@ public class FragmentTimePicker extends DialogFragment implements
         }
     }
 }
-
