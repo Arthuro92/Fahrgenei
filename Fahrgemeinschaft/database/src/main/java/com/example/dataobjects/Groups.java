@@ -33,7 +33,7 @@ public class Groups {
     public Groups() {
     }
 
-    public Groups(String name, int membercount, String adminid, String adminname, String gid, int isJoined) {
+    public Groups(String name, int membercount, String adminid, String adminname, String gid) {
         this.name = name;
         this.membercount = membercount;
         this.adminid = adminid;

@@ -47,7 +47,8 @@ public class CreateTaskActivity extends AppCompatActivity {
         int aid = 1;
         if(!checkRegEx(taskName.getText().toString()) && !checkRegEx(taskDescription.toString())) {
         String gid = prefs.getString("currentgid","");
-        Task newTask = new Task("1", aid, gid, taskName.toString(), taskDescription.toString(), "");
+            //todo "1" has to come from database
+            Task newTask = new Task("1", aid, gid, taskName.toString(), taskDescription.toString(), "");
 
             MyGcmSend gcmsend = new MyGcmSend();
 

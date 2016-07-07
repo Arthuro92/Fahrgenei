@@ -38,13 +38,21 @@ public class AppointmentObserver implements MessageObserver {
                     break;
                 case "appointmentinsertsuccess":
                     Log.i(TAG, "Appointmentinsersuccess");
-                    updateLocalDatabase(1);
+                    updateLocalDatabase();
                     appointmentInsertSuccess();
                     break;
                 case "newappointment":
                     Log.i(TAG, "new Appointment received");
-                    updateLocalDatabase(0);
+                    updateLocalDatabase();
                     sendLocalUpdateBroadcast();
+                    break;
+                case "updatingparticipantsuccess":
+                    Log.i(TAG, "Updating Participant Success");
+                    updateUserInAppointment();
+                    sendLocalUpdateBroadcast();
+                    break;
+                case "newdrivers":
+                    Log.i(TAG, "New Drivers");
                     break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
@@ -56,14 +64,20 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
+    private void updateUserInAppointment() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        sqLiteDBHandler.addIsInAppointment(JsonCollection.jsonToUserInAppointment(this.payload.getString("content")));
+    }
+
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupappointments");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-    private void updateLocalDatabase(int isParticipant) {
+    private void updateLocalDatabase() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         sqLiteDBHandler.addAppointment(jsonToAppointment(this.payload.getString("content")));
+        sqLiteDBHandler.updateUserInAppointment(jsonToAppointment(this.payload.getString("content")));;
     }
 
     private Appointment jsonToAppointment(String jsonInString) {
@@ -71,8 +85,8 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private void appointmentInsertSuccess() {
-        Intent errorappointment = new Intent("createdAppointment");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
+        Intent sucessCreateAppointment = new Intent("createdAppointment");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(sucessCreateAppointment);
     }
 
     private void errorAppointment(String error) {

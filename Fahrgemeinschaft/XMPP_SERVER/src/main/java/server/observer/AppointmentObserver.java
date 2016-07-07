@@ -4,13 +4,16 @@ import com.example.dataobjects.Appointment;
 import com.example.dataobjects.JsonCollection;
 import com.example.dataobjects.User;
 import com.example.dataobjects.UserInAppointment;
+import com.example.dataobjects.UserInGroup;
 
 import org.jivesoftware.smack.SmackException;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import server.Algorithm.Algorithmus;
 import server.errors.ErrorMessages;
 import server.smackccsclient.SmackCcsClient;
 
@@ -48,7 +51,9 @@ public class AppointmentObserver extends RepositorieConnector implements Message
                         logger.log(Level.INFO, "In insertappointment");
                         createAppointment();
                         break;
-
+                    case "participantchange":
+                        logger.log(Level.INFO, "Changing Participant");
+                        changeParticipant();
                     default:
                         break;
                 }
@@ -56,38 +61,68 @@ public class AppointmentObserver extends RepositorieConnector implements Message
         }
     }
 
+    private void changeParticipant() {
+        try {
+            UserInAppointment userInAppointment = JsonCollection.userInAppointment(this.payload.get("content"));
+            userInAppointmentRepository.save(userInAppointment);
+            sendParticipantChangeSuccess();
+            calculateNewDrivers();
+        } catch (NullPointerException e) {
+            logger.log(Level.INFO, "NullPointerException");
+            e.printStackTrace();
+        }
+    }
+
+    private void calculateNewDrivers() {
+        Algorithmus algorithmus = new Algorithmus();
+        algorithmus.calculateDrivers(JsonCollection.userInAppointment(this.payload.get("content")));
+    }
+
+    private void sendParticipantChangeSuccess() {
+        try {
+            SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+            smackCcsClient.sendDownstreamMessage("appointment", "updatingparticipantsuccess", (String) jsonObject.get("from"), JsonCollection.userInAppointment(this.payload.get("content")));
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private boolean createAppointment() {
         try {
             Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
-            System.out.println("vor AppointmentRepository.save");
+
             appointmentRepository.save(appointment);
-            System.out.println("vor UserinAppointment");
+            updateUserInAppointment();
 
-            String string = (String) this.jsonObject.get("from");
-
-            System.out.println("String" + string);
-
-            User user = userRepository.findByToken(string);
-
-            System.out.println("User found " + user.getName());
-
-            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), user.getId(), 1);
-
-            System.out.println("Aid " + appointment.getAid());
-            System.out.println("Gid " + appointment.getGid());
-            System.out.println("Name " + appointment.getName());
-            System.out.println();
-            System.out.println("Gid" + userInAppointment.getGid());
-            System.out.println("Uid" + userInAppointment.getUid());
-            System.out.println("Aid" + userInAppointment.getAid());
-            System.out.println("IsParticipant" + userInAppointment.getIsParticipant());
-            userInAppointmentRepository.save(userInAppointment);
             sendInsertAppointmentSucess();
             return true;
         } catch (NullPointerException e) {
             logger.log(Level.INFO, "NullPointerException");
+            e.printStackTrace();
             sendAppointmentError(ErrorMessages.MYSQL_ERROR);
+            return false;
+        }
+    }
+
+    private boolean updateUserInAppointment() {
+        try {
+            Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
+            ArrayList<UserInGroup> userInGroupArrayList = userInGroupRepository.findByGid(appointment.getGid());
+
+            for (UserInGroup userInGroup : userInGroupArrayList) {
+                UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), userInGroup.getUid(), 0);
+                userInAppointmentRepository.save(userInAppointment);
+            }
+
+            String string = (String) this.jsonObject.get("from");
+            User user = userRepository.findByToken(string);
+            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), user.getId(), 1);
+            userInAppointmentRepository.save(userInAppointment);
+            return true;
+        } catch (NullPointerException e) {
+            logger.log(Level.INFO, "NullPointerException");
+            e.printStackTrace();
             return false;
         }
     }
@@ -97,8 +132,8 @@ public class AppointmentObserver extends RepositorieConnector implements Message
     private boolean sendInsertAppointmentSucess() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
-            Appointment   appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
-            smackclient.sendDownstreamMessage("appointment", "appointmentinsertsuccess", (String) jsonObject.get("from"),appointment);
+            Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
+            smackclient.sendDownstreamMessage("appointment", "appointmentinsertsuccess", (String) jsonObject.get("from"), appointment);
             smackclient.sendDownstreamMessage("appointment", "newappointment", "/topics/" + appointment.getGid(), appointment);
             return true;
         } catch (SmackException.NotConnectedException e) {
@@ -142,6 +177,7 @@ public class AppointmentObserver extends RepositorieConnector implements Message
     /**
      * Constructs a new AppointmentObserver and registers it to a MessageSubject
      * calling initRepositories
+     *
      * @param messageSubject a MessageSubject to register to
      */
     public AppointmentObserver(MessageSubject messageSubject) {

@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @IdClass(UserInAppointmentId.class)
-@Table(name= "UserInAppointment")
+@Table(name= "userInAppointment")
 public class UserInAppointment implements Serializable {
     @Id
     private int aid;
@@ -29,6 +29,8 @@ public class UserInAppointment implements Serializable {
 
     @Column
     private int isParticipant;
+
+    @Column boolean isDriver = false;
 
     public UserInAppointment() {
     }
@@ -70,6 +72,14 @@ public class UserInAppointment implements Serializable {
 
     public void setIsParticipant(int isParticipant) {
         this.isParticipant = isParticipant;
+    }
+
+    public boolean isDriver() {
+        return isDriver;
+    }
+
+    public void setDriver(boolean driver) {
+        isDriver = driver;
     }
 
     public String getJsonInString() {

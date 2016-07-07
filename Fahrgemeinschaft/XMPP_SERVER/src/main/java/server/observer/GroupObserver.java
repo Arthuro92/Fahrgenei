@@ -53,11 +53,25 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
                         break;
                     case "newsubstitute":
                         logger.log(Level.INFO, "New Substitute");
+                        updateSubstituteInGroup();
                         break;
                     default:
                         logger.log(Level.INFO, "default case");
                 }
             }
+        }
+    }
+
+    private void updateSubstituteInGroup() {
+        try {
+            SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+            Groups groups = JsonCollection.jsonToGroup(this.payload.get("content"));
+            groupsRepository.save(groups);
+            smackCcsClient.sendDownstreamMessage("group", "updatinggroup", "/topics/" + groups.getGid(), groups);
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            logger.log(Level.INFO, "Error updating Group with new Substitute");
         }
     }
 
@@ -94,6 +108,8 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
             stringarray[1] = JsonCollection.objectToJson(userInGroupList);
             stringarray[2] = JsonCollection.objectToJson(appointmentArrayList);
             smackclient.sendDownstreamMessage("group", "groupinformation", (String) jsonObject.get("from"), stringarray);
+            Groups groups = groupsRepository.findOne(gid);
+            smackclient.sendDownstreamMessage("group", "updatinggroup", (String) jsonObject.get("from"), groups);
         } catch (NullPointerException e) {
             logger.log(Level.WARNING, "Error sending Group Information");
         } catch (SmackException.NotConnectedException e) {

@@ -39,22 +39,22 @@ public class GroupObserver implements MessageObserver {
         ;
         if (this.payload.getString("task_category").equals("group")) {
             switch (this.payload.getString("task")) {
-                case "grouparray":
+                case "grouparray" :
                     Log.i(TAG, "GroupArray");
                     groupArray();
                     break;
-                case "invitationsuccess":
+                case "invitationsuccess" :
                     Log.i(TAG, "Invitation Success");
                     invitationSuccess();
                     break;
-                case "groupinsertsuccess":
+                case "groupinsertsuccess" :
                     Log.i(TAG, "Group Insert Sucess");
                     updateLocalGroupTable();
                     updateLocalUserIsInGroup(1);
                     TopicSubscriber.subscribeToTopic(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid());
                     insertSuccess();
                     break;
-                case "groupinvitation":
+                case "groupinvitation" :
                     Log.i(TAG, "Groupinvitation");
                     groupInvitation();
                     //todo request to user if he wants to join this group
@@ -62,6 +62,10 @@ public class GroupObserver implements MessageObserver {
                 case "groupinformation" :
                     Log.i(TAG, "Group Information");
                     addGroupInformations();
+                    break;
+                case "updatinggroup" :
+                    Log.i(TAG, "Updating Group");
+                    updatingGroup();
                     break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
@@ -71,6 +75,12 @@ public class GroupObserver implements MessageObserver {
                     Log.i(TAG, "default case");
             }
         }
+    }
+
+    private void updatingGroup() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        Groups groups = JsonCollection.jsonToGroup(this.payload.getString("content"));
+        sqLiteDBHandler.addGroup(groups);
     }
 
     private void invitationSuccess() {
@@ -106,11 +116,17 @@ public class GroupObserver implements MessageObserver {
         updateLocalInsertNewGroupMembers();
         updateLocalAppointmentTable();
         sendLocalUpdateGroupsBroadcast();
-        sendLocalUpdateBroadcast();
+        sendLocalUpdateAppointmentsBroadcast();
+        sendLocalUpdateUserBroadcast();
     }
 
-    private void sendLocalUpdateBroadcast() {
+    private void sendLocalUpdateAppointmentsBroadcast() {
         Intent intent = new Intent("updategroupappointments");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    public void sendLocalUpdateUserBroadcast() {
+        Intent intent = new Intent("updategroupuser");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 

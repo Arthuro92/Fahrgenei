@@ -96,15 +96,17 @@ public class UserAdapter extends ArrayAdapter {
 
         row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                 Groups group = sqLiteDBHandler.getGroup(prefs.getString("currentgid",""));
-                if(userInGroup.getUid() != group.getAdminid()) {
-                    group.setSubstitute(userInGroup.getUid());
 
-                    Log.i(TAG, group.getName());
-                    Log.i(TAG, userInGroup.getUid());
+                if(!userInGroup.getUid().equals(group.getAdminid()) && prefs.getString("userid","").equals(group.getAdminid())) {
+                    Log.i(TAG, "Marked new Substitute");
+                    group.setSubstitute(userInGroup.getUid());
                     MyGcmSend myGcmSend = new MyGcmSend();
                     myGcmSend.send("group", "newsubstitute", group, context);
+                } else {
+                    Log.i(TAG, "Marking new Substitute denied");
                 }
             }
         });

@@ -1,8 +1,6 @@
 package com.android.cows.fahrgemeinschaft;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,10 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+
+import de.dataobjects.Groups;
 
 public class GroupTabsActivity extends AppCompatActivity {
 
@@ -39,6 +37,9 @@ public class GroupTabsActivity extends AppCompatActivity {
 
         final ViewPagerAdapterGroupTerminTabs viewPagerAdapter = new ViewPagerAdapterGroupTerminTabs(getSupportFragmentManager());
         viewPagerGroup.setAdapter(viewPagerAdapter);
+
+
+
 
 
         tabLayoutGroup = (TabLayout) findViewById(R.id.tablayoutGroup);
@@ -66,8 +67,7 @@ public class GroupTabsActivity extends AppCompatActivity {
 
 
         });
-
-        SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         setTitle(prefs.getString("currentgroupname", ""));
 
     }
@@ -76,6 +76,23 @@ public class GroupTabsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_group_detail, menu);
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String gid = prefs.getString("currentgid", "");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+
+        Groups groups = sqLiteDBHandler.getGroup(gid);
+        if(!groups.getAdminid().equals(prefs.getString("userid", "")) && groups.getSubstitute() == null ||groups.getSubstitute() != null && !groups.getSubstitute().equals(prefs.getString("userid",""))) {
+            MenuItem adduser = menu.findItem(R.id.action_add_person);
+            MenuItem deletegrp = menu.findItem(R.id.action_delete_group);
+            MenuItem addtask = menu.findItem(R.id.action_add_task);
+            MenuItem addevent = menu.findItem(R.id.action_add_event);
+
+            adduser.setVisible(false);
+            deletegrp.setVisible(false);
+            addtask.setVisible(false);
+            addevent.setVisible(false);
+        }
+
         return true;
     }
 
@@ -100,7 +117,7 @@ public class GroupTabsActivity extends AppCompatActivity {
             Intent intent = new Intent(GroupTabsActivity.this, CreateAppointmentActivity.class);
             startActivity(intent);
         }
-        if (id ==R.id.action_delete_group){
+        if (id == R.id.action_delete_group ){
             //@TODO Lenni oder David! Bitte vom Server löschen.
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
