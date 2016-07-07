@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -31,16 +32,24 @@ public class CreateTaskActivity extends AppCompatActivity {
     private BroadcastReceiver errorReceivingAppointment;
     private ProgressBar mRegistrationProgressBar;
     private boolean isReceiverRegistered;
+    private Button createTaskButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.createTaskProgBar);
+        createTaskButton = (Button) findViewById(R.id.button123);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
+
+        createTaskButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                createTask2(v);
+            }
+        });
     }
 
-    public void createTask(View view) {
+    public void createTask2(View view) {
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         EditText taskName = (EditText) findViewById(R.id.taskname);
