@@ -7,7 +7,7 @@ import com.google.gson.Gson;
  */
 public class Task {
 
-    private String taskId;
+    private int taskId;
 
     private int aid;
 
@@ -22,7 +22,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(String taskId, int aid, String gid, String taskName, String taskdescription, String responsible) {
+    public Task(int taskId, int aid, String gid, String taskName, String taskdescription, String responsible) {
         this.taskId = taskId;
         this.aid = aid;
         this.gid = gid;
@@ -39,11 +39,11 @@ public class Task {
         this.taskName = taskName;
     }
 
-    public String getTaskId() {
+    public int getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
+    public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 

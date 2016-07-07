@@ -42,6 +42,7 @@ public class EditTaskActivity extends AppCompatActivity {
         taskName.setText(bundle.getString("taskname"));
         taskDescription.setText(bundle.getString("taskdescription"));
         taskAssignee.setText(bundle.getString("taskincharge"));
+        final int aid = (int) bundle.getSerializable("aid");
         final int tid = (int) bundle.getSerializable("tid");
 
 
@@ -50,18 +51,18 @@ public class EditTaskActivity extends AppCompatActivity {
                 //@TODO SQLITE DB und SERVER DB MUESSEN DEN EINTRAG FÜR DEN TERMIN ÄNDERN
                 //newtask
 
-                /** Läuft  leider ab hier noch nicht
+                //Läuft  leider ab hier noch nicht
                 MyGcmSend gcmsend = new MyGcmSend();
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-                Task tsk = new Task(tid,tid, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + tid, taskName.getText().toString(), taskDescription.getText().toString(), taskAssignee.getText().toString());
-                */
+                Task tsk = new Task(tid, aid, prefs.getString("currentgid",""),  taskName.getText().toString(), taskDescription.getText().toString(), taskAssignee.getText().toString());
+
 
                 Intent intent = new Intent(context, TaskDetailActivity.class);
                 Log.i("Taskdaten",taskDescription +" "+taskAssignee.getText());
                 intent.putExtra("taskname", taskName.getText().toString()  );
                 intent.putExtra("taskdescription", taskDescription.getText().toString()  );
                 intent.putExtra("taskincharge", taskAssignee.getText().toString()  );
-               // gcmsend.send("task", "newtask", tsk, context);
+                gcmsend.send("task", "newtask", tsk, context);
 
                 startActivity(intent);
                 finish();

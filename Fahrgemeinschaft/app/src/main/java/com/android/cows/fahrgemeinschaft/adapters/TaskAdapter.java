@@ -92,6 +92,8 @@ public class TaskAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 Log.i(TAG, task.getTaskName() );
                 Intent intent = new Intent(context, TaskDetailActivity.class);
+                intent.putExtra("tid", task.getTaskId());
+                intent.putExtra("aid", task.getAid());
                 intent.putExtra("taskname", task.getTaskName());
                 intent.putExtra("taskdescription", task.getTaskdescription());
                 intent.putExtra("taskincharge", task.getResponsible());

@@ -66,6 +66,10 @@ public class TaskDetailActivity extends AppCompatActivity {
         if (id == R.id.action_edit_event) {
             Bundle bundle = getIntent().getExtras();
             Intent intent = new Intent(context, EditTaskActivity.class);
+            int aid = (int) bundle.getSerializable("aid");
+            int tid = (int)  bundle.getSerializable("tid");
+            intent.putExtra("tid", tid );
+            intent.putExtra("aid", aid );
             intent.putExtra("taskdescription", bundle.getSerializable("taskdescription") );
             intent.putExtra("taskincharge", bundle.getString("taskincharge"));
             intent.putExtra("taskname", bundle.getString("taskname"));

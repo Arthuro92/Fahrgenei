@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class TaskId implements Serializable {
 
-    private String taskId;
+    private int taskId;
 
     private int aid;
 
@@ -16,17 +16,17 @@ public class TaskId implements Serializable {
     public TaskId() {
     }
 
-    public TaskId(String taskId, int aid, String gid) {
+    public TaskId(int taskId, int aid, String gid) {
         this.taskId = taskId;
         this.aid = aid;
         this.gid = gid;
     }
 
-    public String getTaskId() {
+    public int getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
+    public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 
@@ -54,13 +54,13 @@ public class TaskId implements Serializable {
         TaskId taskId1 = (TaskId) o;
 
         if (aid != taskId1.aid) return false;
-        if (!taskId.equals(taskId1.taskId)) return false;
+        if (taskId != taskId1.taskId) return false;
         return gid.equals(taskId1.gid);
     }
 
     @Override
     public int hashCode() {
-        int result = taskId.hashCode();
+        int result = taskId;
         result = 31 * result + aid;
         result = 31 * result + gid.hashCode();
         return result;

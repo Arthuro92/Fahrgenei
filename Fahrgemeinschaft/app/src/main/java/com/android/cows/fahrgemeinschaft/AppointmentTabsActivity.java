@@ -41,11 +41,11 @@ public class AppointmentTabsActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
 
-        System.out.println("Audgabe" + bundle.getString("startingtime"));
+      /**  System.out.println("Audgabe" + bundle.getString("startingtime"));
         System.out.println("Audgabe" + bundle.getString("meetingpoint"));
         System.out.println("Audgabe" + bundle.getString("meetingtime"));
         System.out.println("Audgabe" + bundle.getString("destination"));
-
+*/
         tabLayoutAppointment = (TabLayout) findViewById(R.id.tablayoutAppointment);
         tabLayoutAppointment.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayoutAppointment.setupWithViewPager(viewPagerAppointment);
@@ -114,6 +114,18 @@ public class AppointmentTabsActivity extends AppCompatActivity {
             int a = (int) bundle.getSerializable("aid");
             sqLiteDBHandler.deleteAppoinment(a);
             Intent intent = new Intent(AppointmentTabsActivity.this, GroupTabsActivity.class);
+            startActivity(intent);
+        }
+
+        if ( id ==R.id.action_create_task){
+            Intent intent = new Intent(AppointmentTabsActivity.this, CreateTaskActivity.class);
+            Bundle bundle = getIntent().getExtras();
+            intent.putExtra("aid", bundle.getSerializable("aid") );
+            intent.putExtra("name", bundle.getString("name"));
+            intent.putExtra("startingtime", bundle.getString("startingtime"));
+            intent.putExtra("meetingpoint", bundle.getString("meetingpoint"));
+            intent.putExtra("meetingtime", bundle.getString("meetingtime"));
+            intent.putExtra("destination", bundle.getString("destination"));
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

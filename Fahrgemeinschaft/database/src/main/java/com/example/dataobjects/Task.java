@@ -18,7 +18,7 @@ import javax.persistence.IdClass;
 public class Task implements Serializable {
 
     @Id
-    private String taskId;
+    private int taskId;
 
     @Id
     private int aid;
@@ -38,7 +38,7 @@ public class Task implements Serializable {
     public Task() {
     }
 
-    public Task(String taskId, int aid, String gid, String taskName, String taskdescription, String responsible) {
+    public Task(int taskId, int aid, String gid, String taskName, String taskdescription, String responsible) {
         this.taskId = taskId;
         this.aid = aid;
         this.gid = gid;
@@ -55,11 +55,11 @@ public class Task implements Serializable {
         this.taskName = taskName;
     }
 
-    public String getTaskId() {
+    public int getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
+    public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 
@@ -107,7 +107,7 @@ public class Task implements Serializable {
         Task task = (Task) o;
 
         if (aid != task.aid) return false;
-        if (!taskId.equals(task.taskId)) return false;
+        if (taskId!=task.taskId) return false;
         if (!gid.equals(task.gid)) return false;
         if (!taskName.equals(task.taskName)) return false;
         if (!taskdescription.equals(task.taskdescription)) return false;
@@ -117,12 +117,12 @@ public class Task implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = taskId.hashCode();
+        int result = taskId;
         result = 31 * result + aid;
         result = 31 * result + gid.hashCode();
         result = 31 * result + taskName.hashCode();
-        result = 31 * result + taskdescription.hashCode();
-        result = 31 * result + responsible.hashCode();
+        result = 31 * result + (taskdescription != null ? taskdescription.hashCode() : 0);
+        result = 31 * result + (responsible != null ? responsible.hashCode() : 0);
         return result;
     }
 }
