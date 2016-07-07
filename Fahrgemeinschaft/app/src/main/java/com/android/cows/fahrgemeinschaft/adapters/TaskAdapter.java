@@ -43,7 +43,7 @@ public class TaskAdapter extends ArrayAdapter {
         return sharedPreferences.getString("username", "Blubb");
     }
 
-    private View setTaskView(View taskView, User task) {
+    private View setTaskView(View taskView, Task task) {
         return taskView;
     }
 
@@ -81,7 +81,7 @@ public class TaskAdapter extends ArrayAdapter {
         }
 
         final Task task =  data.get(position);
-        holder.nameFeld.setText(task.getTaskName());
+        holder.nameFeld.setText( "test" );/**task.getTaskName()*/
         Log.d("UserAdapter: ","Holdername als "+task.getTaskName()+" gesetzt.");
         // holder.imgIcon.setImageResource(R.drawable.user128);
         // holder.inv_status.setText("Angenommen");

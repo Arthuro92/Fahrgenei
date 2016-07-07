@@ -21,7 +21,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 126;
+    private static final int DATABASE_VERSION = 129;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -39,7 +39,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                     "FOREIGN KEY(gid) REFERENCES groups(gid) " +
                     "PRIMARY KEY(uid, gid));" ;
     private static final String TABLE_USERS = "CREATE TABLE user(uid VARCHAR(255) PRIMARY KEY, JsonInString VARCHAR(400));";
-    private static final String TABLE_TASK = "CREATE TABLE task(taskid INTEGER, aid INTEGER, gid VARCHAR(255), taskname VARCHAR(255), taskdescription VARCHAR(400), responsible VARCHAR(255))";
+    private static final String TABLE_TASK = "CREATE TABLE task(taskid INTEGER, aid INTEGER, gid VARCHAR(255), taskname VARCHAR(255), taskdescription VARCHAR(400), responsible VARCHAR(255), JsonInString VARCHAR(400), PRIMARY KEY(taskid, aid , gid));";
     /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
 
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
@@ -354,11 +354,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         cv.put("taskname", task.getTaskName());
         cv.put("taskdescription", task.getTaskdescription());
         cv.put("responsible", task.getResponsible());
+        cv.put("JsonInString", task.getJsonInString());
         db.insertWithOnConflict("task", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
 
-    public ArrayList<Task> getTasks(String aid, String gid) {
+    public ArrayList<Task> getTasks(int aid, String gid) {
         ArrayList<Task> taskArrayList = new ArrayList<Task>();
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_TASKS_1 + "'" + aid + "'" + GET_TASKS_2 + "'" + gid + "'", null);
