@@ -29,12 +29,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black">
             <EditText android:id="@+id/input_terminname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
-                android:hint="Terminname" />
+                android:hint="Terminname"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -42,50 +48,72 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black">
         <EditText android:id="@+id/input_treffpunktZeit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
-            android:hint="Treffpunkt (Zeit)" />
+            android:hint="Treffpunkt (Zeit)"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/black"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textColorLink="@color/black"
+        android:textColorHighlight="@color/black">
         <EditText android:id="@+id/input_treffpunkt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:hint="Treffpunkt (ORT)" />
+            android:hint="Treffpunkt (ORT)"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/black"/>
     </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" >
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textColorLink="@color/black"
+            android:textColorHighlight="@color/black">
             <EditText android:id="@+id/input_abfahrtzeit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="date"
-                android:hint="Abfahrtzeit" />
+                android:hint="Abfahrtzeit"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"/>
         </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textColorLink="@color/black"
+                android:textColorHighlight="@color/black">
                 <EditText android:id="@+id/input_zielort"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
+                    android:hint="Zielort"
                     android:textColor="@color/black"
-                    android:hint="Zielort" />
+                    android:backgroundTint="@color/black"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton
@@ -98,7 +126,7 @@
             android:padding="12dp"
             android:background="@color/Primary"/>
             <!--android:onClick="createAppointment" -->
-                />
+
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"

@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -34,23 +36,52 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     private String text;
 
-    private Spinner spinner;
-    private static final String[]paths = {"1", "4", "6", "8"};
+    private SeekBar seekBar;
+    private TextView TextAnzahlPlaetze;
+
+    //private Spinner spinner;
+    //private static final String[]paths = {"1", "4", "6", "8"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        initializeVariables();
 
-        spinner = (Spinner)findViewById(R.id.sitzAnzahl_spinner);
+
+      /*  spinner = (Spinner)findViewById(R.id.sitzAnzahl_spinner);
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,paths);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        spinner.setOnItemSelectedListener(this); */
 
+        // Initialize the textview with '0'.
+        TextAnzahlPlaetze.setText("Anzahl Sitzplätze: " + seekBar.getProgress() + "/" + seekBar.getMax());
 
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                TextAnzahlPlaetze.setText("Covered: " + progress + "/" + seekBar.getMax());
+                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+        });
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
 
         Log.i(TAG, prefs.getString("username", ""));
@@ -63,6 +94,13 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         email.setText(" " + prefs.getString("useremail", ""));
 
     }
+
+
+        private void initializeVariables() {
+            seekBar = (SeekBar) findViewById(R.id.sitzAnzahl_seekBar);
+            TextAnzahlPlaetze = (TextView) findViewById(R.id.AnzahlPlaetze);
+        }
+
 
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
 

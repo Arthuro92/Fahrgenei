@@ -32,13 +32,18 @@ tools:context=".InviteUser">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textColorLink="@color/black"
+                android:textColorHighlight="@color/black">
                 <EditText android:id="@+id/inviteEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
+                    android:hint="Email zum Einladen eingeben"
                     android:textColor="@color/black"
-                    android:hint="Email zum Einladen eingeben" />
+                    android:backgroundTint="@color/black"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton

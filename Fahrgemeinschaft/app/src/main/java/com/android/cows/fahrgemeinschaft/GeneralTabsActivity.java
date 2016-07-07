@@ -87,8 +87,8 @@ public class GeneralTabsActivity extends AppCompatActivity {
         }
 
         if (id== R.id.action_search){
-            final Dialog dialog = new Dialog(getApplicationContext());
-            dialog.setTitle("Title...");
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
 

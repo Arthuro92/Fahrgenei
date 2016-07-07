@@ -45,6 +45,7 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_appointment);
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.createAppointmentProgBar);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
+
         createDateOnClickListener();
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -72,7 +73,6 @@ public class CreateAppointmentActivity extends AppCompatActivity {
     private void createDateOnClickListener() {
         DateTreffpunktzeit = (EditText) findViewById(R.id.input_treffpunktZeit);
         DateTreffpunktzeit.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
                 showTruitonTimePickerDialog(v);
                 showTruitonDatePickerDialog(v);
@@ -81,7 +81,6 @@ public class CreateAppointmentActivity extends AppCompatActivity {
 
         DateAbfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
         DateAbfahrtzeit.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
                 showTruitonTimePickerDialog(v);
                 showTruitonDatePickerDialog(v);
@@ -93,6 +92,8 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         DialogFragment newFragment = new FragmentDatePicker();
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
+
+
 
 
 //    public static class FragmentDatePicker extends DialogFragment implements
