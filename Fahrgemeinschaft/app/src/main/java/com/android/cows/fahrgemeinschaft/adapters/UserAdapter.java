@@ -111,7 +111,7 @@ public class UserAdapter extends ArrayAdapter {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
                     alertDialogBuilder.setTitle("Abfrage");
 
-                    alertDialogBuilder.setMessage("Soll dieses Mitglied wirklich Admin werden?");
+                    alertDialogBuilder.setMessage("Soll dieses Mitglied wirklich Stellvertreter werden?");
                     // set positive button: Yes message
                     alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {

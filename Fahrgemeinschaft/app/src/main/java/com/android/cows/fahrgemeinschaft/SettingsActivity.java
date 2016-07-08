@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +43,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     //private Spinner spinner;
     //private static final String[]paths = {"1", "4", "6", "8"};
-
+    private Switch mAutoSwitch;
+    private TextView mPlaetze;
+    private TextView mAnzahlPlaetze;
 
 
     @Override
@@ -50,38 +54,54 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_settings);
         initializeVariables();
 
+        mPlaetze = (TextView) findViewById(R.id.plaetze);
+        mAnzahlPlaetze = (TextView) findViewById(R.id.AnzahlPlaetze);
+        mAutoSwitch = (Switch) findViewById(R.id.autoSwitch);
 
-      /*  spinner = (Spinner)findViewById(R.id.sitzAnzahl_spinner);
-        ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,paths);
+        mPlaetze.setVisibility(View.INVISIBLE);
+        mAnzahlPlaetze.setVisibility(View.INVISIBLE);
+        seekBar.setEnabled(false);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this); */
+        mAutoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                   @Override
+                                                   public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                       if (isChecked) {
+                                                           mPlaetze.setVisibility(View.VISIBLE);
+                                                           mAnzahlPlaetze.setVisibility(View.VISIBLE);
+                                                           seekBar.setEnabled(true);
+                                                       } else {
+                                                           mPlaetze.setVisibility(View.INVISIBLE);
+                                                           mAnzahlPlaetze.setVisibility(View.INVISIBLE);
+                                                           seekBar.setEnabled(false);
+                                                       }
+                                                   }
+                                               });
+
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    int progress = 0;
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                        progress = progresValue;
+                        Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        TextAnzahlPlaetze.setText("Covered: " + progress + "/" + seekBar.getMax());
+                        Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
         // Initialize the textview with '0'.
         TextAnzahlPlaetze.setText("Anzahl Sitzplätze: " + seekBar.getProgress() + "/" + seekBar.getMax());
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
-                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                TextAnzahlPlaetze.setText("Covered: " + progress + "/" + seekBar.getMax());
-                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
-            }
-        });
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
 
         Log.i(TAG, prefs.getString("username", ""));
