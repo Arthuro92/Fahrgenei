@@ -1,14 +1,23 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +30,11 @@ public class FragmentGeneralTermineActivity extends Fragment {
     private static final String TAG = "AppointmentOverview";
     View contentViewGeneralTermine;
     ListView listView;
+
+    private BroadcastReceiver updateappointmentlist;
+    private boolean isReceiverRegistered;
+
+    private AppointmentAdapter appointmentAdapter;
 
     @Nullable
     @Override
@@ -36,146 +50,75 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        //Init von den Testdaten
-        //1
-        Calendar abfahrtt_zeit1 = Calendar.getInstance();
-        abfahrtt_zeit1.set(2016, 10, 10, 10, 00);
-        Calendar treffpunkt_zeit1 = Calendar.getInstance();
-        treffpunkt_zeit1.set(2016, 10, 10, 9, 30);
-        //2
-        Calendar abfahrtt_zeit2 = Calendar.getInstance();
-        abfahrtt_zeit2.set(2016, 9, 9, 9, 00);
-        Calendar treffpunkt_zeit2 = Calendar.getInstance();
-        treffpunkt_zeit2.set(2016, 10, 10, 8, 45);
-        //3
-        Calendar abfahrtt_zeit3 = Calendar.getInstance();
-        abfahrtt_zeit3.set(2016, 8, 8, 8, 00);
-        Calendar treffpunkt_zeit3 = Calendar.getInstance();
-        treffpunkt_zeit3.set(2016, 10, 10, 8, 45);
 
 
-
-
-        /*Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", "qwertz", "qwertz", "Uni", "Wolfsburg", 1);
-        Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", "qwertz", "qwertz", "Sportplatz", "Sportplatz", 1);
-        Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", "qwertz", "qwertz", "Bahnhof", "Hannover", 1);*/
+        /**Appointment gapm1 = new Appointment(1, "Termin1", "testgrp1", "qwertz", "qwertz", "Uni", "Wolfsburg", 1);
+        *Appointment gapm2 = new Appointment(2, "Termin2", "testgrp1", "qwertz", "qwertz", "Sportplatz", "Sportplatz", 1);
+        *Appointment gapm3 = new Appointment(3, "Termin3", "testgrp1", "qwertz", "qwertz", "Bahnhof", "Hannover", 1);
          ArrayList<Appointment> apmlist = new ArrayList<Appointment>();
-       /* apmlist.add(gapm1);
+        apmlist.add(gapm1);
         apmlist.add(gapm2);
-        apmlist.add(gapm3);*/
+        apmlist.add(gapm3);
         AppointmentAdapter appointmentAdapter = new AppointmentAdapter( getActivity() ,R.layout.item_row, apmlist);
        // createAppointmentOverview(apmlist);
         listView = (ListView) view.findViewById(R.id.apmListView);
         View header = (View) getActivity().getLayoutInflater().inflate(R.layout.header_row, null);
         // listView.addHeaderView(header);
-        listView.setAdapter(appointmentAdapter);
+        listView.setAdapter(appointmentAdapter);*/
+
+
+
+
+        //loadAppointmentList();
+        //createReceiver();
     }
 
-    /**
-     * Creating for each Appointment a linearLayout
-     *
-     * @param apmlist list of Appointments which should be displayed
-
-    public void createAppointmentOverview(final List<Appointment> apmlist) {
-        Log.i(TAG, "createGroup");
-
-        RelativeLayout relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.relativelayoutGeneralTermine);
-
-        LinearLayout[] verticalLayoutMain = new LinearLayout[apmlist.size()];
-        LinearLayout[] verticalHeadlineLayout = new LinearLayout[apmlist.size()];
-        LinearLayout[] verticalContentLayout1 = new LinearLayout[apmlist.size()];
-        LinearLayout[] verticalContentLayout2 = new LinearLayout[apmlist.size()];
-        RelativeLayout[] relativeLayoutWrapper = new RelativeLayout[apmlist.size()];
-
-        int i = 0;
-        while (i < apmlist.size()) {
-
-            relativeLayoutWrapper[i] = new RelativeLayout(getActivity());
-            relativeLayoutWrapper[i].setId(apmlist.size() + 1 + i);
-            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params2.setMargins(0, 0, 0, 30);
-            if (i > 0) {
-                params2.addRule(RelativeLayout.BELOW, apmlist.size() + i);
-                relativeLayoutWrapper[i].setLayoutParams(params2);
-            } else {
-                relativeLayoutWrapper[i].setLayoutParams(params2);
+    public void createReceiver() {
+        updateappointmentlist = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                System.out.println("update in appointment fired");
+                loadAppointmentList();
             }
+        };
+        registerReceiver();
+    }
 
-            relativeLayoutWrapper[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO Onclick farbe ändern
-                    Log.i(TAG, apmlist.get(v.getId() - apmlist.size() - 1).getName());
-                    DateFormat dfm = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-                    Intent intent = new Intent(getActivity(), AppointmentDetailActivity.class);
-                    intent.putExtra("name", apmlist.get(v.getId() - apmlist.size() - 1).getName());
-                    intent.putExtra("startingtime", dfm.format(apmlist.get(v.getId() - apmlist.size() - 1).getAbfahrzeit()));
-                    intent.putExtra("meetingpoint", apmlist.get(v.getId() - apmlist.size() - 1).getTreffpunkt());
-                    intent.putExtra("meetingtime", dfm.format(apmlist.get(v.getId() - apmlist.size() - 1).getTreffpunkt_zeit()));
-                    intent.putExtra("destination", apmlist.get(v.getId() - apmlist.size() - 1).getZielort());
-                    startActivity(intent);
-                }
-            });
-
-
-            verticalLayoutMain[i] = new LinearLayout(getActivity());
-            verticalLayoutMain[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 0, 2200);
-            verticalLayoutMain[i].setLayoutParams(params);
-
-            verticalLayoutMain[i].setOrientation(LinearLayout.VERTICAL);
-            verticalLayoutMain[i].setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.darkblueGrey));
-            verticalLayoutMain[i].setBackgroundResource(R.drawable.boxes_background);
-
-            verticalHeadlineLayout[i] = new LinearLayout(getActivity());
-            verticalHeadlineLayout[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
-            verticalHeadlineLayout[i].setOrientation(LinearLayout.VERTICAL);
-
-
-            verticalContentLayout1[i] = new LinearLayout(getActivity());
-            verticalContentLayout1[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
-            verticalContentLayout1[i].setOrientation(LinearLayout.VERTICAL);
-
-            verticalContentLayout2[i] = new LinearLayout(getActivity());
-            verticalContentLayout2[i].setLayoutParams((new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)));
-            verticalContentLayout2[i].setOrientation(LinearLayout.VERTICAL);
-
-
-            TextView nametxt = new TextView(getActivity());
-            TextView membercounttxt = new TextView(getActivity());
-            TextView admintxt = new TextView(getActivity());
-
-            verticalHeadlineLayout[i].setPadding(50, 10, 0, 0);
-            verticalContentLayout1[i].setPadding(50, 0, 0, 0);
-            verticalContentLayout2[i].setPadding(50, 0, 0, 25);
-
-            nametxt.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
-            membercounttxt.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
-            admintxt.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
-
-            nametxt.setText(getString(R.string.apm_name, apmlist.get(i).getName()));
-            DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-            membercounttxt.setText(getString(R.string.treffpunkt_zeit, df.format(apmlist.get(i).getTreffpunkt_zeit())));
-            admintxt.setText(getString(R.string.treffpunkt_ort, apmlist.get(i).getTreffpunkt()));
-
-            nametxt.setTextSize(25);
-            membercounttxt.setTextSize(20);
-            admintxt.setTextSize(20);
-
-            verticalHeadlineLayout[i].addView(nametxt);
-            verticalContentLayout1[i].addView(membercounttxt);
-            verticalContentLayout2[i].addView(admintxt);
-
-            verticalLayoutMain[i].addView(verticalHeadlineLayout[i]);
-            verticalLayoutMain[i].addView(verticalContentLayout1[i]);
-            verticalLayoutMain[i].addView(verticalContentLayout2[i]);
-            relativeLayoutWrapper[i].addView(verticalLayoutMain[i]);
-            relativeLayout.addView(relativeLayoutWrapper[i]);
-
-            i++;
+    private void registerReceiver() {
+        if (!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateappointmentlist, new IntentFilter("updategroupappointments"));
+            isReceiverRegistered = true;
         }
-    }*/
+    }
+
+    private void unregisterReceiver() {
+        if (isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updateappointmentlist);
+            isReceiverRegistered = false;
+        }
+    }
 
 
+    private void loadAppointmentList() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
+        SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String uid = prefs.getString("userid", "");
+        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAllAppointments();
+
+
+        if (appointmentlist.size() > 0) {
+            createAppointments(appointmentlist);
+        } else {
+            CharSequence text = "Keine Termine!";
+            Toast toast = Toast.makeText(FragmentGeneralTermineActivity.this.getActivity(), text, Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    public void createAppointments(ArrayList<de.dataobjects.Appointment> appointmentArrayList) {
+        Log.i(TAG, "createAppointments");
+        this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row, appointmentArrayList);
+        this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
+        this.listView.setAdapter(appointmentAdapter);
+    }
 }

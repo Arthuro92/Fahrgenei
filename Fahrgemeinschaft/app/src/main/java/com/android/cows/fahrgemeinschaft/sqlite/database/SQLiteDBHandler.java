@@ -61,6 +61,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String GET_HIGHEST_TASKID_2 = " AND aid = ";
     private static final String GET_HIGHEST_TASKID_3 = " ORDER BY taskId DESC LIMIT 1 ";
 
+    private static final String GET_MY_APPOINTMENTS = "SELECT * FROM is_in_appointment WHERE uid = ";
+    private static final String GET_ALL_APPOINTMENTS = "SELECT * FROM appointments";
+
+
 
 
     private static final String DELETE_USER_IN_GROUP1 ="DELETE FROM is_in_group WHERE gid = ";
@@ -289,6 +293,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Gibt eine ArrayList mit alle Termine einer bestimmten Gruppe  aus
+     * @param gid
+     * @return appointmentArrayList
+     */
 
     public ArrayList<de.dataobjects.Appointment> getAppointments(String gid) {
         ArrayList<de.dataobjects.Appointment> appointmentArrayList = new ArrayList<de.dataobjects.Appointment>();
@@ -305,6 +314,78 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
         return appointmentArrayList;
     }
+
+
+    public ArrayList<de.dataobjects.Appointment> getAllAppointments() {
+        ArrayList<de.dataobjects.Appointment> appointmentArrayList = new ArrayList<de.dataobjects.Appointment>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_ALL_APPOINTMENTS, null);
+        cur.moveToFirst();
+        while (!cur.isAfterLast()) {
+            if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+                appointmentArrayList.add(JsonCollection.jsonToAppointment(cur.getString(cur.getColumnIndex("JsonInString"))));
+                Log.i(TAG, "getAppointments " + cur.getString(cur.getColumnIndex("JsonInString")));
+            }
+            cur.moveToNext();
+        }
+        db.close();
+        return appointmentArrayList;
+    }
+
+    /**
+     * Gibt ein ArrayList aus mit allen Terminen meiner Gruppen aus
+     * @param uid
+     * @return appointmentArrayList
+     */
+    public ArrayList<de.dataobjects.Appointment> getMyAppointments(String uid) {
+        ArrayList<de.dataobjects.Appointment> appointmentArrayList = new ArrayList<de.dataobjects.Appointment>();
+        SQLiteDatabase db = getWritableDatabase();
+        /**
+        Cursor cur = db.rawQuery(GET_MY_APPOINTMENTS + "'" + uid + "'", null);
+        cur.moveToFirst();
+        int columnCounter = cur.getColumnCount() - 1;
+        Log.i("DIE ERSTE AID LAUTET ", Integer.toString(cur.getInt(cur.getColumnIndex("aid"))));
+        String statment = GET_APPOINTMENT_1 + Integer.toString(cur.getInt(cur.getColumnIndex("aid")));
+
+
+        while (!cur.isLast()){
+            cur.moveToNext();
+            Log.i("DIE NEXTE AID LAUTET ", Integer.toString(cur.getInt(cur.getColumnIndex("aid"))));
+            statment = statment + " OR aid = " + cur.getInt(cur.getColumnIndex("aid"));
+        }
+        Log.i("DAS SQL LAUTET ", statment);*/
+        String statment2 = buildReturnMyAppointmentStatment(uid);
+
+        Cursor curr = db.rawQuery("SELECT * FROM appointments", null);
+        curr.moveToFirst();
+        while (!curr.isAfterLast()) {
+            if (curr.getString(curr.getColumnIndex("JsonInString")) != null) {
+                appointmentArrayList.add(JsonCollection.jsonToAppointment(curr.getString(curr.getColumnIndex("JsonInString"))));
+                Log.i(TAG, "getAppointments " + curr.getString(curr.getColumnIndex("JsonInString")));
+            }
+            curr.moveToNext();
+        }
+        db.close();
+        return appointmentArrayList;
+    }
+
+    public String buildReturnMyAppointmentStatment(String userid){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_MY_APPOINTMENTS + "'" + userid + "'", null);
+        cur.moveToFirst();
+        Log.i("DIE ERSTE AID LAUTET ", Integer.toString(cur.getInt(cur.getColumnIndex("aid"))));
+        String statment = GET_APPOINTMENT_1 + Integer.toString(cur.getInt(cur.getColumnIndex("aid")));
+
+
+        while (!cur.isLast()){
+            cur.moveToNext();
+            Log.i("DIE NEXTE AID LAUTET ", Integer.toString(cur.getInt(cur.getColumnIndex("aid"))));
+            statment = statment + " OR aid = " + cur.getInt(cur.getColumnIndex("aid"));
+        }
+        Log.i("DAS SQL LAUTET ", statment);
+        return statment;
+    }
+
 
     public de.dataobjects.Appointment getAppointment(int aid, String gid) {
         SQLiteDatabase db = getWritableDatabase();
