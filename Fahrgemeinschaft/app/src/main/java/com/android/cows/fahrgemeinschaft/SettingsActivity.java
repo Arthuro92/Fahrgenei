@@ -9,11 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -50,7 +48,31 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_settings);
         initializeVariables();
 
+        Button savebtn = (Button) findViewById(R.id.saveSettings);
+        //noinspection ConstantConditions
+        savebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo check if user filled the information fields
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                MyGcmSend gcmsender = new MyGcmSend();
+                String id = prefs.getString("userid", "");
+                String name = prefs.getString("username", "");
+                String email = prefs.getString("useremail", "");
+                String token = prefs.getString("usertoken", "");
 
+
+                User user = new User(id, token, name, email,true, 3);
+                SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(SettingsActivity.this, null);
+                sqLiteDBHandler.addUser(user);
+                gcmsender.send("user", "registration", user, SettingsActivity.this);
+                prefs.edit().putBoolean("userprofile",true).apply();
+                Intent intent = new Intent(SettingsActivity.this, GeneralTabsActivity.class);
+                startActivity(intent);
+            }
+
+
+        });
       /*  spinner = (Spinner)findViewById(R.id.sitzAnzahl_spinner);
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,paths);
@@ -68,18 +90,18 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 TextAnzahlPlaetze.setText("Covered: " + progress + "/" + seekBar.getMax());
-                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
             }
         });
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);

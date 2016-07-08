@@ -54,7 +54,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText groupname = (EditText) findViewById(R.id.groupname);
-                if (!checkRegEx(groupname.getText().toString())) {
+                if (checkRegEx(groupname.getText().toString())) {
                     Toast.makeText(CreateGroupActivity.this, "Kein gültiger Gruppenname!", Toast.LENGTH_LONG).show();
                 } else {
 
