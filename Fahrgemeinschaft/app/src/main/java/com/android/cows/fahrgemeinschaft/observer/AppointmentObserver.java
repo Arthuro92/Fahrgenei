@@ -9,8 +9,12 @@ import android.util.Log;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
+import java.util.ArrayList;
+
 import de.dataobjects.Appointment;
 import de.dataobjects.JsonCollection;
+import de.dataobjects.UserInAppointment;
+import de.dataobjects.UserInGroup;
 
 /**
  * Created by david on 24.05.2016.
@@ -53,6 +57,7 @@ public class AppointmentObserver implements MessageObserver {
                     break;
                 case "newdrivers":
                     Log.i(TAG, "New Drivers");
+                    updateLocalNewDrivers();
                     break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
@@ -62,6 +67,37 @@ public class AppointmentObserver implements MessageObserver {
                     break;
             }
         }
+    }
+
+    private void updateLocalNewDrivers() {
+        String[] solutionarray = JsonCollection.jsonToStringArray(this.payload.getString("content"));
+        ArrayList<UserInGroup> userInGroupArrayListOld = JsonCollection.jsonToUserInGroupList(solutionarray[0]);
+        ArrayList<UserInAppointment> userInAppointmentArrayListOld = JsonCollection.jsonToUserInAppointmentList(solutionarray[1]);
+        ArrayList<UserInGroup> userInGroupArrayList = JsonCollection.jsonToUserInGroupList(solutionarray[2]);
+        ArrayList<UserInAppointment> userInAppointmentArrayList = JsonCollection.jsonToUserInAppointmentList(solutionarray[3]);
+
+        Log.i(TAG, userInAppointmentArrayListOld.size() + "");
+        Log.i(TAG, userInGroupArrayListOld.size() + "");
+        Log.i(TAG, userInAppointmentArrayList.size() + "");
+        Log.i(TAG, userInGroupArrayList.size() + "");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+
+        sqLiteDBHandler.addAppointment(JsonCollection.jsonToAppointment(solutionarray[4]));
+        sendLocalUpdateBroadcast();
+
+        for(UserInGroup userInGroup : userInGroupArrayListOld) {
+            sqLiteDBHandler.addIsInGroup(userInGroup);
+        }
+        for(UserInAppointment userInAppointment : userInAppointmentArrayListOld) {
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
+        }
+        for(UserInGroup userInGroup : userInGroupArrayList) {
+            sqLiteDBHandler.addIsInGroup(userInGroup);
+        }
+        for(UserInAppointment userInAppointment : userInAppointmentArrayList) {
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
+        }
+
     }
 
     private void updateUserInAppointment() {

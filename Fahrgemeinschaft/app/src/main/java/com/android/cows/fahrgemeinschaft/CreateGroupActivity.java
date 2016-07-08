@@ -64,7 +64,6 @@ public class CreateGroupActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
 
                     Groups newgroup = new Groups(groupname.getText().toString(),
-                            1,
                             prefs.getString("userid", ""),
                             prefs.getString("username", ""),
                             groupname.getText().toString() + prefs.getString("userid", ""));

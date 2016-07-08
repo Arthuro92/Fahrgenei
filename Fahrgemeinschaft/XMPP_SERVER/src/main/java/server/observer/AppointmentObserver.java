@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.Algorithm.Algorithmus;
+import server.Algorithm.Algorithm;
 import server.errors.ErrorMessages;
 import server.smackccsclient.SmackCcsClient;
 
@@ -74,8 +74,8 @@ public class AppointmentObserver extends RepositorieConnector implements Message
     }
 
     private void calculateNewDrivers() {
-        Algorithmus algorithmus = new Algorithmus();
-        algorithmus.calculateDrivers(JsonCollection.userInAppointment(this.payload.get("content")));
+        Algorithm algorithm = new Algorithm();
+        algorithm.calculateDrivers(JsonCollection.userInAppointment(this.payload.get("content")));
     }
 
     private void sendParticipantChangeSuccess() {

@@ -1,9 +1,11 @@
 package server.Algorithm;
 
+import com.example.dataobjects.Appointment;
 import com.example.dataobjects.JsonCollection;
 import com.example.dataobjects.User;
 import com.example.dataobjects.UserInAppointment;
 import com.example.dataobjects.UserInGroup;
+import com.example.repositories.keys.AppointmentId;
 import com.example.repositories.keys.UserInGroupId;
 
 import org.jivesoftware.smack.SmackException;
@@ -19,13 +21,13 @@ import server.smackccsclient.SmackCcsClient;
 /**
  * Created by Lennart on 07.07.2016.
  */
-public class Algorithmus extends RepositorieConnector  {
-    private static final Logger logger = Logger.getLogger("Algorithmus ");
+public class Algorithm extends RepositorieConnector  {
+    private static final Logger logger = Logger.getLogger("Algorithm ");
     private UserInAppointment userInAppointment;
     private ArrayList<UserInAppointment> userInAppointmentArrayListOldDrivers = new ArrayList<UserInAppointment>();
     private ArrayList<UserInGroup> userInGroupArrayListOld = new ArrayList<UserInGroup>();
 
-    public Algorithmus() {
+    public Algorithm() {
         initRepositories();
     }
 
@@ -62,6 +64,9 @@ public class Algorithmus extends RepositorieConnector  {
         ArrayList<UserInAppointment> userInAppointmentArrayList = userInAppointmentRepository.findByGidAndAid(userInAppointment.getGid(), userInAppointment.getAid());
         ArrayList<User> userArrayList = new ArrayList<>();
         ArrayList<UserInGroup> userInGroupArrayList = new ArrayList<>();
+        AppointmentId appointmentId = new AppointmentId(userInAppointment.getGid(), userInAppointment.getAid());
+        Appointment appointment = appointmentRepository.findOne(appointmentId);
+
         int membercounter = 0;
 
         for(UserInAppointment userInAppointment1 : userInAppointmentArrayList) {
@@ -73,6 +78,7 @@ public class Algorithmus extends RepositorieConnector  {
                 userInGroupArrayList.add(userInGroupRepository.findOne(userInGroupId));
             }
         }
+        appointment.setMembers(membercounter);
 
         //noinspection unchecked
         Collections.sort(userInGroupArrayList);
@@ -86,13 +92,14 @@ public class Algorithmus extends RepositorieConnector  {
             userInGroupArrayList.remove(0);
             drivers.add(user);
             membercounter -= user.getFreeSeats();
+            appointment.setFreeSeats(appointment.getFreeSeats() + user.getFreeSeats());
         }
 
         printSolution(drivers, membercounter);
-        saveSolution(drivers);
+        saveSolution(drivers, appointment);
     }
 
-    private void saveSolution(ArrayList<User> drivers) {
+    private void saveSolution(ArrayList<User> drivers, Appointment appointment) {
         ArrayList<UserInAppointment> userInAppointmentArrayList = new ArrayList<>();
         ArrayList<UserInGroup> userInGroupArrayList = new ArrayList<>();
 
@@ -108,16 +115,19 @@ public class Algorithmus extends RepositorieConnector  {
             userInGroupRepository.save(userInGroup);
             userInAppointmentRepository.save(userInAppointment);
         }
-        sendSolution(userInAppointmentArrayList, userInGroupArrayList);
+        appointmentRepository.save(appointment);
+
+        sendSolution(userInAppointmentArrayList, userInGroupArrayList, appointment);
     }
 
-    private void sendSolution(ArrayList<UserInAppointment> userInAppointments, ArrayList<UserInGroup> userInGroups) {
+    private void sendSolution(ArrayList<UserInAppointment> userInAppointments, ArrayList<UserInGroup> userInGroups, Appointment appointment) {
         try {
-            String[] solutionarray = new String[4];
+            String[] solutionarray = new String[5];
             solutionarray[0] = JsonCollection.objectToJson(userInGroupArrayListOld);
             solutionarray[1] = JsonCollection.objectToJson(userInAppointmentArrayListOldDrivers);
             solutionarray[2] = JsonCollection.objectToJson(userInGroups);
             solutionarray[3] = JsonCollection.objectToJson(userInAppointments);
+            solutionarray[4] = appointment.getJsonInString();
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
             smackCcsClient.sendDownstreamMessage("appointment", "newdrivers", "/topics/" + userInAppointment.getGid(), solutionarray);
         } catch (SmackException.NotConnectedException e) {

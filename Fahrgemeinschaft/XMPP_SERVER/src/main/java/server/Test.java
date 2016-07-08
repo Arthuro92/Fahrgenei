@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.Algorithm.Algorithmus;
+import server.Algorithm.Algorithm;
 import server.smackccsclient.SmackCcsClient;
 
 /**
@@ -76,7 +76,7 @@ public class Test {
         User user4 = new User("4", "ABCDEF", "knut", "knut.land", true, 2);
         User user5 = new User("5", "ABCDEFG", "fred", "fred.land", false, 2);
 
-        Groups groups1 = new Groups("Grp 1", 4, "1", "lennart", "1");
+        Groups groups1 = new Groups("Grp 1", "1", "lennart", "1");
         UserInGroup userInGroup1 = new UserInGroup("1","1", 1);
         UserInGroup userInGroup2 = new UserInGroup("2","1", 1);
         UserInGroup userInGroup3 = new UserInGroup("3","1", 1);
@@ -113,14 +113,14 @@ public class Test {
         userInAppointmentRepository.save(userInAppointment4);
         userInAppointmentRepository.save(userInAppointment5);
 
-        Algorithmus algorithmus = new Algorithmus();
-        algorithmus.calculateDrivers(userInAppointment1);
+        Algorithm algorithm = new Algorithm();
+        algorithm.calculateDrivers(userInAppointment1);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        algorithmus.calculateDrivers(userInAppointment1);
+        algorithm.calculateDrivers(userInAppointment1);
 
     }
     public static void initRepositories() {

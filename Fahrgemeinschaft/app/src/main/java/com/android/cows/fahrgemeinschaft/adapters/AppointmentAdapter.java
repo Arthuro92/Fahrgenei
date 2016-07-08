@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
-import com.android.cows.fahrgemeinschaft.AppointmentTabsActivity;
-import com.android.cows.fahrgemeinschaft.FragmentAppointmentDetailsActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
@@ -83,6 +81,7 @@ public class AppointmentAdapter extends ArrayAdapter {
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.inv_status = (TextView)row.findViewById(R.id.inv_status);
+            holder.not_enough_drivers = (TextView)row.findViewById(R.id.notenoughdrivers);
 
             row.setTag(holder);
         } else {
@@ -90,6 +89,11 @@ public class AppointmentAdapter extends ArrayAdapter {
         }
 
         final Appointment appointment =  data.get(position);
+
+        if(appointment.getFreeSeats() < appointment.getMembers()) {
+            holder.not_enough_drivers.setVisibility(View.VISIBLE);
+        }
+
         holder.txtTitle.setText(appointment.getName());
         Log.d("UserAdapter: ","Holdername als "+appointment.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.football);
@@ -145,5 +149,6 @@ public class AppointmentAdapter extends ArrayAdapter {
         ImageView imgIcon;
         TextView txtTitle;
         TextView inv_status;
+        TextView not_enough_drivers;
     }
 }

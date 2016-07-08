@@ -19,9 +19,6 @@ public class Groups {
     private String name;
 
     @Column
-    private int membercount;
-
-    @Column
     private String adminid;
 
     @Column
@@ -33,9 +30,8 @@ public class Groups {
     public Groups() {
     }
 
-    public Groups(String name, int membercount, String adminid, String adminname, String gid) {
+    public Groups(String name, String adminid, String adminname, String gid) {
         this.name = name;
-        this.membercount = membercount;
         this.adminid = adminid;
         this.adminname = adminname;
         this.gid = gid.replaceAll("\\s","");
@@ -63,14 +59,6 @@ public class Groups {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getMembercount() {
-        return membercount;
-    }
-
-    public void setMembercount(int membercount) {
-        this.membercount = membercount;
     }
 
     public String getAdminid() {
