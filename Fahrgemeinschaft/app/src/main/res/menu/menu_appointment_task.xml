@@ -20,13 +20,4 @@
         android:icon="@drawable/ic_delete_forever_white_24dp"
         app:showAsAction="ifRoom"
         ></item>
-
-    <item
-        android:id="@+id/action_create_task"
-        android:orderInCategory="200"
-        android:title="Aufgabe anlegen"
-        android:icon="@drawable/ic_delete_forever_white_24dp"
-        app:showAsAction="never"
-        ></item>
-
 </menu>

@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -33,7 +35,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private boolean isReceiverRegistered;
     private AppCompatButton createGroupButton;
 
-
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +45,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
         createGroupButton = (AppCompatButton) findViewById(R.id.createGroupButton);
 
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Gruppe erstellen");
+
+
         createGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText groupname = (EditText) findViewById(R.id.groupname);
-                if (checkRegEx(groupname.getText().toString())) {
+                if (!checkRegEx(groupname.getText().toString())) {
                     Toast.makeText(CreateGroupActivity.this, "Kein gültiger Gruppenname!", Toast.LENGTH_LONG).show();
                 } else {
 
@@ -68,11 +75,18 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                     createReceiver();
 
+
+
                 }
             }
         });
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.create_appointment_menu, menu);
+        return true;
+    }
 
     private boolean checkRegEx(String text) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
@@ -101,6 +115,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 unregisterReceiver();
                 Intent intent2 = new Intent(CreateGroupActivity.this, GeneralTabsActivity.class);
                 startActivity(intent2);
+                finish();
             }
         };
 

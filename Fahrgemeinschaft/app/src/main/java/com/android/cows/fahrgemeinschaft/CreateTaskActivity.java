@@ -12,15 +12,18 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.dataobjects.Appointment;
 import de.dataobjects.Task;
 
 public class CreateTaskActivity extends AppCompatActivity {
@@ -29,29 +32,52 @@ public class CreateTaskActivity extends AppCompatActivity {
     private BroadcastReceiver errorReceivingAppointment;
     private ProgressBar mRegistrationProgressBar;
     private boolean isReceiverRegistered;
+    private Button createTaskButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.createTaskProgBar);
+        createTaskButton = (Button) findViewById(R.id.button123);
         mRegistrationProgressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
+
+        createTaskButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                createTask2(v);
+            }
+        });
     }
 
-    public void createTask(View view) {
+    public void createTask2(View view) {
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         EditText taskName = (EditText) findViewById(R.id.taskname);
         EditText taskDescription = (EditText) findViewById(R.id.taskdescription);
         //todo this has to come from the specific appointment
-        int aid = 1;
-        if(!checkRegEx(taskName.getText().toString()) && !checkRegEx(taskDescription.toString())) {
+        Bundle bundle = getIntent().getExtras();
+        int aid = (int) bundle.getSerializable("aid");
         String gid = prefs.getString("currentgid","");
-            //todo "1" has to come from database
-            Task newTask = new Task("1", aid, gid, taskName.toString(), taskDescription.toString(), "");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+        int tid = sqLiteDBHandler.getNextTaskID(gid, aid);
+        if(!checkRegEx(taskName.getText().toString()) && !checkRegEx(taskDescription.toString())) {
+
+          Task newTask; //= new Task("1", aid, gid, taskName.toString(), taskDescription.toString(), "");
+
+            if(tid == 0) {
+                Log.i(TAG, "no appointments, create appointment with id 1");
+                newTask = new Task(1, aid, gid, taskName.getText().toString(), taskDescription.getText().toString(), "");
+            } else {
+                tid ++;
+                Log.i(TAG, "Create Appointment with id " + aid);
+               // String taskId = Integer.toString(tid);
+                newTask = new Task(tid, aid, gid , taskName.getText().toString(), taskDescription.getText().toString(), "");
+            }
+
+
+
 
             MyGcmSend gcmsend = new MyGcmSend();
-
             gcmsend.send("task", "newtask", newTask, this);
         Log.i(TAG, "New Task created and send to server, waiting now for response");
             createReceiver();
@@ -87,8 +113,16 @@ public class CreateTaskActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
-                Intent intent2 = new Intent(CreateTaskActivity.this, GroupTabsActivity.class);
+                Intent intent2 = new Intent(CreateTaskActivity.this, AppointmentTabsActivity.class);
+                Bundle bundle = getIntent().getExtras();
+                intent2.putExtra("aid", bundle.getSerializable("aid") );
+                intent2.putExtra("name", bundle.getString("name"));
+                intent2.putExtra("startingtime", bundle.getString("startingtime"));
+                intent2.putExtra("meetingpoint", bundle.getString("meetingpoint"));
+                intent2.putExtra("meetingtime", bundle.getString("meetingtime"));
+                intent2.putExtra("destination", bundle.getString("destination"));
                 startActivity(intent2);
+                finish();
             }
         };
 

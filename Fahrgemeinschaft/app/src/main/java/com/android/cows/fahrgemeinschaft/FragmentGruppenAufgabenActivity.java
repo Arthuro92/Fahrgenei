@@ -32,9 +32,9 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Task tsk1 = new Task("1", 1, "grp1", "Trikots waschen", "Trikots müssen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
-        Task tsk2 = new Task("2", 1, "grp1", "Brötchen mitbringen", "Beim nächsten Hallenturnier bieten wir belegte Brötchen an ", "Lenni");
-        Task tsk3 = new Task("3", 1, "grp1", "Leibchen waschen", "Die Leibchen müssen auch gewaschen werden.", "Arthur");
+        Task tsk1 = new Task(1, 1, "grp1", "Trikots waschen", "Trikots müssen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
+        Task tsk2 = new Task(2, 1, "grp1", "Brötchen mitbringen", "Beim nächsten Hallenturnier bieten wir belegte Brötchen an ", "Lenni");
+        Task tsk3 = new Task(3, 1, "grp1", "Leibchen waschen", "Die Leibchen müssen auch gewaschen werden.", "Arthur");
         ArrayList<Task> tsklist = new ArrayList<Task>();
         tsklist.add(tsk1);
         tsklist.add(tsk2);

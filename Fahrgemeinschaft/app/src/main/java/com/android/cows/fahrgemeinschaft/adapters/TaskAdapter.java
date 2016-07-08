@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.FragmentAppointmentTaskActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.TaskDetailActivity;
@@ -42,7 +43,7 @@ public class TaskAdapter extends ArrayAdapter {
         return sharedPreferences.getString("username", "Blubb");
     }
 
-    private View setTaskView(View taskView, User task) {
+    private View setTaskView(View taskView, Task task) {
         return taskView;
     }
 
@@ -80,7 +81,7 @@ public class TaskAdapter extends ArrayAdapter {
         }
 
         final Task task =  data.get(position);
-        holder.nameFeld.setText(task.getTaskName());
+        holder.nameFeld.setText( "test" );/**task.getTaskName()*/
         Log.d("UserAdapter: ","Holdername als "+task.getTaskName()+" gesetzt.");
         // holder.imgIcon.setImageResource(R.drawable.user128);
         // holder.inv_status.setText("Angenommen");
@@ -91,6 +92,8 @@ public class TaskAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 Log.i(TAG, task.getTaskName() );
                 Intent intent = new Intent(context, TaskDetailActivity.class);
+                intent.putExtra("tid", task.getTaskId());
+                intent.putExtra("aid", task.getAid());
                 intent.putExtra("taskname", task.getTaskName());
                 intent.putExtra("taskdescription", task.getTaskdescription());
                 intent.putExtra("taskincharge", task.getResponsible());

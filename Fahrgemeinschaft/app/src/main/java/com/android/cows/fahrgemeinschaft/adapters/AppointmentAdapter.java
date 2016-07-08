@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
+import com.android.cows.fahrgemeinschaft.AppointmentTabsActivity;
+import com.android.cows.fahrgemeinschaft.FragmentAppointmentDetailsActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;

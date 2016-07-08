@@ -3,61 +3,77 @@ package com.android.cows.fahrgemeinschaft;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+public class AppointmentTabsActivity extends AppCompatActivity {
 
-public class AppointmentDetailActivity extends AppCompatActivity {
 
-    private static final String TAG = "AppointmentDetailActivity";
+    ViewPager viewPagerAppointment;
+    TabLayout tabLayoutAppointment;
 
-    public TextView terminName;
-    public TextView terminTreffZeit;
-    public TextView terminTreffOrt;
-    public TextView terminAbfahrtZeit;
-    public TextView terminZielOrt;
-    public Toolbar toolbar;
+    Toolbar toolbar;
+
     private Context context = GlobalAppContext.getAppContext();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appointment_detail);
+        setContentView(R.layout.activity_appointment_tabs);
 
-        toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
+        viewPagerAppointment = (ViewPager) findViewById(R.id.viewpagerAppointment);
 
-        //TextView terminName = (TextView) findViewById(R.id.terminName);
-        TextView terminTreffZeit = (TextView) findViewById(R.id.terminTreffZeit);
-        TextView terminTreffOrt = (TextView) findViewById(R.id.terminTreffOrt);
-        TextView terminAbfahrtZeit = (TextView) findViewById(R.id.terminAbfahrtZeit);
-        TextView terminZielOrt = (TextView) findViewById(R.id.terminZielOrt);
+        final ViewPagerAdapterAppointmentTabs viewPagerAdapter = new ViewPagerAdapterAppointmentTabs(getSupportFragmentManager());
+        viewPagerAppointment.setAdapter(viewPagerAdapter);
 
-        Bundle bundle = getIntent().getExtras();
-      //  Calendar startingtimeCal = (Calendar) bundle.get("startingtime");
-      //  Calendar meetingtimeCal = (Calendar) bundle.get("meetingtime");
+        Bundle bundle = this.getIntent().getExtras();
 
-       // SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy hh:mm")
-        //String startingTimeFormated = format1.format( startingtimeCal.getTime()) +" Uhr";
-        //String meetingtimeFormated = format1.format( meetingtimeCal.getTime()) +" Uhr";
+      /**  System.out.println("Audgabe" + bundle.getString("startingtime"));
+        System.out.println("Audgabe" + bundle.getString("meetingpoint"));
+        System.out.println("Audgabe" + bundle.getString("meetingtime"));
+        System.out.println("Audgabe" + bundle.getString("destination"));
+*/
+        tabLayoutAppointment = (TabLayout) findViewById(R.id.tablayoutAppointment);
+        tabLayoutAppointment.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayoutAppointment.setupWithViewPager(viewPagerAppointment);
 
-//        terminName.setText(bundle.getString("name"));
-        terminAbfahrtZeit.setText(bundle.getString("startingtime"));
-        terminTreffOrt.setText(bundle.getString("meetingpoint"));
-        terminTreffZeit.setText(bundle.getString("meetingtime"));
-        terminZielOrt.setText(bundle.getString("destination"));
+        tabLayoutAppointment.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                viewPagerAppointment.setCurrentItem(tab.getPosition());
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         setTitle(bundle.getString("name"));
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,7 +102,6 @@ public class AppointmentDetailActivity extends AppCompatActivity {
             intent.putExtra("destination", bundle.getString("destination"));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
-            finish();
             return true;
         }
 
@@ -98,12 +113,22 @@ public class AppointmentDetailActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             int a = (int) bundle.getSerializable("aid");
             sqLiteDBHandler.deleteAppoinment(a);
-            Intent intent = new Intent(AppointmentDetailActivity.this, GroupTabsActivity.class);
+            Intent intent = new Intent(AppointmentTabsActivity.this, GroupTabsActivity.class);
             startActivity(intent);
+        }
 
+        if ( id ==R.id.action_create_task){
+            Intent intent = new Intent(AppointmentTabsActivity.this, CreateTaskActivity.class);
+            Bundle bundle = getIntent().getExtras();
+            intent.putExtra("aid", bundle.getSerializable("aid") );
+            intent.putExtra("name", bundle.getString("name"));
+            intent.putExtra("startingtime", bundle.getString("startingtime"));
+            intent.putExtra("meetingpoint", bundle.getString("meetingpoint"));
+            intent.putExtra("meetingtime", bundle.getString("meetingtime"));
+            intent.putExtra("destination", bundle.getString("destination"));
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 
 }
-

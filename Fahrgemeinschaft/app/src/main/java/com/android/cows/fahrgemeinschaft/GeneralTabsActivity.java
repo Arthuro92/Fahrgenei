@@ -3,6 +3,7 @@ package com.android.cows.fahrgemeinschaft;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.cryptography.AsymmetricEncryptionClient;
 
@@ -19,6 +21,7 @@ public class GeneralTabsActivity extends AppCompatActivity {
 
     ViewPager viewPagerGeneral;
     TabLayout tabLayoutGeneral;
+    boolean doubleBackToExitPressedOnce = false;
 
     Toolbar toolbar;
 
@@ -87,11 +90,30 @@ public class GeneralTabsActivity extends AppCompatActivity {
         }
 
         if (id== R.id.action_search){
-            final Dialog dialog = new Dialog(getApplicationContext());
-            dialog.setTitle("Title...");
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            this.moveTaskToBack(true);
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }

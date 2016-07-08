@@ -131,6 +131,15 @@ public class GroupTabsActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        if(id == R.id.leave_group) {
+            //@TODO Lenni oder David! Bitte vom Server löschen.
+            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+            String gid = prefs.getString("currentgid", "");
+            sqLiteDBHandler.deleteUserInGroup(gid ,prefs.getString("userid", "") );
+            Intent intent = new Intent(GroupTabsActivity.this, GeneralTabsActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 
