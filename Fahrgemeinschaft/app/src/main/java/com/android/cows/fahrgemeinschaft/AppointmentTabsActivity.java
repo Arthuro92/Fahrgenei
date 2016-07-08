@@ -8,11 +8,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+
+import de.dataobjects.Groups;
+import de.dataobjects.UserInAppointment;
 
 public class AppointmentTabsActivity extends AppCompatActivity {
 
@@ -41,11 +44,7 @@ public class AppointmentTabsActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
 
-      /**  System.out.println("Audgabe" + bundle.getString("startingtime"));
-        System.out.println("Audgabe" + bundle.getString("meetingpoint"));
-        System.out.println("Audgabe" + bundle.getString("meetingtime"));
-        System.out.println("Audgabe" + bundle.getString("destination"));
-*/
+
         tabLayoutAppointment = (TabLayout) findViewById(R.id.tablayoutAppointment);
         tabLayoutAppointment.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayoutAppointment.setupWithViewPager(viewPagerAppointment);
@@ -79,6 +78,24 @@ public class AppointmentTabsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_appointment_detail, menu);
+
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String gid = prefs.getString("currentgid", "");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+
+        Groups groups = sqLiteDBHandler.getGroup(gid);
+        if(!groups.getAdminid().equals(prefs.getString("userid", "")) && groups.getSubstitute() == null ||groups.getSubstitute() != null && !groups.getSubstitute().equals(prefs.getString("userid",""))) {
+            MenuItem adduser = menu.findItem(R.id.action_edit_event);
+            MenuItem deletegrp = menu.findItem(R.id.action_delete_event);
+            MenuItem addtask = menu.findItem(R.id.action_create_task);
+
+            adduser.setVisible(false);
+            deletegrp.setVisible(false);
+            addtask.setVisible(false);
+        }
+
+
+
         return true;
     }
 
@@ -108,7 +125,6 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         if (id == R.id.action_delete_event) {
             //@TODO Lenni oder David! Bitte vom Server löschen.
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             //String gid = prefs.getString("currentgid", "");
             Bundle bundle = getIntent().getExtras();
             int a = (int) bundle.getSerializable("aid");
@@ -126,6 +142,21 @@ public class AppointmentTabsActivity extends AppCompatActivity {
             intent.putExtra("meetingpoint", bundle.getString("meetingpoint"));
             intent.putExtra("meetingtime", bundle.getString("meetingtime"));
             intent.putExtra("destination", bundle.getString("destination"));
+            startActivity(intent);
+        }
+        if(id == R.id.leave_appointment) {
+            Bundle bundle = getIntent().getExtras();
+            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+
+            UserInAppointment userInAppointment = new UserInAppointment(bundle.getInt("aid"), (String) prefs.getString("currentgid",""), prefs.getString("userid", ""), 0 );
+            userInAppointment.setIsParticipant(0);
+            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
+
+            MyGcmSend myGcmSend = new MyGcmSend();
+            myGcmSend.send("appointment", "participantchange", userInAppointment, this);
+
+            Intent intent =  new Intent(AppointmentTabsActivity.this, GroupTabsActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

@@ -29,4 +29,10 @@
         app:showAsAction="never"
         ></item>
 
+    <item
+        android:id="@+id/leave_appointment"
+        android:orderInCategory="1000"
+        android:title="An Termin nicht mehr teilnehmen"
+        app:showAsAction="never" />
+
 </menu>

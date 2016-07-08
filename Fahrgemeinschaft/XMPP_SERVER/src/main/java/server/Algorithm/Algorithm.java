@@ -71,11 +71,13 @@ public class Algorithm extends RepositorieConnector  {
 
         for(UserInAppointment userInAppointment1 : userInAppointmentArrayList) {
             membercounter++;
-            User user = userRepository.findOne(userInAppointment1.getUid());
-            if(user.isDriver() && !userInAppointment1.isDriver()) {
-                userArrayList.add(user);
-                UserInGroupId userInGroupId = new UserInGroupId(userInAppointment1.getUid(), userInAppointment1.getGid());
-                userInGroupArrayList.add(userInGroupRepository.findOne(userInGroupId));
+            if (userInAppointment1.getIsParticipant() == 1) {
+                User user = userRepository.findOne(userInAppointment1.getUid());
+                if (user.isDriver() && !userInAppointment1.isDriver()) {
+                    userArrayList.add(user);
+                    UserInGroupId userInGroupId = new UserInGroupId(userInAppointment1.getUid(), userInAppointment1.getGid());
+                    userInGroupArrayList.add(userInGroupRepository.findOne(userInGroupId));
+                }
             }
         }
         appointment.setMembers(membercounter);

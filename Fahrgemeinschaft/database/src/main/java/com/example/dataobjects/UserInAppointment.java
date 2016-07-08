@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @IdClass(UserInAppointmentId.class)
-@Table(name= "userInAppointment")
+@Table(name= "jsonToUserInAppointment")
 public class UserInAppointment implements Serializable {
     @Id
     private int aid;
@@ -30,7 +30,8 @@ public class UserInAppointment implements Serializable {
     @Column
     private int isParticipant;
 
-    @Column boolean isDriver = false;
+    @Column
+    boolean isDriver = false;
 
     public UserInAppointment() {
     }

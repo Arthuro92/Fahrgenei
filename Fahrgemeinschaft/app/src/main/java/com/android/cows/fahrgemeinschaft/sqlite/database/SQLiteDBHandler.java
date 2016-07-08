@@ -3,6 +3,7 @@ package com.android.cows.fahrgemeinschaft.sqlite.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -21,7 +22,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 129;
+    private static final int DATABASE_VERSION = 134;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -267,16 +268,20 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
     public User getUser(String uid) {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cur = db.rawQuery(GET_USER + "'" + uid + "'", null);
-        cur.moveToFirst();
-        if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            Cursor cur = db.rawQuery(GET_USER + "'" + uid + "'", null);
+            cur.moveToFirst();
+            if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+                db.close();
+                Log.i(TAG, "getUser " + cur.getString(cur.getColumnIndex("JsonInString")));
+                return JsonCollection.jsonToUser(cur.getString(cur.getColumnIndex("JsonInString")));
+            }
             db.close();
-            Log.i(TAG, "getUser " + cur.getString(cur.getColumnIndex("JsonInString")));
-            return JsonCollection.jsonToUser(cur.getString(cur.getColumnIndex("JsonInString")));
+            return null;
+        } catch (CursorIndexOutOfBoundsException e) {
+            return null;
         }
-        db.close();
-        return null;
     }
 
     public void addAppointment(de.dataobjects.Appointment appointment) {
@@ -402,15 +407,18 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return null;
     }
 
-    public ArrayList<UserInAppointment> getUsersInAppointemnt(int aid, String gid ) {
+    public ArrayList<UserInAppointment> getDriversInAppointment(int aid, String gid ) {
         ArrayList<UserInAppointment> userInAppointmentArrayList = new ArrayList<UserInAppointment>();
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_USER_IN_APPOINTMENT_1 + "'" + aid + "'" + GET_USER_IN_APPOINTMENT_2 + "'" + gid + "'", null);
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
             if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
-                userInAppointmentArrayList.add(JsonCollection.jsonToUserInAppointment(cur.getString(cur.getColumnIndex("JsonInString"))));
-                Log.i(TAG, "getAppointments " + cur.getString(cur.getColumnIndex("JsonInString")));
+                UserInAppointment userInAppointment = JsonCollection.jsonToUserInAppointment(cur.getString(cur.getColumnIndex("JsonInString")));
+                if(userInAppointment.isDriver() && userInAppointment.getIsParticipant() == 1) {
+                    userInAppointmentArrayList.add(userInAppointment);
+                    Log.i(TAG, "getAppointments " + cur.getString(cur.getColumnIndex("JsonInString")));
+                }
             }
             cur.moveToNext();
         }

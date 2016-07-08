@@ -39,14 +39,6 @@ public class AppointmentObserver extends RepositorieConnector implements Message
 
             if (this.payload.get("task_category").equals("appointment")) {
                 switch (this.payload.get("task")) {
-
-                    case "getsingleappointment":
-                        logger.log(Level.INFO, "In getSingleAppointment");
-                        break;
-
-                    case "getallappointments":
-                        logger.log(Level.INFO, "In getAllAppointments");
-                        break;
                     case "insertappointment":
                         logger.log(Level.INFO, "In insertappointment");
                         createAppointment();
@@ -54,6 +46,7 @@ public class AppointmentObserver extends RepositorieConnector implements Message
                     case "participantchange":
                         logger.log(Level.INFO, "Changing Participant");
                         changeParticipant();
+                        break;
                     default:
                         break;
                 }
@@ -63,7 +56,7 @@ public class AppointmentObserver extends RepositorieConnector implements Message
 
     private void changeParticipant() {
         try {
-            UserInAppointment userInAppointment = JsonCollection.userInAppointment(this.payload.get("content"));
+            UserInAppointment userInAppointment = JsonCollection.jsonToUserInAppointment(this.payload.get("content"));
             userInAppointmentRepository.save(userInAppointment);
             sendParticipantChangeSuccess();
             calculateNewDrivers();
@@ -75,13 +68,14 @@ public class AppointmentObserver extends RepositorieConnector implements Message
 
     private void calculateNewDrivers() {
         Algorithm algorithm = new Algorithm();
-        algorithm.calculateDrivers(JsonCollection.userInAppointment(this.payload.get("content")));
+        algorithm.calculateDrivers(JsonCollection.jsonToUserInAppointment(this.payload.get("content")));
     }
 
     private void sendParticipantChangeSuccess() {
         try {
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
-            smackCcsClient.sendDownstreamMessage("appointment", "updatingparticipantsuccess", (String) jsonObject.get("from"), JsonCollection.userInAppointment(this.payload.get("content")));
+            UserInAppointment userInAppointment = JsonCollection.jsonToUserInAppointment(this.payload.get("content"));
+            smackCcsClient.sendDownstreamMessage("appointment", "updatingparticipant", "/topics/" + userInAppointment.getGid(), userInAppointment);
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }

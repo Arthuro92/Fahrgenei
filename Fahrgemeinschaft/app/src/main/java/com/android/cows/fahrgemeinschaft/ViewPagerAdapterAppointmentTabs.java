@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class ViewPagerAdapterAppointmentTabs extends FragmentPagerAdapter {
 
-    String[] tabtitlearrayAppointment = {"Termindetails", "Aufgaben"};
+    String[] tabtitlearrayAppointment = {"Termindetails", "Fahrer", "Aufgaben"};
 
     public ViewPagerAdapterAppointmentTabs(FragmentManager manager) {
 
@@ -24,6 +24,8 @@ public class ViewPagerAdapterAppointmentTabs extends FragmentPagerAdapter {
             case 0:
                 return new FragmentAppointmentDetailsActivity();
             case 1:
+                return new FragmentAppointmentDriverActivity();
+            case 2:
                 return new FragmentAppointmentTaskActivity();
         }
         return null;
@@ -31,7 +33,7 @@ public class ViewPagerAdapterAppointmentTabs extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override

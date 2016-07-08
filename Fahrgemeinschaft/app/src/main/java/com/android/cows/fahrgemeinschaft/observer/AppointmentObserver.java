@@ -50,8 +50,8 @@ public class AppointmentObserver implements MessageObserver {
                     updateLocalDatabase();
                     sendLocalUpdateBroadcast();
                     break;
-                case "updatingparticipantsuccess":
-                    Log.i(TAG, "Updating Participant Success");
+                case "updatingparticipant":
+                    Log.i(TAG, "Updating Participant");
                     updateUserInAppointment();
                     sendLocalUpdateBroadcast();
                     break;
@@ -76,10 +76,10 @@ public class AppointmentObserver implements MessageObserver {
         ArrayList<UserInGroup> userInGroupArrayList = JsonCollection.jsonToUserInGroupList(solutionarray[2]);
         ArrayList<UserInAppointment> userInAppointmentArrayList = JsonCollection.jsonToUserInAppointmentList(solutionarray[3]);
 
-        Log.i(TAG, userInAppointmentArrayListOld.size() + "");
-        Log.i(TAG, userInGroupArrayListOld.size() + "");
-        Log.i(TAG, userInAppointmentArrayList.size() + "");
-        Log.i(TAG, userInGroupArrayList.size() + "");
+        Log.i(TAG, "Old User In Appointment " + userInAppointmentArrayListOld.size() + "");
+        Log.i(TAG, "Old User In Group " + userInGroupArrayListOld.size() + "");
+        Log.i(TAG, "new User In Appointment " + userInAppointmentArrayList.size() + "");
+        Log.i(TAG, "new User in Group" + userInGroupArrayList.size() + "");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
 
         sqLiteDBHandler.addAppointment(JsonCollection.jsonToAppointment(solutionarray[4]));
