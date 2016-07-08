@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
+import com.android.cows.fahrgemeinschaft.AppointmentTabsActivity;
+import com.android.cows.fahrgemeinschaft.FragmentAppointmentDetailsActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 
@@ -93,7 +95,7 @@ public class AppointmentAdapter extends ArrayAdapter {
 
         row.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(context, AppointmentDetailActivity.class);
+                Intent intent = new Intent(context, AppointmentTabsActivity.class);
                 intent.putExtra("aid", appointment.getAid());
                 intent.putExtra("name", appointment.getName());
                 intent.putExtra("startingtime", appointment.getAbfahrzeit());
@@ -128,4 +130,6 @@ public class AppointmentAdapter extends ArrayAdapter {
         TextView txtTitle;
         TextView inv_status;
     }
+
+
 }

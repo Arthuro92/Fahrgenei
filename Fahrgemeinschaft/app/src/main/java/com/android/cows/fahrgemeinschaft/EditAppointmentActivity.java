@@ -71,6 +71,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
 
 
                 startActivity(intent);
+                finish();
             }
         });
     }

@@ -21,7 +21,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 130;
+    private static final int DATABASE_VERSION = 126;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -39,7 +39,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                     "FOREIGN KEY(gid) REFERENCES groups(gid) " +
                     "PRIMARY KEY(uid, gid));" ;
     private static final String TABLE_USERS = "CREATE TABLE user(uid VARCHAR(255) PRIMARY KEY, JsonInString VARCHAR(400));";
-    private static final String TABLE_TASK = "CREATE TABLE task(taskid VARCHAR(255), aid INTEGER, gid VARCHAR(255), taskname VARCHAR(255), taskdescription VARCHAR(400), responsible VARCHAR(255))";
+    private static final String TABLE_TASK = "CREATE TABLE task(taskid INTEGER, aid INTEGER, gid VARCHAR(255), taskname VARCHAR(255), taskdescription VARCHAR(400), responsible VARCHAR(255), JsonInString VARCHAR(400), PRIMARY KEY(taskid, aid , gid));";
     /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
 
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
@@ -57,6 +57,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String GET_HIGHEST_ID_2 = " ORDER BY aid DESC LIMIT 1 ";
     private static final String GET_TASKS_1 = "SELECT * FROM task WHERE aid = ";
     private static final String GET_TASKS_2 = "AND gid = ";
+    private static final String GET_HIGHEST_TASKID_1 = "SELECT taskId FROM task WHERE gid = ";
+    private static final String GET_HIGHEST_TASKID_2 = " AND aid = ";
+    private static final String GET_HIGHEST_TASKID_3 = " ORDER BY taskId DESC LIMIT 1 ";
 
 
 
@@ -324,6 +327,19 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             db.close();
             Log.i(TAG, "getNextAppointmentID " + cur.getInt(cur.getColumnIndex("aid")));
             return cur.getInt(cur.getColumnIndex("aid"));
+        }
+        db.close();
+        return 0;
+    }
+
+    public int getNextTaskID(String gid, int aid) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_HIGHEST_TASKID_1 + "'" + gid + "'" + GET_HIGHEST_TASKID_2  + aid  + GET_HIGHEST_TASKID_3, null);
+        cur.moveToFirst();
+        if (!cur.isAfterLast()) {
+            db.close();
+            Log.i(TAG, "getNextAppointmentID " + cur.getInt(cur.getColumnIndex("taskid")));
+            return cur.getInt(cur.getColumnIndex("taskid"));
         }
         db.close();
         return 0;

@@ -76,6 +76,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     createReceiver();
 
 
+
                 }
             }
         });
@@ -114,6 +115,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 unregisterReceiver();
                 Intent intent2 = new Intent(CreateGroupActivity.this, GeneralTabsActivity.class);
                 startActivity(intent2);
+                finish();
             }
         };
 
