@@ -86,8 +86,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/autoSwitch"
                     android:checked="false"
-                    android:layout_alignRight="@+id/autoBesitz"/>
+                    android:textColor="@color/black"
+                    android:layout_alignRight="@+id/autoBesitz" />
 
+           // android:text="Besitzen Sie eine gültige Fahrerlaubnis?"
             <TextView
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"

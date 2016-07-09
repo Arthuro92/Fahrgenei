@@ -30,6 +30,7 @@ public class InviteUser extends AppCompatActivity {
 
     Toolbar toolbar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class InviteUser extends AppCompatActivity {
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                invitefriend(v);
+                    invitefriend(v);
             }
         });
 

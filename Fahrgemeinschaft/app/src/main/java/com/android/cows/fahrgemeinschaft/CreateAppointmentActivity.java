@@ -39,6 +39,14 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
     private FragmentDatePicker mFragmentDatePicker;
     private FragmentTimePicker mFragmentTimePicker;
 
+    static Button createAppointmentButton;
+
+    static EditText _input_treffpunktZeit;
+    static EditText _input_treffpunkt;
+    static EditText _input_abfahrtzeit;
+    static EditText _input_zielort;
+    static EditText _input_terminname;
+
     Toolbar toolbar;
 
     @Override
@@ -58,18 +66,42 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
         DateAbfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
         mFragmentDatePicker = new FragmentDatePicker();
         mFragmentTimePicker = new FragmentTimePicker();
-
         DateTreffpunktzeit.setOnClickListener(this);
         DateAbfahrtzeit.setOnClickListener(this);
 
-        Button createAppointmentButton = (Button) findViewById(R.id.createappointbutton);
+
+        _input_treffpunktZeit = (EditText) findViewById(R.id.input_treffpunktZeit);
+        _input_treffpunkt = (EditText) findViewById(R.id.input_treffpunkt);
+        _input_abfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
+        _input_zielort = (EditText) findViewById(R.id.input_zielort);
+        _input_terminname = (EditText) findViewById(R.id.input_terminname);
+
+        createAppointmentButton = (Button) findViewById(R.id.createappointbutton);
         createAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String terminnae = _input_terminname.getText().toString();
+                String treffpunktZeit = _input_treffpunktZeit.getText().toString();
+                String treffpunkt = _input_treffpunkt.getText().toString();
+                String abfahrtzeit = _input_abfahrtzeit.getText().toString();
+                String zielort = _input_zielort.getText().toString();
+                if (terminnae.equalsIgnoreCase(""))
+                {
+                    _input_terminname.setError("Pflichtfeld! Bitte geben Sie einen Namen für diesen Termin an.");
+                } else if (treffpunktZeit.equalsIgnoreCase(""))
+                {
+                    _input_treffpunktZeit.setError("Pflichtfeld! Bitte terminieren Sie den Treffpunkt.");
+                } else if (treffpunkt.equalsIgnoreCase("")) {
+                    _input_treffpunkt.setError("Pflichtfeld! Bitte wählen Sie einen Ort des Treffpunktes aus.");
+                } else if (abfahrtzeit.equalsIgnoreCase("")) {
+                    _input_abfahrtzeit.setError("Pflichtfeld! Bitte terminieren Sie die Abfahrt.");
+                } else if (zielort.equalsIgnoreCase("")) {
+                _input_zielort.setError("Pflichtfeld! Bitte geben Sie den Zielort an.");
+                } else {
                 createAppointment(v);
+                }
             }
         });
-
     }
 
     @Override
@@ -86,92 +118,13 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
         }
     }
 
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_appointment_menu, menu);
         return true;
     }
-
-
- /*   private void createDateOnClickListener() {
-        DateTreffpunktzeit = (EditText) findViewById(R.id.input_treffpunktZeit);
-        DateTreffpunktzeit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTruitonTimePickerDialog(v);
-                showTruitonDatePickerDialog(v);
-            }
-        });
-
-        DateAbfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
-        DateAbfahrtzeit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTruitonTimePickerDialog(v);
-                showTruitonDatePickerDialog(v);
-            }
-        });
-    }
-
-    public void showTruitonDatePickerDialog(View v) {
-        DialogFragment newFragment = new FragmentDatePicker();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
-
-
-
-//    public static class FragmentDatePicker extends DialogFragment implements
-//            DatePickerDialog.OnDateSetListener {
-//
-//        @Override
-//        public Dialog onCreateDialog(Bundle savedInstanceState) {
-//            // Use the current date as the default date in the picker
-//            final Calendar c = Calendar.getInstance();
-//            int year = c.get(Calendar.YEAR);
-//            int month = c.get(Calendar.MONTH);
-//            int day = c.get(Calendar.DAY_OF_MONTH);
-//
-//            // Create a new instance of DatePickerDialog and return it
-//            return new DatePickerDialog(getActivity(), this, year, month, day);
-//        }
-//
-//        public void onDateSet(DatePicker view, int year, int month, int day) {
-//            // Do something with the date chosen by the user
-//            DateTreffpunktzeit.setText(day + "/" + (month + 1) + "/" + year);
-//            DateAbfahrtzeit.setText(day + "/" + (month + 1) + "/" + year);
-//        }
-//
-//
-//    }
-
-    public void showTruitonTimePickerDialog(View v) {
-        DialogFragment newFragment = new FragmentTimePicker();
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-    }
-
-*/
-//    public static class FragmentTimePicker extends DialogFragment implements
-//            TimePickerDialog.OnTimeSetListener {
-//
-//        @Override
-//        public Dialog onCreateDialog(Bundle savedInstanceState) {
-//            // Use the current time as the default values for the picker
-//            final Calendar c = Calendar.getInstance();
-//            int hour = c.get(Calendar.HOUR_OF_DAY);
-//            int minute = c.get(Calendar.MINUTE);
-//
-//            // Create a new instance of TimePickerDialog and return it
-//            return new TimePickerDialog(getActivity(), this, hour, minute,
-//                    DateFormat.is24HourFormat(getActivity()));
-//        }
-//
-//        public void onTimeSet (TimePicker view, int hourOfDay, int minute) {
-//            // Do something with the time chosen by the user
-//            DateTreffpunktzeit.setText(DateTreffpunktzeit.getText() + " -" + hourOfDay + ":" + minute);
-//            DateAbfahrtzeit.setText(DateAbfahrtzeit.getText() + " -" + hourOfDay + ":"	+ minute);
-//        }
-//    }
 
     public void createAppointment(View view) {
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
@@ -192,11 +145,6 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
         int id = sqLiteDBHandler.getNextAppointmentID(gid);
         de.dataobjects.Appointment gapm1;
 
-        EditText _input_treffpunktZeit = (EditText) findViewById(R.id.input_treffpunktZeit);
-        EditText _input_treffpunkt = (EditText) findViewById(R.id.input_treffpunkt);
-        EditText _input_abfahrtzeit = (EditText) findViewById(R.id.input_abfahrtzeit);
-        EditText _input_zielort = (EditText) findViewById(R.id.input_zielort);
-        EditText _input_terminname = (EditText) findViewById(R.id.input_terminname);
 
         //Todo String von Abfahrtzeit & Treffpunktzeit in Calendar ändern oder ähnliches
         String treffpunkt = _input_treffpunkt.getText().toString();
