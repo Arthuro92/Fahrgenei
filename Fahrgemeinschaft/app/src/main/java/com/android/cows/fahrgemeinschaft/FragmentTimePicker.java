@@ -38,8 +38,8 @@ public class FragmentTimePicker extends DialogFragment implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(hourOfDay, minute);
+       // Calendar calendar = Calendar.getInstance();
+       // calendar.set(hourOfDay, minute);
         if (FragmentDatePicker.flag == FragmentDatePicker.FLAG_START_DATE) {
             CreateAppointmentActivity.DateTreffpunktzeit.setText(CreateAppointmentActivity.DateTreffpunktzeit.getText() + " -" + hourOfDay + ":" + minute);
         } else if (FragmentDatePicker.flag == FragmentDatePicker.FLAG_END_DATE){

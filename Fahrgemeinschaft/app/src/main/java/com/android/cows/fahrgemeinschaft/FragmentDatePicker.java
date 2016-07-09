@@ -40,8 +40,8 @@ public class FragmentDatePicker extends DialogFragment implements
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
+      //  Calendar calendar = Calendar.getInstance();
+       // calendar.set(year, month, day);
         if (flag == FLAG_START_DATE) {
             CreateAppointmentActivity.DateTreffpunktzeit.setText(day + "/" + (month + 1) + "/" + year);
         } else if (flag == FLAG_END_DATE) {
