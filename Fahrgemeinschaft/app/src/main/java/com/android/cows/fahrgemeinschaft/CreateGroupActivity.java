@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,15 +54,18 @@ public class CreateGroupActivity extends AppCompatActivity {
         createGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                 EditText groupname = (EditText) findViewById(R.id.groupname);
+                String gid = groupname.getText().toString() +  prefs.getString("userid", "");
                 if (checkRegEx(groupname.getText().toString())) {
                     Toast.makeText(CreateGroupActivity.this, "Kein gültiger Gruppenname!", Toast.LENGTH_LONG).show();
+                } else if(checkIfGroupExists(gid)) {
+                    Toast.makeText(CreateGroupActivity.this, "Gruppe bereits vorhanden!", Toast.LENGTH_LONG).show();
                 } else {
 
                     setLayoutInvisible();
 
                     Log.i(TAG, "Create Group");
-                    SharedPreferences prefs = getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
 
                     Groups newgroup = new Groups(groupname.getText().toString(),
                             prefs.getString("userid", ""),
@@ -79,6 +83,18 @@ public class CreateGroupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean checkIfGroupExists(String gid) {
+        gid  = gid.replaceAll("\\s","");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this,null);
+        if(sqLiteDBHandler.getGroup(gid) == null) {
+            Log.i(TAG, "GROUP DOES NOT EXISTS");
+            return false;
+        } else {
+            Log.i(TAG, "GROUP DOES EXISTS");
+            return true;
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

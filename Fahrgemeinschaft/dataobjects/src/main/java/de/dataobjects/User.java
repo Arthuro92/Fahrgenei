@@ -16,9 +16,9 @@ public class User {
 
     private String email;
 
-    private boolean driver;
+    private boolean driver = false;
 
-    private int freeSeats;
+    private int freeSeats = 0;
 
     public User() {
     }

@@ -129,7 +129,7 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private void sendLocalReturnBroadcast() {
-        Intent intent = new Intent("returntogeneralgroups");
+        Intent intent = new Intent("returntogrouptabs");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 

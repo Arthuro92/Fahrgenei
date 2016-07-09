@@ -27,6 +27,7 @@ public class AppointmentTabsActivity extends AppCompatActivity {
     ViewPager viewPagerAppointment;
     TabLayout tabLayoutAppointment;
     private BroadcastReceiver returntogroupgeneral;
+    private BroadcastReceiver returntogrouptabs;
     private boolean isReceiverRegistered;
 
 
@@ -185,7 +186,13 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         returntogroupgeneral = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                GroupTabsActivity.pointerforfinis.finish();
+                GroupTabsActivity.pointerforfinish.finish();
+                finish();
+            }
+        };
+        returntogrouptabs = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
                 finish();
             }
         };
@@ -195,6 +202,7 @@ public class AppointmentTabsActivity extends AppCompatActivity {
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(returntogroupgeneral, new IntentFilter("returntogeneralgroups"));
+            LocalBroadcastManager.getInstance(this).registerReceiver(returntogrouptabs, new IntentFilter("returntogrouptabs"));
             isReceiverRegistered = true;
         }
     }
@@ -202,6 +210,7 @@ public class AppointmentTabsActivity extends AppCompatActivity {
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(returntogroupgeneral);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(returntogrouptabs);
             isReceiverRegistered = false;
         }
     }
