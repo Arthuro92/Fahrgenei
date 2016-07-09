@@ -4,7 +4,9 @@ package server.observer;
 import com.example.dataobjects.Appointment;
 import com.example.dataobjects.Groups;
 import com.example.dataobjects.JsonCollection;
+import com.example.dataobjects.Task;
 import com.example.dataobjects.User;
+import com.example.dataobjects.UserInAppointment;
 import com.example.dataobjects.UserInGroup;
 
 import org.jivesoftware.smack.SmackException;
@@ -14,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import server.Algorithm.Algorithm;
 import server.errors.ErrorMessages;
 import server.smackccsclient.SmackCcsClient;
 
@@ -55,9 +58,74 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
                         logger.log(Level.INFO, "New Substitute");
                         updateSubstituteInGroup();
                         break;
+                    case "deleteuseringroup":
+                        logger.log(Level.INFO, "User Leaved Group");
+                        deleteUserInGroup();
+                        sendDeleteUserInGroup();
+                        break;
+                    case "deletegroup":
+                        deleteGroup();
+                        sendDeleteGroup();
+                        break;
                     default:
                         logger.log(Level.INFO, "default case");
                 }
+            }
+        }
+    }
+
+    private void sendDeleteGroup() {
+        try {
+            SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+            Groups groups = JsonCollection.jsonToGroup(this.payload.get("content"));
+            smackCcsClient.sendDownstreamMessage("group", "deletegroup", "/topics/" + groups.getGid(), groups);
+        } catch(SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteGroup() {
+        Groups groups = JsonCollection.jsonToGroup(this.payload.get("content"));
+        ArrayList<Appointment> appointmentArrayList = appointmentRepository.findByGid(groups.getGid());
+        ArrayList<UserInGroup> userInGroupArrayList = userInGroupRepository.findByGid(groups.getGid());
+        ArrayList<UserInAppointment> userInAppointmentArrayList = userInAppointmentRepository.findByGid(groups.getGid());
+        ArrayList<Task> taskArrayListt = taskRepository.findByGid(groups.getGid());
+
+        for(Appointment appointment : appointmentArrayList) {
+            appointmentRepository.delete(appointment);
+        }
+        for(UserInGroup userInGroup : userInGroupArrayList) {
+            userInGroupRepository.delete(userInGroup);
+        }
+        for(UserInAppointment userInAppointment : userInAppointmentArrayList) {
+            userInAppointmentRepository.delete(userInAppointment);
+        }
+        for(Task task : taskArrayListt) {
+            taskRepository.delete(task);
+        }
+        groupsRepository.delete(groups);
+    }
+
+    private void sendDeleteUserInGroup() {
+        try {
+            SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+            UserInGroup userInGroup = JsonCollection.jsonToUserInGroup(this.payload.get("content"));
+            smackCcsClient.sendDownstreamMessage("group", "deleteuseringroup", "/topics/" + userInGroup.getGid(), userInGroup);
+        } catch(SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void deleteUserInGroup() {
+        UserInGroup userInGroup = JsonCollection.jsonToUserInGroup(this.payload.get("content"));
+        userInGroupRepository.delete(userInGroup);
+        ArrayList<UserInAppointment> userInAppointmentArrayList = userInAppointmentRepository.findByUid(userInGroup.getUid());
+        for(UserInAppointment userInAppointment : userInAppointmentArrayList) {
+            if(userInAppointment.getGid().equals(userInGroup.getGid())) {
+                userInAppointmentRepository.delete(userInAppointment);
+                Algorithm algorithm = new Algorithm();
+                algorithm.calculateDrivers(userInAppointment);
             }
         }
     }
@@ -97,7 +165,6 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
             ArrayList<User> userList = new ArrayList<>();
 
             for (UserInGroup userInGroup : userInGroupList) {
-                System.out.println(userInGroup.getUid());
                 userList.add(userRepository.findOne(userInGroup.getUid()));
             }
 

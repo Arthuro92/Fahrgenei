@@ -82,10 +82,10 @@ public class TaskDetailActivity extends AppCompatActivity {
             //@TODO Lenni oder David! Bitte vom Server löschen.
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-            //String gid = prefs.getString("currentgid", "");
+            String gid = prefs.getString("currentgid", "");
             Bundle bundle = getIntent().getExtras();
             int a = (int) bundle.getSerializable("taskdescription");
-            sqLiteDBHandler.deleteAppoinment(a);
+            sqLiteDBHandler.deleteAppoinment(a,gid);
             Intent intent = new Intent(TaskDetailActivity.this, AppointmentTabsActivity.class);
             startActivity(intent);
         }

@@ -25,7 +25,7 @@ public class MyGcmSend<T> {
      * Sending messages to GCM
      *
      * @param task_category valid categorys: chat, group, appointment, user
-     * @param task          valid tasks //todo choose valid tasks
+     * @param task          valid tasks
      * @param javaobject    every valid javaobject
      * @param con           the context try this, as context
      */
@@ -60,7 +60,7 @@ public class MyGcmSend<T> {
      * Sending messages to GCM
      *
      * @param task_category valid categorys: chat, group, appointment, user
-     * @param task          valid tasks //todo choose valid tasks
+     * @param task          valid tasks
      * @param con           the context try this, as context
      * @param extras        use this field for ids, or something which you want to write in database, Can be NULL!
      */
@@ -97,7 +97,6 @@ public class MyGcmSend<T> {
     }
 
 
-    //todo change random id so it is actually unique
 
     /**
      * Returns a random message id to uniquely identify a message.

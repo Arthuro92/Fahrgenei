@@ -2,9 +2,9 @@ package server.observer;
 
 import com.example.dataobjects.Appointment;
 import com.example.dataobjects.JsonCollection;
-import com.example.dataobjects.User;
 import com.example.dataobjects.UserInAppointment;
 import com.example.dataobjects.UserInGroup;
+import com.example.repositories.keys.UserInGroupId;
 
 import org.jivesoftware.smack.SmackException;
 
@@ -47,12 +47,46 @@ public class AppointmentObserver extends RepositorieConnector implements Message
                         logger.log(Level.INFO, "Changing Participant");
                         changeParticipant();
                         break;
+                    case "deleteappointment":
+                        logger.log(Level.INFO, "Delete Appointemnt");
+                        deleteAppointment();
+                        sendDeleteAppointmentBroadcast();
+                        break;
                     default:
                         break;
                 }
             }
         }
     }
+
+    private void sendDeleteAppointmentBroadcast() {
+        try {
+            SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+            Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
+            smackCcsClient.sendDownstreamMessage("appointment", "deleteappointment", "/topics/" + appointment.getGid(), appointment);
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteAppointment() {
+        Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
+        appointmentRepository.delete(appointment);
+        ArrayList<UserInAppointment> userInAppointmentArrayList = userInAppointmentRepository.findByGidAndAid(appointment.getGid(), appointment.getAid());
+
+        for (UserInAppointment userInAppointment : userInAppointmentArrayList) {
+            if (userInAppointment.isDriver()) {
+                UserInGroupId userInGroupId = new UserInGroupId(userInAppointment.getUid(), userInAppointment.getGid());
+                UserInGroup userInGroup = userInGroupRepository.findOne(userInGroupId);
+                userInGroup.setDrivingCount(userInGroup.getDrivingCount() - 1);
+                userInGroupRepository.save(userInGroup);
+            }
+            userInAppointmentRepository.delete(userInAppointment);
+        }
+    }
+
+
+
 
     private void changeParticipant() {
         try {
@@ -85,7 +119,6 @@ public class AppointmentObserver extends RepositorieConnector implements Message
     private boolean createAppointment() {
         try {
             Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
-
             appointmentRepository.save(appointment);
             updateUserInAppointment();
 
@@ -109,10 +142,10 @@ public class AppointmentObserver extends RepositorieConnector implements Message
                 userInAppointmentRepository.save(userInAppointment);
             }
 
-            String string = (String) this.jsonObject.get("from");
-            User user = userRepository.findByToken(string);
-            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), user.getId(), 1);
-            userInAppointmentRepository.save(userInAppointment);
+//            String string = (String) this.jsonObject.get("from");
+//            User user = userRepository.findByToken(string);
+//            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), user.getId(), 0);
+//            userInAppointmentRepository.save(userInAppointment);
             return true;
         } catch (NullPointerException e) {
             logger.log(Level.INFO, "NullPointerException");
@@ -145,25 +178,6 @@ public class AppointmentObserver extends RepositorieConnector implements Message
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
             //todo maybe retry?
-            return false;
-        }
-    }
-
-
-    /**
-     * Sending Error back to Client, because an Error occured
-     *
-     * @return true when sending sucess / false when fail
-     */
-    @SuppressWarnings("unchecked")
-    private boolean sendSingleAppointmentError(String errortype) {
-        SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
-        try {
-            smackCcsClient.sendDownstreamMessage("appointment", errortype, (String) jsonObject.get("from"), null);
-            return true;
-        } catch (SmackException.NotConnectedException e) {
-            e.printStackTrace();
-            // todo maybe retry?
             return false;
         }
     }

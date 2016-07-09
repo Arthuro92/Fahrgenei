@@ -60,7 +60,6 @@ public class UserAdapterAppointments extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         UserHolder holder = null;
-        System.out.println("MÖÖÖP ANFANG");
 
         if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
@@ -79,20 +78,13 @@ public class UserAdapterAppointments extends ArrayAdapter {
         final UserInAppointment userInAppointment =  data.get(position);
 
         final SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        System.out.println("MÖÖÖP DAVOR");
+
         User user = sqLiteDBHandler.getUser(userInAppointment.getUid());
-        System.out.println("MÖÖÖÖÖP" + user.getName());
-        holder.inv_status.setText("Plätze: " + user.getFreeSeats());
-//        if(userInAppointment.getIsJoined() == 0) {
-//            // @TODO  Das Umschalten des Status klappt auch noch nich. Muss eventuell in der Server DB noch was geändert werden.
-//            //row.setBackgroundResource(R.color.red);
-//            holder.inv_status.setText("Einladung versandt");
-//        } else if(userInAppointment.getIsJoined() == -1) {
-//            Toast.makeText(getContext(), "Fehler. IsJoinend-Value ist falsch gesetzt.",
-//                    Toast.LENGTH_LONG).show();
-//        } else {
-//            holder.inv_status.setText("Angenommen");
-//        }
+
+        holder.inv_status.setText("Mitfahrer");
+        if(userInAppointment.isDriver()) {
+            holder.inv_status.setText("Fahrer mit " + user.getFreeSeats() + " Plätzen");
+        }
 
 //        row.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {

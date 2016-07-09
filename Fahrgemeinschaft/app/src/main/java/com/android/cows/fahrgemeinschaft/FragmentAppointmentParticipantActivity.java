@@ -1,10 +1,14 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +21,12 @@ import java.util.ArrayList;
 
 import de.dataobjects.UserInAppointment;
 
-public class FragmentAppointmentDriverActivity extends Fragment {
+public class FragmentAppointmentParticipantActivity extends Fragment {
 
     View contentViewAppointmentDriver;
     private static final String TAG = "TaskOverview";
+    private BroadcastReceiver updateparticipantlist;
+    private boolean isReceiverRegistered;
     ListView listView;
 
     @Nullable
@@ -35,17 +41,18 @@ public class FragmentAppointmentDriverActivity extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadDriverList();
+        loadParticipants();
+        createReceiver();
     }
 
-    private void loadDriverList() {
+    private void loadParticipants() {
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         Bundle bundle = getActivity().getIntent().getExtras();
         String gid = prefs.getString("currentgid", "");
         int aid = bundle.getInt("aid");
 
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
-        ArrayList<UserInAppointment> userInAppointmentArrayList = sqLiteDBHandler.getDriversInAppointment(aid, gid);
+        ArrayList<UserInAppointment> userInAppointmentArrayList = sqLiteDBHandler.getParticipantsInAppointment(aid, gid);
         System.out.println(userInAppointmentArrayList.size());
         createUserList(userInAppointmentArrayList);
     }
@@ -60,6 +67,42 @@ public class FragmentAppointmentDriverActivity extends Fragment {
         listView.setAdapter(userAdapterAppointments);
     }
 
+
+    public void createReceiver() {
+        updateparticipantlist = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadParticipants();
+            }
+        };
+        registerReceiver();
+    }
+
+    private void registerReceiver() {
+        if (!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateparticipantlist, new IntentFilter("updateparticipants"));
+            isReceiverRegistered = true;
+        }
+    }
+
+    private void unregisterReceiver() {
+        if (isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updateparticipantlist);
+            isReceiverRegistered = false;
+        }
+    }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            unregisterReceiver();
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            registerReceiver();
+        }
 
 }
 

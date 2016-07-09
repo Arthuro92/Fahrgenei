@@ -22,7 +22,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 134;
+    private static final int DATABASE_VERSION = 142;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -36,11 +36,15 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                     "FOREIGN KEY(uid) REFERENCES user(uid), " +
                     "PRIMARY KEY(aid, gid, uid));";
     private static final String TABLE_IS_IN_GROUP = "CREATE TABLE is_in_group (uid VARCHAR(255), gid VARCHAR(255), isJoined INTEGER," +
+                    "drivingcount INTEGER," +
                     "FOREIGN KEY(uid) REFERENCES users(uid), " +
                     "FOREIGN KEY(gid) REFERENCES groups(gid) " +
                     "PRIMARY KEY(uid, gid));" ;
     private static final String TABLE_USERS = "CREATE TABLE user(uid VARCHAR(255) PRIMARY KEY, JsonInString VARCHAR(400));";
-    private static final String TABLE_TASK = "CREATE TABLE task(taskid INTEGER, aid INTEGER, gid VARCHAR(255), taskname VARCHAR(255), taskdescription VARCHAR(400), responsible VARCHAR(255), JsonInString VARCHAR(400), PRIMARY KEY(taskid, aid , gid));";
+    private static final String TABLE_TASK = "CREATE TABLE task(taskid INTEGER, aid INTEGER, gid VARCHAR(255), taskname VARCHAR(255), taskdescription VARCHAR(400), responsible VARCHAR(255), JsonInString VARCHAR(400), " +
+            "FOREIGN KEY(aid) REFERENCES appointments(aid)," +
+            "FOREIGN KEY(gid) REFERENCES appointments(gid)," +
+            "PRIMARY KEY(taskid, aid , gid));";
     /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
 
     private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
@@ -66,9 +70,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     private static final String DELETE_USER_IN_GROUP1 ="DELETE FROM is_in_group WHERE gid = ";
     private static final String DELETE_USER_IN_GROUP2 =" AND uid = ";
-
+    private static final String DELETE_USER_IN_APPOINTMENT_1 = "DELETE FROM is_in_appointment WHERE gid = ";
+    private static final String DELETE_USER_IN_APPOINTMENT_2 = "AND uid = ";
     private static final String DELETE_GROUP = "DELETE FROM groups WHERE gid =";
-    private static final String DELETE_APPOINTMENT = "DELETE FROM appointments WHERE aid =";
+    private static final String DELETE_APPOINTMENT_1 = "DELETE FROM appointments WHERE aid =";
+    private static final String DELETE_APPOINTMENT_2 = "AND gid = ";
 
     private static final String GET_USER_IN_APPOINTMENT_1 = "SELECT * FROM is_in_appointment WHERE aid = ";
     private static final String GET_USER_IN_APPOINTMENT_2 = "AND gid = ";
@@ -130,18 +136,19 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addIsInGroup(String gid, String uid, int isJoined) {
+    public void addIsInGroup(String gid, String uid, int isJoined, int drivingcount) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("gid", gid);
         cv.put("isJoined", isJoined);
         cv.put("uid", uid);
+        cv.put("drivingcount", drivingcount);
         db.insertWithOnConflict("is_in_group", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
 
     public void addIsInGroup(UserInGroup userInGroup) {
-        addIsInGroup(userInGroup.getGid(), userInGroup.getUid(), userInGroup.getIsJoined());
+        addIsInGroup(userInGroup.getGid(), userInGroup.getUid(), userInGroup.getIsJoined(), userInGroup.getDrivingCount());
     }
 
     public ArrayList<UserInGroup> getUserList(String gid) {
@@ -156,8 +163,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                 String groupid = cur.getString(cur.getColumnIndex("gid"));
                 String userid = cur.getString(cur.getColumnIndex("uid"));
                 int isJoined = cur.getInt(cur.getColumnIndex("isJoined"));
+                int drivercount = cur.getInt(cur.getColumnIndex("drivingcount"));
 
                 UserInGroup userInGroup = new UserInGroup(userid, groupid, isJoined);
+                userInGroup.setDrivingCount(drivercount);
                 isInGroupList.add(userInGroup);
             }
             cur.moveToNext();
@@ -214,24 +223,45 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
     // DELETE USER FROM SQL LITE DATABASE
-    public void deleteUserInGroup(String groupId, String userId){
-        Log.i(TAG, "Delete UserinGroup ");
+    public void deleteGroup(String groupId){
+        Log.i(TAG, "Delete Group ");
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         //cv.put("gid", groupId);
         //cv.put("uid", userId);
-        String delete_is_in_group  = DELETE_GROUP + "'" + groupId +"'" ;
-        db.execSQL(delete_is_in_group);
+        String delete_group  = DELETE_GROUP + "'" + groupId +"'" ;
+        db.execSQL(delete_group);
         //db.delete();
         db.close();
     }
 
     // DELETE USER FROM SQL LITE DATABASE
-    public void deleteAppoinment(int aid){
-        Log.i(TAG, "Delete Appointment ");
+    public void deleteAppoinment(int aid, String gid){
+        Log.i(TAG, "Delete Appointment  with aid: " + aid + " and gid: " + gid);
         SQLiteDatabase db = getWritableDatabase();
-        String delete_appoint  = DELETE_APPOINTMENT + "'" + aid +"'" ;
+        String delete_appoint  = DELETE_APPOINTMENT_1 + "'" + aid +"'" + DELETE_APPOINTMENT_2 + "'" + gid + "'";
         db.execSQL(delete_appoint);
+        //db.delete();
+        db.close();
+    }
+
+    public void deleteUserInAppointment(String gid, String uid) {
+        Log.i(TAG, "Delete User In Appointment  with gid: " + gid + " and uid: " + uid);
+        SQLiteDatabase db = getWritableDatabase();
+        String delete_user_in_appointment  = DELETE_USER_IN_APPOINTMENT_1 + "'" + gid +"'" + DELETE_USER_IN_APPOINTMENT_2 + "'" + uid + "'";
+        db.execSQL(delete_user_in_appointment);
+        //db.delete();
+        db.close();
+    }
+
+    public void deleteUserInGroup(String gid, String uid) {
+        Log.i(TAG, "Delete User In Group ");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        //cv.put("gid", groupId);
+        //cv.put("uid", userId);
+        String delete_is_in_group  = DELETE_USER_IN_GROUP1 + "'" + gid + "'" + DELETE_USER_IN_GROUP2 + "'" + uid + "'" ;
+        db.execSQL(delete_is_in_group);
         //db.delete();
         db.close();
     }
@@ -407,7 +437,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return null;
     }
 
-    public ArrayList<UserInAppointment> getDriversInAppointment(int aid, String gid ) {
+    public ArrayList<UserInAppointment> getParticipantsInAppointment(int aid, String gid ) {
         ArrayList<UserInAppointment> userInAppointmentArrayList = new ArrayList<UserInAppointment>();
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_USER_IN_APPOINTMENT_1 + "'" + aid + "'" + GET_USER_IN_APPOINTMENT_2 + "'" + gid + "'", null);
@@ -415,7 +445,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         while (!cur.isAfterLast()) {
             if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
                 UserInAppointment userInAppointment = JsonCollection.jsonToUserInAppointment(cur.getString(cur.getColumnIndex("JsonInString")));
-                if(userInAppointment.isDriver() && userInAppointment.getIsParticipant() == 1) {
+                if(userInAppointment.getIsParticipant() == 1) {
                     userInAppointmentArrayList.add(userInAppointment);
                     Log.i(TAG, "getAppointments " + cur.getString(cur.getColumnIndex("JsonInString")));
                 }
@@ -461,6 +491,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             this.addIsInAppointment(userInAppointment);
         }
     }
+
+
 }
 
 

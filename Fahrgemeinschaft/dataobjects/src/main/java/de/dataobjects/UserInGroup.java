@@ -15,6 +15,8 @@ public class UserInGroup implements Serializable {
 
     private int isJoined;
 
+    private int drivingCount = 0;
+
     public UserInGroup() {
     }
 
@@ -42,6 +44,14 @@ public class UserInGroup implements Serializable {
 
     public int getIsJoined() {
         return isJoined;
+    }
+
+    public int getDrivingCount() {
+        return drivingCount;
+    }
+
+    public void setDrivingCount(int drivingCount) {
+        this.drivingCount = drivingCount;
     }
 
     public void setIsJoined(int isJoined) {

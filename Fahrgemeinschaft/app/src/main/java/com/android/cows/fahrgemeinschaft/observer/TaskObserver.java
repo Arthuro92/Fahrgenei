@@ -45,8 +45,8 @@ public class TaskObserver implements MessageObserver {
     }
 
     private void taskInsertSuccess() {
-        Intent errorappointment = new Intent("createdTask");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
+        Intent createdtasksuccess = new Intent("createdTask");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(createdtasksuccess);
     }
 
     private void addTask() {

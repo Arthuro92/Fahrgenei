@@ -12,4 +12,6 @@ import java.util.ArrayList;
  */
 public interface UserInAppointmentRepository extends CrudRepository<UserInAppointment, UserInAppointmentId> {
     ArrayList<UserInAppointment> findByGidAndAid(String gid, int aid);
+    ArrayList<UserInAppointment> findByUid(String uid);
+    ArrayList<UserInAppointment> findByGid(String gid);
 }

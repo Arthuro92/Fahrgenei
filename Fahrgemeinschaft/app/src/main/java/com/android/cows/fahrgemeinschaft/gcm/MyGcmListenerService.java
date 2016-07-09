@@ -52,7 +52,6 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d(TAG, "MESSAGE: " + data.toString());
         ms.setJsonObject(data);
 
-        //todo non topic message handling
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {

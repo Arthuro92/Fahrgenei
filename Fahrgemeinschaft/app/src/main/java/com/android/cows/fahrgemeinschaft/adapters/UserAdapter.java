@@ -86,7 +86,6 @@ public class UserAdapter extends ArrayAdapter {
         User user = sqLiteDBHandler.getUser(userInGroup.getUid());
 
         if(userInGroup.getIsJoined() == 0) {
-            // @TODO  Das Umschalten des Status klappt auch noch nich. Muss eventuell in der Server DB noch was geändert werden.
             //row.setBackgroundResource(R.color.red);
             holder.inv_status.setText("Einladung versandt");
         } else if(userInGroup.getIsJoined() == -1) {

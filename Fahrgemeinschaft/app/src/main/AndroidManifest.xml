@@ -76,7 +76,6 @@
         <activity android:name=".CreateGroupActivity" />
         <activity android:name=".TaskDetailActivity" />
         <activity android:name=".GroupDetailOverview" />
-        <activity android:name=".AppointmentDetailActivity" />
         <activity android:name=".GeneralTabsActivity" />
         <activity android:name=".GroupTabsActivity" />
         <activity android:name=".AppointmentTabsActivity" />

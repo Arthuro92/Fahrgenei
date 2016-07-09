@@ -103,7 +103,7 @@ public class GroupAdapter extends ArrayAdapter {
  //@Todo Lennart oder David! Bitte auch vom Server den Eintrag "User In Group" löschen.
                 SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-                sqLiteDBHandler.deleteUserInGroup(group.getGid(),prefs.getString("userid", "") );
+                sqLiteDBHandler.deleteGroup(group.getGid());
                 sendLocalUpdateBroadcast();
                 // cancel the alert box and put a Toast to the user
                 dialog.cancel();

@@ -113,8 +113,7 @@ public class InviteUser extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 unregisterReceiver();
-                Intent intent2 = new Intent(InviteUser.this, GroupTabsActivity.class);
-                startActivity(intent2);
+                finish();
             }
         };
 
@@ -146,5 +145,9 @@ public class InviteUser extends AppCompatActivity {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(errorInviting);
             isReceiverRegistered = false;
         }
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

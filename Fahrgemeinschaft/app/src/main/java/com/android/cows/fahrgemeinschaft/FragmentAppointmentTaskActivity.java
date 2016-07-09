@@ -16,13 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
 import com.android.cows.fahrgemeinschaft.adapters.TaskAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 
-import de.dataobjects.Appointment;
 import de.dataobjects.Task;
 
 public class FragmentAppointmentTaskActivity extends Fragment {
@@ -33,6 +31,7 @@ public class FragmentAppointmentTaskActivity extends Fragment {
     private ListView listView;
     private BroadcastReceiver updateTaskList;
     private boolean isReceiverRegistered;
+    private Context context = GlobalAppContext.getAppContext();
 
 
     @Nullable
@@ -81,7 +80,7 @@ public class FragmentAppointmentTaskActivity extends Fragment {
 
     private void registerReceiver() {
         if (!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateTaskList, new IntentFilter("updategroupappointments"));
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateTaskList, new IntentFilter("createdTask"));
             isReceiverRegistered = true;
         }
     }
@@ -94,16 +93,20 @@ public class FragmentAppointmentTaskActivity extends Fragment {
     }
 
     private void loadTaskList() {
-        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
-        SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
 
         //Task tsk1 = new Task(1, 1, "grp1", "Trikots waschen", "Trikots müssen gewaschen und zum nächsten Spiel mitgebracht werden", "Irina");
         //Task tsk2 = new Task(2, 1, "grp1", "Brötchen mitbringen", "Beim nächsten Hallenturnier bieten wir belegte Brötchen an ", "Lenni");
         //Task tsk3 = new Task(3, 1, "grp1", "Leibchen waschen", "Die Leibchen müssen auch gewaschen werden.", "Arthur");
-        Bundle bundle = getActivity().getIntent().getExtras();
-        int aid = (int) bundle.getSerializable("aid");
-        ArrayList<Task> tsklist = sqLiteDBHandler.getTasks(aid, gid );;
+
+//        Bundle bundle = getActivity().getIntent().getExtras();
+//        int aid = (int) bundle.getSerializable("aid");
+
+        int aid = prefs.getInt("currentaid",0);
+        Log.i(TAG, "CURRENT AID " + aid);
+        ArrayList<Task> tsklist = sqLiteDBHandler.getTasks(aid, gid );
         //Log.i("Taskdaten:", tsklist.get(0).getTaskName().toString());
         //= new ArrayList<Task>();
         //tsklist.add(tsk1);
