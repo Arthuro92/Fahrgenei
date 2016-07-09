@@ -1,7 +1,9 @@
 package com.android.cows.fahrgemeinschaft.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -124,14 +126,41 @@ public class AppointmentAdapter extends ArrayAdapter {
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.i(TAG, "changing IsParticipant in Appointment");
-                    userInAppointment.setIsParticipant(1);
-                    MyGcmSend myGcmSend = new MyGcmSend();
-                    myGcmSend.send("appointment", "participantchange", userInAppointment, context);
+                    openAlert(v, userInAppointment);
                 }
             });
         }
         return row;
     }
+
+    private void openAlert(View view, final UserInAppointment userInAppointment) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setTitle("Abfrage");
+
+        alertDialogBuilder.setMessage("Möchten Sie an diesem Termin teilnehmen?");
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                Log.i(TAG, "changing IsParticipant in Appointment");
+                userInAppointment.setIsParticipant(1);
+                MyGcmSend myGcmSend = new MyGcmSend();
+                myGcmSend.send("appointment", "participantchange", userInAppointment, context);
+
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+            }
+        });
+        // set neutral button: Exit the app message
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+    }
+
 
     /**
      * Constructs an Adapter

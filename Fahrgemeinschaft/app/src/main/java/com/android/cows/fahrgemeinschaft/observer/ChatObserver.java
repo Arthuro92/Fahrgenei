@@ -8,13 +8,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import com.android.cows.fahrgemeinschaft.ChatActivity;
+
+import com.android.cows.fahrgemeinschaft.FragmentGruppenChatActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
+import com.android.cows.fahrgemeinschaft.GroupTabsActivity;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import de.dataobjects.Chat;
+import de.dataobjects.Groups;
 import de.dataobjects.JsonCollection;
+
+//import com.android.cows.fahrgemeinschaft.ChatActivity;
 
 
 /**
@@ -51,8 +56,12 @@ public class ChatObserver implements MessageObserver {
         NotificationManager nm = (NotificationManager) this.context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder ncb = new NotificationCompat.Builder(context);
         ncb.setSmallIcon(R.drawable.ic_stat_ic_notification);
-        ncb.setContentTitle(this.payload.getString("task_category"));
-        ncb.setContentText(this.payload.getString("content"));
+
+        Chat chat = JsonCollection.jsonToChat(this.payload.getString("content"));
+        Groups groups = getGroup(chat.getGid());
+//        ncb.setContentTitle(this.payload.getString("task_category"));
+        ncb.setContentTitle(groups.getName());
+        ncb.setContentText(chat.getChatMessageFrom() +  ": " + chat.getChatMessageText());
         ncb.setWhen(System.currentTimeMillis());
         ncb.setContentIntent(pIntent);
         nm.notify(NID, ncb.build());
@@ -69,6 +78,19 @@ public class ChatObserver implements MessageObserver {
         return sharedPreferences.getString("username", "Blubb");
     }
 
+    private void setCurrentGroup(String gid) {
+        SharedPreferences sharedPreferences = this.context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        Groups groups = getGroup(gid);
+
+        sharedPreferences.edit().putString("currentgid", gid).apply();
+        sharedPreferences.edit().putString("currentgroupname", groups.getName()).apply();
+        sharedPreferences.edit().putString("currentgroupadminid", groups.getAdminid()).apply();
+    }
+
+    private Groups getGroup(String gid) {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context,null);
+        return sqLiteDBHandler.getGroup(gid);
+    }
     /**
      * Parses certain parts of the jsonObject to a Chat object
      *
@@ -96,14 +118,15 @@ public class ChatObserver implements MessageObserver {
      */
     public void setInfoAndData(de.dataobjects.Chat chatMessage) {
         Log.i(TAG, "CHAT MESSAGE: " + chatMessage.getChatMessageText());
-        if (!chatMessage.getChatMessageFrom().equals(getChatUser()) && !ChatActivity.activeActivity) {
+        if (!chatMessage.getChatMessageFrom().equals(getChatUser())) {
             updateLocalDatabase(chatMessage);
-            issueNotification(new Intent(context, ChatActivity.class));
-            Log.i(TAG, "ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
-        } else if (!chatMessage.getChatMessageFrom().equals(getChatUser()) && ChatActivity.activeActivity) {
+            setCurrentGroup(chatMessage.getGid());
+            issueNotification(new Intent(context, GroupTabsActivity.class).putExtra("calledfromchatobserver","calledfromchatobserver"));
+            Log.i(TAG, "ACTIVE ACTIVITY STATUS: " + FragmentGruppenChatActivity.activeActivity);
+        } else if (!chatMessage.getChatMessageFrom().equals(getChatUser()) && FragmentGruppenChatActivity.activeActivity && FragmentGruppenChatActivity.gid.equals(chatMessage.getGid())) {
             updateLocalDatabase(chatMessage);
             context.sendBroadcast(setChatIntent(chatMessage));
-            Log.i(TAG, "ACTIVE ACTIVITY STATUS: " + ChatActivity.activeActivity);
+            Log.i(TAG, "ACTIVE ACTIVITY STATUS: " + FragmentGruppenChatActivity.activeActivity);
         }
     }
 

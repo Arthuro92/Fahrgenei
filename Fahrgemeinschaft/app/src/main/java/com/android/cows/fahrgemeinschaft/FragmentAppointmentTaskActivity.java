@@ -11,6 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -20,6 +23,7 @@ import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 
+import de.dataobjects.Groups;
 import de.dataobjects.Task;
 
 public class FragmentAppointmentTaskActivity extends Fragment {
@@ -37,7 +41,7 @@ public class FragmentAppointmentTaskActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentViewGruppenAufgaben = inflater.inflate(R.layout.activity_fragment_gruppen_aufgabe, null);
-
+        setHasOptionsMenu(true);
 
         return contentViewGruppenAufgaben;
     }
@@ -50,12 +54,37 @@ public class FragmentAppointmentTaskActivity extends Fragment {
         createReceiver();
 
 
+
         /**
          TaskAdapter taskAdapter = new TaskAdapter( getActivity() ,R.layout.item_row_task, tsklist);
          listView = (ListView) view.findViewById(R.id.taskListView);
          listView.setAdapter(taskAdapter);
          //createTaskOverview(tsklist);*/
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem adduser = menu.findItem(R.id.action_edit_event);
+        MenuItem deletegrp = menu.findItem(R.id.action_delete_event);
+        MenuItem addtask = menu.findItem(R.id.action_create_task);
+
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String gid = prefs.getString("currentgid", "");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+
+        Groups groups = sqLiteDBHandler.getGroup(gid);
+
+        if(!groups.getAdminid().equals(prefs.getString("userid", "")) && groups.getSubstitute() == null ||groups.getSubstitute() != null && !groups.getSubstitute().equals(prefs.getString("userid",""))) {
+            adduser.setVisible(false);
+            deletegrp.setVisible(false);
+            addtask.setVisible(false);
+        } else {
+            adduser.setVisible(false);
+            deletegrp.setVisible(false);
+            addtask.setVisible(true);
+        }
     }
 
     public void createTasks(ArrayList<Task> tasktArrayList) {

@@ -22,10 +22,10 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 145;
+    private static final int DATABASE_VERSION = 149;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
-    private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
+    private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400), gid VARCHAR(255));";
     private static final String TABLE_APPOINTMENTS = "CREATE TABLE appointments(aid INTEGER , gid VARCHAR(255), JsonInString VARCHAR(400), PRIMARY KEY(aid, gid), FOREIGN KEY(gid) REFERENCES groups(gid));";
     private static final String TABLE_GROUPS = "CREATE TABLE groups(gid VARCHAR(255) PRIMARY KEY, isJoined INTEGER, JsonInString VARCHAR(400));";
     private static final String TABLE_IS_IN_APPOINTMENT =
@@ -47,7 +47,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             "PRIMARY KEY(taskid, aid , gid));";
     /// Constraints für IsInGroup        ",  CONSTRAINT gid FOREIGN KEY (gid) REFERENCES groups(gid), CONSTRAINT uid FOREIGN KEY (uid) REFERENCES user(userid));";
 
-    private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message";
+    private static final String GET_CHAT_MESSAGES = "SELECT * FROM chat_message WHERE gid = ";
     private static final String GET_GROUPS = "SELECT * FROM groups";
     private static final String GET_APPOINTMENTS = "SELECT * FROM appointments WHERE gid = ";
     private static final String GET_APPOINTMENT_1 = "SELECT * FROM appointments WHERE aid = ";
@@ -89,14 +89,15 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("message", c.getJsonInString());
+        cv.put("gid", c.getGid());
         db.insertWithOnConflict("chat_message", null, cv, SQLiteDatabase.CONFLICT_IGNORE);
         db.close();
     }
 
-    public ArrayList<de.dataobjects.Chat> getChatMessages() {
+    public ArrayList<de.dataobjects.Chat> getChatMessages(String gid) {
         ArrayList<de.dataobjects.Chat> alc = new ArrayList<de.dataobjects.Chat>();
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cur = db.rawQuery(GET_CHAT_MESSAGES, null);
+        Cursor cur = db.rawQuery(GET_CHAT_MESSAGES  + "'" + gid + "'", null);
         cur.moveToFirst();
         while (!cur.isAfterLast()) {
             if (cur.getString(cur.getColumnIndex("message")) != null) {

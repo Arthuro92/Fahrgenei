@@ -11,14 +11,16 @@ public class Chat implements Serializable{
     private String chatMessageFrom;
     private String chatMessageTime;
     private String chatMessageText;
+    private String gid;
 
     public Chat() {
     }
 
-    public Chat(String chatMessageFrom, String chatMessageTime, String chatMessageText) {
+    public Chat(String chatMessageFrom, String chatMessageTime, String chatMessageText, String gid) {
         this.chatMessageFrom = chatMessageFrom;
         this.chatMessageTime = chatMessageTime;
         this.chatMessageText = chatMessageText;
+        this.gid = gid;
     }
 
     public String getChatMessageFrom() {
@@ -43,6 +45,14 @@ public class Chat implements Serializable{
 
     public void setChatMessageText(String chatMessageText) {
         this.chatMessageText = chatMessageText;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
     public String getJsonInString() {
