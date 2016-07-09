@@ -10,6 +10,7 @@ import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import de.dataobjects.JsonCollection;
+import de.dataobjects.Task;
 
 /**
  * Created by Lennart on 30.06.2016.
@@ -30,9 +31,15 @@ public class TaskObserver implements MessageObserver {
         if (this.payload.getString("task_category").equals("task")) {
             switch (this.payload.getString("task")) {
                 case "broadcastedtask":
-                    Log.i(TAG, "received new task");
+                    Log.i(TAG, "Received new task");
                     addTask();
-                    taskInsertSuccess();
+                    sendLocalUpdateBroadcast();
+                    break;
+                case "deletetask":
+                    Log.i(TAG, "Delete Task");
+                    deleteTask();
+                    sendLocalUpdateBroadcast();
+                    sendLocalReturnBroadcast();
                     break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
@@ -43,10 +50,20 @@ public class TaskObserver implements MessageObserver {
             }
         }
     }
+    private void sendLocalReturnBroadcast() {
+        Intent intent = new Intent("returntogeneralgroups");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
 
-    private void taskInsertSuccess() {
-        Intent errorappointment = new Intent("createdTask");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
+    private void deleteTask() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        Task task = JsonCollection.jsonToTask(this.payload.getString("content"));
+        sqLiteDBHandler.deleteTask(task.getTaskId(), task.getGid(), task.getAid());
+    }
+
+    private void sendLocalUpdateBroadcast() {
+        Intent createdtasksuccess = new Intent("createdTask");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(createdtasksuccess);
     }
 
     private void addTask() {

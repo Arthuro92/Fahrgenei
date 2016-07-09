@@ -3,15 +3,14 @@ package com.android.cows.fahrgemeinschaft;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
-import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import de.dataobjects.Appointment;
 
@@ -59,7 +58,7 @@ public class EditAppointmentActivity extends AppCompatActivity {
 
 
 
-                Intent intent = new Intent(context, AppointmentDetailActivity.class);
+                Intent intent = new Intent(context, AppointmentTabsActivity.class);
                 Log.i("Taskdaten",aid +" "+terminName.getText()+" "+terminAbfahrtZeit.getText()+" "+terminTreffOrt.getText());
                 intent.putExtra("aid", aid);
                 intent.putExtra("name", terminName.getText().toString()  );

@@ -149,4 +149,8 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
         //todo do we need unregistering for receiver?
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

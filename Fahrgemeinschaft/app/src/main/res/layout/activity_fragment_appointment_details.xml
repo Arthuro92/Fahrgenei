@@ -10,9 +10,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.android.cows.fahrgemeinschaft.FragmentAppointmentDetailsActivity">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingBottom="20dp">
+
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:id="@+id/tableLayout">
 
         <!--  <TableRow android:layout_height="80dp">
 
@@ -106,8 +115,22 @@
                 android:text="New Text"
                 android:id="@+id/terminZielOrtZ"
                 android:textColor="@color/black" />
+
         </TableRow>
 
     </TableLayout>
+
+</LinearLayout>
+
+    <MediaController
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mediaController"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="159dp"
+        android:layout_marginStart="159dp" />
+
 
 </RelativeLayout>

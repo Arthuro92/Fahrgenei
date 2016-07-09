@@ -48,7 +48,7 @@ public class JsonCollection {
         return new Gson().fromJson(userList, new TypeToken<ArrayList<UserInGroup>>(){}.getType());
     }
 
-    public static UserInAppointment userInAppointment(String userInAppointment) {
+    public static UserInAppointment jsonToUserInAppointment(String userInAppointment) {
         return new Gson().fromJson(userInAppointment, UserInAppointment.class);
     }
 

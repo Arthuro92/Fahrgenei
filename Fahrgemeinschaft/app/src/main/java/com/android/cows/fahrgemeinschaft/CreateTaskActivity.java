@@ -23,7 +23,6 @@ import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.dataobjects.Appointment;
 import de.dataobjects.Task;
 
 public class CreateTaskActivity extends AppCompatActivity {
@@ -156,6 +155,10 @@ public class CreateTaskActivity extends AppCompatActivity {
             isReceiverRegistered = false;
         }
         //todo do we need unregistering for receiver?
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 }

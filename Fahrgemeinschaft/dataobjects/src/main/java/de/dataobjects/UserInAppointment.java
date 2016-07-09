@@ -18,6 +18,8 @@ public class UserInAppointment implements Serializable {
 
     private int isParticipant;
 
+    boolean isDriver = false;
+
     public UserInAppointment() {
     }
 
@@ -60,8 +62,15 @@ public class UserInAppointment implements Serializable {
         this.isParticipant = isParticipant;
     }
 
+    public boolean isDriver() {
+        return isDriver;
+    }
+
+    public void setDriver(boolean driver) {
+        isDriver = driver;
+    }
+
     public String getJsonInString() {
         return new Gson().toJson(this);
     }
-
 }

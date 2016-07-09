@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
+import com.android.cows.fahrgemeinschaft.AppointmentTabsActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
@@ -106,7 +106,9 @@ public class AppointmentAdapter extends ArrayAdapter {
             holder.inv_status.setText("Angenommen");
             row.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, AppointmentDetailActivity.class);
+                    Intent intent = new Intent(context, AppointmentTabsActivity.class);
+                    SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                    prefs.edit().putInt("currentaid",appointment.getAid()).apply();
                     intent.putExtra("aid", appointment.getAid());
                     intent.putExtra("name", appointment.getName());
                     intent.putExtra("startingtime", appointment.getAbfahrzeit());

@@ -70,14 +70,17 @@ public class Algorithm extends RepositorieConnector  {
         int membercounter = 0;
 
         for(UserInAppointment userInAppointment1 : userInAppointmentArrayList) {
-            membercounter++;
-            User user = userRepository.findOne(userInAppointment1.getUid());
-            if(user.isDriver() && !userInAppointment1.isDriver()) {
-                userArrayList.add(user);
-                UserInGroupId userInGroupId = new UserInGroupId(userInAppointment1.getUid(), userInAppointment1.getGid());
-                userInGroupArrayList.add(userInGroupRepository.findOne(userInGroupId));
+            if (userInAppointment1.getIsParticipant() == 1) {
+                membercounter++;
+                User user = userRepository.findOne(userInAppointment1.getUid());
+                if (user.isDriver() && !userInAppointment1.isDriver()) {
+                    userArrayList.add(user);
+                    UserInGroupId userInGroupId = new UserInGroupId(userInAppointment1.getUid(), userInAppointment1.getGid());
+                    userInGroupArrayList.add(userInGroupRepository.findOne(userInGroupId));
+                }
             }
         }
+        logger.log(Level.INFO, "Total Members in Appointment: " + membercounter);
         appointment.setMembers(membercounter);
 
         //noinspection unchecked
@@ -130,6 +133,7 @@ public class Algorithm extends RepositorieConnector  {
             solutionarray[4] = appointment.getJsonInString();
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
             smackCcsClient.sendDownstreamMessage("appointment", "newdrivers", "/topics/" + userInAppointment.getGid(), solutionarray);
+            System.out.println("SENDED DRIVERS");
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }

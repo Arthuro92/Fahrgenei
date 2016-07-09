@@ -9,14 +9,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.Table;
 
 /**
  * Created by Lennart on 17.06.2016.
  */
 @Entity
 @IdClass(UserInAppointmentId.class)
-@Table(name= "userInAppointment")
 public class UserInAppointment implements Serializable {
     @Id
     private int aid;
@@ -30,7 +28,8 @@ public class UserInAppointment implements Serializable {
     @Column
     private int isParticipant;
 
-    @Column boolean isDriver = false;
+    @Column
+    boolean isDriver = false;
 
     public UserInAppointment() {
     }

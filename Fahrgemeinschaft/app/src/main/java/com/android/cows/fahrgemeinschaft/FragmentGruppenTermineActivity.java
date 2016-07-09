@@ -13,9 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -115,14 +113,9 @@ public class FragmentGruppenTermineActivity extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
         ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
-        if (appointmentlist.size() > 0) {
-            createAppointments(appointmentlist);
-        } else {
-            CharSequence text = "Keine Termine!";
-            Toast toast = Toast.makeText(FragmentGruppenTermineActivity.this.getActivity(), text, Toast.LENGTH_LONG);
-            toast.show();
-        }
+        createAppointments(appointmentlist);
     }
+
 
     @Override
     public void onDestroy() {
@@ -139,7 +132,11 @@ public class FragmentGruppenTermineActivity extends Fragment {
         Log.i(TAG, "createAppointments");
         this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row, appointmentArrayList);
         this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
-        this.listView.setAdapter(appointmentAdapter);
+        if(appointmentArrayList.size()>0) {
+            this.listView.setAdapter(appointmentAdapter);
+        } else {
+            listView.setAdapter(null);
+        }
     }
 
     @Override
@@ -152,5 +149,10 @@ public class FragmentGruppenTermineActivity extends Fragment {
     public void onResume() {
         super.onResume();
         registerReceiver();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
     }
 }

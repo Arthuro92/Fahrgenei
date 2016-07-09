@@ -19,7 +19,7 @@ import de.dataobjects.UserInGroup;
 /**
  * Created by david on 24.05.2016.
  */
-@SuppressWarnings("ALL") //todo maybe fix it? or handle it?
+@SuppressWarnings("ALL")
 public class AppointmentObserver implements MessageObserver {
     //new new
     private Bundle payload;
@@ -50,15 +50,21 @@ public class AppointmentObserver implements MessageObserver {
                     updateLocalDatabase();
                     sendLocalUpdateBroadcast();
                     break;
-                case "updatingparticipantsuccess":
-                    Log.i(TAG, "Updating Participant Success");
+                case "updatingparticipant":
+                    Log.i(TAG, "Updating Participant");
                     updateUserInAppointment();
                     sendLocalUpdateBroadcast();
+                    sendLocalParticipantUpdateBroadcast();
                     break;
                 case "newdrivers":
                     Log.i(TAG, "New Drivers");
                     updateLocalNewDrivers();
                     break;
+                case "deleteappointment":
+                    Log.i(TAG, "Delete Appointment");
+                    deleteAppointment();
+                    sendLocalUpdateBroadcast();
+                    sendLocalReturnBroadcast();
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
                         Log.i(TAG, "ERRORAppointment");
@@ -69,6 +75,12 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
+    private void deleteAppointment() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        Appointment appointment = JsonCollection.jsonToAppointment(this.payload.getString("content"));
+        sqLiteDBHandler.deleteAppoinment(appointment.getAid(), appointment.getGid());
+    }
+
     private void updateLocalNewDrivers() {
         String[] solutionarray = JsonCollection.jsonToStringArray(this.payload.getString("content"));
         ArrayList<UserInGroup> userInGroupArrayListOld = JsonCollection.jsonToUserInGroupList(solutionarray[0]);
@@ -76,25 +88,26 @@ public class AppointmentObserver implements MessageObserver {
         ArrayList<UserInGroup> userInGroupArrayList = JsonCollection.jsonToUserInGroupList(solutionarray[2]);
         ArrayList<UserInAppointment> userInAppointmentArrayList = JsonCollection.jsonToUserInAppointmentList(solutionarray[3]);
 
-        Log.i(TAG, userInAppointmentArrayListOld.size() + "");
-        Log.i(TAG, userInGroupArrayListOld.size() + "");
-        Log.i(TAG, userInAppointmentArrayList.size() + "");
-        Log.i(TAG, userInGroupArrayList.size() + "");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
 
         sqLiteDBHandler.addAppointment(JsonCollection.jsonToAppointment(solutionarray[4]));
         sendLocalUpdateBroadcast();
 
         for(UserInGroup userInGroup : userInGroupArrayListOld) {
+            Log.i(TAG, "Old Driver in group was: " + userInGroup.getUid());
             sqLiteDBHandler.addIsInGroup(userInGroup);
         }
         for(UserInAppointment userInAppointment : userInAppointmentArrayListOld) {
+            Log.i(TAG, "Old Driver is Driver: " + userInAppointment.isDriver());
             sqLiteDBHandler.addIsInAppointment(userInAppointment);
         }
         for(UserInGroup userInGroup : userInGroupArrayList) {
+            Log.i(TAG, "New Driver in group :" + userInGroup.getUid());
             sqLiteDBHandler.addIsInGroup(userInGroup);
         }
         for(UserInAppointment userInAppointment : userInAppointmentArrayList) {
+            Log.i(TAG, "New Driver: " + userInAppointment.getUid());
+            Log.i(TAG, "Is now Driver: " + userInAppointment.isDriver());
             sqLiteDBHandler.addIsInAppointment(userInAppointment);
         }
 
@@ -107,6 +120,16 @@ public class AppointmentObserver implements MessageObserver {
 
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupappointments");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sendLocalParticipantUpdateBroadcast() {
+        Intent intent = new Intent("updateparticipants");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sendLocalReturnBroadcast() {
+        Intent intent = new Intent("returntogeneralgroups");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 

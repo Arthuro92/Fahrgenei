@@ -38,12 +38,31 @@ public class TaskObserver extends RepositorieConnector implements MessageObserve
                         logger.log(Level.INFO, "In New Task");
                         createNewTask();
                         break;
+                    case "deletetask":
+                        logger.log(Level.INFO, "Delete Task");
+                        deleteTask();
+                        broadcastDeleteTask();
+                        break;
                     default:
                         logger.log(Level.INFO, "default case");
                         break;
                 }
             }
         }
+    }
+
+    private void broadcastDeleteTask() {
+        try {
+            SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
+            Task task = JsonCollection.jsonToTask(this.payload.get("content"));
+            smackCcsClient.sendDownstreamMessage("task", "deletetask", "/topics/" + task.getGid(), task);
+        } catch(SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteTask() {
+        taskRepository.delete(JsonCollection.jsonToTask(this.payload.get("content")));
     }
 
     private boolean createNewTask() {
