@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.cows.fahrgemeinschaft.adapters.TaskAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -51,13 +50,11 @@ public class FragmentAppointmentTaskActivity extends Fragment {
         createReceiver();
 
 
-
-
         /**
-        TaskAdapter taskAdapter = new TaskAdapter( getActivity() ,R.layout.item_row_task, tsklist);
-        listView = (ListView) view.findViewById(R.id.taskListView);
-        listView.setAdapter(taskAdapter);
-        //createTaskOverview(tsklist);*/
+         TaskAdapter taskAdapter = new TaskAdapter( getActivity() ,R.layout.item_row_task, tsklist);
+         listView = (ListView) view.findViewById(R.id.taskListView);
+         listView.setAdapter(taskAdapter);
+         //createTaskOverview(tsklist);*/
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -67,11 +64,12 @@ public class FragmentAppointmentTaskActivity extends Fragment {
         this.listView = (ListView) getActivity().findViewById(R.id.taskListView);
         this.listView.setAdapter(taskAdapter);
     }
+
     public void createReceiver() {
         updateTaskList = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                System.out.println("update in appointment fired");
+                System.out.println("update in task fired");
                 loadTaskList();
             }
         };
@@ -104,22 +102,16 @@ public class FragmentAppointmentTaskActivity extends Fragment {
 //        Bundle bundle = getActivity().getIntent().getExtras();
 //        int aid = (int) bundle.getSerializable("aid");
 
-        int aid = prefs.getInt("currentaid",0);
+        int aid = prefs.getInt("currentaid", 0);
         Log.i(TAG, "CURRENT AID " + aid);
-        ArrayList<Task> tsklist = sqLiteDBHandler.getTasks(aid, gid );
+        ArrayList<Task> tsklist = sqLiteDBHandler.getTasks(aid, gid);
         //Log.i("Taskdaten:", tsklist.get(0).getTaskName().toString());
         //= new ArrayList<Task>();
         //tsklist.add(tsk1);
         //tsklist.add(tsk2);
         //tsklist.add(tsk3);
 
-        if (tsklist.size() > 0) {
             createTasks(tsklist);
-        } else {
-            CharSequence text = "Keine Aufgaben verfügbar!";
-            Toast toast = Toast.makeText(FragmentAppointmentTaskActivity.this.getActivity(), text, Toast.LENGTH_LONG);
-            toast.show();
-        }
     }
 }
 

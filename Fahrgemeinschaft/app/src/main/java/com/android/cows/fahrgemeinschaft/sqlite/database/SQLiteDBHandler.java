@@ -22,7 +22,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 144;
+    private static final int DATABASE_VERSION = 145;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -65,6 +65,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String GET_HIGHEST_TASKID_1 = "SELECT taskId FROM task WHERE gid = ";
     private static final String GET_HIGHEST_TASKID_2 = " AND aid = ";
     private static final String GET_HIGHEST_TASKID_3 = " ORDER BY taskId DESC LIMIT 1 ";
+    private static final String GET_USER_IN_APPOINTMENT_1 = "SELECT * FROM is_in_appointment WHERE aid = ";
+    private static final String GET_USER_IN_APPOINTMENT_2 = "AND gid = ";
+    private static final String GET_USER_IN_APPOINTMENT_3 = "AND uid = ";
 
 
     private static final String DELETE_USER_IN_GROUP = "DELETE FROM is_in_group WHERE gid =";
@@ -75,10 +78,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String DELETE_GROUP = "DELETE FROM groups WHERE gid =";
     private static final String DELETE_APPOINTMENT_1 = "DELETE FROM appointments WHERE aid =";
     private static final String DELETE_APPOINTMENT_2 = "AND gid = ";
-
-    private static final String GET_USER_IN_APPOINTMENT_1 = "SELECT * FROM is_in_appointment WHERE aid = ";
-    private static final String GET_USER_IN_APPOINTMENT_2 = "AND gid = ";
-    private static final String GET_USER_IN_APPOINTMENT_3 = "AND uid = ";
+    private static final String DELETE_TASK_1 = "DELETE FROM task WHERE taskid = ";
+    private static final String DELETE_TASK_2 = "AND gid = ";
+    private static final String DELETE_TASK_3 = "AND aid = ";
 
 
 
@@ -233,6 +235,18 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         String delete_user_in_group  = DELETE_USER_IN_GROUP + "'" + groupId +"'" ;
         db.execSQL(delete_group);
         db.execSQL(delete_user_in_group);
+        //db.delete();
+        db.close();
+    }
+
+    public void deleteTask(int tid, String gid, int aid) {
+        Log.i(TAG, "Delete Task ");
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        //cv.put("gid", groupId);
+        //cv.put("uid", userId);
+        String delete_task  = DELETE_TASK_1 + "'" + tid + "'" + DELETE_TASK_2 + "'" + gid + "'" + DELETE_TASK_3 + "'" + aid + "'" ;
+        db.execSQL(delete_task);
         //db.delete();
         db.close();
     }
