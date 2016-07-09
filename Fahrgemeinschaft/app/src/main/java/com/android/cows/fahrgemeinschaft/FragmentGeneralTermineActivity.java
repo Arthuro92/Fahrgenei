@@ -29,7 +29,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
     private int lastid;
     private static final String TAG = "AppointmentOverview";
     View contentViewGeneralTermine;
-    ListView listView;
+    ListView listView4;
 
     private BroadcastReceiver updateappointmentlist;
     private boolean isReceiverRegistered;
@@ -41,7 +41,8 @@ public class FragmentGeneralTermineActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentViewGeneralTermine = inflater.inflate(R.layout.activity_fragment_general_termine, null);
 
-
+        //loadAppointmentList();
+        //createReceiver();
         return contentViewGeneralTermine;
     }
 
@@ -69,8 +70,8 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
 
 
-        //loadAppointmentList();
-        //createReceiver();
+        loadAppointmentList();
+        createReceiver();
     }
 
     public void createReceiver() {
@@ -103,8 +104,10 @@ public class FragmentGeneralTermineActivity extends Fragment {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String uid = prefs.getString("userid", "");
-        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAllAppointments();
 
+        //ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getMyAppointments(uid);
+        ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAllAppointments();
+        Log.i("Inhalt ApmListe:", appointmentlist.toString() );
 
         if (appointmentlist.size() > 0) {
             createAppointments(appointmentlist);
@@ -113,12 +116,19 @@ public class FragmentGeneralTermineActivity extends Fragment {
             Toast toast = Toast.makeText(FragmentGeneralTermineActivity.this.getActivity(), text, Toast.LENGTH_LONG);
             toast.show();
         }
+
+
     }
 
-    public void createAppointments(ArrayList<de.dataobjects.Appointment> appointmentArrayList) {
+    public void createAppointments(ArrayList<Appointment> appointmentArrayList) {
         Log.i(TAG, "createAppointments");
         this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row, appointmentArrayList);
-        this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
-        this.listView.setAdapter(appointmentAdapter);
+        Log.i("Inhalt apmArrayList: ", appointmentArrayList.toString() );
+        Log.i("Inhalt apmAdapter: ", appointmentAdapter.toString());
+        String a = "Ist "+appointmentAdapter.isEmpty() ;
+        Log.i("apmAdapter leer? ", a);
+        this.listView4 = (ListView) getActivity().findViewById(R.id.apmListView);
+        this.listView4.setAdapter(appointmentAdapter);
+
     }
 }

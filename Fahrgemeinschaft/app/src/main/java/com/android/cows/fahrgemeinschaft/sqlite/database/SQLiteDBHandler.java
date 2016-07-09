@@ -21,7 +21,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 129;
+    private static final int DATABASE_VERSION = 131;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -369,10 +369,14 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return appointmentArrayList;
     }
 
+
     public String buildReturnMyAppointmentStatment(String userid){
         SQLiteDatabase db = getWritableDatabase();
+        Log.i("UserId" ,userid);
         Cursor cur = db.rawQuery(GET_MY_APPOINTMENTS + "'" + userid + "'", null);
         cur.moveToFirst();
+        Log.i("Current Col Index", Integer.toString(cur.getColumnIndex("aid")));
+        Log.i("Data of CurrIndex", Integer.toString(cur.getInt(cur.getColumnIndex("aid"))) );
         Log.i("DIE ERSTE AID LAUTET ", Integer.toString(cur.getInt(cur.getColumnIndex("aid"))));
         String statment = GET_APPOINTMENT_1 + Integer.toString(cur.getInt(cur.getColumnIndex("aid")));
 
@@ -383,6 +387,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             statment = statment + " OR aid = " + cur.getInt(cur.getColumnIndex("aid"));
         }
         Log.i("DAS SQL LAUTET ", statment);
+        db.close();
         return statment;
     }
 

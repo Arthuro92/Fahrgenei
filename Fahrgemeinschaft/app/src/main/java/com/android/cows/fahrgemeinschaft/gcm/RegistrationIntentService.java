@@ -97,7 +97,7 @@ public class RegistrationIntentService extends IntentService {
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         prefs.edit().putString("usertoken", token).apply();
-
+       // prefs.edit().putBoolean("userprofile", false).apply();
         if(prefs.getBoolean("userprofile", false)) {
             Log.i(TAG, "sending new Token");
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);

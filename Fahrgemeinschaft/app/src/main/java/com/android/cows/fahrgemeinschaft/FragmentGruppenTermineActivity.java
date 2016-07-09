@@ -115,6 +115,8 @@ public class FragmentGruppenTermineActivity extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
         ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
+
+
         if (appointmentlist.size() > 0) {
             createAppointments(appointmentlist);
         } else {

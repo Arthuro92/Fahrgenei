@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -92,6 +93,8 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         TextView email = (TextView) findViewById(R.id.emailid);
         username.setText(" " + prefs.getString("username", ""));
         email.setText(" " + prefs.getString("useremail", ""));
+
+        onClickSaveButton();
 
     }
 
@@ -192,6 +195,32 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         prefs.edit().putBoolean("userprofile",true).apply();
         Intent intent = new Intent(this, GeneralTabsActivity.class);
         startActivity(intent);
+    }
+
+    private void onClickSaveButton() {
+        Button savebtn = (Button) findViewById(R.id.saveSettings);
+        //noinspection ConstantConditions
+        savebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo check if user filled the information fields
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                MyGcmSend gcmsender = new MyGcmSend();
+                String id = prefs.getString("userid", "");
+                String name = prefs.getString("username", "");
+                String email = prefs.getString("useremail", "");
+                String token = prefs.getString("usertoken", "");
+
+
+                User user = new User(id, token, name, email,true, 3);
+                SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(SettingsActivity.this, null);
+                sqLiteDBHandler.addUser(user);
+                gcmsender.send("user", "registration", user, SettingsActivity.this);
+                prefs.edit().putBoolean("userprofile",true).apply();
+                Intent intent = new Intent(SettingsActivity.this, GeneralTabsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
 
