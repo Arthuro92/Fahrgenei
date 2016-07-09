@@ -120,7 +120,7 @@ public class CreateTaskActivity extends AppCompatActivity {
                 intent2.putExtra("meetingpoint", bundle.getString("meetingpoint"));
                 intent2.putExtra("meetingtime", bundle.getString("meetingtime"));
                 intent2.putExtra("destination", bundle.getString("destination"));
-//                startActivity(intent2);
+                startActivity(intent2);
                 finish();
             }
         };
