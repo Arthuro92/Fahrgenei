@@ -20,7 +20,7 @@ import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 
 import de.dataobjects.Appointment;
 
@@ -109,18 +109,17 @@ public class FragmentGeneralTermineActivity extends Fragment {
         ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAllAppointments();
         Log.i("Inhalt ApmListe:", appointmentlist.toString() );
 
-        if (appointmentlist.size() > 0) {
-            createAppointments(appointmentlist);
-        } else {
+
             CharSequence text = "Keine Termine!";
             Toast toast = Toast.makeText(FragmentGeneralTermineActivity.this.getActivity(), text, Toast.LENGTH_LONG);
             toast.show();
-        }
+
 
 
     }
 
     public void createAppointments(ArrayList<Appointment> appointmentArrayList) {
+        Collections.sort(appointmentArrayList);
         Log.i(TAG, "createAppointments");
         this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row_apm, appointmentArrayList);
         Log.i("Inhalt apmArrayList: ", appointmentArrayList.toString() );

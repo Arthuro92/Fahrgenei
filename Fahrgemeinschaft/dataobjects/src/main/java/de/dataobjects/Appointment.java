@@ -3,11 +3,16 @@ package de.dataobjects;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Arthur on 25.05.2016.
  */
-public class Appointment implements Serializable {
+public class Appointment implements Serializable, Comparable {
 
     private int aid;
 
@@ -114,5 +119,21 @@ public class Appointment implements Serializable {
 
     public void setMembers(int members) {
         this.members = members;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Appointment) {
+            Appointment appointment = (Appointment) o;
+            DateFormat format = new SimpleDateFormat("d/m/yyyy-HH-mm", Locale.ENGLISH);
+            try {
+                Date date1 = format.parse(this.getTreffpunkt_zeit());
+                Date date2 = format.parse(appointment.getTreffpunkt_zeit());
+                return date1.compareTo(date2);
+            } catch(ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 }

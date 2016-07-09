@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +20,7 @@ import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.dataobjects.Appointment;
 
@@ -117,13 +117,10 @@ public class FragmentGruppenTermineActivity extends Fragment {
         ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
 
 
-        if (appointmentlist.size() > 0) {
-            createAppointments(appointmentlist);
-        } else {
             CharSequence text = "Keine Termine!";
             Toast toast = Toast.makeText(FragmentGruppenTermineActivity.this.getActivity(), text, Toast.LENGTH_LONG);
             toast.show();
-        }
+
     }
 
     @Override
@@ -139,6 +136,7 @@ public class FragmentGruppenTermineActivity extends Fragment {
      */
     public void createAppointments(ArrayList<de.dataobjects.Appointment> appointmentArrayList) {
         Log.i(TAG, "createAppointments");
+        Collections.sort(appointmentArrayList);
         this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row_apm, appointmentArrayList);
         this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
         this.listView.setAdapter(appointmentAdapter);
