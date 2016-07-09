@@ -38,5 +38,15 @@
         android:text="@string/inv_status"
         android:textSize="12sp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtTitle"
+        android:text="@string/not_enough_driver"
+        android:id="@+id/notenoughdrivers"
+        android:textColor="#ff0000"
+        android:visibility="invisible"
+    />
+
 
 </RelativeLayout>

@@ -49,7 +49,14 @@ public class JsonCollection {
     }
 
     public static ArrayList<Appointment> jsonToAppointmentList(String appointmentList) {
-        return new Gson().fromJson(appointmentList,new TypeToken<List<Appointment>>() {}.getType());
+        return new Gson().fromJson(appointmentList, new TypeToken<List<Appointment>>() {}.getType());
+    }
+    public static UserInAppointment jsonToUserInAppointment(String userInAppointment) {
+        return new Gson().fromJson(userInAppointment, UserInAppointment.class);
+    }
+
+    public static ArrayList<UserInAppointment> jsonToUserInAppointmentList(String userInAppointmentList) {
+        return new Gson().fromJson(userInAppointmentList, new TypeToken<List<UserInAppointment>>() {}.getType());
     }
 
     public static Task jsonToTask(String task) {
@@ -59,7 +66,6 @@ public class JsonCollection {
     public static String objectToJson(Object object) {
         return new Gson().toJson(object);
     }
-
 
 }
 

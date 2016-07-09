@@ -69,7 +69,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String DELETE_GROUP = "DELETE FROM groups WHERE gid =";
     private static final String DELETE_APPOINTMENT = "DELETE FROM appointments WHERE aid =";
 
-
+    private static final String GET_USER_IN_APPOINTMENT_1 = "SELECT * FROM is_in_appointment WHERE aid = ";
+    private static final String GET_USER_IN_APPOINTMENT_2 = "AND gid = ";
+    private static final String GET_USER_IN_APPOINTMENT_3 = "AND uid = ";
 
 
 
@@ -386,7 +388,34 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public UserInAppointment getUserInAppointment(int aid, String gid, String uid) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_USER_IN_APPOINTMENT_1 + "'" + aid + "'" + GET_USER_IN_APPOINTMENT_2 + "'" + gid + "'" + GET_USER_IN_APPOINTMENT_3 + "'" + uid + "'", null);
+        cur.moveToFirst();
+        if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+            db.close();
+            Log.i(TAG, "getUserInAppointment " + cur.getString(cur.getColumnIndex("JsonInString")));
+            return JsonCollection.jsonToUserInAppointment(cur.getString(cur.getColumnIndex("JsonInString")));
+        }
+        db.close();
+        return null;
+    }
 
+    public ArrayList<UserInAppointment> getUsersInAppointemnt(int aid, String gid ) {
+        ArrayList<UserInAppointment> userInAppointmentArrayList = new ArrayList<UserInAppointment>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cur = db.rawQuery(GET_USER_IN_APPOINTMENT_1 + "'" + aid + "'" + GET_USER_IN_APPOINTMENT_2 + "'" + gid + "'", null);
+        cur.moveToFirst();
+        while (!cur.isAfterLast()) {
+            if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+                userInAppointmentArrayList.add(JsonCollection.jsonToUserInAppointment(cur.getString(cur.getColumnIndex("JsonInString"))));
+                Log.i(TAG, "getAppointments " + cur.getString(cur.getColumnIndex("JsonInString")));
+            }
+            cur.moveToNext();
+        }
+        db.close();
+        return userInAppointmentArrayList;
+    }
 
     public SQLiteDBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -416,7 +445,13 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
+    public void updateUserInAppointment(Appointment appointment) {
+        ArrayList<UserInGroup> userInGroupArrayList = this.getUserList(appointment.getGid());
+        for(UserInGroup userInGroup : userInGroupArrayList) {
+            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), userInGroup.getUid(), 0);
+            this.addIsInAppointment(userInAppointment);
+        }
+    }
 }
 
 

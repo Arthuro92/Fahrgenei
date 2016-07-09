@@ -25,6 +25,7 @@ import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import de.dataobjects.Appointment;
+import de.dataobjects.Groups;
 
 public class CreateAppointmentActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "CreateGroupActivity";
@@ -62,7 +63,6 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
 
         DateTreffpunktzeit.setOnClickListener(this);
         DateAbfahrtzeit.setOnClickListener(this);
-
 
         Button createAppointmentButton = (Button) findViewById(R.id.createappointbutton);
         createAppointmentButton.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +176,11 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
 //    }
 
     public void createAppointment(View view) {
+        SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String gid = prefs.getString("currentgid", "");
+        String userid = prefs.getString("userid","");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this,null);
+        Groups groups = sqLiteDBHandler.getGroup(gid);
 
         setLayoutInvisible();
 
@@ -183,11 +188,9 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
 
         MyGcmSend gcmsend = new MyGcmSend();
 
-        SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        String gid = prefs.getString("currentgid", "");
+
         String gname = prefs.getString("currentgroupname", "");
 
-        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
         int id = sqLiteDBHandler.getNextAppointmentID(gid);
         de.dataobjects.Appointment gapm1;
 

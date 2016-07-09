@@ -74,5 +74,6 @@
     <string name="gruppen_einladung_annehmen">Möchten Sie die Einladung in die Gruppe annehmen?</string>
     <string name="ja">Ja</string>
     <string name="nein">Nein</string>
+    <string name="not_enough_driver">Nicht genug Fahrer!</string>
 
 </resources>

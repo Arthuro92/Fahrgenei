@@ -149,12 +149,12 @@
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Speichern"
                 android:id="@+id/saveSettings"
+                android:text="Speichern"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="12dp"
-                android:background="@color/Primary"/>
+                android:background="@color/Primary" />
         </LinearLayout>
     </ScrollView>
 

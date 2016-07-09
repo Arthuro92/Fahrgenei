@@ -13,14 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.cows.fahrgemeinschaft.AppointmentDetailActivity;
-import com.android.cows.fahrgemeinschaft.AppointmentTabsActivity;
-import com.android.cows.fahrgemeinschaft.FragmentAppointmentDetailsActivity;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.R;
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 
 import de.dataobjects.Appointment;
+import de.dataobjects.UserInAppointment;
 
 /**
  * Created by david on 12.06.2016.
@@ -30,6 +31,7 @@ public class AppointmentAdapter extends ArrayAdapter {
     private Context context = GlobalAppContext.getAppContext();
     private LayoutInflater layoutInflater = LayoutInflater.from(getContext());
     private int layoutResourceId;
+    private static final String TAG = "AppointmentAdapter";
     ArrayList<Appointment> data = new ArrayList<Appointment>();
 
     private String getAppointmentA() {
@@ -79,6 +81,7 @@ public class AppointmentAdapter extends ArrayAdapter {
             holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.inv_status = (TextView)row.findViewById(R.id.inv_status);
+            holder.not_enough_drivers = (TextView)row.findViewById(R.id.notenoughdrivers);
 
             row.setTag(holder);
         } else {
@@ -86,28 +89,45 @@ public class AppointmentAdapter extends ArrayAdapter {
         }
 
         final Appointment appointment =  data.get(position);
+
+        if(appointment.getFreeSeats() < appointment.getMembers()) {
+            holder.not_enough_drivers.setVisibility(View.VISIBLE);
+        }
+
         holder.txtTitle.setText(appointment.getName());
         Log.d("UserAdapter: ","Holdername als "+appointment.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.football);
-        holder.inv_status.setText("Angenommen");
 
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        final SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        final UserInAppointment userInAppointment = sqLiteDBHandler.getUserInAppointment(appointment.getAid(), appointment.getGid(), prefs.getString("userid", ""));
 
-
-        row.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(context, AppointmentTabsActivity.class);
-                intent.putExtra("aid", appointment.getAid());
-                intent.putExtra("name", appointment.getName());
-                intent.putExtra("startingtime", appointment.getAbfahrzeit());
-                intent.putExtra("meetingpoint", appointment.getTreffpunkt());
-                intent.putExtra("meetingtime", appointment.getTreffpunkt_zeit());
-                intent.putExtra("destination", appointment.getZielort());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-//
-            }
-        });
-
+        if(userInAppointment.getIsParticipant() == 1) {
+            holder.inv_status.setText("Angenommen");
+            row.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AppointmentDetailActivity.class);
+                    intent.putExtra("aid", appointment.getAid());
+                    intent.putExtra("name", appointment.getName());
+                    intent.putExtra("startingtime", appointment.getAbfahrzeit());
+                    intent.putExtra("meetingpoint", appointment.getTreffpunkt());
+                    intent.putExtra("meetingtime", appointment.getTreffpunkt_zeit());
+                    intent.putExtra("destination", appointment.getZielort());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            holder.inv_status.setText("Ausstehend");
+            row.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.i(TAG, "changing IsParticipant in Appointment");
+                    userInAppointment.setIsParticipant(1);
+                    MyGcmSend myGcmSend = new MyGcmSend();
+                    myGcmSend.send("appointment", "participantchange", userInAppointment, context);
+                }
+            });
+        }
         return row;
     }
 
@@ -129,7 +149,6 @@ public class AppointmentAdapter extends ArrayAdapter {
         ImageView imgIcon;
         TextView txtTitle;
         TextView inv_status;
+        TextView not_enough_drivers;
     }
-
-
 }

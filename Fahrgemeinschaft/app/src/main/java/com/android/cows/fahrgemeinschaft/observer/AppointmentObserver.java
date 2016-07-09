@@ -9,8 +9,12 @@ import android.util.Log;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
+import java.util.ArrayList;
+
 import de.dataobjects.Appointment;
 import de.dataobjects.JsonCollection;
+import de.dataobjects.UserInAppointment;
+import de.dataobjects.UserInGroup;
 
 /**
  * Created by david on 24.05.2016.
@@ -38,13 +42,22 @@ public class AppointmentObserver implements MessageObserver {
                     break;
                 case "appointmentinsertsuccess":
                     Log.i(TAG, "Appointmentinsersuccess");
-                    updateLocalDatabase(1);
+                    updateLocalDatabase();
                     appointmentInsertSuccess();
                     break;
                 case "newappointment":
                     Log.i(TAG, "new Appointment received");
-                    updateLocalDatabase(0);
+                    updateLocalDatabase();
                     sendLocalUpdateBroadcast();
+                    break;
+                case "updatingparticipantsuccess":
+                    Log.i(TAG, "Updating Participant Success");
+                    updateUserInAppointment();
+                    sendLocalUpdateBroadcast();
+                    break;
+                case "newdrivers":
+                    Log.i(TAG, "New Drivers");
+                    updateLocalNewDrivers();
                     break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
@@ -56,14 +69,51 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
+    private void updateLocalNewDrivers() {
+        String[] solutionarray = JsonCollection.jsonToStringArray(this.payload.getString("content"));
+        ArrayList<UserInGroup> userInGroupArrayListOld = JsonCollection.jsonToUserInGroupList(solutionarray[0]);
+        ArrayList<UserInAppointment> userInAppointmentArrayListOld = JsonCollection.jsonToUserInAppointmentList(solutionarray[1]);
+        ArrayList<UserInGroup> userInGroupArrayList = JsonCollection.jsonToUserInGroupList(solutionarray[2]);
+        ArrayList<UserInAppointment> userInAppointmentArrayList = JsonCollection.jsonToUserInAppointmentList(solutionarray[3]);
+
+        Log.i(TAG, userInAppointmentArrayListOld.size() + "");
+        Log.i(TAG, userInGroupArrayListOld.size() + "");
+        Log.i(TAG, userInAppointmentArrayList.size() + "");
+        Log.i(TAG, userInGroupArrayList.size() + "");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+
+        sqLiteDBHandler.addAppointment(JsonCollection.jsonToAppointment(solutionarray[4]));
+        sendLocalUpdateBroadcast();
+
+        for(UserInGroup userInGroup : userInGroupArrayListOld) {
+            sqLiteDBHandler.addIsInGroup(userInGroup);
+        }
+        for(UserInAppointment userInAppointment : userInAppointmentArrayListOld) {
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
+        }
+        for(UserInGroup userInGroup : userInGroupArrayList) {
+            sqLiteDBHandler.addIsInGroup(userInGroup);
+        }
+        for(UserInAppointment userInAppointment : userInAppointmentArrayList) {
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
+        }
+
+    }
+
+    private void updateUserInAppointment() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        sqLiteDBHandler.addIsInAppointment(JsonCollection.jsonToUserInAppointment(this.payload.getString("content")));
+    }
+
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupappointments");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-    private void updateLocalDatabase(int isParticipant) {
+    private void updateLocalDatabase() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         sqLiteDBHandler.addAppointment(jsonToAppointment(this.payload.getString("content")));
+        sqLiteDBHandler.updateUserInAppointment(jsonToAppointment(this.payload.getString("content")));;
     }
 
     private Appointment jsonToAppointment(String jsonInString) {
@@ -71,8 +121,8 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private void appointmentInsertSuccess() {
-        Intent errorappointment = new Intent("createdAppointment");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
+        Intent sucessCreateAppointment = new Intent("createdAppointment");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(sucessCreateAppointment);
     }
 
     private void errorAppointment(String error) {

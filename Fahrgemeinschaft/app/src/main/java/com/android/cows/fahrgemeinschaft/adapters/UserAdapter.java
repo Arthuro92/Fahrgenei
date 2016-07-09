@@ -163,7 +163,6 @@ public class UserAdapter extends ArrayAdapter {
         return row;
     }
 
-
     /**
      * Constructs an Adapter
      *
@@ -177,8 +176,6 @@ public class UserAdapter extends ArrayAdapter {
         this.context = context;
         this.data = data;
     }
-
-
 
     static class UserHolder
     {
