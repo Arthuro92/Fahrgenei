@@ -10,6 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -19,6 +22,7 @@ import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
 
+import de.dataobjects.Groups;
 import de.dataobjects.UserInAppointment;
 
 public class FragmentAppointmentParticipantActivity extends Fragment {
@@ -28,19 +32,47 @@ public class FragmentAppointmentParticipantActivity extends Fragment {
     private BroadcastReceiver updateparticipantlist;
     private boolean isReceiverRegistered;
     ListView listView;
+    private Context context = GlobalAppContext.getAppContext();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentViewAppointmentDriver = inflater.inflate(R.layout.activity_fragment_appointment_driver, null);
-
+        setHasOptionsMenu(true);
 
         return contentViewAppointmentDriver;
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem adduser = menu.findItem(R.id.action_edit_event);
+        MenuItem deletegrp = menu.findItem(R.id.action_delete_event);
+        MenuItem addtask = menu.findItem(R.id.action_create_task);
+
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        String gid = prefs.getString("currentgid", "");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+
+        Groups groups = sqLiteDBHandler.getGroup(gid);
+
+        if(!groups.getAdminid().equals(prefs.getString("userid", "")) && groups.getSubstitute() == null ||groups.getSubstitute() != null && !groups.getSubstitute().equals(prefs.getString("userid",""))) {
+            adduser.setVisible(false);
+            deletegrp.setVisible(false);
+            addtask.setVisible(false);
+        } else {
+            adduser.setVisible(false);
+            deletegrp.setVisible(false);
+            addtask.setVisible(true);
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
         loadParticipants();
         createReceiver();
     }

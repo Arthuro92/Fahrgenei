@@ -29,6 +29,7 @@ public class AppointmentTabsActivity extends AppCompatActivity {
     private BroadcastReceiver returntogroupgeneral;
     private boolean isReceiverRegistered;
 
+
     Toolbar toolbar;
 
     private Context context = GlobalAppContext.getAppContext();
@@ -55,15 +56,12 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         tabLayoutAppointment.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayoutAppointment.setupWithViewPager(viewPagerAppointment);
 
+
+
         tabLayoutAppointment.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-
-
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
                 viewPagerAppointment.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
@@ -92,8 +90,9 @@ public class AppointmentTabsActivity extends AppCompatActivity {
 
         Groups groups = sqLiteDBHandler.getGroup(gid);
         if(!groups.getAdminid().equals(prefs.getString("userid", "")) && groups.getSubstitute() == null ||groups.getSubstitute() != null && !groups.getSubstitute().equals(prefs.getString("userid",""))) {
+
             MenuItem adduser = menu.findItem(R.id.action_edit_event);
-            MenuItem deletegrp = menu.findItem(R.id.action_delete_event);
+            MenuItem  deletegrp = menu.findItem(R.id.action_delete_event);
             MenuItem addtask = menu.findItem(R.id.action_create_task);
 
             adduser.setVisible(false);

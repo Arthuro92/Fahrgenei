@@ -49,8 +49,13 @@ public class GroupTabsActivity extends AppCompatActivity {
         viewPagerGroup.setAdapter(viewPagerAdapter);
 
 
-
-
+        Bundle bundle = this.getIntent().getExtras();
+        if(bundle != null) {
+            String intentaction = bundle.getString("calledfromchatobserver", "normalcall");
+            if (intentaction.equals("calledfromchatobserver")) {
+                viewPagerGroup.setCurrentItem(3);
+            }
+        }
 
         tabLayoutGroup = (TabLayout) findViewById(R.id.tablayoutGroup);
         tabLayoutGroup.setTabGravity(TabLayout.GRAVITY_FILL);

@@ -3,7 +3,6 @@ package server;
 import com.example.DatabaseRepositorie;
 import com.example.RepositoryCollection;
 import com.example.dataobjects.Appointment;
-import com.example.dataobjects.Chat;
 import com.example.dataobjects.Groups;
 import com.example.dataobjects.User;
 import com.example.dataobjects.UserInAppointment;
@@ -136,19 +135,19 @@ public class Test {
     @SuppressWarnings("unchecked")
     public static void testchat(SmackCcsClient ccsClient) throws SmackException.NotConnectedException {
         String myTime = DateFormat.getDateTimeInstance().format(new Date());
-        Chat co = new Chat("Don", myTime, "Cookies");
-        Chat po = new Chat("Jon", myTime, "Potatoes");
-        Chat no = new Chat("Ron", myTime, "Noodles");
-        Chat pa = new Chat("Bon", myTime, "Pasta");
-        Chat me = new Chat("Zon", myTime, "Meat");
-        Chat cu = new Chat("Hon", myTime, "Cucumber");
+//        Chat co = new Chat("Don", myTime, "Cookies",);
+//        Chat po = new Chat("Jon", myTime, "Potatoes");
+//        Chat no = new Chat("Ron", myTime, "Noodles");
+//        Chat pa = new Chat("Bon", myTime, "Pasta");
+//        Chat me = new Chat("Zon", myTime, "Meat");
+//        Chat cu = new Chat("Hon", myTime, "Cucumber");
 //     ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", co);
 
-
-        ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", po);
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", no );
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", pa );
-     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", me );
+//
+//        ccsClient.sendDownstreamMessage("chat", "chat", "/topics/global", po);
+//     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", no );
+//     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", pa );
+//     ccsClient.sendDownstreamMessage("chat","chat","/topics/global", me );
 
     }
 }
