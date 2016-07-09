@@ -40,7 +40,7 @@
                 android:textColorHint="@color/black"
                 android:textColorLink="@color/black"
                 android:shadowColor="@color/black">
-                <EditText android:id="@+id/emailid"
+                <TextView android:id="@+id/emailid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -59,7 +59,7 @@
                 android:textColorHint="@color/black"
                 android:textColorLink="@color/black"
                 android:shadowColor="@color/black">
-                <EditText android:id="@+id/userNameid"
+                <TextView android:id="@+id/userNameid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -96,6 +96,7 @@
                 android:id="@+id/plaetze"
                 android:text="Wie viele freie Plätze hat Ihr Auto?"
                 android:textColor="@android:color/black"
+                android:animateLayoutChanges="true"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical" />
 
@@ -110,6 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sitzAnzahl_seekBar"
+                android:animateLayoutChanges="true"
                 android:layout_gravity="center_horizontal"
                 android:max="10"/>
 
@@ -120,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/AnzahlPlaetze"
                 android:text="Plätze: "
+                android:animateLayoutChanges="true"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical" />

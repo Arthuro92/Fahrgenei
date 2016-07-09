@@ -28,10 +28,10 @@ public class User {
     private String email;
 
     @Column
-    private boolean driver;
+    private boolean driver = false;
 
     @Column
-    private int freeSeats;
+    private int freeSeats = 0;
 
     public User() {
     }
