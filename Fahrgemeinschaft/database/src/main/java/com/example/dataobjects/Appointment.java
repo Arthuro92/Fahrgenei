@@ -42,6 +42,12 @@ public class Appointment implements Serializable {
     @Column
     private String zielort;
 
+    @Column
+    private int freeSeats;
+
+    @Column
+    private int members;
+
     public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort) {
         this.aid = aid;
         this.gid = gid;
@@ -109,6 +115,22 @@ public class Appointment implements Serializable {
 
     public void setGid(String gid) {
         this.gid = gid;
+    }
+
+    public int getFreeSeats() {
+        return freeSeats;
+    }
+
+    public void setFreeSeats(int freeSeats) {
+        this.freeSeats = freeSeats;
+    }
+
+    public int getMembers() {
+        return members;
+    }
+
+    public void setMembers(int members) {
+        this.members = members;
     }
 
     public String getJsonInString() {

@@ -60,7 +60,6 @@ public class RegistrationIntentService extends IntentService {
             Log.i(TAG, "GCM Registration Token: " + token);
             Log.i(TAG, "GCM defaultSenderId " + R.string.gcm_defaultSenderId);
 
-            // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
 
             // Subscribe to topic channels
@@ -97,14 +96,18 @@ public class RegistrationIntentService extends IntentService {
 
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         prefs.edit().putString("usertoken", token).apply();
-       // prefs.edit().putBoolean("userprofile", false).apply();
-        if(prefs.getBoolean("userprofile", false)) {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+
+        if(prefs.getBoolean("userprofile", false) && sqLiteDBHandler.getUser(prefs.getString("userid", "")) != null)  {
             Log.i(TAG, "sending new Token");
-            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+
             User user = sqLiteDBHandler.getUser(prefs.getString("userid",""));
             user.setToken(token);
             sqLiteDBHandler.addUser(user);
             gcmsender.send("user", "registration", user, this);
+        } else if (sqLiteDBHandler.getUser(prefs.getString("userid", "")) == null) {
+            Log.i(TAG, "User not found but boolean for profile was true");
+            prefs.edit().putBoolean("userprofile", false).apply();
         }
     }
 

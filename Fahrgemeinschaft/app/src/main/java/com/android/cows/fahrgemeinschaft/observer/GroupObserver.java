@@ -39,29 +39,44 @@ public class GroupObserver implements MessageObserver {
         ;
         if (this.payload.getString("task_category").equals("group")) {
             switch (this.payload.getString("task")) {
-                case "grouparray":
+                case "grouparray" :
                     Log.i(TAG, "GroupArray");
                     groupArray();
                     break;
-                case "invitationsuccess":
+                case "invitationsuccess" :
                     Log.i(TAG, "Invitation Success");
                     invitationSuccess();
                     break;
-                case "groupinsertsuccess":
+                case "groupinsertsuccess" :
                     Log.i(TAG, "Group Insert Sucess");
                     updateLocalGroupTable();
                     updateLocalUserIsInGroup(1);
                     TopicSubscriber.subscribeToTopic(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid());
                     insertSuccess();
                     break;
-                case "groupinvitation":
+                case "groupinvitation" :
                     Log.i(TAG, "Groupinvitation");
                     groupInvitation();
-                    //todo request to user if he wants to join this group
                     break;
                 case "groupinformation" :
                     Log.i(TAG, "Group Information");
                     addGroupInformations();
+                    break;
+                case "updatinggroup" :
+                    Log.i(TAG, "Updating Group");
+                    updatingGroup();
+                    break;
+                case "deleteuseringroup":
+                    Log.i(TAG, "User leaved Group");
+                    deleteUserInGroup();
+                    sendLocalUpdateUserBroadcast();
+                    sendLocalParticipantUpdateBroadcast();
+                    break;
+                case "deletegroup":
+                    Log.i(TAG, "Delete Group");
+                    deleteGroup();
+                    sendLocalUpdateGroupsBroadcast();
+                    sendLocalReturnBroadcast();
                     break;
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
@@ -73,6 +88,24 @@ public class GroupObserver implements MessageObserver {
         }
     }
 
+    private void deleteGroup() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        sqLiteDBHandler.deleteGroup(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid());
+    }
+
+    private void deleteUserInGroup() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        UserInGroup userInGroup = JsonCollection.jsonToUserInGroup(this.payload.getString("content"));
+        sqLiteDBHandler.deleteUserInGroup(userInGroup.getGid(), userInGroup.getUid());
+        sqLiteDBHandler.deleteUserInAppointment(userInGroup.getGid(), userInGroup.getUid());
+    }
+
+    private void updatingGroup() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        Groups groups = JsonCollection.jsonToGroup(this.payload.getString("content"));
+        sqLiteDBHandler.addGroup(groups);
+    }
+
     private void invitationSuccess() {
         Intent insertSuccess = new Intent("invitesuccess");
         LocalBroadcastManager.getInstance(context).sendBroadcast(insertSuccess);
@@ -80,6 +113,16 @@ public class GroupObserver implements MessageObserver {
 
     private void sendLocalUpdateGroupsBroadcast() {
         Intent intent = new Intent("updategroupgeneral");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sendLocalReturnBroadcast() {
+        Intent intent = new Intent("returntogeneralgroups");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sendLocalParticipantUpdateBroadcast() {
+        Intent intent = new Intent("updateparticipants");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
@@ -106,11 +149,17 @@ public class GroupObserver implements MessageObserver {
         updateLocalInsertNewGroupMembers();
         updateLocalAppointmentTable();
         sendLocalUpdateGroupsBroadcast();
-        sendLocalUpdateBroadcast();
+        sendLocalUpdateAppointmentsBroadcast();
+        sendLocalUpdateUserBroadcast();
     }
 
-    private void sendLocalUpdateBroadcast() {
+    private void sendLocalUpdateAppointmentsBroadcast() {
         Intent intent = new Intent("updategroupappointments");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    public void sendLocalUpdateUserBroadcast() {
+        Intent intent = new Intent("updategroupuser");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
@@ -132,7 +181,7 @@ public class GroupObserver implements MessageObserver {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String uid = prefs.getString("userid", "");
-        sqLiteDBHandler.addIsInGroup(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid(),uid, i);
+        sqLiteDBHandler.addIsInGroup(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid(),uid, i,0);
     }
 
     private void updateLocalInsertNewGroupMembers() {

@@ -9,7 +9,7 @@ import android.content.Intent;
  */
 public class ChatReceiver extends BroadcastReceiver {
     //version 1
-    ChatActivity chatActivity;
+    FragmentGruppenChatActivity chatActivity;
 
     /**
      * Sets chat message history via ChatActivity
@@ -27,7 +27,7 @@ public class ChatReceiver extends BroadcastReceiver {
      *
      * @param chatActivity the ChatActivity this ChatReceiver is referring to
      */
-    public ChatReceiver(ChatActivity chatActivity) {
+    public ChatReceiver(FragmentGruppenChatActivity chatActivity) {
         this.chatActivity = chatActivity;
     }
 }

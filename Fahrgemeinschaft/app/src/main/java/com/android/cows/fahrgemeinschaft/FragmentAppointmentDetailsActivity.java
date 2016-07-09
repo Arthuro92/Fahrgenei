@@ -1,16 +1,10 @@
 package com.android.cows.fahrgemeinschaft;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,17 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.cows.fahrgemeinschaft.adapters.GroupAdapter;
-import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
-
-import java.util.ArrayList;
-
-import de.dataobjects.Groups;
 
 public class FragmentAppointmentDetailsActivity extends Fragment {
-    private static final String TAG = "FragmentAppointmentDetailsActivity";
+    private static final String TAG = "FrgAppointmentDetails";
 
     public TextView terminName;
     public TextView terminTreffZeit;
@@ -46,9 +32,11 @@ public class FragmentAppointmentDetailsActivity extends Fragment {
 
         contentViewAppointmentDetails = inflater.inflate(R.layout.activity_fragment_appointment_details, null);
 
-        return contentViewAppointmentDetails;
 
+        return contentViewAppointmentDetails;
     }
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -67,8 +55,6 @@ public class FragmentAppointmentDetailsActivity extends Fragment {
         terminTreffZeit.setText(bundle.getString("meetingtime"));
         terminZielOrt.setText(bundle.getString("destination"));
 //        getActivity().getActionBar().setTitle(bundle.getString("name"));
-
-
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

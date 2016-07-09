@@ -23,6 +23,10 @@ public class Appointment implements Serializable {
 
     private String zielort;
 
+    private int freeSeats;
+
+    private int members;
+
     public Appointment(int aid, String gid, String name, String abfahrzeit, String treffpunkt_zeit, String treffpunkt, String zielort) {
         this.aid = aid;
         this.gid = gid;
@@ -94,5 +98,21 @@ public class Appointment implements Serializable {
 
     public String getJsonInString() {
         return new Gson().toJson(this);
+    }
+
+    public int getFreeSeats() {
+        return freeSeats;
+    }
+
+    public void setFreeSeats(int freeSeats) {
+        this.freeSeats = freeSeats;
+    }
+
+    public int getMembers() {
+        return members;
+    }
+
+    public void setMembers(int members) {
+        this.members = members;
     }
 }

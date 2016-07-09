@@ -15,7 +15,7 @@ import javax.persistence.IdClass;
  */
 @Entity
 @IdClass(UserInGroupId.class)
-public class UserInGroup implements Serializable {
+public class UserInGroup implements Serializable, Comparable {
 
     @Id
     private String uid;
@@ -25,6 +25,9 @@ public class UserInGroup implements Serializable {
 
     @Column
     private int isJoined;
+
+    @Column
+    private int drivingCount = 0;
 
     public UserInGroup() {
     }
@@ -59,7 +62,32 @@ public class UserInGroup implements Serializable {
         this.isJoined = isJoined;
     }
 
+    public int getDrivingCount() {
+        return drivingCount;
+    }
+
+    public void setDrivingCount(int drivingCount) {
+        this.drivingCount = drivingCount;
+    }
+
     public String getJsonInString() {
         return new Gson().toJson(this);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof UserInGroup) {
+            UserInGroup userInGroup = (UserInGroup) o;
+            if(userInGroup.getDrivingCount() > this.getDrivingCount()) {
+                return -1;
+            } else if(userInGroup.getDrivingCount() < this.getDrivingCount()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            System.out.println("Wrong Object getting compared");
+            return 0;
+        }
     }
 }

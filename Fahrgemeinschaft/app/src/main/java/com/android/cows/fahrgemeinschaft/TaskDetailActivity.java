@@ -1,16 +1,22 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
+
+import de.dataobjects.Task;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
@@ -20,6 +26,8 @@ public class TaskDetailActivity extends AppCompatActivity {
     public TextView taskDescr;
     public TextView taskAssignee;
     public Toolbar toolbar;
+    private BroadcastReceiver returntogroupgeneral;
+    private boolean isReceiverRegistered;
     private Context context = GlobalAppContext.getAppContext();
 
     @Override
@@ -46,7 +54,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         taskDescr.setText(bundle.getString("taskdescription"));
         taskAssignee.setText(bundle.getString("taskincharge"));
         setTitle(bundle.getString("taskname"));
-
+        createReceiver();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,13 +90,55 @@ public class TaskDetailActivity extends AppCompatActivity {
             //@TODO Lenni oder David! Bitte vom Server löschen.
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-            //String gid = prefs.getString("currentgid", "");
+            String gid = prefs.getString("currentgid", "");
             Bundle bundle = getIntent().getExtras();
-            int a = (int) bundle.getSerializable("taskdescription");
-            sqLiteDBHandler.deleteAppoinment(a);
-            Intent intent = new Intent(TaskDetailActivity.this, AppointmentTabsActivity.class);
-            startActivity(intent);
+
+            int aid = (int) bundle.getSerializable("aid");
+            int tid = (int) bundle.getSerializable("tid");
+
+            Task task = new Task(tid, aid, gid, "", "", "");
+
+            sqLiteDBHandler.deleteTask(tid, gid, aid);
+            MyGcmSend myGcmSend = new MyGcmSend();
+            myGcmSend.send("task", "deletetask",task ,context) ;
+
+            finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void createReceiver() {
+        returntogroupgeneral = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+            }
+        };
+        registerReceiver();
+    }
+
+    private void registerReceiver() {
+        if (!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(context).registerReceiver(returntogroupgeneral, new IntentFilter("returntogeneralgroups"));
+            isReceiverRegistered = true;
+        }
+    }
+
+    private void unregisterReceiver() {
+        if (isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(returntogroupgeneral);
+            isReceiverRegistered = false;
+        }
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver();
     }
 }

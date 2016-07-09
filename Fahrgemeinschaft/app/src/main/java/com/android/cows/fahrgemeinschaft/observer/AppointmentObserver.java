@@ -9,13 +9,17 @@ import android.util.Log;
 import com.android.cows.fahrgemeinschaft.GlobalAppContext;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
+import java.util.ArrayList;
+
 import de.dataobjects.Appointment;
 import de.dataobjects.JsonCollection;
+import de.dataobjects.UserInAppointment;
+import de.dataobjects.UserInGroup;
 
 /**
  * Created by david on 24.05.2016.
  */
-@SuppressWarnings("ALL") //todo maybe fix it? or handle it?
+@SuppressWarnings("ALL")
 public class AppointmentObserver implements MessageObserver {
     //new new
     private Bundle payload;
@@ -38,14 +42,29 @@ public class AppointmentObserver implements MessageObserver {
                     break;
                 case "appointmentinsertsuccess":
                     Log.i(TAG, "Appointmentinsersuccess");
-                    updateLocalDatabase(1);
+                    updateLocalDatabase();
                     appointmentInsertSuccess();
                     break;
                 case "newappointment":
                     Log.i(TAG, "new Appointment received");
-                    updateLocalDatabase(0);
+                    updateLocalDatabase();
                     sendLocalUpdateBroadcast();
                     break;
+                case "updatingparticipant":
+                    Log.i(TAG, "Updating Participant");
+                    updateUserInAppointment();
+                    sendLocalUpdateBroadcast();
+                    sendLocalParticipantUpdateBroadcast();
+                    break;
+                case "newdrivers":
+                    Log.i(TAG, "New Drivers");
+                    updateLocalNewDrivers();
+                    break;
+                case "deleteappointment":
+                    Log.i(TAG, "Delete Appointment");
+                    deleteAppointment();
+                    sendLocalUpdateBroadcast();
+                    sendLocalReturnBroadcast();
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
                         Log.i(TAG, "ERRORAppointment");
@@ -56,14 +75,68 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
+    private void deleteAppointment() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        Appointment appointment = JsonCollection.jsonToAppointment(this.payload.getString("content"));
+        sqLiteDBHandler.deleteAppoinment(appointment.getAid(), appointment.getGid());
+    }
+
+    private void updateLocalNewDrivers() {
+        String[] solutionarray = JsonCollection.jsonToStringArray(this.payload.getString("content"));
+        ArrayList<UserInGroup> userInGroupArrayListOld = JsonCollection.jsonToUserInGroupList(solutionarray[0]);
+        ArrayList<UserInAppointment> userInAppointmentArrayListOld = JsonCollection.jsonToUserInAppointmentList(solutionarray[1]);
+        ArrayList<UserInGroup> userInGroupArrayList = JsonCollection.jsonToUserInGroupList(solutionarray[2]);
+        ArrayList<UserInAppointment> userInAppointmentArrayList = JsonCollection.jsonToUserInAppointmentList(solutionarray[3]);
+
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+
+        sqLiteDBHandler.addAppointment(JsonCollection.jsonToAppointment(solutionarray[4]));
+        sendLocalUpdateBroadcast();
+
+        for(UserInGroup userInGroup : userInGroupArrayListOld) {
+            Log.i(TAG, "Old Driver in group was: " + userInGroup.getUid());
+            sqLiteDBHandler.addIsInGroup(userInGroup);
+        }
+        for(UserInAppointment userInAppointment : userInAppointmentArrayListOld) {
+            Log.i(TAG, "Old Driver is Driver: " + userInAppointment.isDriver());
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
+        }
+        for(UserInGroup userInGroup : userInGroupArrayList) {
+            Log.i(TAG, "New Driver in group :" + userInGroup.getUid());
+            sqLiteDBHandler.addIsInGroup(userInGroup);
+        }
+        for(UserInAppointment userInAppointment : userInAppointmentArrayList) {
+            Log.i(TAG, "New Driver: " + userInAppointment.getUid());
+            Log.i(TAG, "Is now Driver: " + userInAppointment.isDriver());
+            sqLiteDBHandler.addIsInAppointment(userInAppointment);
+        }
+
+    }
+
+    private void updateUserInAppointment() {
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        sqLiteDBHandler.addIsInAppointment(JsonCollection.jsonToUserInAppointment(this.payload.getString("content")));
+    }
+
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupappointments");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-    private void updateLocalDatabase(int isParticipant) {
+    private void sendLocalParticipantUpdateBroadcast() {
+        Intent intent = new Intent("updateparticipants");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sendLocalReturnBroadcast() {
+        Intent intent = new Intent("returntogrouptabs");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void updateLocalDatabase() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         sqLiteDBHandler.addAppointment(jsonToAppointment(this.payload.getString("content")));
+        sqLiteDBHandler.updateUserInAppointment(jsonToAppointment(this.payload.getString("content")));;
     }
 
     private Appointment jsonToAppointment(String jsonInString) {
@@ -71,8 +144,8 @@ public class AppointmentObserver implements MessageObserver {
     }
 
     private void appointmentInsertSuccess() {
-        Intent errorappointment = new Intent("createdAppointment");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(errorappointment);
+        Intent sucessCreateAppointment = new Intent("createdAppointment");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(sucessCreateAppointment);
     }
 
     private void errorAppointment(String error) {

@@ -36,7 +36,7 @@ public class ChatObserver implements MessageObserver {
         logger.log(Level.INFO, "SERVER RECEIVED CHAT MESSAGE:" + chatMessage.getChatMessageText());
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
-            smackCcsClient.sendDownstreamMessage("chat", "chat", "/topics/global", chatMessage);
+            smackCcsClient.sendDownstreamMessage("chat", "chat", "/topics/" + chatMessage.getGid(), chatMessage);
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }

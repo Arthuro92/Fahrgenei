@@ -30,13 +30,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="330dp"
+        android:layout_marginLeft="1dp"
         android:layout_marginBottom="10dp"
         android:ellipsize="marquee"
         android:singleLine="true"
         android:textColor="#000000"
         android:text="@string/inv_status"
         android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtTitle"
+        android:text="@string/not_enough_driver"
+        android:id="@+id/notenoughdrivers"
+        android:textColor="#ff0000"
+        android:visibility="invisible"
+    />
 
 
 </RelativeLayout>
