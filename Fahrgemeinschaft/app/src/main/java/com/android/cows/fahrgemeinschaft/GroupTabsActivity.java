@@ -27,7 +27,7 @@ public class GroupTabsActivity extends AppCompatActivity {
     ViewPager viewPagerGroup;
     TabLayout tabLayoutGroup;
     Toolbar toolbar;
-    public static Activity pointerforfinis;
+    public static Activity pointerforfinish;
     private BroadcastReceiver returntogroupgeneral;
     private boolean isReceiverRegistered;
     private Context context = GlobalAppContext.getAppContext();
@@ -35,7 +35,7 @@ public class GroupTabsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pointerforfinis = this;
+        pointerforfinish = this;
         setContentView(R.layout.activity_group_tabs);
 
         //NEW
