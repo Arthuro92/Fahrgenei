@@ -425,7 +425,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             }
             curr.moveToNext();
         }
-        db.close();
+
         return appointmentArrayList;
     }
 

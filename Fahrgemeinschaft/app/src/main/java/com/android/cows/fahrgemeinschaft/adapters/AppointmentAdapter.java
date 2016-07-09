@@ -80,10 +80,11 @@ public class AppointmentAdapter extends ArrayAdapter {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new AppointmentHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
-            holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
-            holder.inv_status = (TextView)row.findViewById(R.id.inv_status);
-            holder.not_enough_drivers = (TextView)row.findViewById(R.id.notenoughdrivers);
+            holder.imgIcon = (ImageView)row.findViewById(R.id.imgIconApm);
+            holder.txtTitle = (TextView)row.findViewById(R.id.txtTitleApm);
+            holder.inv_status = (TextView)row.findViewById(R.id.inv_statusApm);
+            holder.not_enough_drivers = (TextView)row.findViewById(R.id.notenoughdriversApm);
+            holder.treffpunkt_zeit = (TextView) row.findViewById(R.id.treffpunkt_zeit) ;
 
             row.setTag(holder);
         } else {
@@ -99,6 +100,7 @@ public class AppointmentAdapter extends ArrayAdapter {
         holder.txtTitle.setText(appointment.getName());
         Log.d("UserAdapter: ","Holdername als "+appointment.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.football);
+        holder.treffpunkt_zeit.setText(appointment.getTreffpunkt_zeit());
 
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         final SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
@@ -181,5 +183,6 @@ public class AppointmentAdapter extends ArrayAdapter {
         TextView txtTitle;
         TextView inv_status;
         TextView not_enough_drivers;
+        TextView treffpunkt_zeit;
     }
 }

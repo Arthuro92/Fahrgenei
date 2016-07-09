@@ -30,7 +30,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
     private static final String TAG = "AppointmentOverview";
     View contentViewGeneralTermine;
     ListView listView4;
-
+    private Context context = GlobalAppContext.getAppContext();
     private BroadcastReceiver updateappointmentlist;
     private boolean isReceiverRegistered;
 
@@ -102,7 +102,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
     private void loadAppointmentList() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
-        SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String uid = prefs.getString("userid", "");
 
         //ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getMyAppointments(uid);
@@ -122,7 +122,7 @@ public class FragmentGeneralTermineActivity extends Fragment {
 
     public void createAppointments(ArrayList<Appointment> appointmentArrayList) {
         Log.i(TAG, "createAppointments");
-        this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row, appointmentArrayList);
+        this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row_apm, appointmentArrayList);
         Log.i("Inhalt apmArrayList: ", appointmentArrayList.toString() );
         Log.i("Inhalt apmAdapter: ", appointmentAdapter.toString());
         String a = "Ist "+appointmentAdapter.isEmpty() ;
