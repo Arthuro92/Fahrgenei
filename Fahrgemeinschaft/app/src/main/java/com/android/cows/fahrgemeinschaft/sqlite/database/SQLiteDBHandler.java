@@ -22,7 +22,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 153;
+    private static final int DATABASE_VERSION = 156;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400), gid VARCHAR(255));";
@@ -534,16 +534,21 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     }
 
     public UserInAppointment getUserInAppointment(int aid, String gid, String uid) {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cur = db.rawQuery(GET_USER_IN_APPOINTMENT_1 + "'" + aid + "'" + GET_USER_IN_APPOINTMENT_2 + "'" + gid + "'" + GET_USER_IN_APPOINTMENT_3 + "'" + uid + "'", null);
-        cur.moveToFirst();
-        if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            Cursor cur = db.rawQuery(GET_USER_IN_APPOINTMENT_1 + "'" + aid + "'" + GET_USER_IN_APPOINTMENT_2 + "'" + gid + "'" + GET_USER_IN_APPOINTMENT_3 + "'" + uid + "'", null);
+            cur.moveToFirst();
+            if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+                db.close();
+                Log.i(TAG, "getUserInAppointment " + cur.getString(cur.getColumnIndex("JsonInString")));
+                return JsonCollection.jsonToUserInAppointment(cur.getString(cur.getColumnIndex("JsonInString")));
+            }
             db.close();
-            Log.i(TAG, "getUserInAppointment " + cur.getString(cur.getColumnIndex("JsonInString")));
-            return JsonCollection.jsonToUserInAppointment(cur.getString(cur.getColumnIndex("JsonInString")));
+            return null;
+        } catch(CursorIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return null;
         }
-        db.close();
-        return null;
     }
 
     public ArrayList<UserInAppointment> getParticipantsInAppointment(int aid, String gid ) {

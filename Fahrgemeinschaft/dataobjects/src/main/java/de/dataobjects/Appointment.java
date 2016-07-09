@@ -125,7 +125,7 @@ public class Appointment implements Serializable, Comparable {
     public int compareTo(Object o) {
         if(o instanceof Appointment) {
             Appointment appointment = (Appointment) o;
-            DateFormat format = new SimpleDateFormat("d/m/yyyy-HH-mm", Locale.ENGLISH);
+            DateFormat format = new SimpleDateFormat("d/m/yyyy -HH:mm", Locale.ENGLISH);
             try {
                 Date date1 = format.parse(this.getTreffpunkt_zeit());
                 Date date2 = format.parse(appointment.getTreffpunkt_zeit());

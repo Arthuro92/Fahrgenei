@@ -98,6 +98,7 @@ public class GroupObserver implements MessageObserver {
         UserInGroup userInGroup = JsonCollection.jsonToUserInGroup(this.payload.getString("content"));
         sqLiteDBHandler.deleteUserInGroup(userInGroup.getGid(), userInGroup.getUid());
         sqLiteDBHandler.deleteUserInAppointment(userInGroup.getGid(), userInGroup.getUid());
+        TopicSubscriber.unsubscribeFromTopic(userInGroup.getGid());
     }
 
     private void updatingGroup() {
