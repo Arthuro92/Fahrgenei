@@ -64,6 +64,7 @@ public class AppointmentObserver implements MessageObserver {
                     Log.i(TAG, "Delete Appointment");
                     deleteAppointment();
                     sendLocalUpdateBroadcast();
+                    sendLocalReturnBroadcast();
                 default:
                     if (this.payload.getString("task").startsWith("error")) {
                         Log.i(TAG, "ERRORAppointment");
@@ -124,6 +125,11 @@ public class AppointmentObserver implements MessageObserver {
 
     private void sendLocalParticipantUpdateBroadcast() {
         Intent intent = new Intent("updateparticipants");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sendLocalReturnBroadcast() {
+        Intent intent = new Intent("returntogeneralgroups");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 

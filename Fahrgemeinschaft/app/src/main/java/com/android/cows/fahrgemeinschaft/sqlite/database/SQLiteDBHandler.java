@@ -22,7 +22,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 142;
+    private static final int DATABASE_VERSION = 143;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400));";
@@ -67,7 +67,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String GET_HIGHEST_TASKID_3 = " ORDER BY taskId DESC LIMIT 1 ";
 
 
-
+    private static final String DELETE_USER_IN_GROUP = "DELETE FROM is_in_group WHERE gid =";
     private static final String DELETE_USER_IN_GROUP1 ="DELETE FROM is_in_group WHERE gid = ";
     private static final String DELETE_USER_IN_GROUP2 =" AND uid = ";
     private static final String DELETE_USER_IN_APPOINTMENT_1 = "DELETE FROM is_in_appointment WHERE gid = ";
@@ -230,7 +230,9 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         //cv.put("gid", groupId);
         //cv.put("uid", userId);
         String delete_group  = DELETE_GROUP + "'" + groupId +"'" ;
+        String delete_user_in_group  = DELETE_USER_IN_GROUP + "'" + groupId +"'" ;
         db.execSQL(delete_group);
+        db.execSQL(delete_user_in_group);
         //db.delete();
         db.close();
     }

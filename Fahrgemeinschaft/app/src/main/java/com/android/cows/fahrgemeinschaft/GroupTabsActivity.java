@@ -79,7 +79,7 @@ public class GroupTabsActivity extends AppCompatActivity {
         });
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         setTitle(prefs.getString("currentgroupname", ""));
-
+        createReceiver();
     }
 
     @Override
@@ -94,11 +94,13 @@ public class GroupTabsActivity extends AppCompatActivity {
         if(!groups.getAdminid().equals(prefs.getString("userid", "")) && groups.getSubstitute() == null ||groups.getSubstitute() != null && !groups.getSubstitute().equals(prefs.getString("userid",""))) {
             MenuItem adduser = menu.findItem(R.id.action_add_person);
             MenuItem deletegrp = menu.findItem(R.id.action_delete_group);
+            MenuItem leavegrp = menu.findItem(R.id.leave_group);
             MenuItem addtask = menu.findItem(R.id.action_add_task);
             MenuItem addevent = menu.findItem(R.id.action_add_event);
 
             adduser.setVisible(false);
             deletegrp.setVisible(false);
+            leavegrp.setVisible(true);
             addtask.setVisible(false);
             addevent.setVisible(false);
         }
@@ -179,14 +181,14 @@ public class GroupTabsActivity extends AppCompatActivity {
 
     private void registerReceiver() {
         if (!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(returntogroupgeneral, new IntentFilter("returntogeneralgroups"));
+            LocalBroadcastManager.getInstance(context).registerReceiver(returntogroupgeneral, new IntentFilter("returntogeneralgroups"));
             isReceiverRegistered = true;
         }
     }
 
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(returntogroupgeneral);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(returntogroupgeneral);
             isReceiverRegistered = false;
         }
     }
