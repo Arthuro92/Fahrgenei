@@ -302,16 +302,22 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     public de.dataobjects.Groups getGroup(String gid) {
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cur = db.rawQuery(GET_GROUP + "'" + gid + "'", null);
-        cur.moveToFirst();
-        if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+        Log.i(TAG, "Gid " + gid);
+        try {
+            Cursor cur = db.rawQuery(GET_GROUP + "'" + gid + "'", null);
+            cur.moveToFirst();
+            if (cur.getString(cur.getColumnIndex("JsonInString")) != null) {
+                db.close();
+                Log.i(TAG, "getGroup " + cur.getString(cur.getColumnIndex("JsonInString")));
+                de.dataobjects.Groups group = JsonCollection.jsonToGroup(cur.getString(cur.getColumnIndex("JsonInString")));
+                return group;
+            }
             db.close();
-            Log.i(TAG, "getGroup " + cur.getString(cur.getColumnIndex("JsonInString")));
-            de.dataobjects.Groups group = JsonCollection.jsonToGroup(cur.getString(cur.getColumnIndex("JsonInString")));
-            return group;
+            return null;
+        } catch (CursorIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return null;
         }
-        db.close();
-        return null;
     }
 
     public User getUser(String uid) {

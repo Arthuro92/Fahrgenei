@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -88,6 +89,16 @@ public class FragmentGruppenChatActivity extends Fragment {
         this.chatMessageAdapter.notifyDataSetChanged();
         this.listView.setSelection(listView.getAdapter().getCount() - 1);
         myGcmSend.send("chat", "chat", chatMessage, getActivity());
+        resetInputBox();
+    }
+
+    private void resetInputBox() {
+        EditText editText = (EditText) getActivity().findViewById(R.id.edit_text_message);
+        editText.setText("");
+        editText.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        //to hide it, call the method again
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     /**

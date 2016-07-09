@@ -118,7 +118,7 @@ public class ChatObserver implements MessageObserver {
      */
     public void setInfoAndData(de.dataobjects.Chat chatMessage) {
         Log.i(TAG, "CHAT MESSAGE: " + chatMessage.getChatMessageText());
-        if (!chatMessage.getChatMessageFrom().equals(getChatUser())) {
+        if (!chatMessage.getChatMessageFrom().equals(getChatUser()) && !FragmentGruppenChatActivity.activeActivity || !FragmentGruppenChatActivity.gid.equals(chatMessage.getGid())) {
             updateLocalDatabase(chatMessage);
             setCurrentGroup(chatMessage.getGid());
             issueNotification(new Intent(context, GroupTabsActivity.class).putExtra("calledfromchatobserver","calledfromchatobserver"));
