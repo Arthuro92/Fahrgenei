@@ -36,9 +36,6 @@ public class UserAdapter extends ArrayAdapter {
     private int layoutResourceId;
     ArrayList<UserInGroup> data = new ArrayList<UserInGroup>();
 
-
-
-
     /**
      * Gets the User by accessing the shared preferences
      *
@@ -151,10 +148,20 @@ public class UserAdapter extends ArrayAdapter {
         if(userInGroup.getIsJoined() == 0){
             holder.imgIcon.setImageResource(R.drawable.user_nicht_angenommen);
             holder.inv_status.setText("Bestätigung ausstehend");
-        }
-        else {
+        }  else {
             holder.imgIcon.setImageResource(R.drawable.user128);
             holder.inv_status.setText("Angenommen");
+        }
+
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        final Groups group = sqLiteDBHandler.getGroup(prefs.getString("currentgid",""));
+
+        if(group.getAdminid().equals(userInGroup.getUid())){
+            holder.imgIcon.setImageResource(R.drawable.user_ist_admin);
+            holder.inv_status.setText("Admin");
+        } else if (group.getSubstitute() != null && group.getSubstitute().equals(userInGroup.getUid())) {
+            holder.imgIcon.setImageResource(R.drawable.user_ist_stellvertrer);
+            holder.inv_status.setText("Stellvertrer");
         }
 
         return row;
