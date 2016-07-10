@@ -1,7 +1,9 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
@@ -27,6 +30,7 @@ public class AppointmentTabsActivity extends AppCompatActivity {
     private BroadcastReceiver returntogroupgeneral;
     private BroadcastReceiver returntogrouptabs;
     private boolean isReceiverRegistered;
+
 
     Toolbar toolbar;
 
@@ -125,17 +129,37 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_delete_event) {
-            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-            String gid = prefs.getString("currentgid", "");
-            Bundle bundle = getIntent().getExtras();
-            int aid = (int) bundle.getSerializable("aid");
-            sqLiteDBHandler.deleteAppoinment(aid, gid);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Abfrage");
 
-            Appointment appointment = new Appointment(aid, gid,"0","0","0","0","0");
-            MyGcmSend myGcmSend = new MyGcmSend();
-            myGcmSend.send("appointment", "deleteappointment",appointment,context);
-            finish();
+            alertDialogBuilder.setMessage("Möchten Sie diesen Termin löschen?");
+            // set positive button: Yes message
+            alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                    SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                    String gid = prefs.getString("currentgid", "");
+                    Bundle bundle = getIntent().getExtras();
+                    int aid = (int) bundle.getSerializable("aid");
+                    sqLiteDBHandler.deleteAppoinment(aid, gid);
+
+                    Appointment appointment = new Appointment(aid, gid, "0", "0", "0", "0", "0");
+                    MyGcmSend myGcmSend = new MyGcmSend();
+                    myGcmSend.send("appointment", "deleteappointment", appointment, context);
+                    finish();
+                }
+            });
+            // set negative button: No message
+            alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show alert
+            alertDialog.show();
+
+           // openalert(findViewById(R.id.action_delete_event));
         }
 
         if ( id ==R.id.action_create_task){
@@ -150,19 +174,39 @@ public class AppointmentTabsActivity extends AppCompatActivity {
             startActivityForResult(intent, 0);
         }
         if(id == R.id.leave_appointment) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Abfrage");
+
+            alertDialogBuilder.setMessage("Möchten Sie diesen Termin verlassen?");
+
+            alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
             Bundle bundle = getIntent().getExtras();
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
 
             UserInAppointment userInAppointment = new UserInAppointment(bundle.getInt("aid"), (String) prefs.getString("currentgid",""), prefs.getString("userid", ""), 0 );
             userInAppointment.setIsParticipant(0);
-            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this, null);
+            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context , null);
             sqLiteDBHandler.addIsInAppointment(userInAppointment);
 
             MyGcmSend myGcmSend = new MyGcmSend();
-            myGcmSend.send("appointment", "participantchange", userInAppointment, this);
+            myGcmSend.send("appointment", "participantchange", userInAppointment, context);
 
             sendLocalUpdateBroadcast();
-            finish();
+            finish();}
+            });
+
+            alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show alert
+            alertDialog.show();
+
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -231,6 +275,42 @@ public class AppointmentTabsActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         registerReceiver();
+    }
+
+    public void openalert(View v){
+        final View addView = getLayoutInflater().inflate(R.layout.activity_appointment_tabs, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Abfrage");
+        alertDialogBuilder.setView(addView);
+
+        alertDialogBuilder.setMessage("Möchten Sie dienen Termin löschen?");
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                String gid = prefs.getString("currentgid", "");
+                Bundle bundle = getIntent().getExtras();
+                int aid = (int) bundle.getSerializable("aid");
+                sqLiteDBHandler.deleteAppoinment(aid, gid);
+
+                Appointment appointment = new Appointment(aid, gid, "0", "0", "0", "0", "0");
+                MyGcmSend myGcmSend = new MyGcmSend();
+                myGcmSend.send("appointment", "deleteappointment", appointment, context);
+                finish();
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+
+
     }
 
 }
