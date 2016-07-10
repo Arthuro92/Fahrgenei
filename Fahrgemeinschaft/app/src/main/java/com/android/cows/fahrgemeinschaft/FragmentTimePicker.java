@@ -1,13 +1,10 @@
 package com.android.cows.fahrgemeinschaft;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -41,9 +38,9 @@ public class FragmentTimePicker extends DialogFragment implements
        // Calendar calendar = Calendar.getInstance();
        // calendar.set(hourOfDay, minute);
         if (FragmentDatePicker.flag == FragmentDatePicker.FLAG_START_DATE) {
-            CreateAppointmentActivity.DateTreffpunktzeit.setText(CreateAppointmentActivity.DateTreffpunktzeit.getText() + " -" + hourOfDay + ":" + minute);
+            CreateAppointmentActivity.DateTreffpunktzeit.setText(CreateAppointmentActivity.DateTreffpunktzeit.getText() + " -" + String.format("%02d:%02d", hourOfDay, minute));
         } else if (FragmentDatePicker.flag == FragmentDatePicker.FLAG_END_DATE){
-            CreateAppointmentActivity.DateAbfahrtzeit.setText(CreateAppointmentActivity.DateAbfahrtzeit.getText() + " -" + hourOfDay + ":" + minute);
+            CreateAppointmentActivity.DateAbfahrtzeit.setText(CreateAppointmentActivity.DateAbfahrtzeit.getText() + " -" + String.format("%02d:%02d", hourOfDay, minute));
         }
     }
 }

@@ -66,6 +66,7 @@ public class GroupObserver implements MessageObserver {
                 case "updatinggroup" :
                     Log.i(TAG, "Updating Group");
                     updatingGroup();
+                    sendLocalUpdateUserBroadcast();
                     break;
                 case "deleteuseringroup":
                     Log.i(TAG, "User leaved Group");
