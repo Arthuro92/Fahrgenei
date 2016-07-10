@@ -19,6 +19,7 @@ import com.android.cows.fahrgemeinschaft.adapters.AppointmentAdapter;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.dataobjects.Appointment;
 
@@ -113,9 +114,11 @@ public class FragmentGruppenTermineActivity extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
         ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
-        createAppointments(appointmentlist);
-    }
 
+
+         createAppointments(appointmentlist);
+
+    }
 
     @Override
     public void onDestroy() {
@@ -130,13 +133,10 @@ public class FragmentGruppenTermineActivity extends Fragment {
      */
     public void createAppointments(ArrayList<de.dataobjects.Appointment> appointmentArrayList) {
         Log.i(TAG, "createAppointments");
-        this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row, appointmentArrayList);
+        Collections.sort(appointmentArrayList);
+        this.appointmentAdapter = new AppointmentAdapter(getActivity(), R.layout.item_row_apm, appointmentArrayList);
         this.listView = (ListView) getActivity().findViewById(R.id.group_appointment_listview);
-        if(appointmentArrayList.size()>0) {
-            this.listView.setAdapter(appointmentAdapter);
-        } else {
-            listView.setAdapter(null);
-        }
+        this.listView.setAdapter(appointmentAdapter);
     }
 
     @Override
@@ -149,10 +149,5 @@ public class FragmentGruppenTermineActivity extends Fragment {
     public void onResume() {
         super.onResume();
         registerReceiver();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
     }
 }

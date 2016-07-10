@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
+import com.android.cows.fahrgemeinschaft.gcm.TopicSubscriber;
 import com.android.cows.fahrgemeinschaft.sqlite.database.SQLiteDBHandler;
 
 import de.dataobjects.Groups;
@@ -143,7 +144,7 @@ public class GroupTabsActivity extends AppCompatActivity {
             sqLiteDBHandler.deleteGroup(gid);
             Intent intent = new Intent(GroupTabsActivity.this, GeneralTabsActivity.class);
             startActivity(intent);
-
+            TopicSubscriber.unsubscribeFromTopic(gid);
             MyGcmSend myGcmSend = new MyGcmSend();
             myGcmSend.send("group", "deletegroup", groups, context );
         }
@@ -160,6 +161,7 @@ public class GroupTabsActivity extends AppCompatActivity {
             String gid = prefs.getString("currentgid", "");
             sqLiteDBHandler.deleteGroup(gid);
 
+            TopicSubscriber.unsubscribeFromTopic(gid);
             UserInGroup userInGroup = new UserInGroup(prefs.getString("userid", ""), gid,0 );
             MyGcmSend myGcmSend = new MyGcmSend();
             myGcmSend.send("group","deleteuseringroup",userInGroup, context);

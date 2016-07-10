@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
-    <ImageView android:id="@+id/imgIcon"
+    <ImageView android:id="@+id/imgIconApm"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
@@ -12,7 +12,7 @@
         android:layout_marginBottom="15dp"
         android:contentDescription="TODO" />
 
-    <TextView android:id="@+id/txtTitle"
+    <TextView android:id="@+id/txtTitleApm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
@@ -23,10 +23,10 @@
         android:textColor="#000000"
         android:gravity="center"
         android:layout_marginTop="25dp"
-        android:layout_toRightOf="@id/imgIcon"/>
+        android:layout_toRightOf="@id/imgIconApm"/>
 
     <TextView
-        android:id="@+id/inv_status"
+        android:id="@+id/inv_statusApm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -41,12 +41,23 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/txtTitle"
+        android:layout_below="@+id/txtTitleApm"
         android:text="@string/not_enough_driver"
-        android:id="@+id/notenoughdrivers"
+        android:id="@+id/notenoughdriversApm"
         android:textColor="#ff0000"
         android:visibility="invisible"
     />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:layout_alignParentBottom="true"
+        android:text="Datum nicht festgelegt"
+        android:id="@+id/treffpunkt_zeit"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        />
 
 
 
