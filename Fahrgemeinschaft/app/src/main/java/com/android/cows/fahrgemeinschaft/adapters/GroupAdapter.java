@@ -166,10 +166,30 @@ public class GroupAdapter extends ArrayAdapter {
         }
 
         final Groups group =  data.get(position);
-        holder.txtTitle.setText(group.getName());
+       /* holder.txtTitle.setText(group.getName());
         Log.d("UserAdapter: ","Holdername als "+group.getName()+" gesetzt.");
         holder.imgIcon.setImageResource(R.drawable.group);
-        holder.inv_status.setText("");
+        holder.inv_status.setText(""); */
+
+
+        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        final int isJoined = sqLiteDBHandler.getIsJoint(group.getGid(), prefs.getString("userid", ""));
+
+        if(isJoined == 0){
+            holder.txtTitle.setText(group.getName());
+            Log.d("UserAdapter: ","Holdername als "+group.getName()+" gesetzt.");
+            holder.imgIcon.setImageResource(R.drawable.no_group);
+            holder.inv_status.setText("");
+        }
+        else {
+            holder.txtTitle.setText(group.getName());
+            Log.d("UserAdapter: ","Holdername als "+group.getName()+" gesetzt.");
+            holder.imgIcon.setImageResource(R.drawable.group);
+            holder.inv_status.setText("");
+        }
+
+
 
         //return row;
 
@@ -212,9 +232,11 @@ public class GroupAdapter extends ArrayAdapter {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);*/
                 //openAlert(v);
+
 //
             }
         });
+
 
        /* return setGroupView(row, group);*/
         View groupView = this.layoutInflater.inflate(R.layout.group_layout, parent, false);
