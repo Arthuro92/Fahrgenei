@@ -94,7 +94,6 @@ public class AppointmentAdapter extends ArrayAdapter {
         final Appointment appointment =  data.get(position);
 
         if(appointment.getFreeSeats() < appointment.getMembers()) {
-            System.out.println("FREE SEATS < MEMBERS");
             holder.not_enough_drivers.setVisibility(View.VISIBLE);
         }
 

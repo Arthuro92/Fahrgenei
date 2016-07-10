@@ -100,7 +100,6 @@ public class Databaseoperator {
                 String objectstring = rs.getString("objectstring");
                 Groups grpobject = JsonCollection.jsonToGroup(objectstring);
                 grplist.add(grpobject);
-                //todo this has bad perfomance since the object has to be transformed back to String for sending it
             }
 
             stmt.close();
@@ -293,7 +292,6 @@ public class Databaseoperator {
                 String objectstring = rs.getString("objectstring");
                 User user = JsonCollection.jsonToUser(objectstring);
                 userlist.add(user);
-                //todo this has bad perfomance since the object has to be transformed back to String for sending it
             }
 
             stmt.close();

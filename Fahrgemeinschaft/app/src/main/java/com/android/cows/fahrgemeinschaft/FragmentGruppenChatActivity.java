@@ -46,7 +46,7 @@ public class FragmentGruppenChatActivity extends Fragment {
      */
     private String getChatUser() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("username", "Blubb");
+        return sharedPreferences.getString("username", "Err: Name not found");
     }
 
     /**

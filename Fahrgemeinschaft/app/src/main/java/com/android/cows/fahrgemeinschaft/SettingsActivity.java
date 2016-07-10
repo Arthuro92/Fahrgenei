@@ -155,7 +155,6 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         savebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo check if user filled the information fields
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                 MyGcmSend gcmsender = new MyGcmSend();
                 String id = prefs.getString("userid", "");

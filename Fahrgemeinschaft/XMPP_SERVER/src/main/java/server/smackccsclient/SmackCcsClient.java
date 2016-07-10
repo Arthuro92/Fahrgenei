@@ -104,7 +104,7 @@ public class SmackCcsClient<T> {
 
     /**
      * @param task_category valid categorys: chat, group, appointment, user
-     * @param task valid tasks //todo choose valid tasks
+     * @param task valid tasks
      * @param to cam ne Topic (/topics/...) or a specific Token
      * @param javaobject every valid javaobject / can be null
      * @return true when send success, and false when send failed
@@ -123,7 +123,7 @@ public class SmackCcsClient<T> {
             }
 
 
-            //TODO research what exactly collapseKey means and if we need it
+
             String collapseKey = null;
 //            String collapseKey = "sample";
             String priority = "high";

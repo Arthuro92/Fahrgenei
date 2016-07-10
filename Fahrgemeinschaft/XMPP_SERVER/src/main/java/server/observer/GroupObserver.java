@@ -343,7 +343,6 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
             System.out.println((String) jsonObject.get("from"));
             return true;
         } catch (SmackException.NotConnectedException e) {
-            //todo what now XD? retry or something
             e.printStackTrace();
             return false;
         }
@@ -362,7 +361,6 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
             return true;
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
-            //todo maybe retry?
             return false;
         }
     }

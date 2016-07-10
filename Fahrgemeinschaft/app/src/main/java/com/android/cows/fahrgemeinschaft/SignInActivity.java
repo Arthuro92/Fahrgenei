@@ -127,15 +127,12 @@ public class SignInActivity extends AppCompatActivity implements
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-
-            //todo delete UI in these activity and code
 //            updateUI(true);
 
             SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             prefs.edit().putString("username", acct.getDisplayName()).apply();
             prefs.edit().putString("useremail", acct.getEmail()).apply();
             prefs.edit().putString("userid", acct.getId()).apply();
-            //todo maybe getid is wrong here, maybe getidtoken
 
             Intent intent = new Intent(this, GcmActivity.class);
             startActivity(intent);

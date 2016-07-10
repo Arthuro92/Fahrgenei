@@ -2,15 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="20dp"
     >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:paddingLeft="10dp"
         android:text="New Text"
         android:id="@+id/chat_message_from"
-        android:background="#FAFAFA"
+        android:background="@drawable/rounded_top_left"
         android:textColor="#010101"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
@@ -18,9 +19,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
         android:text="New Text"
         android:id="@+id/chat_message_time"
-        android:background="#FAFAFA"
+        android:background="@drawable/rounded_top_right"
         android:textColor="#010101"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/chat_message_from"
@@ -28,14 +31,18 @@
         android:layout_alignBottom="@id/chat_message_from" />
 
     <TextView
+        android:layout_marginLeft="15dp"
+        android:paddingLeft="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/chat_message_text"
-        android:background="#FAFAFA"
+        android:background="@drawable/rounded_bottom"
         android:textColor="#010101"
         android:layout_below="@id/chat_message_from"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@id/chat_message_time" />
+    <!--android:background="#DCF8C7"-->
 
 </RelativeLayout>

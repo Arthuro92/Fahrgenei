@@ -135,7 +135,6 @@ public class GroupTabsActivity extends AppCompatActivity {
             startActivity(intent);
         }
         if (id == R.id.action_delete_group ){
-            //@TODO Lenni oder David! Bitte vom Server löschen.
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             String gid = prefs.getString("currentgid", "");
@@ -153,7 +152,6 @@ public class GroupTabsActivity extends AppCompatActivity {
         }
 
         if(id == R.id.leave_group) {
-            //@TODO Lenni oder David! Bitte vom Server löschen.
             System.out.println("LEAVING GROUP");
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);

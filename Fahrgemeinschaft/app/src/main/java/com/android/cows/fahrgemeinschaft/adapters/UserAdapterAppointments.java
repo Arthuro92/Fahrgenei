@@ -83,7 +83,7 @@ public class UserAdapterAppointments extends ArrayAdapter {
 
         holder.inv_status.setText("Mitfahrer");
         if(userInAppointment.isDriver()) {
-            holder.inv_status.setText("Fahrer: Freie Plätze " + (user.getFreeSeats() - 1));
+            holder.inv_status.setText("Fahrer: Freie Plätze " + (user.getFreeSeats()));
         }
 
 //        row.setOnClickListener(new View.OnClickListener() {
