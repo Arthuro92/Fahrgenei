@@ -22,20 +22,15 @@ import de.dataobjects.Groups;
 import de.dataobjects.UserInAppointment;
 
 public class AppointmentTabsActivity extends AppCompatActivity {
-
-
     ViewPager viewPagerAppointment;
     TabLayout tabLayoutAppointment;
     private BroadcastReceiver returntogroupgeneral;
     private BroadcastReceiver returntogrouptabs;
     private boolean isReceiverRegistered;
 
-
     Toolbar toolbar;
 
     private Context context = GlobalAppContext.getAppContext();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +109,7 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
 
-//noinspection SimplifiableIfStatement
+        //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit_event) {
             Bundle bundle = getIntent().getExtras();
             Intent intent = new Intent(context, EditAppointmentActivity.class);
@@ -130,7 +125,6 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_delete_event) {
-            //@TODO Lenni oder David! Bitte vom Server löschen.
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             String gid = prefs.getString("currentgid", "");
@@ -172,16 +166,23 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupappointments");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
+
     @Override
     public void onBackPressed() {
         finish();
     }
 
-
+    /**
+     * Create Receivers to enable GUI calls
+     */
     public void createReceiver() {
         returntogroupgeneral = new BroadcastReceiver() {
             @Override
@@ -199,6 +200,9 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         registerReceiver();
     }
 
+    /**
+     * Register Receiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(returntogroupgeneral, new IntentFilter("returntogeneralgroups"));
@@ -207,6 +211,9 @@ public class AppointmentTabsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Unregister Receiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(returntogroupgeneral);

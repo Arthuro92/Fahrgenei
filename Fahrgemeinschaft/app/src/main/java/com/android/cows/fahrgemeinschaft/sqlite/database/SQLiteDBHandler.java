@@ -22,7 +22,7 @@ import de.dataobjects.UserInGroup;
  */
 public class SQLiteDBHandler extends SQLiteOpenHelper {
     //new new new
-    private static final int DATABASE_VERSION = 156;
+    private static final int DATABASE_VERSION = 158;
     private static final String TAG = "SQLiteDbHandler";
     private static final String DATABASE_NAME = "chat.db";
     private static final String TABLE_CHAT_MESSAGE = "CREATE TABLE chat_message(id INTEGER PRIMARY KEY AUTOINCREMENT, message VARCHAR(400), gid VARCHAR(255));";
@@ -87,8 +87,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     private static final String DELETE_TASK_3 = "AND aid = ";
 
 
-
-
+    /**
+     * Add ChatMessage
+     * @param c chat object to be added
+     */
     public void addChatMessage(de.dataobjects.Chat c) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -98,6 +100,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Get Chat Object
+     * @param gid group id
+     * @return chat object
+     */
     public ArrayList<de.dataobjects.Chat> getChatMessages(String gid) {
         ArrayList<de.dataobjects.Chat> alc = new ArrayList<de.dataobjects.Chat>();
         SQLiteDatabase db = getWritableDatabase();
@@ -114,6 +121,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return alc;
     }
 
+    /**
+     * Change Table is_in_group
+     * @param gid group id
+     * @param uid user id
+     * @param isJoined isUserJoined 1 or 0 1 yes, 0 no
+     */
     public void joinGroup(String gid, String uid, int isJoined) {
         Log.i(TAG, "Joining Group");
         SQLiteDatabase db = getWritableDatabase();
@@ -125,6 +138,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Add Group to db
+     * @param group group object
+     */
     public void addGroup(de.dataobjects.Groups group) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -134,6 +151,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Add User to db
+     * @param user user object
+     */
     public void addUser(User user) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -143,6 +164,13 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Add UserInGroup
+     * @param gid gid
+     * @param uid uid
+     * @param isJoined is user joined 1 yes, 0 no
+     * @param drivingcount counter for how often he was driver in appointment
+     */
     public void addIsInGroup(String gid, String uid, int isJoined, int drivingcount) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -154,10 +182,19 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Add UserInGroup Object
+     * @param userInGroup userInGroup Object
+     */
     public void addIsInGroup(UserInGroup userInGroup) {
         addIsInGroup(userInGroup.getGid(), userInGroup.getUid(), userInGroup.getIsJoined(), userInGroup.getDrivingCount());
     }
 
+    /**
+     * Get all UserinGroup objects with gid
+     * @param gid gid
+     * @return UserInGroup List
+     */
     public ArrayList<UserInGroup> getUserList(String gid) {
         ArrayList<UserInGroup> isInGroupList = new ArrayList<UserInGroup>();
         SQLiteDatabase db = getWritableDatabase();
@@ -183,28 +220,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
 
     }
 
-
-    public ArrayList<UserInGroup> getIsInGroupWithGroupId(String gid) {
-        ArrayList<UserInGroup> isInGroupList = new ArrayList<UserInGroup>();
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cur = db.rawQuery(GET_IS_IN_GROUP + "'" + gid + "'", null);
-        cur.moveToFirst();
-        while (!cur.isAfterLast()) {
-            if (cur.getString(cur.getColumnIndex("uid")) != null) {
-
-                String groupid = cur.getString(cur.getColumnIndex("gid"));
-                String userid = cur.getString(cur.getColumnIndex("uid"));
-                int isJoined = cur.getInt(cur.getColumnIndex("isJoined"));
-
-                UserInGroup userInGroup = new UserInGroup(userid, groupid, isJoined);
-                isInGroupList.add(userInGroup);
-            }
-            cur.moveToNext();
-        }
-        db.close();
-        return isInGroupList;
-    }
-
+    /**
+     * Get if User is Joined in Group
+     * @param gid group id
+     * @param uid user id
+     * @return -1 error, 0 not joined, 1 joined
+     */
     public int getIsJoint(String gid, String uid) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_IS_JOINT_1 + "'" + gid + "'" + GET_IS_JOINT_2 + "'" + uid + "'", null);
@@ -218,6 +239,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return -1;
     }
 
+    /**
+     * Set is Joined
+     * @param groupId groupId
+     * @param userId userid
+     * @param isJoined 1 joined, 0 not joined
+     */
     public void setIsJoint(String groupId, String userId ,  int isJoined) {
         Log.i(TAG, "Set isJoined ");
         SQLiteDatabase db = getWritableDatabase();
@@ -229,7 +256,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    // DELETE USER FROM SQL LITE DATABASE
+    /**
+     * Delete Group from database
+     * and delete user_in_group
+     * @param groupId grpid
+     */
     public void deleteGroup(String groupId){
         Log.i(TAG, "Delete Group ");
         SQLiteDatabase db = getWritableDatabase();
@@ -244,6 +275,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Delete Task from local Database
+     * @param tid task id
+     * @param gid group id
+     * @param aid appointment id
+     */
     public void deleteTask(int tid, String gid, int aid) {
         Log.i(TAG, "Delete Task ");
         SQLiteDatabase db = getWritableDatabase();
@@ -256,7 +293,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    // DELETE USER FROM SQL LITE DATABASE
+    /**
+     * Delete Appointment from database
+     * @param aid appointment id
+     * @param gid group id
+     */
     public void deleteAppoinment(int aid, String gid){
         Log.i(TAG, "Delete Appointment  with aid: " + aid + " and gid: " + gid);
         SQLiteDatabase db = getWritableDatabase();
@@ -266,6 +307,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Delete from is_in_appointment
+     * @param gid  group id
+     * @param uid user id
+     */
     public void deleteUserInAppointment(String gid, String uid) {
         Log.i(TAG, "Delete User In Appointment  with gid: " + gid + " and uid: " + uid);
         SQLiteDatabase db = getWritableDatabase();
@@ -275,6 +321,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Delete from is_in_group
+     * @param gid group id
+     * @param uid user id
+     */
     public void deleteUserInGroup(String gid, String uid) {
         Log.i(TAG, "Delete User In Group ");
         SQLiteDatabase db = getWritableDatabase();
@@ -287,6 +338,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Get all Groups
+     * @return group ArrayList
+     */
     public ArrayList<de.dataobjects.Groups> getGroups() {
         ArrayList<de.dataobjects.Groups> groupArrayList = new ArrayList<de.dataobjects.Groups>();
         SQLiteDatabase db = getWritableDatabase();
@@ -304,6 +359,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return groupArrayList;
     }
 
+    /**
+     * Get single Group
+     * @param gid group id
+     * @return Group or Null if none Exists
+     */
     public de.dataobjects.Groups getGroup(String gid) {
         SQLiteDatabase db = getWritableDatabase();
         Log.i(TAG, "Gid " + gid);
@@ -324,6 +384,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Get User
+     * @param uid user id
+     * @return User or null if none exists
+     */
     public User getUser(String uid) {
         try {
             SQLiteDatabase db = getWritableDatabase();
@@ -341,8 +406,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Add Appointment to db
+     * @param appointment Appointment object
+     */
     public void addAppointment(de.dataobjects.Appointment appointment) {
-
             SQLiteDatabase db = getWritableDatabase();
             ContentValues cv = new ContentValues();
             cv.put("JsonInString", appointment.getJsonInString());
@@ -350,15 +418,13 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             cv.put("aid", appointment.getAid());
             db.insertWithOnConflict("appointments", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
             db.close();
-
     }
 
     /**
      * Gibt eine ArrayList mit alle Termine einer bestimmten Gruppe  aus
-     * @param gid
+     * @param gid group id
      * @return appointmentArrayList
      */
-
     public ArrayList<de.dataobjects.Appointment> getAppointments(String gid) {
         ArrayList<de.dataobjects.Appointment> appointmentArrayList = new ArrayList<de.dataobjects.Appointment>();
         SQLiteDatabase db = getWritableDatabase();
@@ -375,7 +441,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return appointmentArrayList;
     }
 
-
+    /**
+     * Return all Appointments
+     * @return Appointment ArrayList
+     */
     public ArrayList<de.dataobjects.Appointment> getAllAppointments() {
         ArrayList<de.dataobjects.Appointment> appointmentArrayList = new ArrayList<de.dataobjects.Appointment>();
         SQLiteDatabase db = getWritableDatabase();
@@ -451,7 +520,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return statment;
     }
 
-
+    /**
+     * Get single Appointment
+     * @param aid appointment id
+     * @param gid group id
+     * @return Appointment
+     */
     public de.dataobjects.Appointment getAppointment(int aid, String gid) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_APPOINTMENT_1 + aid + GET_APPOINTMENT_2 + "'" + gid + "'", null);
@@ -465,6 +539,11 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return null;
     }
 
+    /**
+     * Return highest Appointment Id
+     * @param gid group id
+     * @return highes id or 0 if no Appointment exists
+     */
     public int getNextAppointmentID(String gid) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_HIGHEST_ID_1 + "'" + gid + "'" + GET_HIGHEST_ID_2, null);
@@ -478,6 +557,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return 0;
     }
 
+    /**
+     * Get highest TaskId
+     * @param gid group id
+     * @param aid appointment id
+     * @return highest id or 0 if no Task exists
+     */
     public int getNextTaskID(String gid, int aid) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cur = db.rawQuery(GET_HIGHEST_TASKID_1 + "'" + gid + "'" + GET_HIGHEST_TASKID_2  + aid  + GET_HIGHEST_TASKID_3, null);
@@ -491,6 +576,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return 0;
     }
 
+    /**
+     * Add Task to db
+     * @param task Task object
+     */
     public void addTask(Task task) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -505,6 +594,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Get Task list
+     * @param aid appointment id
+     * @param gid group id
+     * @return ArrayList of Tasks
+     */
     public ArrayList<Task> getTasks(int aid, String gid) {
         ArrayList<Task> taskArrayList = new ArrayList<Task>();
         SQLiteDatabase db = getWritableDatabase();
@@ -521,6 +616,10 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return taskArrayList;
     }
 
+    /**
+     * Add in is_in_appointment
+     * @param userInAppointment    UserInAppointment to be added
+     */
     public void addIsInAppointment(UserInAppointment userInAppointment) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -533,6 +632,13 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Get single UserInAppointment
+     * @param aid appointment id
+     * @param gid group id
+     * @param uid user id
+     * @return UserInAppointment Object
+     */
     public UserInAppointment getUserInAppointment(int aid, String gid, String uid) {
         try {
             SQLiteDatabase db = getWritableDatabase();
@@ -551,6 +657,12 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Get all Users who are Participants in specific Appointment
+     * @param aid appointment id
+     * @param gid group id
+     * @return ArrayList of UserInAppointments Objects
+     */
     public ArrayList<UserInAppointment> getParticipantsInAppointment(int aid, String gid ) {
         ArrayList<UserInAppointment> userInAppointmentArrayList = new ArrayList<UserInAppointment>();
         SQLiteDatabase db = getWritableDatabase();
@@ -570,6 +682,23 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         return userInAppointmentArrayList;
     }
 
+    /**
+     * Update is_in_appointment and Appointment for new Appointment
+     * @param appointment new appointment
+     */
+    public void updateUserInAppointment(Appointment appointment) {
+        ArrayList<UserInGroup> userInGroupArrayList = this.getUserList(appointment.getGid());
+        for(UserInGroup userInGroup : userInGroupArrayList) {
+            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), userInGroup.getUid(), 0);
+            this.addIsInAppointment(userInAppointment);
+        }
+    }
+
+    /**
+     * Construcotr
+     * @param context context
+     * @param factory factory
+     */
     public SQLiteDBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -597,16 +726,6 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS task;");
         onCreate(db);
     }
-
-    public void updateUserInAppointment(Appointment appointment) {
-        ArrayList<UserInGroup> userInGroupArrayList = this.getUserList(appointment.getGid());
-        for(UserInGroup userInGroup : userInGroupArrayList) {
-            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), userInGroup.getUid(), 0);
-            this.addIsInAppointment(userInAppointment);
-        }
-    }
-
-
 }
 
 

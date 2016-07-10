@@ -48,12 +48,18 @@ public class UserObserver implements MessageObserver {
 
     }
 
+    /**
+     * Change local DB for User joined Group
+     */
     private void userJoinedGroup() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         sqLiteDBHandler.addIsInGroup(JsonCollection.jsonToUserInGroup(this.payload.getString("content")));
         sendLocalUpdateBroadcast();
     }
 
+    /**
+     * Add new User to Group local
+     */
     private void addNewUser() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         String[] stringarray = JsonCollection.jsonToStringArray(this.payload.getString("content"));
@@ -65,6 +71,9 @@ public class UserObserver implements MessageObserver {
         sendLocalUpdateBroadcast();
     }
 
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupuser");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);

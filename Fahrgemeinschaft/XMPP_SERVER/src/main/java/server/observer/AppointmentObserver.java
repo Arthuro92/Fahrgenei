@@ -13,12 +13,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.Algorithm.Algorithm;
+import server.algorithm.Algorithm;
 import server.errors.ErrorMessages;
 import server.smackccsclient.SmackCcsClient;
 
 /**
  * Created by david on 24.05.2016.
+ * Handle all Messages with task_category = appointment
  */
 public class AppointmentObserver extends RepositorieConnector implements MessageObserver {
     //new
@@ -59,6 +60,9 @@ public class AppointmentObserver extends RepositorieConnector implements Message
         }
     }
 
+    /**
+     * Send Broadcast to topic for Appointment is Deleted
+     */
     private void sendDeleteAppointmentBroadcast() {
         try {
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
@@ -69,6 +73,9 @@ public class AppointmentObserver extends RepositorieConnector implements Message
         }
     }
 
+    /**
+     * Delete Appointment and other tables in Database
+     */
     private void deleteAppointment() {
         Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
         appointmentRepository.delete(appointment);
@@ -85,9 +92,9 @@ public class AppointmentObserver extends RepositorieConnector implements Message
         }
     }
 
-
-
-
+    /**
+     * Update Tables for change if Participant or not
+     */
     private void changeParticipant() {
         try {
             UserInAppointment userInAppointment = JsonCollection.jsonToUserInAppointment(this.payload.get("content"));
@@ -95,16 +102,22 @@ public class AppointmentObserver extends RepositorieConnector implements Message
             sendParticipantChangeSuccess();
             calculateNewDrivers();
         } catch (NullPointerException e) {
-            logger.log(Level.INFO, "NullPointerException");
+            logger.log(Level.INFO, "NullPointerException in change Participant");
             e.printStackTrace();
         }
     }
 
+    /**
+     * Trigger Algorithm for calculate new Drivers
+     */
     private void calculateNewDrivers() {
         Algorithm algorithm = new Algorithm();
         algorithm.calculateDrivers(JsonCollection.jsonToUserInAppointment(this.payload.get("content")));
     }
 
+    /**
+     * Broadcast the Participant change
+     */
     private void sendParticipantChangeSuccess() {
         try {
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
@@ -115,7 +128,10 @@ public class AppointmentObserver extends RepositorieConnector implements Message
         }
     }
 
-
+    /**
+     * Save Appointment
+     * @return true if success false when fail
+     */
     private boolean createAppointment() {
         try {
             Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
@@ -125,13 +141,17 @@ public class AppointmentObserver extends RepositorieConnector implements Message
             sendInsertAppointmentSucess();
             return true;
         } catch (NullPointerException e) {
-            logger.log(Level.INFO, "NullPointerException");
+            logger.log(Level.INFO, "NullPointerException in create Appointment");
             e.printStackTrace();
             sendAppointmentError(ErrorMessages.MYSQL_ERROR);
             return false;
         }
     }
 
+    /**
+     * Update DB
+     * @return true when success, false when fail
+     */
     private boolean updateUserInAppointment() {
         try {
             Appointment appointment = JsonCollection.jsonToAppointment(this.payload.get("content"));
@@ -141,20 +161,18 @@ public class AppointmentObserver extends RepositorieConnector implements Message
                 UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), userInGroup.getUid(), 0);
                 userInAppointmentRepository.save(userInAppointment);
             }
-
-//            String string = (String) this.jsonObject.get("from");
-//            User user = userRepository.findByToken(string);
-//            UserInAppointment userInAppointment = new UserInAppointment(appointment.getAid(), appointment.getGid(), user.getId(), 0);
-//            userInAppointmentRepository.save(userInAppointment);
             return true;
         } catch (NullPointerException e) {
-            logger.log(Level.INFO, "NullPointerException");
+            logger.log(Level.INFO, "NullPointerException in updateUserInAppointment");
             e.printStackTrace();
             return false;
         }
     }
 
-
+    /**
+     * Send to client that Appointment could be added
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private boolean sendInsertAppointmentSucess() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
@@ -164,12 +182,16 @@ public class AppointmentObserver extends RepositorieConnector implements Message
             smackclient.sendDownstreamMessage("appointment", "newappointment", "/topics/" + appointment.getGid(), appointment);
             return true;
         } catch (SmackException.NotConnectedException e) {
-            //todo what now XD? retry or something
             e.printStackTrace();
             return false;
         }
     }
 
+    /**
+     * Send Client Error and client could not be added
+     * @param errortype Error Message getting from ErrorMessage
+     * @return true when sending success, false when failed
+     */
     private boolean sendAppointmentError(String errortype) {
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
@@ -177,7 +199,6 @@ public class AppointmentObserver extends RepositorieConnector implements Message
             return true;
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
-            //todo maybe retry?
             return false;
         }
     }

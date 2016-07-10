@@ -44,27 +44,14 @@ public class FragmentGruppenTermineActivity extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-      /**  Button btn = (Button) contentViewGruppenTermine.findViewById(R.id.buttonFragmentGruppeTermine);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo this in popup please not as activity
-
-                Log.i(TAG, "switch to createAppointmentActivity");
-                Intent intent = new Intent(getActivity(), CreateAppointmentActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
         hideButtonIfNotAdmin();
         loadAppointmentList();
         createReceiver();
-
     }
 
-
+    /**
+     * create Receiver
+     */
     public void createReceiver() {
         updateappointmentlist = new BroadcastReceiver() {
             @Override
@@ -76,6 +63,9 @@ public class FragmentGruppenTermineActivity extends Fragment {
         registerReceiver();
     }
 
+    /**
+     * Register Receiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateappointmentlist, new IntentFilter("updategroupappointments"));
@@ -83,6 +73,9 @@ public class FragmentGruppenTermineActivity extends Fragment {
         }
     }
 
+    /**
+     * unregister Receiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updateappointmentlist);
@@ -90,6 +83,9 @@ public class FragmentGruppenTermineActivity extends Fragment {
         }
     }
 
+    /**
+     * Method for hiding Buttons
+     */
     private void hideButtonIfNotAdmin() {
         if (!checkAdminStatus()) {
             Log.i(TAG, "No Admin Rights for this Group");
@@ -98,6 +94,9 @@ public class FragmentGruppenTermineActivity extends Fragment {
         }
     }
 
+    /**
+     * Method checks if current user is admin of current group
+     */
     private boolean checkAdminStatus() {
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String id = prefs.getString("userid", "");
@@ -106,18 +105,18 @@ public class FragmentGruppenTermineActivity extends Fragment {
             return true;
         } else {
             return false;
-    }
+        }
     }
 
+    /**
+     * Load Appointmentlist
+     */
     private void loadAppointmentList() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
         ArrayList<Appointment> appointmentlist = sqLiteDBHandler.getAppointments(gid);
-
-
          createAppointments(appointmentlist);
-
     }
 
     @Override
@@ -128,7 +127,6 @@ public class FragmentGruppenTermineActivity extends Fragment {
 
     /**
      * Creating for each Group a linearLayout
-     *
      * @param appointmentArrayList list of Groups which should be displayed
      */
     public void createAppointments(ArrayList<de.dataobjects.Appointment> appointmentArrayList) {

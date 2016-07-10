@@ -50,28 +50,43 @@ public class TaskObserver implements MessageObserver {
             }
         }
     }
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void sendLocalReturnBroadcast() {
         Intent intent = new Intent("returntogeneralgroups");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    /**
+     * Delete Task local
+     */
     private void deleteTask() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         Task task = JsonCollection.jsonToTask(this.payload.getString("content"));
         sqLiteDBHandler.deleteTask(task.getTaskId(), task.getGid(), task.getAid());
     }
 
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void sendLocalUpdateBroadcast() {
         Intent createdtasksuccess = new Intent("createdTask");
         LocalBroadcastManager.getInstance(context).sendBroadcast(createdtasksuccess);
     }
 
+    /**
+     * Add task local
+     */
     private void addTask() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         sqLiteDBHandler.addTask(JsonCollection.jsonToTask(this.payload.getString("content")));
     }
 
-
+    /**
+     * Send local Broadcast to call GUI if Error on Serverside happend
+     * @param error Error Message
+     */
     private void errorTask(String error) {
         Intent erroratask = new Intent("ERRORTask");
         erroratask.putExtra("error", error);

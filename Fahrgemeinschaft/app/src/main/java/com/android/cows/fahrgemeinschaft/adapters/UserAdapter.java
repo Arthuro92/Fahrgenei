@@ -181,6 +181,9 @@ public class UserAdapter extends ArrayAdapter {
         this.data = data;
     }
 
+    /**
+     * Holder class
+     */
     static class UserHolder
     {
         ImageView imgIcon;

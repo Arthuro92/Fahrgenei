@@ -39,16 +39,12 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     private int freeseats = 0;
     private int progress = 0;
 
-    //private Spinner spinner;
-    //private static final String[]paths = {"1", "4", "6", "8"};
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeVariables();
         setContentView(R.layout.activity_settings);
-        SeekBar seekBar = (SeekBar) findViewById(R.id.sitzAnzahl_seekBar);
+        seekBar = (SeekBar) findViewById(R.id.sitzAnzahl_seekBar);
         seekBar.animate().alpha(0.0f);
         seekBar.setVisibility(View.INVISIBLE);
         mySwitch = (Switch) findViewById(R.id.autoSwitch);
@@ -68,14 +64,16 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         TextView email = (TextView) findViewById(R.id.emailid);
         username.setText("Name: " + prefs.getString("username", ""));
         email.setText("Email: " + prefs.getString("useremail", ""));
-        initializeVariables();
+
         onClickSaveButton();
         switchbutton();
         seekBarInit();
         checkIfProfile();
-
     }
 
+    /**
+     * Check if User is firsttime in this activity or if informations are yet in database
+     */
     private void checkIfProfile() {
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         if(prefs.getBoolean("userprofile", false)) {
@@ -87,6 +85,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
+    /**
+     * Handling Seekbar input
+     */
     private void seekBarInit() {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -113,6 +114,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
+    /**
+     * Handle Switchbutton changes
+     */
     private void switchbutton() {
 
         //noinspection ConstantConditions
@@ -142,6 +146,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
+    /**
+     * OnClick Save button sending the informations the user made to Server and saving it locally too
+     */
     private void onClickSaveButton() {
         Button savebtn = (Button) findViewById(R.id.saveSettings);
         //noinspection ConstantConditions
@@ -167,7 +174,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         });
     }
 
-
+    /**
+     * Init Variables
+     */
     private void initializeVariables() {
             seekBar = (SeekBar) findViewById(R.id.sitzAnzahl_seekBar);
             textAnzahlPlaetze = (TextView) findViewById(R.id.AnzahlPlaetze);

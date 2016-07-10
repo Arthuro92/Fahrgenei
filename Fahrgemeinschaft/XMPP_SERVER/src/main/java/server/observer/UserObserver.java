@@ -11,16 +11,12 @@ import java.util.logging.Logger;
 
 /**
  * Created by david on 23.05.2016.
+ * Handle all Messages with task_category = user
  */
 public class UserObserver extends RepositorieConnector implements MessageObserver {
     //new
     private Map<String, String> payload;
-
-
-
     private static final Logger logger = Logger.getLogger("UserObserver ");
-
-
 
     /**
      * Updates the Map payload for this object to the jsonObject. Also calls the setUser method so long as the task_category key of payload equals user
@@ -42,10 +38,13 @@ public class UserObserver extends RepositorieConnector implements MessageObserve
         }
     }
 
+    /**
+     * Register new User
+      * @return true when success, false when failed
+     */
     private boolean registration() {
         try {
             logger.log(Level.INFO, "first switch task = registration");
-
             User user = JsonCollection.jsonToUser(this.payload.get("content"));
             userRepository.save(user);
             return true;
@@ -54,7 +53,6 @@ public class UserObserver extends RepositorieConnector implements MessageObserve
             return false;
         }
     }
-
 
     /**
      * Constructs a new UserObserver and registers it to a MessageSubject

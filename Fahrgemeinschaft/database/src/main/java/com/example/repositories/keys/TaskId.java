@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Lennart on 30.06.2016.
+ * Key Class for Tasks
  */
 public class TaskId implements Serializable {
 

@@ -29,10 +29,7 @@ public class FragmentAppointmentDetailsActivity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         contentViewAppointmentDetails = inflater.inflate(R.layout.activity_fragment_appointment_details, null);
-
-
         return contentViewAppointmentDetails;
     }
 
@@ -40,7 +37,6 @@ public class FragmentAppointmentDetailsActivity extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         //TextView terminName = (TextView) findViewById(R.id.terminName);
         TextView terminTreffZeit = (TextView) getActivity().findViewById(R.id.terminTreffZeitZ);
@@ -56,6 +52,7 @@ public class FragmentAppointmentDetailsActivity extends Fragment {
         terminZielOrt.setText(bundle.getString("destination"));
 //        getActivity().getActionBar().setTitle(bundle.getString("name"));
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getActivity().getMenuInflater().inflate(R.menu.menu_appointment_detail, menu);
@@ -68,8 +65,6 @@ public class FragmentAppointmentDetailsActivity extends Fragment {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
         return super.onOptionsItemSelected(item);
     }
 }

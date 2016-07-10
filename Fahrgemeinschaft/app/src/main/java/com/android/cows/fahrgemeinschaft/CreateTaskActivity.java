@@ -48,12 +48,14 @@ public class CreateTaskActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * getting called when user wants to create a task
+     * @param view view
+     */
     public void createTask2(View view) {
-
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         EditText taskName = (EditText) findViewById(R.id.taskname);
         EditText taskDescription = (EditText) findViewById(R.id.taskdescription);
-        //todo this has to come from the specific appointment
         Bundle bundle = getIntent().getExtras();
         int aid = (int) bundle.getSerializable("aid");
         String gid = prefs.getString("currentgid","");
@@ -72,13 +74,9 @@ public class CreateTaskActivity extends AppCompatActivity {
                // String taskId = Integer.toString(tid);
                 newTask = new Task(tid, aid, gid , taskName.getText().toString(), taskDescription.getText().toString(), "");
             }
-
-
-
-
             MyGcmSend gcmsend = new MyGcmSend();
             gcmsend.send("task", "newtask", newTask, this);
-        Log.i(TAG, "New Task created and send to server, waiting now for response");
+              Log.i(TAG, "New Task created and send to server, waiting now for response");
             createReceiver();
         }
     }
@@ -94,19 +92,27 @@ public class CreateTaskActivity extends AppCompatActivity {
         return matcher.find();
     }
 
+    /**
+     * sets layout invisible and progressbar visible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutInvisible() {
         findViewById(R.id.createAppointmentProgBar).setVisibility(ProgressBar.VISIBLE);
         findViewById(R.id.createappointbutton).setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * sets layout visible and progressbar invisible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutVisible() {
         findViewById(R.id.createAppointmentProgBar).setVisibility(ProgressBar.GONE);
         findViewById(R.id.createappointbutton).setVisibility(View.VISIBLE);
     }
 
-
+    /**
+     * Create receiver for gui calls
+     */
     private void createReceiver() {
         insertTaskSuccess = new BroadcastReceiver() {
             @Override
@@ -139,7 +145,9 @@ public class CreateTaskActivity extends AppCompatActivity {
         registerReceiver();
     }
 
-
+    /**
+     * register receiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(insertTaskSuccess, new IntentFilter("createdTask"));
@@ -148,13 +156,15 @@ public class CreateTaskActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * unregister receivers
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(insertTaskSuccess);
             LocalBroadcastManager.getInstance(this).unregisterReceiver(errorReceivingAppointment);
             isReceiverRegistered = false;
         }
-        //todo do we need unregistering for receiver?
     }
     @Override
     public void onBackPressed() {

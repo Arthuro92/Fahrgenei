@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import de.dataobjects.Appointment;
 import de.dataobjects.Groups;
 import de.dataobjects.JsonCollection;
+import de.dataobjects.Task;
 import de.dataobjects.User;
 import de.dataobjects.UserInAppointment;
 import de.dataobjects.UserInGroup;
@@ -146,24 +147,60 @@ public class GroupObserver implements MessageObserver {
         sendLocalUpdateGroupsBroadcast();
     }
 
+    /**
+     * Adding all Group information getting called when user joined group
+     */
     public void addGroupInformations() {
         updateLocalInsertNewGroupMembers();
         updateLocalAppointmentTable();
+        updateLocalTaskTable();
         sendLocalUpdateGroupsBroadcast();
         sendLocalUpdateAppointmentsBroadcast();
         sendLocalUpdateUserBroadcast();
+        sendLocalUpdateTaskBroadcast();
     }
 
+    /**
+     * Send Local Broadcast to call GUI
+     */
+    private void sendLocalUpdateTaskBroadcast() {
+        Intent createdtasksuccess = new Intent("createdTask");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(createdtasksuccess);
+    }
+
+    /**
+     * Insert new Tasks
+     */
+    private void updateLocalTaskTable() {
+        Log.i(TAG, "update Local DB, Insert New Appointments");
+        SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+        String[] stringArray = JsonCollection.jsonToStringArray((this.payload.getString("content")));
+        ArrayList<Task> taskArrayList = JsonCollection.jsonToTaskList(stringArray[3]);
+
+        for(Task task : taskArrayList) {
+            sqLiteDBHandler.addTask(task);
+        }
+    }
+
+    /**
+     * notify GUI
+     */
     private void sendLocalUpdateAppointmentsBroadcast() {
         Intent intent = new Intent("updategroupappointments");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    /**
+     * notify GUI
+     */
     public void sendLocalUpdateUserBroadcast() {
         Intent intent = new Intent("updategroupuser");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    /**
+     * notify GUI
+     */
     public void updateLocalAppointmentTable() {
         Log.i(TAG, "update Local DB, Insert New Appointments");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
@@ -178,6 +215,10 @@ public class GroupObserver implements MessageObserver {
         }
     }
 
+    /**
+     * Insert new User is in group
+     * @param i if is joined or not 1 is joined 0 is not
+     */
     private void updateLocalUserIsInGroup(int i) {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
@@ -185,6 +226,9 @@ public class GroupObserver implements MessageObserver {
         sqLiteDBHandler.addIsInGroup(JsonCollection.jsonToGroup(this.payload.getString("content")).getGid(),uid, i,0);
     }
 
+    /**
+     * Insert new Group Members
+     */
     private void updateLocalInsertNewGroupMembers() {
         Log.i(TAG, "update Local DB, Insert New Group Members");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
@@ -200,12 +244,18 @@ public class GroupObserver implements MessageObserver {
         }
     }
 
+    /**
+     * Group Insert success
+     */
     private void insertSuccess() {
         Intent insertSuccess = new Intent("createdgroup");
         LocalBroadcastManager.getInstance(context).sendBroadcast(insertSuccess);
     }
 
-
+    /**
+     * Send GUI that an error happened
+     * @param error
+     */
     private void errorGroup(String error) {
         Intent errorGroup = new Intent("ERRORGroup");
         errorGroup.putExtra("error", error);

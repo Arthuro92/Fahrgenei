@@ -14,6 +14,7 @@ import server.smackccsclient.SmackCcsClient;
 
 /**
  * Created by Lennart on 30.06.2016.
+ * Handle all Messages with task_category = task
  */
 public class TaskObserver extends RepositorieConnector implements MessageObserver {
 
@@ -51,6 +52,9 @@ public class TaskObserver extends RepositorieConnector implements MessageObserve
         }
     }
 
+    /**
+     * Broadcast that a task getting deleted
+     */
     private void broadcastDeleteTask() {
         try {
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
@@ -61,10 +65,17 @@ public class TaskObserver extends RepositorieConnector implements MessageObserve
         }
     }
 
+    /**
+     * Delete task from db
+     */
     private void deleteTask() {
         taskRepository.delete(JsonCollection.jsonToTask(this.payload.get("content")));
     }
 
+    /**
+     * saving task in db
+     * @return true when success, false when failed
+     */
     private boolean createNewTask() {
         try {
             Task task = JsonCollection.jsonToTask(this.payload.get("content"));
@@ -72,12 +83,15 @@ public class TaskObserver extends RepositorieConnector implements MessageObserve
             broadcastNewTask();
             return true;
         } catch(NullPointerException e) {
-            logger.log(Level.INFO, "NullPointerException");
+            logger.log(Level.INFO, "NullPointerException in create new Task");
             sendTaskError(ErrorMessages.MYSQL_ERROR);
             return false;
         }
     }
 
+    /**
+     * Send broadcast message with new task
+     */
     private void broadcastNewTask() {
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
@@ -89,6 +103,11 @@ public class TaskObserver extends RepositorieConnector implements MessageObserve
         }
     }
 
+    /**
+     * send error that task could not be added
+     * @param errortype Error Message
+     * @return true when success, false when failed
+     */
     private boolean sendTaskError(String errortype) {
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
         try {
@@ -96,12 +115,9 @@ public class TaskObserver extends RepositorieConnector implements MessageObserve
             return true;
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
-            //todo maybe retry?
             return false;
         }
     }
-
-
 
     /**
      * Constructs a new AppointmentObserver and registers it to a MessageSubject

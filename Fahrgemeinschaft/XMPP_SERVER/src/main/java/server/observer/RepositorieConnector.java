@@ -11,6 +11,7 @@ import com.example.repositories.UserRepository;
 
 /**
  * Created by Lennart on 23.06.2016.
+ * This class getting extended in other classes to provide access to Repositorys
  */
 public class RepositorieConnector {
     protected AppointmentRepository appointmentRepository;
@@ -20,6 +21,9 @@ public class RepositorieConnector {
     protected UserInGroupRepository userInGroupRepository;
     protected UserRepository userRepository;
 
+    /**
+     * Init all repositories
+     */
     public void initRepositories() {
         DatabaseRepositorie databaseRepositorie = DatabaseRepositorie.getInstance();
         RepositoryCollection repositoryCollection = databaseRepositorie.getRepositoryCollection();

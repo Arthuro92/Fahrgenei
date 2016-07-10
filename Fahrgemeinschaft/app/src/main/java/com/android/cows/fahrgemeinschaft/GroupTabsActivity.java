@@ -110,7 +110,6 @@ public class GroupTabsActivity extends AppCompatActivity {
             addtask.setVisible(false);
             addevent.setVisible(false);
         }
-
         return true;
     }
 
@@ -176,6 +175,9 @@ public class GroupTabsActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * create receiver for calls to gui
+     */
     public void createReceiver() {
         returntogroupgeneral = new BroadcastReceiver() {
             @Override
@@ -186,6 +188,9 @@ public class GroupTabsActivity extends AppCompatActivity {
         registerReceiver();
     }
 
+    /**
+     * register reciever
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(context).registerReceiver(returntogroupgeneral, new IntentFilter("returntogeneralgroups"));
@@ -193,6 +198,9 @@ public class GroupTabsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * unregister receiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(returntogroupgeneral);

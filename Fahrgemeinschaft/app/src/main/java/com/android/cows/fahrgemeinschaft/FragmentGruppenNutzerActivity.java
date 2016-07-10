@@ -12,7 +12,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.cows.fahrgemeinschaft.adapters.UserAdapter;
@@ -34,61 +33,31 @@ public class FragmentGruppenNutzerActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         contentViewGruppenNutzer = inflater.inflate(R.layout.activity_fragment_gruppen_nutzer, null);
-
-/**
-        User user1 = new User("1","2","Cem","Cem@Homo.de");
-        User user2 = new User("1","2","Tim","Tim@Homo.de");
-        User user3 = new User("1","2","Blub","blub@Homo.de");
-        ArrayList<User> user_list = new ArrayList<User>();
-        user_list.add(user1);
-        user_list.add(user2);
-        user_list.add(user3);
-        UserAdapter userAdapter = new UserAdapter( getActivity() ,R.layout.item_row, user_list);
-
-
-        View v = inflater.inflate(R.layout.activity_fragment_gruppen_nutzer, container, false );
-        listView = (ListView) v.findViewById(R.id.userListView);
-        View header = (View) getActivity().getLayoutInflater().inflate(R.layout.header_row, null);
-        listView.addHeaderView(header);
-        listView.setAdapter(userAdapter);
- */
-
-
-
         return contentViewGruppenNutzer;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
-        //  Button btn = (Button) contentViewGruppenNutzer.findViewById(R.id.buttonFragmentGruppenNutzer);
-        //  btn.setOnClickListener(new View.OnClickListener() {
-
-
-       /**     @Override
-            public void onClick(View v) {
-                //todo this in popup please not as activity
-
-                Intent intent = new Intent(getActivity(), InviteUser.class);
-                startActivity(intent);
-            }
-        });*/
-
         loadUserList();
         createReceiver();
     }
 
+    /**
+     * Load User List from Database
+     */
     public void loadUserList() {
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
-        ArrayList<UserInGroup> isInGroupList = sqLiteDBHandler.getIsInGroupWithGroupId(gid);
+        ArrayList<UserInGroup> isInGroupList = sqLiteDBHandler.getUserList(gid);
         createUserList(isInGroupList);
     }
 
+    /**
+     * Create User List and show it in ListView
+     * @param userInGroupList userInGroupList to be shown
+     */
     public void createUserList(ArrayList<UserInGroup> userInGroupList) {
         UserAdapter userAdapter = new UserAdapter( getActivity() ,R.layout.item_row, userInGroupList);
 
@@ -99,6 +68,9 @@ public class FragmentGruppenNutzerActivity extends Fragment {
         listView.setAdapter(userAdapter);
     }
 
+    /**
+     * Create Receiver for calling the GUI later
+     */
     public void createReceiver() {
         updategrplist = new BroadcastReceiver() {
             @Override
@@ -109,6 +81,9 @@ public class FragmentGruppenNutzerActivity extends Fragment {
         registerReceiver();
     }
 
+    /**
+     * Register Receiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("updategroupuser"));
@@ -116,6 +91,9 @@ public class FragmentGruppenNutzerActivity extends Fragment {
         }
     }
 
+    /**
+     * Unregister Receiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updategrplist);

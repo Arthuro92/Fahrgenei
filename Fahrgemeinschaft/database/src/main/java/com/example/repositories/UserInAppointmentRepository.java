@@ -8,7 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.ArrayList;
 
 /**
- * Created by Maxi on 20.06.2016.
+ * Created by Lennart on 20.06.2016.
+ * Database connection point, creating SQL Queries in runtime
  */
 public interface UserInAppointmentRepository extends CrudRepository<UserInAppointment, UserInAppointmentId> {
     ArrayList<UserInAppointment> findByGidAndAid(String gid, int aid);

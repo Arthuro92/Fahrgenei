@@ -16,13 +16,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import server.Algorithm.Algorithm;
+import server.algorithm.Algorithm;
 import server.errors.ErrorMessages;
 import server.smackccsclient.SmackCcsClient;
 
 
 /**
  * Created by david on 23.05.2016.
+ * Handle all Messages with task_category = group
  */
 public class GroupObserver  extends RepositorieConnector implements MessageObserver {
     //new
@@ -74,6 +75,9 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Broadcast Group deletion
+     */
     private void sendDeleteGroup() {
         try {
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
@@ -84,6 +88,9 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Delete Group in database and other correlating tables
+     */
     private void deleteGroup() {
         Groups groups = JsonCollection.jsonToGroup(this.payload.get("content"));
         ArrayList<Appointment> appointmentArrayList = appointmentRepository.findByGid(groups.getGid());
@@ -106,6 +113,9 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         groupsRepository.delete(groups);
     }
 
+    /**
+     * Broadcast that a user is leaving a group
+     */
     private void sendDeleteUserInGroup() {
         try {
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
@@ -117,6 +127,9 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
 
     }
 
+    /**
+     * Delete UserInGroup in Database and other correlating tables
+     */
     private void deleteUserInGroup() {
         UserInGroup userInGroup = JsonCollection.jsonToUserInGroup(this.payload.get("content"));
         userInGroupRepository.delete(userInGroup);
@@ -130,6 +143,9 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Update Substitute in Group and sending Broadcast
+     */
     private void updateSubstituteInGroup() {
         try {
             SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
@@ -143,6 +159,10 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Get called when user accepted a Invitation
+     * saving it aand sending Broadcast
+     */
     private void invitationaccepted() {
         try {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
@@ -157,12 +177,17 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Send User who accepted the Invitation
+     * the specific Information for the Group like members or appointments
+     */
     private void sendGroupInformation() {
         try {
             String gid = this.payload.get("extra0");
             SmackCcsClient smackclient = SmackCcsClient.getInstance();
             ArrayList<UserInGroup> userInGroupList = userInGroupRepository.findByGid(gid);
             ArrayList<User> userList = new ArrayList<>();
+            ArrayList<Task> taskArrayList = taskRepository.findByGid(gid);
 
             for (UserInGroup userInGroup : userInGroupList) {
                 userList.add(userRepository.findOne(userInGroup.getUid()));
@@ -170,10 +195,12 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
 
             ArrayList<Appointment> appointmentArrayList = appointmentRepository.findByGid(gid);
 
-            String[] stringarray = new String[3];
+            String[] stringarray = new String[4];
             stringarray[0] = JsonCollection.objectToJson(userList);
             stringarray[1] = JsonCollection.objectToJson(userInGroupList);
             stringarray[2] = JsonCollection.objectToJson(appointmentArrayList);
+            stringarray[3] = JsonCollection.objectToJson(taskArrayList);
+
             smackclient.sendDownstreamMessage("group", "groupinformation", (String) jsonObject.get("from"), stringarray);
             Groups groups = groupsRepository.findOne(gid);
             smackclient.sendDownstreamMessage("group", "updatinggroup", (String) jsonObject.get("from"), groups);
@@ -184,6 +211,11 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Getting User with Email and trying to save Invitation and sending it
+     * afterwards sending a broadcast notification that a new user joined the group
+     * @return
+     */
     private boolean inviteUser() {
         User user = userRepository.findByEmail(this.payload.get("extra0"));
         try {
@@ -205,7 +237,6 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
                 sendGroupError(ErrorMessages.SEND_BROADCAST_USER_FAILED);
                 logger.log(Level.INFO, "something in broadcastNewUser went wrong");
                 return false;
-                //todo how to handle this?
             }
 
         } catch (NullPointerException e) {
@@ -217,7 +248,10 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         return true;
     }
 
-
+    /**
+     * Broadcast that a new User got invited to group
+     * @return true when success, false when failed
+     */
     private boolean broadcastNewUser() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
@@ -240,6 +274,10 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Send that Invitation Successes
+     * @return
+     */
     private boolean sendInvitationSuccess() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
@@ -251,8 +289,11 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
-
-
+    /**
+     * Send Invitation to user
+     * @param token token from user
+     * @return true when success, false when failed
+     */
     private boolean sendInvitation(String token) {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
         try {
@@ -271,6 +312,10 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Insert Group in database
+     * @return true when success, false whenm failed
+     */
     private boolean insertGroup() {
         Groups group = JsonCollection.jsonToGroup(this.payload.get("content"));
 
@@ -286,7 +331,10 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
-
+    /**
+     * Send that Group insert successed
+     * @return true when sending success, fail when sending failed
+     */
     @SuppressWarnings("unchecked")
     private boolean sendInsertGroupSuccess() {
         SmackCcsClient smackclient = SmackCcsClient.getInstance();
@@ -301,6 +349,11 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
         }
     }
 
+    /**
+     * Send an Error that Group couldnt be inserted
+     * @param errortype ErrorMessage
+     * @return true when sending success, false when sending failed
+     */
     @SuppressWarnings("unchecked")
     private boolean sendGroupError(String errortype) {
         SmackCcsClient smackCcsClient = SmackCcsClient.getInstance();
@@ -313,8 +366,6 @@ public class GroupObserver  extends RepositorieConnector implements MessageObser
             return false;
         }
     }
-
-
 
 
     /**

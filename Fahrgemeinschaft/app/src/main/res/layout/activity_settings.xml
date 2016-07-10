@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/plaetze"
-                android:text="Wie viele freie Plätze hat Ihr Auto?"
+                android:text="Wie viele freie Sitzplätze hat Ihr Auto?"
                 android:textColor="@android:color/black"
                 android:animateLayoutChanges="true"
                 android:textStyle="bold"
