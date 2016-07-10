@@ -94,6 +94,7 @@ public class AppointmentAdapter extends ArrayAdapter {
         final Appointment appointment =  data.get(position);
 
         if(appointment.getFreeSeats() < appointment.getMembers()) {
+            System.out.println("FREE SEATS < MEMBERS");
             holder.not_enough_drivers.setVisibility(View.VISIBLE);
         }
 
@@ -135,6 +136,11 @@ public class AppointmentAdapter extends ArrayAdapter {
         return row;
     }
 
+    /**
+     * Creating a Alert Dialog
+     * @param view view
+     * @param userInAppointment UserInAppointment which should be send to the server
+     */
     private void openAlert(View view, final UserInAppointment userInAppointment) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setTitle("Abfrage");
@@ -177,6 +183,9 @@ public class AppointmentAdapter extends ArrayAdapter {
         this.data = data;
     }
 
+    /**
+     * HolderClass
+     */
     static class AppointmentHolder
     {
         ImageView imgIcon;

@@ -87,7 +87,6 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_delete_event) {
-            //@TODO Lenni oder David! Bitte vom Server löschen.
             SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
             SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
             String gid = prefs.getString("currentgid", "");
@@ -107,6 +106,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * create receiver
+     */
     public void createReceiver() {
         returntogroupgeneral = new BroadcastReceiver() {
             @Override
@@ -117,6 +119,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         registerReceiver();
     }
 
+    /**
+     * register receiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(context).registerReceiver(returntogroupgeneral, new IntentFilter("returntogeneralgroups"));
@@ -124,6 +129,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * unregister receiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(returntogroupgeneral);

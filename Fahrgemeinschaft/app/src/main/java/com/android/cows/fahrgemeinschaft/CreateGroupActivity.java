@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 import de.dataobjects.Groups;
 
 public class CreateGroupActivity extends AppCompatActivity {
-
     private static final String TAG = "CreateGroupActivity";
     private BroadcastReceiver insertGroupSuccess;
     private BroadcastReceiver errorGroupInsert;
@@ -85,6 +84,11 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Check if Group exists in database
+     * @param gid
+     * @return
+     */
     private boolean checkIfGroupExists(String gid) {
         gid  = gid.replaceAll("\\s","");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(this,null);
@@ -103,12 +107,20 @@ public class CreateGroupActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Check if Groupname is legal
+     * @param text
+     * @return
+     */
     private boolean checkRegEx(String text) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher matcher = pattern.matcher(text);
         return matcher.find();
     }
 
+    /**
+     * Sets Layout invisible and Progressbar visible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutInvisible() {
         findViewById(R.id.createGroupProgressBar).setVisibility(ProgressBar.VISIBLE);
@@ -116,6 +128,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         findViewById(R.id.createGroupButton).setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Sets Layout visible and Progressbar invisible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutVisible() {
         findViewById(R.id.createGroupProgressBar).setVisibility(ProgressBar.GONE);
@@ -123,6 +138,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         findViewById(R.id.createGroupButton).setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Create Receivers for GUI calls
+     */
     private void createReceiver() {
         insertGroupSuccess = new BroadcastReceiver() {
             @Override
@@ -148,7 +166,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         registerReceiver();
     }
 
-
+    /**
+     * Register receivers
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(insertGroupSuccess, new IntentFilter("createdgroup"));
@@ -157,13 +177,15 @@ public class CreateGroupActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Unregister Receivers
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(insertGroupSuccess);
             LocalBroadcastManager.getInstance(this).unregisterReceiver(errorGroupInsert);
             isReceiverRegistered = false;
         }
-        //todo do we need unregistering for receiver?
     }
     @Override
     public void onBackPressed() {

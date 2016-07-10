@@ -37,7 +37,12 @@ public class GroupAdapter extends ArrayAdapter {
     private int layoutResourceId;
     ArrayList<Groups> data = new ArrayList<Groups>();
 
-
+    /**
+     *
+     * @param groupView view
+     * @param group group to be shown
+     * @return
+     */
     private View setGroupView(View groupView, final de.dataobjects.Groups group) {
         TextView textview = (TextView) groupView.findViewById(R.id.groupTextView1);
         textview.setText(group.getName());
@@ -49,6 +54,10 @@ public class GroupAdapter extends ArrayAdapter {
         return groupView;
     }
 
+    /**
+     * Method to send when User accepted Invitation
+     * @param group group he accepted
+     */
     private void sendInvitationAccept(de.dataobjects.Groups group) {
         Log.i(TAG, "Send Invitation Accept");
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
@@ -62,14 +71,20 @@ public class GroupAdapter extends ArrayAdapter {
         myGcmSend.send("group", "invitationaccept", context, string);
         sendLocalUpdateBroadcast();
     }
+
+    /**
+     * Send Broad to GUI
+     */
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupgeneral");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-
-
-
+    /**
+     * Create Dialog for asking if user wants to accept inivitation
+     * @param view view
+     * @param group group dialog is created for
+     */
     private void openAlert(View view, final Groups group) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setTitle("Abfrage");
@@ -100,7 +115,6 @@ public class GroupAdapter extends ArrayAdapter {
         // set negative button: No message
         alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
- //@Todo Lennart oder David! Bitte auch vom Server den Eintrag "User In Group" löschen.
                 SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                 sqLiteDBHandler.deleteGroup(group.getGid());
@@ -223,6 +237,9 @@ public class GroupAdapter extends ArrayAdapter {
         this.data = data;
     }
 
+    /**
+     * Holder class
+     */
     static class GroupHolder
     {
         ImageView imgIcon;

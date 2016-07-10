@@ -70,13 +70,13 @@ public class FragmentAppointmentParticipantActivity extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
         loadParticipants();
         createReceiver();
     }
 
+    /**
+     * Load UserList who are Participants in Appointment
+     */
     private void loadParticipants() {
         SharedPreferences prefs = getActivity().getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         Bundle bundle = getActivity().getIntent().getExtras();
@@ -89,6 +89,10 @@ public class FragmentAppointmentParticipantActivity extends Fragment {
         createUserList(userInAppointmentArrayList);
     }
 
+    /**
+     * Create ListView with UserList
+     * @param userInAppointmentArrayList Users who are Participant in specific Appointment
+     */
     public void createUserList(ArrayList<UserInAppointment> userInAppointmentArrayList) {
         UserAdapterAppointments userAdapterAppointments = new UserAdapterAppointments( getActivity() ,R.layout.item_row, userInAppointmentArrayList);
 
@@ -99,7 +103,9 @@ public class FragmentAppointmentParticipantActivity extends Fragment {
         listView.setAdapter(userAdapterAppointments);
     }
 
-
+    /**
+     * create receiver
+     */
     public void createReceiver() {
         updateparticipantlist = new BroadcastReceiver() {
             @Override
@@ -110,6 +116,9 @@ public class FragmentAppointmentParticipantActivity extends Fragment {
         registerReceiver();
     }
 
+    /**
+     * register receiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updateparticipantlist, new IntentFilter("updateparticipants"));
@@ -117,6 +126,9 @@ public class FragmentAppointmentParticipantActivity extends Fragment {
         }
     }
 
+    /**
+     * unregister receiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updateparticipantlist);

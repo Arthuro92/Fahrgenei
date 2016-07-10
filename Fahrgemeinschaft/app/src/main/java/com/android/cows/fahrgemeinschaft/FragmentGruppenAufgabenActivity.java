@@ -13,7 +13,7 @@ import com.android.cows.fahrgemeinschaft.adapters.TaskAdapter;
 import java.util.ArrayList;
 
 import de.dataobjects.Task;
-
+//NOT IN USE ANYMORE? I THINK YES
 public class FragmentGruppenAufgabenActivity extends Fragment {
 
     View contentViewGruppenAufgaben;
@@ -24,8 +24,6 @@ public class FragmentGruppenAufgabenActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentViewGruppenAufgaben = inflater.inflate(R.layout.activity_fragment_gruppen_aufgabe, null);
-
-
         return contentViewGruppenAufgaben;
     }
 

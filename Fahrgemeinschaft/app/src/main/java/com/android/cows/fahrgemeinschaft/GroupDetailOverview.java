@@ -19,12 +19,9 @@ public class GroupDetailOverview extends AppCompatActivity {
         TextView grpName = (TextView) findViewById(R.id.grpName);
         TextView adminName = (TextView) findViewById(R.id.adminName);
 
-
         Bundle bundle = getIntent().getExtras();
         grpName.setText(bundle.getString("name"));
         adminName.setText(bundle.getString("adminname"));
-
-
     }
 
 }

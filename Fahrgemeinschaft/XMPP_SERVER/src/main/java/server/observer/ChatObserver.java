@@ -13,6 +13,7 @@ import server.smackccsclient.SmackCcsClient;
 
 /**
  * Created by david on 23.05.2016.
+ * Handle all Messages with task_category = chat
  */
 public class ChatObserver implements MessageObserver {
     //version 1

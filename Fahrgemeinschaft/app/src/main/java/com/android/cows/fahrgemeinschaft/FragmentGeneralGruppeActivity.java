@@ -42,44 +42,15 @@ public class FragmentGeneralGruppeActivity extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
-
         super.onViewCreated(view, savedInstanceState);
-
-
-        /*Button btn = (Button) contentViewGeneralGruppen.findViewById(R.id.button3);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "switch to createGroupActivity");
-                Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
-                startActivity(intent);
-            }
-        }); */
-
         loadGrpList();
         createReceiver();
 
     }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        unregisterReceiver();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        unregisterReceiver();
-//    }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        unregisterReceiver();
-//    }
-
+    /**
+     * create receiver
+     */
     public void createReceiver() {
         updategrplist = new BroadcastReceiver() {
             @Override
@@ -90,6 +61,9 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         registerReceiver();
     }
 
+    /**
+     * registerreceiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(updategrplist, new IntentFilter("updategroupgeneral"));
@@ -97,6 +71,9 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         }
     }
 
+    /**
+     * unregisterreceiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(updategrplist);
@@ -104,7 +81,9 @@ public class FragmentGeneralGruppeActivity extends Fragment {
         }
     }
 
-
+    /**
+     * Load Group List
+     */
     public void loadGrpList() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(getActivity(), null);
         ArrayList<Groups> grplist = sqLiteDBHandler.getGroups();
@@ -113,7 +92,6 @@ public class FragmentGeneralGruppeActivity extends Fragment {
 
     /**
      * Creating for each Group a linearLayout
-     *
      * @param grplist list of Groups which should be displayed
      */
     public void createGroupOverview(ArrayList<Groups> grplist) {

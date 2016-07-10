@@ -90,7 +90,6 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(final String token) {
-        //todo encryption public key request
         MyGcmSend gcmsender = new MyGcmSend();
         gcmsender.send("security", "public_key", "Request Key", this);
 

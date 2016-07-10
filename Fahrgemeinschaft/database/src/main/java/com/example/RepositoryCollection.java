@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * Created by Maxi on 20.06.2016.
+ * Created by Lennart on 20.06.2016.
+ * Storing all Repositorys
  */
 @EnableJpaRepositories
 @ComponentScan("com.example")

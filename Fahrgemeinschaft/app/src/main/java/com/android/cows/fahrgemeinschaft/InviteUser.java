@@ -58,6 +58,10 @@ public class InviteUser extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method for inviting Friends getting called over OnClick
+     * @param view view
+     */
     public void invitefriend(View view) {
         EditText editText = (EditText) findViewById(R.id.inviteEmail);
         if (editText.getText().toString().trim().length() != 0) {
@@ -94,6 +98,9 @@ public class InviteUser extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets Layout invisible and progressbar visible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutInvisible() {
         findViewById(R.id.inviteUserProgressBar).setVisibility(ProgressBar.VISIBLE);
@@ -101,6 +108,9 @@ public class InviteUser extends AppCompatActivity {
         findViewById(R.id.invitefriendbtn).setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Sets Layout visible and progressbar invisible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutVisible() {
         findViewById(R.id.inviteUserProgressBar).setVisibility(ProgressBar.GONE);
@@ -108,7 +118,9 @@ public class InviteUser extends AppCompatActivity {
         findViewById(R.id.invitefriendbtn).setVisibility(View.VISIBLE);
     }
 
-
+    /**
+     * Create receiver for enable gui calls
+     */
     private void createReceiver() {
         inviteSuccess = new BroadcastReceiver() {
             @Override
@@ -132,6 +144,9 @@ public class InviteUser extends AppCompatActivity {
         registerReceiver();
     }
 
+    /**
+     * register receiver
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(inviteSuccess, new IntentFilter("invitesuccess"));
@@ -140,6 +155,9 @@ public class InviteUser extends AppCompatActivity {
         }
     }
 
+    /**
+     * unregister receiver
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(inviteSuccess);

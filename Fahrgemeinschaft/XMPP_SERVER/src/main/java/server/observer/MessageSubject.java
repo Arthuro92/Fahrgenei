@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by david on 17.05.2016.
+ *
  */
 public class MessageSubject {
     //version 1

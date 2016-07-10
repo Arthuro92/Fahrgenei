@@ -113,6 +113,9 @@ public class GcmActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    /**
+     * register receiver for gui calls
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
@@ -142,6 +145,10 @@ public class GcmActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Going to next Activity
+     * @param view
+     */
     public void nextactivity(View view) {
         Log.i(TAG, "NEXTACTIVITY");
 //        Intent intent = new Intent(this, GroupOverview.class);

@@ -8,7 +8,8 @@
         android:orderInCategory="1000"
         android:title="Aus der Gruppe austreten"
         android:visible="false"
-        app:showAsAction="never" />
+        android:icon="@drawable/glyphicons389exitwhite"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_add_person"

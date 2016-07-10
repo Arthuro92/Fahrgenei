@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 
 /**
- * Created by Maxi on 20.06.2016.
+ * Created by Lennart on 20.06.2016.
+ * Configuration Bean for providing transcation Manager and entityManagerFactory
+ * Transaction Manager and EntitymanagerFactory are handling the hibernate/SQL queries
  */
 @Configuration
 @EnableJpaRepositories("com.example.repositories")

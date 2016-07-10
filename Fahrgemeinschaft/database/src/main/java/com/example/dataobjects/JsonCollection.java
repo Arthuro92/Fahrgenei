@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by Lennart on 18.06.2016.
+ * Stores all needed fromJson Methods
  */
 public class JsonCollection {
     public static Groups jsonToGroup(String jsonInString) {

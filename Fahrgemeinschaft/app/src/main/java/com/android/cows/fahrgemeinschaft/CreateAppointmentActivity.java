@@ -119,13 +119,16 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
     }
 
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_appointment_menu, menu);
         return true;
     }
 
+    /**
+     * Method getting called when new Appointment gets created
+     * @param view view
+     */
     public void createAppointment(View view) {
         SharedPreferences prefs = this.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
         String gid = prefs.getString("currentgid", "");
@@ -139,20 +142,16 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
 
         MyGcmSend gcmsend = new MyGcmSend();
 
-
         String gname = prefs.getString("currentgroupname", "");
 
         int id = sqLiteDBHandler.getNextAppointmentID(gid);
         de.dataobjects.Appointment gapm1;
 
-
-        //Todo String von Abfahrtzeit & Treffpunktzeit in Calendar ändern oder ähnliches
         String treffpunkt = _input_treffpunkt.getText().toString();
         String zielort = _input_zielort.getText().toString();
         String treffpunktZeit = _input_treffpunktZeit.getText().toString();
         String abfahrtzeit = _input_abfahrtzeit.getText().toString();
         String terminname = _input_terminname.getText().toString();
-
 
         if(id == 0) {
             Log.i(TAG, "no appointments, create appointment with id 1");
@@ -168,19 +167,27 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
 
     }
 
+    /**
+     * Sets Layout Invisible and Progressbar visible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutInvisible() {
         findViewById(R.id.createAppointmentProgBar).setVisibility(ProgressBar.VISIBLE);
         findViewById(R.id.createappointbutton).setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Sets Layout Visible and Progressbar invisible
+     */
     @SuppressWarnings("ConstantConditions")
     private void setLayoutVisible() {
         findViewById(R.id.createAppointmentProgBar).setVisibility(ProgressBar.GONE);
         findViewById(R.id.createappointbutton).setVisibility(View.VISIBLE);
     }
 
-
+    /**
+     * Create Receivers for GUI calls
+     */
     private void createReceiver() {
         insertAppointmentsuccess = new BroadcastReceiver() {
             @Override
@@ -188,10 +195,10 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
                 unregisterReceiver();
                 Intent intent2 = new Intent(CreateAppointmentActivity.this, GroupTabsActivity.class);
                 Bundle bundle = getIntent().getExtras();
-//                startActivity(intent2);
                 finish();
             }
         };
+
 
         errorReceivingAppointment = new BroadcastReceiver() {
             @Override
@@ -207,7 +214,9 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
         registerReceiver();
     }
 
-
+    /**
+     * Register Receivers
+     */
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(insertAppointmentsuccess, new IntentFilter("createdAppointment"));
@@ -216,12 +225,14 @@ public class CreateAppointmentActivity extends AppCompatActivity implements View
         }
     }
 
+    /**
+     * Unregister Receivers
+     */
     private void unregisterReceiver() {
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(insertAppointmentsuccess);
             LocalBroadcastManager.getInstance(this).unregisterReceiver(errorReceivingAppointment);
             isReceiverRegistered = false;
         }
-        //todo do we need unregistering for receiver?
     }
 }

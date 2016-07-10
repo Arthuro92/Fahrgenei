@@ -92,6 +92,9 @@ public class FragmentGruppenChatActivity extends Fragment {
         resetInputBox();
     }
 
+    /**
+     * Resets Chat Input Box and hiding Keyboard
+     */
     private void resetInputBox() {
         EditText editText = (EditText) getActivity().findViewById(R.id.edit_text_message);
         editText.setText("");

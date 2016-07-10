@@ -21,6 +21,10 @@ public class TopicSubscriber {
         Log.i(TAG, "Subscribe to Topic: " + topic);
     }
 
+    /**
+     * Unsubscribe from topic
+     * @param topic
+     */
     public static void unsubscribeFromTopic(String topic) {
         FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
         pubSub.unsubscribeFromTopic(topic);

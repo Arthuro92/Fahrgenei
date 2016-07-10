@@ -14,6 +14,7 @@ import com.android.cows.fahrgemeinschaft.gcm.MyGcmSend;
 
 import de.dataobjects.Appointment;
 
+@SuppressWarnings("ConstantConditions")
 public class EditAppointmentActivity extends AppCompatActivity {
     private static final String TAG = "EditAppointmentActivity";
 
@@ -37,8 +38,6 @@ public class EditAppointmentActivity extends AppCompatActivity {
         final TextView terminZielOrt = (TextView) findViewById(R.id.input_zielort2);
         final Button savaData = (Button) findViewById(R.id.saveAppointmentButton);
 
-
-
         Bundle bundle = getIntent().getExtras();
 
         terminName.setText(bundle.getString("name"));
@@ -48,16 +47,12 @@ public class EditAppointmentActivity extends AppCompatActivity {
         terminZielOrt.setText(bundle.getString("destination"));
         final int aid = (int) bundle.getSerializable("aid");
 
+
         savaData.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //@TODO SQLITE DB und SERVER DB MUESSEN DEN EINTRAG FÜR DEN TERMIN ÄNDERN
-
                 MyGcmSend gcmsend = new MyGcmSend();
                 SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
                 Appointment gapm1 = new Appointment(aid, prefs.getString("currentgid",""), prefs.getString("currentgroupname", "") + " " + aid, terminAbfahrtZeit.getText().toString(), terminTreffZeit.getText().toString(), terminZielOrt.getText().toString(), terminTreffOrt.getText().toString());
-
-
-
                 Intent intent = new Intent(context, AppointmentTabsActivity.class);
                 Log.i("Taskdaten",aid +" "+terminName.getText()+" "+terminAbfahrtZeit.getText()+" "+terminTreffOrt.getText());
                 intent.putExtra("aid", aid);
@@ -67,8 +62,6 @@ public class EditAppointmentActivity extends AppCompatActivity {
                 intent.putExtra("meetingtime", terminTreffZeit.getText().toString());
                 intent.putExtra("destination", terminZielOrt.getText().toString());
                 gcmsend.send("appointment", "insertappointment", gapm1, context);
-
-
                 startActivity(intent);
                 finish();
             }

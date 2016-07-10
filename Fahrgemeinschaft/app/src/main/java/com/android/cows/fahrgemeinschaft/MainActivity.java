@@ -8,9 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,8 +30,7 @@ import com.google.android.gms.plus.model.people.Person;
 
 import java.io.InputStream;
 
-
-//todo profil auslagern
+//NOT IN USE ANYMORE? I THINK YES
 
 public class MainActivity extends AppCompatActivity implements OnConnectionFailedListener, View.OnClickListener, ConnectionCallbacks {
     GoogleApiClient google_api_client;

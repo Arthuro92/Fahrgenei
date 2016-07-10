@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by Lennart on 24.05.2016.
+ * NOT USED ANYMORE
  */
 public class Databaseoperator {
     private static final Logger logger = Logger.getLogger("Databaseoperator");

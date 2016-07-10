@@ -2,6 +2,7 @@ package server.errors;
 
 /**
  * Created by Lennart on 10.06.2016.
+ * Stores all Error Messages which can be send to Clients
  */
 public class ErrorMessages {
     public static final String MYSQL_ERROR = "error: SQL Exception on Server. Vielleicht hilft manuelles Syncronisieren?";

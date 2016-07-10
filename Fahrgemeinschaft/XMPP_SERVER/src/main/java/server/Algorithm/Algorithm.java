@@ -1,4 +1,4 @@
-package server.Algorithm;
+package server.algorithm;
 
 import com.example.dataobjects.Appointment;
 import com.example.dataobjects.JsonCollection;
@@ -20,6 +20,8 @@ import server.smackccsclient.SmackCcsClient;
 
 /**
  * Created by Lennart on 07.07.2016.
+ * Compute Drivers, priority is that all drivers with the lowest drivercount getting choosen to driver
+ * Extending RepositorieConnector for getting access to Repositorys
  */
 public class Algorithm extends RepositorieConnector  {
     private static final Logger logger = Logger.getLogger("Algorithm ");
@@ -31,6 +33,10 @@ public class Algorithm extends RepositorieConnector  {
         initRepositories();
     }
 
+    /**
+     * Main Method to be called when you want to calculate Drivers
+     * @param userInAppointment
+     */
     public void calculateDrivers(UserInAppointment userInAppointment) {
         this.userInAppointment = userInAppointment;
 
@@ -38,6 +44,9 @@ public class Algorithm extends RepositorieConnector  {
         findNewDrivers();
     }
 
+    /**
+     * First find Old Drivers which were choosen for the appointment
+     */
     private void findOldDrivers() {
         ArrayList<UserInAppointment> userInAppointmentArrayList = userInAppointmentRepository.findByGidAndAid(userInAppointment.getGid(), userInAppointment.getAid());
 
@@ -54,12 +63,11 @@ public class Algorithm extends RepositorieConnector  {
                 userInGroupRepository.save(userInGroup);
             }
         }
-//        System.out.println(userInAppointmentArrayListOldDrivers.get(0).isDriver());
-//        System.out.println(userInAppointmentArrayListOldDrivers.get(1).isDriver());
-//        System.out.println(userInGroupArrayListOld.get(0).getDrivingCount());
-//        System.out.println(userInGroupArrayListOld.get(1).getDrivingCount());
     }
 
+    /**
+     * Find new Drivers
+     */
     private void findNewDrivers() {
         ArrayList<UserInAppointment> userInAppointmentArrayList = userInAppointmentRepository.findByGidAndAid(userInAppointment.getGid(), userInAppointment.getAid());
         ArrayList<User> userArrayList = new ArrayList<>();
@@ -82,6 +90,7 @@ public class Algorithm extends RepositorieConnector  {
         }
         logger.log(Level.INFO, "Total Members in Appointment: " + membercounter);
         appointment.setMembers(membercounter);
+        appointment.setFreeSeats(0);
 
         //noinspection unchecked
         Collections.sort(userInGroupArrayList);
@@ -102,6 +111,11 @@ public class Algorithm extends RepositorieConnector  {
         saveSolution(drivers, appointment);
     }
 
+    /**
+     * Save Solution in Database
+     * @param drivers List of Drivers
+     * @param appointment Appointment where the drivers were choosen for
+     */
     private void saveSolution(ArrayList<User> drivers, Appointment appointment) {
         ArrayList<UserInAppointment> userInAppointmentArrayList = new ArrayList<>();
         ArrayList<UserInGroup> userInGroupArrayList = new ArrayList<>();
@@ -123,6 +137,12 @@ public class Algorithm extends RepositorieConnector  {
         sendSolution(userInAppointmentArrayList, userInGroupArrayList, appointment);
     }
 
+    /**
+     * Send Solution to Group
+     * @param userInAppointments UserInApointmentList for knowing the drivers
+     * @param userInGroups UserInGroup for drivercount
+     * @param appointment for the appointment which drivers got calculated for
+     */
     private void sendSolution(ArrayList<UserInAppointment> userInAppointments, ArrayList<UserInGroup> userInGroups, Appointment appointment) {
         try {
             String[] solutionarray = new String[5];
@@ -139,6 +159,11 @@ public class Algorithm extends RepositorieConnector  {
         }
     }
 
+    /**
+     * Print Solution for Logging
+     * @param drivers drivers
+     * @param membercount Member in Appointment
+     */
     private void printSolution(ArrayList<User> drivers, int membercount) {
         String solution = "";
         for(User user : drivers) {

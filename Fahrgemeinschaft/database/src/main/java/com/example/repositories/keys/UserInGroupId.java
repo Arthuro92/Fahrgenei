@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Lennart on 22.06.2016.
+ * Key class for UserInGroupid
  */
 public class UserInGroupId implements Serializable {
 

@@ -36,10 +36,6 @@ public class AppointmentObserver implements MessageObserver {
         this.payload = jsonObject;
         if (this.payload.getString("task_category").equals("appointment")) {
             switch (this.payload.getString("task")) {
-                case "singleAppointment":
-                    Log.i(TAG, "single Appointment");
-                    singleAppointment();
-                    break;
                 case "appointmentinsertsuccess":
                     Log.i(TAG, "Appointmentinsersuccess");
                     updateLocalDatabase();
@@ -75,12 +71,18 @@ public class AppointmentObserver implements MessageObserver {
         }
     }
 
+    /**
+     * Delete Appointment local
+     */
     private void deleteAppointment() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         Appointment appointment = JsonCollection.jsonToAppointment(this.payload.getString("content"));
         sqLiteDBHandler.deleteAppoinment(appointment.getAid(), appointment.getGid());
     }
 
+    /**
+     * Update Local Tables to insert new Drivers correctly
+     */
     private void updateLocalNewDrivers() {
         String[] solutionarray = JsonCollection.jsonToStringArray(this.payload.getString("content"));
         ArrayList<UserInGroup> userInGroupArrayListOld = JsonCollection.jsonToUserInGroupList(solutionarray[0]);
@@ -113,61 +115,68 @@ public class AppointmentObserver implements MessageObserver {
 
     }
 
+    /**
+     * Update UserInAppointment local
+     */
     private void updateUserInAppointment() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
         sqLiteDBHandler.addIsInAppointment(JsonCollection.jsonToUserInAppointment(this.payload.getString("content")));
     }
 
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void sendLocalUpdateBroadcast() {
         Intent intent = new Intent("updategroupappointments");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void sendLocalParticipantUpdateBroadcast() {
         Intent intent = new Intent("updateparticipants");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void sendLocalReturnBroadcast() {
         Intent intent = new Intent("returntogrouptabs");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    /**
+     * Update Local Database when insert/getting new Appointment
+     */
     private void updateLocalDatabase() {
         SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-        sqLiteDBHandler.addAppointment(jsonToAppointment(this.payload.getString("content")));
-        sqLiteDBHandler.updateUserInAppointment(jsonToAppointment(this.payload.getString("content")));;
+        sqLiteDBHandler.addAppointment(JsonCollection.jsonToAppointment((this.payload.getString("content"))));
+        sqLiteDBHandler.updateUserInAppointment(JsonCollection.jsonToAppointment(this.payload.getString("content")));;
     }
 
-    private Appointment jsonToAppointment(String jsonInString) {
-        return JsonCollection.jsonToAppointment(jsonInString);
-    }
-
+    /**
+     * Send Local Broadcast to call GUI
+     */
     private void appointmentInsertSuccess() {
         Intent sucessCreateAppointment = new Intent("createdAppointment");
         LocalBroadcastManager.getInstance(context).sendBroadcast(sucessCreateAppointment);
     }
 
+    /**
+     * Send Local Broadcast to call GUI if error on serverside happend
+     * @param error Error Message
+     */
     private void errorAppointment(String error) {
         Intent errorAppointment = new Intent("ERRORAppointment");
         errorAppointment.putExtra("error", error);
         LocalBroadcastManager.getInstance(context).sendBroadcast(errorAppointment);
     }
 
-    public void singleAppointment() {
-        String content = this.payload.getString("content");
-
-//        SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-//        prefs.edit().putString("applist", content).apply();
-
-        Intent singleappointment = new Intent("singleAppointment");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(singleappointment);
-    }
-
 
     /**
      * Constructs a new AppointmentObserver and registers it to a MessageSubject
-     *
      * @param ms a MessageSubject to register to
      */
     public AppointmentObserver(MessageSubject ms) {
