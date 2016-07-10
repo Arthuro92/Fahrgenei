@@ -1,8 +1,10 @@
 package com.android.cows.fahrgemeinschaft;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -135,17 +137,36 @@ public class GroupTabsActivity extends AppCompatActivity {
             startActivity(intent);
         }
         if (id == R.id.action_delete_group ){
-            //@TODO Lenni oder David! Bitte vom Server löschen.
-            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-            String gid = prefs.getString("currentgid", "");
-            Groups groups = sqLiteDBHandler.getGroup(gid);
-            sqLiteDBHandler.deleteGroup(gid);
-            Intent intent = new Intent(GroupTabsActivity.this, GeneralTabsActivity.class);
-            startActivity(intent);
-            TopicSubscriber.unsubscribeFromTopic(gid);
-            MyGcmSend myGcmSend = new MyGcmSend();
-            myGcmSend.send("group", "deletegroup", groups, context );
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Abfrage");
+
+            alertDialogBuilder.setMessage("Möchten Sie diese Gruppe löschen?");
+            // set positive button: Yes message
+            alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                    SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                    String gid = prefs.getString("currentgid", "");
+                    Groups groups = sqLiteDBHandler.getGroup(gid);
+                    sqLiteDBHandler.deleteGroup(gid);
+                    Intent intent = new Intent(GroupTabsActivity.this, GeneralTabsActivity.class);
+                    startActivity(intent);
+                    TopicSubscriber.unsubscribeFromTopic(gid);
+                    MyGcmSend myGcmSend = new MyGcmSend();
+                    myGcmSend.send("group", "deletegroup", groups, context);
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show alert
+            alertDialog.show();
+
         }
         if(id == R.id.action_add_task) {
             Intent intent = new Intent(GroupTabsActivity.this, CreateTaskActivity.class);
@@ -153,19 +174,38 @@ public class GroupTabsActivity extends AppCompatActivity {
         }
 
         if(id == R.id.leave_group) {
-            //@TODO Lenni oder David! Bitte vom Server löschen.
-            System.out.println("LEAVING GROUP");
-            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-            String gid = prefs.getString("currentgid", "");
-            sqLiteDBHandler.deleteGroup(gid);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Abfrage");
 
-            TopicSubscriber.unsubscribeFromTopic(gid);
-            UserInGroup userInGroup = new UserInGroup(prefs.getString("userid", ""), gid,0 );
-            MyGcmSend myGcmSend = new MyGcmSend();
-            myGcmSend.send("group","deleteuseringroup",userInGroup, context);
-            Intent intent = new Intent(GroupTabsActivity.this, GeneralTabsActivity.class);
-            startActivity(intent);
+            alertDialogBuilder.setMessage("Möchten Sie diese Gruppe verlassen?");
+            // set positive button: Yes message
+            alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    System.out.println("LEAVING GROUP");
+                    SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                    SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                    String gid = prefs.getString("currentgid", "");
+                    sqLiteDBHandler.deleteGroup(gid);
+
+                    TopicSubscriber.unsubscribeFromTopic(gid);
+                    UserInGroup userInGroup = new UserInGroup(prefs.getString("userid", ""), gid, 0);
+                    MyGcmSend myGcmSend = new MyGcmSend();
+                    myGcmSend.send("group", "deleteuseringroup", userInGroup, context);
+                    Intent intent = new Intent(GroupTabsActivity.this, GeneralTabsActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            // set negative button: No message
+            alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show alert
+            alertDialog.show();
+
         }
         return super.onOptionsItemSelected(item);
     }

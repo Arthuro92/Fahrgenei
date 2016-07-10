@@ -1,7 +1,9 @@
 package com.android.cows.fahrgemeinschaft;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -87,21 +89,39 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_delete_event) {
-            SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
-            SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
-            String gid = prefs.getString("currentgid", "");
-            Bundle bundle = getIntent().getExtras();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Abfrage");
 
-            int aid = (int) bundle.getSerializable("aid");
-            int tid = (int) bundle.getSerializable("tid");
+            alertDialogBuilder.setMessage("Möchten Sie diese Aufgabe löschen?");
+            // set positive button: Yes message
+            alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    SQLiteDBHandler sqLiteDBHandler = new SQLiteDBHandler(context, null);
+                    SharedPreferences prefs = context.getSharedPreferences("com.android.cows.fahrgemeinschaft", Context.MODE_PRIVATE);
+                    String gid = prefs.getString("currentgid", "");
+                    Bundle bundle = getIntent().getExtras();
 
-            Task task = new Task(tid, aid, gid, "", "", "");
+                    int aid = (int) bundle.getSerializable("aid");
+                    int tid = (int) bundle.getSerializable("tid");
 
-            sqLiteDBHandler.deleteTask(tid, gid, aid);
-            MyGcmSend myGcmSend = new MyGcmSend();
-            myGcmSend.send("task", "deletetask",task ,context) ;
+                    Task task = new Task(tid, aid, gid, "", "", "");
 
-            finish();
+                    sqLiteDBHandler.deleteTask(tid, gid, aid);
+                    MyGcmSend myGcmSend = new MyGcmSend();
+                    myGcmSend.send("task", "deletetask", task, context);
+
+                    finish();
+                }
+            });
+            alertDialogBuilder.setNegativeButton("Nein",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show alert
+            alertDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
