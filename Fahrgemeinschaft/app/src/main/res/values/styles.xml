@@ -21,6 +21,7 @@
         <item name="colorPrimary">@color/Primary</item>
         <item name="colorPrimaryDark">@color/PrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/white</item>
 
 
     </style>
