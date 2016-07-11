@@ -81,7 +81,7 @@ public class TaskAdapter extends ArrayAdapter {
         }
 
         final Task task =  data.get(position);
-        holder.nameFeld.setText( "test" );/**task.getTaskName()*/
+        holder.nameFeld.setText( task.getTaskName() );/**task.getTaskName()*/
         Log.d("UserAdapter: ","Holdername als "+task.getTaskName()+" gesetzt.");
         // holder.imgIcon.setImageResource(R.drawable.user128);
         // holder.inv_status.setText("Angenommen");
